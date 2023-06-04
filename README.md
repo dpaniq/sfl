@@ -1,4 +1,6 @@
 # Plan
 - [x] excel to json
 - [x] json to html + table
-- [ ] dinamic json table
+- [x] dinamic json table
+- [x] github pages
+- [ ] transform to preact
