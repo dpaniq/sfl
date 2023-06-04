@@ -1,14 +1,18 @@
 import {
-  getStats
-} from "./src/utils/getStats.js";
+  getStatsByYear
+} from "./src/utils/stats.js";
+import {
+  makeTables
+} from "./src/utils/html.js";
 
-console.log('Start application')
 
-const list = {
-  2023: await getStats("2023")
+const list = [
+  await getStatsByYear("2023")
+]
+
+function runApp() {
+  makeTables(list)
 }
 
-console.log(list)
-
-
-console.log('Application stopped')
+// Start application
+runApp()
