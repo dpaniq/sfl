@@ -4,19 +4,19 @@ import { FC } from 'preact/compat'
 
 export default function Table({ year }) {
 
-  const [yearList, setYearList] = useState({})
+  const [stats, setStats] = useState([])
 
   useEffect(() => {
     if (year) {
       getStatsByYear(year).then((d) => {
         console.log({ d })
-        setYearList(d)
+        setStats(d)
       }).catch()
     }
 
   }, [year])
 
-  console.log(year, yearList)
+  console.log(year, stats)
 
   return (
     <>
@@ -34,7 +34,7 @@ export default function Table({ year }) {
           </tr>
         </thead>
         <tbody>
-          {yearList.map(row => (
+          {stats.map(row => (
             <tr>
               <td>{row.name}</td>
               <td>{row.games}</td>
