@@ -1,3 +1,4 @@
 # Plan
-- [ ] excel to json
+- [x] excel to json
+- [x] json to html + table
 
