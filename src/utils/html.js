@@ -1,14 +1,24 @@
+// H
+function makeH(num, textContent) {
+  const h = document.createElement(`h${num}`) // h2
+  h.textContent = textContent
+  return h
+}
+
 // Table
 export function makeTables(list) {
+  const sectionTables = document.getElementById('tables');
   for (const [year, rows] of Object.entries(list)) {
     const table = makeTable(year, rows)
-    document.getElementById('tables').appendChild(table)
+    sectionTables.appendChild(table)
+    table.before(makeH(2, `Table for ${year}`))
   }
 }
 
 
 function makeTable(year, rows) {
   const table = document.createElement('table')
+  table.setAttribute('data-year', year)
   table.appendChild(makeThead())
   table.appendChild(makeTbody(rows))
   return table
@@ -17,7 +27,7 @@ function makeTable(year, rows) {
 
 function makeThead() {
   const thead = document.createElement('thead')
-  const tr = makeTr(['', 'Games:', 'Passes:', 'Points:', 'Score:', 'MVP:'])
+  const tr = makeTr(['/', 'Игр', 'Passes:', 'Points:', 'Score:', 'MVP:'], true)
   thead.appendChild(tr)
   return thead
 }
@@ -27,10 +37,15 @@ function makeTbody(rows) {
   const tbody = document.createElement('tbody')
 
   for (const row of rows) {
-    tbody.appendChild(makeTr(row))
+    tbody.appendChild(makeTr([
+      row.name,
+      row.games,
+      row.passes,
+      row.points,
+      row.totalScore,
+      row.totalMVP
+    ]))
   }
-
-  tbody.appendChild(tr)
   return tbody
 }
 
