@@ -4,3 +4,4 @@
 - [x] dinamic json table
 - [x] github pages
 - [x] transform to preact
+  https://ogzhanolguncu.com/blog/react-ssr-ssg-from-scratch
