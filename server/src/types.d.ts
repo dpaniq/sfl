@@ -8,3 +8,9 @@ type Player = {
 }
 
 type Players = Player[]
+
+type User = {
+  nickname: string,
+  email: string,
+  password: string,
+}

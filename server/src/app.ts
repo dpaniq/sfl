@@ -3,8 +3,10 @@ import cors from 'cors'
 
 import todoRoutes from './routes'
 import gamesRoutes from './routes/games'
+import usersRoutes from './routes/users'
 
 import { Database } from 'sqlite3'
+import { makeId } from './utils/string'
 var md5 = require('md5')
 
 const app: Express = express()
@@ -13,7 +15,7 @@ const PORT: string | number = process.env.PORT || 4000
 
 app.use(cors())
 app.use(todoRoutes)
-app.use(gamesRoutes)
+app.use(gamesRoutes, usersRoutes)
 
 app.get("/api/users", (req, res, next) => {
     console.log('USERS')
@@ -31,26 +33,12 @@ app.get("/api/users", (req, res, next) => {
     });
 });
 
-function makeid(length: number) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        counter += 1;
-    }
-    return result;
-}
-
-console.log(makeid(5));
 
 
 app.post("/api/users", async (req, res, next) => {
     console.log('YERERE')
     var insert = 'INSERT INTO user (name, email, password) VALUES (?,?,?)'
-    db.run(insert, ["admin", `${makeid(5)}@example.com`, md5("admin123456")])
-
+    db.run(insert, ["admin", `${makeId(5)}@example.com`, md5("admin123456")])
 
     db.run("DELETE FROM user", (res, error) => {
         console.log(res)
