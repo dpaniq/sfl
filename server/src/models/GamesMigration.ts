@@ -37,7 +37,7 @@ export class GamesMigration extends Games {
 
         console.log(`${name} played on ${dateGame}`)
 
-        this.db.run()
+        // this.db.run()
 
 
         dateGame = nextSaturday(dateGame)

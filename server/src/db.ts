@@ -1,11 +1,12 @@
-import { Database } from "sqlite3";
+import { Database as DatabaseType } from "sqlite3";
+import md5 from 'md5';
+import sqlite3 from 'sqlite3'
 
-var sqlite3 = require('sqlite3').verbose()
-var md5 = require('md5')
+// var sqlite3 = require('sqlite3').verbose()
 
 const DBSOURCE = "db.sqlite"
 
-export const Database: Database = new sqlite3.Database(DBSOURCE, (err: any) => {
+export const Database: DatabaseType = new sqlite3.Database(DBSOURCE, (err: any) => {
   if (err) {
     // Cannot open database
     console.error(err.message)

@@ -6,7 +6,7 @@ import { makeId } from "../utils/string";
 export class Users {
   constructor() { }
 
-  getUserById(id: number) {
+  protected getUserById(id: number) {
     const user = getUserById(id)
     console.log({ user })
 
@@ -17,15 +17,9 @@ export class Users {
     return user
   }
 
-  createUser(nickname: string, email: string, password: string) {
+  protected createUser(nickname: string, email: string, password: string) {
     createUser(nickname, email, password)
   }
 
-  createMassUsers(users: User[]) {
-    for (const { nickname } of users) {
-      const email = makeId(5) + '@sfl.lv'
-      const password = md5(makeId(10))
-      this.createUser(nickname, md5(makeId(10), md5(makeId(10)))
-    }
-  }
+  private priveteVioletta() { }
 }

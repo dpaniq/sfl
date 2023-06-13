@@ -18,9 +18,18 @@ export const CREATE_TABLE_USERS =
 //   return []
 // }
 
+export function getUsers() {
+  return Database.run('SELECT * FROM users', (res) => {
+    console.log({ res })
+    return res
+  })
+}
+
 export function getUserById(id: number) {
   return Database.run('SELECT * FROM users WHERE id = ? LIMIT 1', [id])
 }
+
+
 
 export function createUser(nickname: string, email: string, password: string) {
 

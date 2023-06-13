@@ -1,15 +1,29 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
-    "outDir": "dist/js",
+    "outDir": "dist",
     "rootDir": "src",
     "strict": true,
+    "baseUrl": "src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "paths": {
+      "@db/*": ["./src/db/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@environment/*": ["./src/environments/*"],
+      "@models/*": ["./src/models/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@utils/*": ["./src/utils/*"]
+    },
+    "types": [ "node" ]
   },
   "include": ["src/**/*"],
-  "exclude": ["src/types/*.ts", "node_modules", ".vscode"]
+  "exclude": ["src/types/*.ts", "node_modules", ".vscode"],
+
 }
