@@ -5,5 +5,5 @@
   // include: Adds the 'tests' directory to folders for typescript to read
   //          Required to force TS to find jest-extended.d.ts declaration file
   //          Must include all directories from the base config since all of include is replaced, not extended
-  "include": ["lib", "test"]
+  "include": ["tests"]
 }
