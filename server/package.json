@@ -11,6 +11,7 @@
     "migrations:gen": "ts-node ./node_modules/.bin/typeorm migration:generate",
     "migrations:run": "ts-node ./node_modules/.bin/typeorm migration:run",
     "start": "ts-node src/index.ts",
+    "watch": "nodemon src/index.ts",
     "build": "tsc"
   },
   "repository": {
@@ -47,6 +48,7 @@
     "husky": "^4.2.3",
     "jest": "^25.2.3",
     "lint-staged": "^10.1.0",
+    "nodemon": "^2.0.22",
     "prettier": "^2.0.2",
     "ts-jest": "^25.2.1",
     "ts-node": "^10.9.1",
