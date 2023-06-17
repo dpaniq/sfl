@@ -7,6 +7,7 @@
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,
+    "declaration": true,
     "outDir": "dist",
     "baseUrl": "src",
     "forceConsistentCasingInFileNames": true, 
@@ -14,12 +15,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "paths": {
-      "*": [
-        "node_modules/*"
-      ],
       "@utils/*": ["app/utils/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test"],
   "exclude": ["node_modules"]
 }
