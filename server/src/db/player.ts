@@ -1,1 +1,0 @@
-const CREATE_TABLE_PLAYERS = ``

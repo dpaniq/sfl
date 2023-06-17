@@ -1,29 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es6",                         
+    "module": "commonjs",                    
+    "strict": true,                          
+    "esModuleInterop": true,                  
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
     "outDir": "dist",
-    "rootDir": "src",
-    "strict": true,
-    "baseUrl": "src",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
-    "resolveJsonModule": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true, 
     "strictPropertyInitialization": false,
-    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
-      "@db/*": ["./src/db/*"],
-      "@controllers/*": ["./src/controllers/*"],
-      "@environment/*": ["./src/environments/*"],
-      "@models/*": ["./src/models/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@utils/*": ["./src/utils/*"]
-    },
-    "types": [ "node" ]
+      "*": [
+        "node_modules/*"
+      ]
+    }
   },
   "include": ["src/**/*"],
-  "exclude": ["src/types/*.ts", "node_modules", ".vscode"],
-
+  "exclude": ["node_modules"]
 }
