@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": ".",
+    "baseUrl": "src",
     "forceConsistentCasingInFileNames": true, 
     "strictPropertyInitialization": false,
     "experimentalDecorators": true,
@@ -16,7 +16,8 @@
     "paths": {
       "*": [
         "node_modules/*"
-      ]
+      ],
+      "@utils/*": ["app/utils/*"]
     }
   },
   "include": ["src/**/*"],
