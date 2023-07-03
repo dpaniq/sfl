@@ -1,7 +1,7 @@
-import express, { Request, Response, Router, NextFunction } from 'express';
-import { UsersController } from '../controllers';
-import { IRepository, UsersRepository } from '../repositories';
-import { User } from '../data';
+import express, {Request, Response, Router, NextFunction} from 'express';
+import {UsersController} from '../controllers';
+import {IRepository, UsersRepository} from '../repositories';
+import {User} from '../data';
 
 const router: Router = express.Router();
 const usersRepository: IRepository<User> = new UsersRepository();

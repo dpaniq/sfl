@@ -11,8 +11,8 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 
-import { User } from './user.entity';
-import { BaseEntity } from './base.entity';
+import {User} from './user.entity';
+import {BaseEntity} from './base.entity';
 
 @Entity({
   synchronize: false,
@@ -30,7 +30,7 @@ export abstract class Games extends BaseEntity {
     onDelete: 'CASCADE',
   })
   // To named column
-  @JoinColumn({ name: 'player_id' })
+  @JoinColumn({name: 'player_id'})
   player_id: number;
 
   @Column({
@@ -53,4 +53,4 @@ export abstract class Games extends BaseEntity {
 }
 
 @Entity()
-export class Games2011 extends Games { }
+export class Games2011 extends Games {}

@@ -1,10 +1,10 @@
 import md5 from 'md5';
 
-import { MigrationInterface, QueryRunner, getRepository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import {MigrationInterface, QueryRunner, getRepository} from 'typeorm';
+import {User} from '../entities/user.entity';
 
 import sflJSON from '../../../assets/SFL (json-check-all).json';
-import { makeRandomString } from '@utils/string';
+import {makeRandomString} from '@utils/string';
 
 export class GenerateAndSeedUserTable1585862017523 implements MigrationInterface {
   name = 'generateAndSeedUserTable1585862017523';

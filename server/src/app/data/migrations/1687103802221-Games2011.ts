@@ -1,9 +1,9 @@
-import { START_SEASON_AT } from '@root/constants';
-import { MigrationInterface, QueryRunner, getRepository } from 'typeorm';
-import { User } from '@entities/user.entity';
-import { Games, Games2011 } from '@entities/games.entity';
+import {START_SEASON_AT} from '@root/constants';
+import {MigrationInterface, QueryRunner, getRepository} from 'typeorm';
+import {User} from '@entities/user.entity';
+import {Games, Games2011} from '@entities/games.entity';
 import sflJSON from '../../../assets/SFL (json-check-all).json';
-import { isSaturday, nextSaturday } from 'date-fns';
+import {isSaturday, nextSaturday} from 'date-fns';
 
 type GamesWithNoId = Omit<Games, 'id'>;
 

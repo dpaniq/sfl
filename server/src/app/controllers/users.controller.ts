@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { IRepository } from '../repositories';
-import { User } from '../data';
+import {Request, Response, NextFunction} from 'express';
+import {IRepository} from '../repositories';
+import {User} from '../data';
 
 export class UsersController {
   private readonly _repository: IRepository<User>;
@@ -13,7 +13,7 @@ export class UsersController {
     return this._repository
       .findAll()
       .then((users) => response.status(200).send(users))
-      .catch((error) => response.status(500).send({ error: error }));
+      .catch((error) => response.status(500).send({error: error}));
   }
 
   // public async getUserList(request: Request, response: Response, next: NextFunction): Promise<any> {

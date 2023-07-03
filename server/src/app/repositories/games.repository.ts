@@ -1,6 +1,6 @@
-import { getRepository, Repository } from 'typeorm';
-import { IRepository } from './repository.interface';
-import { Games, Games2011 } from '@entities/games.entity';
+import {getRepository, Repository} from 'typeorm';
+import {IRepository} from './repository.interface';
+import {Games, Games2011} from '@entities/games.entity';
 
 class Games2011Repository implements IRepository<Games> {
   public async findAll(): Promise<Games[]> {

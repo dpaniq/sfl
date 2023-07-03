@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
-import { Application } from './app';
+import {createConnection} from 'typeorm';
+import {Application} from './app';
 import * as dotenv from 'dotenv';
 
 dotenv.config();

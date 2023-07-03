@@ -1,7 +1,7 @@
-import express, { Express } from 'express';
+import express, {Express} from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import { applicationRouter } from './routes';
+import {applicationRouter} from './routes';
 
 export class Application {
   private _server: Express;
@@ -11,7 +11,7 @@ export class Application {
     this._server.set('host', process.env.HOST || 'localhost');
     this._server.set('port', process.env.PORT || 3000);
     this._server.use(bodyParser.json());
-    this._server.use(bodyParser.urlencoded({ extended: true }));
+    this._server.use(bodyParser.urlencoded({extended: true}));
     this._server.use(cors());
     this._server.use(applicationRouter);
   }

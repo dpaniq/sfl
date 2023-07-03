@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import { IRepository } from '../repositories';
-import { User } from '../data';
-import { Games } from '../data/entities/games.entity';
-import { gamesRepositoryFactory } from '../repositories/games.repository';
+import {Request, Response, NextFunction} from 'express';
+import {IRepository} from '../repositories';
+import {User} from '../data';
+import {Games} from '../data/entities/games.entity';
+import {gamesRepositoryFactory} from '../repositories/games.repository';
 
 export class GamesController {
   private readonly _repository: IRepository<Games>;
@@ -15,14 +15,14 @@ export class GamesController {
     return this._repository
       .findAll()
       .then((entities) => response.status(200).send(entities))
-      .catch((error) => response.status(500).send({ error: error }));
+      .catch((error) => response.status(500).send({error: error}));
   }
 
   public async getGame(request: Request, response: Response, next: NextFunction): Promise<any> {
     return this._repository
       .findOne(request.params.id)
       .then((entities) => response.status(200).send(entities))
-      .catch((error) => response.status(500).send({ error: error }));
+      .catch((error) => response.status(500).send({error: error}));
   }
 
   // public async getUserList(request: Request, response: Response, next: NextFunction): Promise<any> {
