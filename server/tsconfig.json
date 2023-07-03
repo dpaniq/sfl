@@ -20,7 +20,7 @@
     "paths": {
       "@root/*": ["./*"],
       "@utils/*": ["app/utils/*"],
-      "@entities/*": ["app/data/entities/*"],
+      "@entities/*": ["app/data/entities/*"]
     }
   },
   "include": ["src/**/*", "tests"],
