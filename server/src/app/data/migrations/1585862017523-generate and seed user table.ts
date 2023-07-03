@@ -1,12 +1,25 @@
+import md5 from 'md5';
+
 import { MigrationInterface, QueryRunner, getRepository } from 'typeorm';
 import { User } from '../entities/user.entity';
+
+import sflJSON from '../../../assets/SFL (json-check-all).json';
+import { makeRandomString } from '@utils/string';
 
 export class GenerateAndSeedUserTable1585862017523 implements MigrationInterface {
   name = 'generateAndSeedUserTable1585862017523';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "user" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar NOT NULL, "firstname" varchar NOT NULL, "lastname" varchar NOT NULL, CONSTRAINT "UQ_78a916df40e02a9deb1c4b75edb" UNIQUE ("username"))`,
+      `CREATE TABLE user (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT, 
+        surname TEXT,
+        nickname TEXT NOT NULL UNIQUE,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        age TINYINT(2)
+      );`,
       undefined,
     );
     await this.seed();
@@ -17,25 +30,25 @@ export class GenerateAndSeedUserTable1585862017523 implements MigrationInterface
   }
 
   private async seed(): Promise<void> {
-    await getRepository(User).save([
-      {
-        id: 1,
-        username: 'jmw5598',
-        firstname: 'Jason',
-        lastname: 'White',
-      },
-      {
-        id: 2,
-        username: 'djt2020',
-        firstname: 'Daniel',
-        lastname: 'Townswell',
-      },
-      {
-        id: 3,
-        username: 'dlw3512',
-        firstname: 'Danielle',
-        lastname: 'Whitemore',
-      },
-    ] as User[]);
+    const users = this.getUsersFromJson();
+    await getRepository(User).save(users);
+  }
+
+  private getUsersFromJson(): Omit<User, 'id' | 'name' | 'surname' | 'age'>[] {
+    const names = new Set();
+    const json = sflJSON as unknown as TSFLJson;
+    for (const year of Object.keys(json)) {
+      for (const player of sflJSON[year as TYears]) {
+        names.add(player.name);
+      }
+    }
+    return (Array.from(names).sort() as string[]).map((nickname) => ({
+      nickname,
+      email: makeRandomString(5) + '@sfl.lv',
+      password: md5(makeRandomString(10)),
+      // age: null,
+      // name: null,
+      // surname: null,
+    }));
   }
 }

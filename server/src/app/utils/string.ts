@@ -1,7 +1,7 @@
 const NUMBERS = '0123456789';
 const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-export function makeId(length: number): string {
+export function makeRandomString(length: number): string {
   let result = '';
   const symbols = CHARACTERS + NUMBERS;
   const charactersLength = symbols.length;

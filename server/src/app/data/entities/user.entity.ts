@@ -3,12 +3,27 @@ import { BaseEntity } from './base.entity';
 
 @Entity()
 export class User extends BaseEntity {
-  @Column({ unique: true })
-  public username: string;
+  @Column()
+  nickname: string;
 
   @Column()
-  public firstname: string;
+  email: string;
 
   @Column()
-  public lastname: string;
+  password: string;
+
+  @Column({
+    nullable: true,
+  })
+  name?: string;
+
+  @Column({
+    nullable: true,
+  })
+  surname?: string;
+
+  @Column({
+    nullable: true,
+  })
+  age?: number;
 }

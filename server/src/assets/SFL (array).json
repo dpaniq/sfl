@@ -1,0 +1,5628 @@
+[
+  {
+    "С.Фёдоров": {
+      "games": "42",
+      "goals": "64",
+      "passes": "62",
+      "score": "126",
+      "mvp": null
+    },
+    "Радулов": {
+      "games": "36",
+      "goals": "48",
+      "passes": "55",
+      "score": "103",
+      "mvp": null
+    },
+    "Ник": {
+      "games": "43",
+      "goals": "41",
+      "passes": "32",
+      "score": "73",
+      "mvp": null
+    },
+    "Петров": {
+      "games": "31",
+      "goals": "16",
+      "passes": "42",
+      "score": "58",
+      "mvp": null
+    },
+    "Спартач": {
+      "games": "34",
+      "goals": "36",
+      "passes": "12",
+      "score": "48",
+      "mvp": null
+    },
+    "Лаудруп": {
+      "games": "30",
+      "goals": "20",
+      "passes": "24",
+      "score": "44",
+      "mvp": null
+    },
+    "Витамин": {
+      "games": "33",
+      "goals": "22",
+      "passes": "20",
+      "score": "42",
+      "mvp": null
+    },
+    "Пепс": {
+      "games": "23",
+      "goals": "18",
+      "passes": "10",
+      "score": "28",
+      "mvp": null
+    },
+    "Король Б.": {
+      "games": "31",
+      "goals": "17",
+      "passes": "11",
+      "score": "28",
+      "mvp": null
+    },
+    "Шмаля": {
+      "games": "17",
+      "goals": "11",
+      "passes": "15",
+      "score": "26",
+      "mvp": null
+    },
+    "Романыч": {
+      "games": "44",
+      "goals": "18",
+      "passes": "8",
+      "score": "26",
+      "mvp": null
+    },
+    "Биренбейн": {
+      "games": "40",
+      "goals": "15",
+      "passes": "6",
+      "score": "21",
+      "mvp": null
+    },
+    "Мандрагон": {
+      "games": "39",
+      "goals": "6",
+      "passes": "13",
+      "score": "19",
+      "mvp": null
+    },
+    "Ларсен Х.": {
+      "games": "30",
+      "goals": "6",
+      "passes": "12",
+      "score": "18",
+      "mvp": null
+    },
+    "Дацюк": {
+      "games": "14",
+      "goals": "0",
+      "passes": "17",
+      "score": "17",
+      "mvp": null
+    },
+    "Аватар": {
+      "games": "37",
+      "goals": "4",
+      "passes": "13",
+      "score": "17",
+      "mvp": null
+    },
+    "Илья": {
+      "games": "13",
+      "goals": "10",
+      "passes": "4",
+      "score": "14",
+      "mvp": null
+    },
+    "Шиш": {
+      "games": "20",
+      "goals": "6",
+      "passes": "8",
+      "score": "14",
+      "mvp": null
+    },
+    "Буре": {
+      "games": "9",
+      "goals": "6",
+      "passes": "4",
+      "score": "10",
+      "mvp": null
+    },
+    "Рома Петров": {
+      "games": "23",
+      "goals": "3",
+      "passes": "6",
+      "score": "9",
+      "mvp": null
+    },
+    "Клюшка": {
+      "games": "14",
+      "goals": "6",
+      "passes": "3",
+      "score": "9",
+      "mvp": null
+    },
+    "Марцинский": {
+      "games": "11",
+      "goals": "5",
+      "passes": "3",
+      "score": "8",
+      "mvp": null
+    },
+    "Раппопорт": {
+      "games": "9",
+      "goals": "3",
+      "passes": "4",
+      "score": "7",
+      "mvp": null
+    },
+    "Павел Фёдоров": {
+      "games": "12",
+      "goals": "5",
+      "passes": "1",
+      "score": "6",
+      "mvp": null
+    },
+    "Дягтерев": {
+      "games": "3",
+      "goals": "0",
+      "passes": "5",
+      "score": "5",
+      "mvp": null
+    },
+    "Руслан": {
+      "games": "11",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": null
+    },
+    "Рыбачок": {
+      "games": "10",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": null
+    },
+    "Олигарх": {
+      "games": "19",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Долинский": {
+      "games": "14",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Костя Рубин": {
+      "games": "1",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Тиранозавр": {
+      "games": "11",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Поцилуйко": {
+      "games": "1",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Селезнев": {
+      "games": "1",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Травников": {
+      "games": "1",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Мирман": {
+      "games": "3",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": null
+    },
+    "Никитин": {
+      "games": "2",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": null
+    },
+    "Бусел": {
+      "games": "2",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Деревяшкин": {
+      "games": "4",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Франц Гена": {
+      "games": "28",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": null
+    },
+    "Кузя": {
+      "games": "34",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": null
+    },
+    "Данилевский": {
+      "games": "4",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Бультерьер": {
+      "games": "17",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Набоков": {
+      "games": "29",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Лапковский Игорь": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Дрелинг": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Пастор ШЛАК": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Хабибуллин": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Скакун Валя": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Агент Рубин": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Попов": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "50",
+      "goals": "63",
+      "passes": "66",
+      "score": "129",
+      "mvp": null
+    },
+    "Петров": {
+      "games": "50",
+      "goals": "29",
+      "passes": "85",
+      "score": "114",
+      "mvp": null
+    },
+    "Радулов": {
+      "games": "45",
+      "goals": "33",
+      "passes": "59",
+      "score": "92",
+      "mvp": null
+    },
+    "Витамин": {
+      "games": "48",
+      "goals": "36",
+      "passes": "48",
+      "score": "84",
+      "mvp": null
+    },
+    "Ник": {
+      "games": "45",
+      "goals": "24",
+      "passes": "43",
+      "score": "67",
+      "mvp": null
+    },
+    "Спартач": {
+      "games": "23",
+      "goals": "46",
+      "passes": "19",
+      "score": "65",
+      "mvp": null
+    },
+    "Король Б.": {
+      "games": "44",
+      "goals": "19",
+      "passes": "34",
+      "score": "53",
+      "mvp": null
+    },
+    "Аватар": {
+      "games": "38",
+      "goals": "17",
+      "passes": "34",
+      "score": "51",
+      "mvp": null
+    },
+    "Шиш": {
+      "games": "28",
+      "goals": "19",
+      "passes": "15",
+      "score": "34",
+      "mvp": null
+    },
+    "Марцинский": {
+      "games": "22",
+      "goals": "11",
+      "passes": "18",
+      "score": "29",
+      "mvp": null
+    },
+    "Буре": {
+      "games": "14",
+      "goals": "7",
+      "passes": "21",
+      "score": "28",
+      "mvp": null
+    },
+    "Мандрагон": {
+      "games": "45",
+      "goals": "5",
+      "passes": "23",
+      "score": "28",
+      "mvp": null
+    },
+    "Руслан": {
+      "games": "22",
+      "goals": "13",
+      "passes": "14",
+      "score": "27",
+      "mvp": null
+    },
+    "Долинский": {
+      "games": "26",
+      "goals": "11",
+      "passes": "16",
+      "score": "27",
+      "mvp": null
+    },
+    "Анзор": {
+      "games": "28",
+      "goals": "5",
+      "passes": "20",
+      "score": "25",
+      "mvp": null
+    },
+    "Ларсен Х.": {
+      "games": "30",
+      "goals": "17",
+      "passes": "7",
+      "score": "24",
+      "mvp": null
+    },
+    "Олигарх": {
+      "games": "26",
+      "goals": "11",
+      "passes": "10",
+      "score": "21",
+      "mvp": null
+    },
+    "Романыч": {
+      "games": "38",
+      "goals": "12",
+      "passes": "7",
+      "score": "19",
+      "mvp": null
+    },
+    "Мирман": {
+      "games": "12",
+      "goals": "3",
+      "passes": "15",
+      "score": "18",
+      "mvp": null
+    },
+    "Поцилуйко": {
+      "games": "14",
+      "goals": "1",
+      "passes": "12",
+      "score": "13",
+      "mvp": null
+    },
+    "Пелцис": {
+      "games": "4",
+      "goals": "1",
+      "passes": "11",
+      "score": "12",
+      "mvp": null
+    },
+    "Дацюк": {
+      "games": "15",
+      "goals": "0",
+      "passes": "11",
+      "score": "11",
+      "mvp": null
+    },
+    "Рома Петров": {
+      "games": "24",
+      "goals": "4",
+      "passes": "7",
+      "score": "11",
+      "mvp": null
+    },
+    "Кузя": {
+      "games": "32",
+      "goals": "4",
+      "passes": "7",
+      "score": "11",
+      "mvp": null
+    },
+    "Биренбейн": {
+      "games": "47",
+      "goals": "2",
+      "passes": "7",
+      "score": "9",
+      "mvp": null
+    },
+    "Бломе": {
+      "games": "7",
+      "goals": "5",
+      "passes": "2",
+      "score": "7",
+      "mvp": null
+    },
+    "Колюшкин": {
+      "games": "10",
+      "goals": "5",
+      "passes": "1",
+      "score": "6",
+      "mvp": null
+    },
+    "Илья": {
+      "games": "9",
+      "goals": "1",
+      "passes": "5",
+      "score": "6",
+      "mvp": null
+    },
+    "Костенко": {
+      "games": "4",
+      "goals": "3",
+      "passes": "3",
+      "score": "6",
+      "mvp": null
+    },
+    "Франц Гена": {
+      "games": "30",
+      "goals": "0",
+      "passes": "6",
+      "score": "6",
+      "mvp": null
+    },
+    "Павел Фёдоров": {
+      "games": "6",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": null
+    },
+    "Клюшка": {
+      "games": "2",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Никитин": {
+      "games": "1",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Раппопорт": {
+      "games": "3",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Малхаз": {
+      "games": "2",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Ноздрин В.": {
+      "games": "3",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Попов": {
+      "games": "1",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Аристарх": {
+      "games": "1",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Шмаля": {
+      "games": "1",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": null
+    },
+    "Травников": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Набоков": {
+      "games": "43",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Бультерьер": {
+      "games": "11",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Данилевский": {
+      "games": "9",
+      "goals": "1",
+      "passes": "6",
+      "score": "7",
+      "mvp": null
+    },
+    "Павел Столяров": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Деревяшкин": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Хабибуллин": {
+      "games": "30",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Ярослав": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Овчинников": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Павленко": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Гриша": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Рожков": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Денис Н.": {
+      "games": "14",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Скакун Валя": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Валерий М.": {
+      "games": "5",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "50",
+      "goals": "67",
+      "passes": "111",
+      "score": "178",
+      "mvp": null
+    },
+    "Ник": {
+      "games": "45",
+      "goals": "50",
+      "passes": "74",
+      "score": "124",
+      "mvp": null
+    },
+    "Лео": {
+      "games": "40",
+      "goals": "62",
+      "passes": "50",
+      "score": "112",
+      "mvp": null
+    },
+    "Анзор": {
+      "games": "40",
+      "goals": "34",
+      "passes": "62",
+      "score": "96",
+      "mvp": null
+    },
+    "Гретцки": {
+      "games": "30",
+      "goals": "53",
+      "passes": "42",
+      "score": "95",
+      "mvp": null
+    },
+    "Буре": {
+      "games": "20",
+      "goals": "42",
+      "passes": "42",
+      "score": "84",
+      "mvp": null
+    },
+    "Витамин": {
+      "games": "36",
+      "goals": "32",
+      "passes": "47",
+      "score": "79",
+      "mvp": null
+    },
+    "Радулов": {
+      "games": "26",
+      "goals": "10",
+      "passes": "44",
+      "score": "54",
+      "mvp": null
+    },
+    "Король Б.": {
+      "games": "25",
+      "goals": "25",
+      "passes": "28",
+      "score": "53",
+      "mvp": null
+    },
+    "Романыч": {
+      "games": "33",
+      "goals": "27",
+      "passes": "19",
+      "score": "46",
+      "mvp": null
+    },
+    "Артём Ляшенко": {
+      "games": "21",
+      "goals": "20",
+      "passes": "17",
+      "score": "37",
+      "mvp": null
+    },
+    "Илгмар": {
+      "games": "13",
+      "goals": "17",
+      "passes": "20",
+      "score": "37",
+      "mvp": null
+    },
+    "Петров": {
+      "games": "10",
+      "goals": "10",
+      "passes": "25",
+      "score": "35",
+      "mvp": null
+    },
+    "Шиш": {
+      "games": "17",
+      "goals": "15",
+      "passes": "18",
+      "score": "33",
+      "mvp": null
+    },
+    "Каспарайтис": {
+      "games": "12",
+      "goals": "13",
+      "passes": "16",
+      "score": "29",
+      "mvp": null
+    },
+    "Ларсен Х.": {
+      "games": "18",
+      "goals": "9",
+      "passes": "18",
+      "score": "27",
+      "mvp": null
+    },
+    "Дацюк": {
+      "games": "16",
+      "goals": "4",
+      "passes": "20",
+      "score": "24",
+      "mvp": null
+    },
+    "Олигарх": {
+      "games": "13",
+      "goals": "4",
+      "passes": "15",
+      "score": "19",
+      "mvp": null
+    },
+    "Кузя": {
+      "games": "28",
+      "goals": "6",
+      "passes": "13",
+      "score": "19",
+      "mvp": null
+    },
+    "Долинский": {
+      "games": "7",
+      "goals": "6",
+      "passes": "12",
+      "score": "18",
+      "mvp": null
+    },
+    "Степан": {
+      "games": "16",
+      "goals": "9",
+      "passes": "9",
+      "score": "18",
+      "mvp": null
+    },
+    "Марцинский": {
+      "games": "10",
+      "goals": "7",
+      "passes": "10",
+      "score": "17",
+      "mvp": null
+    },
+    "Фёллер": {
+      "games": "13",
+      "goals": "5",
+      "passes": "10",
+      "score": "15",
+      "mvp": null
+    },
+    "Пеньковский": {
+      "games": "6",
+      "goals": "4",
+      "passes": "9",
+      "score": "13",
+      "mvp": null
+    },
+    "Пепс": {
+      "games": "8",
+      "goals": "3",
+      "passes": "9",
+      "score": "12",
+      "mvp": null
+    },
+    "Скаленко": {
+      "games": "3",
+      "goals": "4",
+      "passes": "7",
+      "score": "11",
+      "mvp": null
+    },
+    "Руцко": {
+      "games": "2",
+      "goals": "8",
+      "passes": "3",
+      "score": "11",
+      "mvp": null
+    },
+    "Мандрагон": {
+      "games": "9",
+      "goals": "1",
+      "passes": "9",
+      "score": "10",
+      "mvp": null
+    },
+    "Бразилец": {
+      "games": "2",
+      "goals": "1",
+      "passes": "6",
+      "score": "7",
+      "mvp": null
+    },
+    "Болгарин": {
+      "games": "1",
+      "goals": "2",
+      "passes": "4",
+      "score": "6",
+      "mvp": null
+    },
+    "Ягр": {
+      "games": "12",
+      "goals": "3",
+      "passes": "3",
+      "score": "6",
+      "mvp": null
+    },
+    "Илья": {
+      "games": "4",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": null
+    },
+    "ФК Рубин": {
+      "games": "1",
+      "goals": "1",
+      "passes": "4",
+      "score": "5",
+      "mvp": null
+    },
+    "Деревяшкин": {
+      "games": "11",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": null
+    },
+    "Поцилуйко": {
+      "games": "3",
+      "goals": "0",
+      "passes": "4",
+      "score": "4",
+      "mvp": null
+    },
+    "Пелцис": {
+      "games": "1",
+      "goals": "3",
+      "passes": "1",
+      "score": "4",
+      "mvp": null
+    },
+    "Руслан": {
+      "games": "3",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": null
+    },
+    "Клюшка": {
+      "games": "7",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": null
+    },
+    "Шмаля": {
+      "games": "1",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Слава Ю.": {
+      "games": "2",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Агент Рубин": {
+      "games": "2",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": null
+    },
+    "Данилевский": {
+      "games": "1",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Дегтярев": {
+      "games": "1",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Травников": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Иловайский": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": null
+    },
+    "Денис Н.": {
+      "games": "6",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Биренбейн": {
+      "games": "9",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Юра Москва": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Бультерьер": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Валерий М.": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Хабибуллин": {
+      "games": "8",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Спартач": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Янковский": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Набоков": {
+      "games": "20",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Лаудруп Б.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Глазов": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Аватар": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Антон": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Белорус": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "56",
+      "goals": "75",
+      "passes": "106",
+      "score": "181",
+      "mvp": null
+    },
+    "Ник": {
+      "games": "51",
+      "goals": "75",
+      "passes": "80",
+      "score": "155",
+      "mvp": null
+    },
+    "Анзор": {
+      "games": "49",
+      "goals": "60",
+      "passes": "69",
+      "score": "129",
+      "mvp": null
+    },
+    "Гретцки": {
+      "games": "43",
+      "goals": "36",
+      "passes": "73",
+      "score": "109",
+      "mvp": null
+    },
+    "Радулов": {
+      "games": "40",
+      "goals": "34",
+      "passes": "67",
+      "score": "101",
+      "mvp": null
+    },
+    "Витамин": {
+      "games": "46",
+      "goals": "29",
+      "passes": "61",
+      "score": "90",
+      "mvp": null
+    },
+    "Илгмар": {
+      "games": "38",
+      "goals": "37",
+      "passes": "36",
+      "score": "73",
+      "mvp": null
+    },
+    "Лео": {
+      "games": "36",
+      "goals": "27",
+      "passes": "32",
+      "score": "59",
+      "mvp": null
+    },
+    "Король Б.": {
+      "games": "32",
+      "goals": "23",
+      "passes": "30",
+      "score": "53",
+      "mvp": null
+    },
+    "Фёллер": {
+      "games": "39",
+      "goals": "14",
+      "passes": "21",
+      "score": "35",
+      "mvp": null
+    },
+    "Олигарх": {
+      "games": "20",
+      "goals": "11",
+      "passes": "22",
+      "score": "33",
+      "mvp": null
+    },
+    "Степан": {
+      "games": "38",
+      "goals": "20",
+      "passes": "7",
+      "score": "27",
+      "mvp": null
+    },
+    "Дизилёк": {
+      "games": "20",
+      "goals": "14",
+      "passes": "9",
+      "score": "23",
+      "mvp": null
+    },
+    "Мирман": {
+      "games": "12",
+      "goals": "7",
+      "passes": "16",
+      "score": "23",
+      "mvp": null
+    },
+    "Кузя": {
+      "games": "24",
+      "goals": "10",
+      "passes": "12",
+      "score": "22",
+      "mvp": null
+    },
+    "Романыч": {
+      "games": "28",
+      "goals": "10",
+      "passes": "12",
+      "score": "22",
+      "mvp": null
+    },
+    "Аватар": {
+      "games": "15",
+      "goals": "9",
+      "passes": "13",
+      "score": "22",
+      "mvp": null
+    },
+    "Игнат": {
+      "games": "17",
+      "goals": "5",
+      "passes": "13",
+      "score": "18",
+      "mvp": null
+    },
+    "Буре": {
+      "games": "8",
+      "goals": "3",
+      "passes": "12",
+      "score": "15",
+      "mvp": null
+    },
+    "Шиш": {
+      "games": "9",
+      "goals": "4",
+      "passes": "9",
+      "score": "13",
+      "mvp": null
+    },
+    "Дацюк": {
+      "games": "9",
+      "goals": "3",
+      "passes": "8",
+      "score": "11",
+      "mvp": null
+    },
+    "Ларсен Х.": {
+      "games": "5",
+      "goals": "4",
+      "passes": "6",
+      "score": "10",
+      "mvp": null
+    },
+    "Мандрагон": {
+      "games": "12",
+      "goals": "1",
+      "passes": "9",
+      "score": "10",
+      "mvp": null
+    },
+    "Травников": {
+      "games": "6",
+      "goals": "3",
+      "passes": "6",
+      "score": "9",
+      "mvp": null
+    },
+    "Пелцис": {
+      "games": "4",
+      "goals": "5",
+      "passes": "4",
+      "score": "9",
+      "mvp": null
+    },
+    "Выскуб": {
+      "games": "8",
+      "goals": "2",
+      "passes": "6",
+      "score": "8",
+      "mvp": null
+    },
+    "Дегтярев": {
+      "games": "5",
+      "goals": "7",
+      "passes": "1",
+      "score": "8",
+      "mvp": null
+    },
+    "Тиранозавр": {
+      "games": "28",
+      "goals": "3",
+      "passes": "5",
+      "score": "8",
+      "mvp": null
+    },
+    "Танк": {
+      "games": "1",
+      "goals": "5",
+      "passes": "2",
+      "score": "7",
+      "mvp": null
+    },
+    "Руцко": {
+      "games": "1",
+      "goals": "5",
+      "passes": "2",
+      "score": "7",
+      "mvp": null
+    },
+    "Опаньки": {
+      "games": "5",
+      "goals": "1",
+      "passes": "5",
+      "score": "6",
+      "mvp": null
+    },
+    "Никитонов": {
+      "games": "3",
+      "goals": "3",
+      "passes": "2",
+      "score": "5",
+      "mvp": null
+    },
+    "Колюшкин": {
+      "games": "3",
+      "goals": "0",
+      "passes": "5",
+      "score": "5",
+      "mvp": null
+    },
+    "Дима": {
+      "games": "1",
+      "goals": "2",
+      "passes": "2",
+      "score": "4",
+      "mvp": null
+    },
+    "Лапковский Игорь": {
+      "games": "1",
+      "goals": "0",
+      "passes": "4",
+      "score": "4",
+      "mvp": null
+    },
+    "Ивар": {
+      "games": "1",
+      "goals": "2",
+      "passes": "2",
+      "score": "4",
+      "mvp": null
+    },
+    "Спартач": {
+      "games": "1",
+      "goals": "2",
+      "passes": "2",
+      "score": "4",
+      "mvp": null
+    },
+    "Женя": {
+      "games": "1",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Костя Рубин": {
+      "games": "1",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Эдик": {
+      "games": "5",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Таганрог": {
+      "games": "2",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": null
+    },
+    "Ляшенко Вадим": {
+      "games": "1",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Артём Ляшенко": {
+      "games": "2",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Долинский": {
+      "games": "1",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Биренбейн": {
+      "games": "2",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Чеботарев": {
+      "games": "1",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Набоков": {
+      "games": "23",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Каспарайтис": {
+      "games": "1",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Люба": {
+      "games": "6",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Пономарев": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Гриша": {
+      "games": "4",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Базилио": {
+      "games": "33",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Сергей Тату": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": null
+    },
+    "Агент Рубин": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Деревяшкин": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Хабибуллин": {
+      "games": "21",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Мессье": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Гипс": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Дрея": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Дасаев": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Рома Петров": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Гена": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "52",
+      "goals": "62",
+      "passes": "108",
+      "score": "170",
+      "mvp": null
+    },
+    "Анзор": {
+      "games": "49",
+      "goals": "59",
+      "passes": "66",
+      "score": "125",
+      "mvp": null
+    },
+    "Витамин": {
+      "games": "47",
+      "goals": "32",
+      "passes": "80",
+      "score": "112",
+      "mvp": null
+    },
+    "Аватар": {
+      "games": "32",
+      "goals": "27",
+      "passes": "50",
+      "score": "77",
+      "mvp": null
+    },
+    "Гретцки": {
+      "games": "35",
+      "goals": "16",
+      "passes": "45",
+      "score": "61",
+      "mvp": null
+    },
+    "Радулов": {
+      "games": "34",
+      "goals": "25",
+      "passes": "35",
+      "score": "60",
+      "mvp": null
+    },
+    "Ник": {
+      "games": "27",
+      "goals": "18",
+      "passes": "39",
+      "score": "57",
+      "mvp": null
+    },
+    "Выскуб": {
+      "games": "32",
+      "goals": "21",
+      "passes": "27",
+      "score": "48",
+      "mvp": null
+    },
+    "Буре": {
+      "games": "11",
+      "goals": "23",
+      "passes": "22",
+      "score": "45",
+      "mvp": null
+    },
+    "Илгмар": {
+      "games": "27",
+      "goals": "22",
+      "passes": "23",
+      "score": "45",
+      "mvp": null
+    },
+    "Король Б.": {
+      "games": "34",
+      "goals": "18",
+      "passes": "27",
+      "score": "45",
+      "mvp": null
+    },
+    "Мирман": {
+      "games": "22",
+      "goals": "20",
+      "passes": "20",
+      "score": "40",
+      "mvp": null
+    },
+    "Танк": {
+      "games": "16",
+      "goals": "26",
+      "passes": "12",
+      "score": "38",
+      "mvp": null
+    },
+    "Игнат": {
+      "games": "25",
+      "goals": "13",
+      "passes": "25",
+      "score": "38",
+      "mvp": null
+    },
+    "Охотник": {
+      "games": "40",
+      "goals": "16",
+      "passes": "18",
+      "score": "34",
+      "mvp": null
+    },
+    "Пелцис": {
+      "games": "9",
+      "goals": "18",
+      "passes": "14",
+      "score": "32",
+      "mvp": null
+    },
+    "Олигарх": {
+      "games": "15",
+      "goals": "10",
+      "passes": "11",
+      "score": "21",
+      "mvp": null
+    },
+    "Руслан": {
+      "games": "13",
+      "goals": "8",
+      "passes": "13",
+      "score": "21",
+      "mvp": null
+    },
+    "Шиш": {
+      "games": "12",
+      "goals": "11",
+      "passes": "9",
+      "score": "20",
+      "mvp": null
+    },
+    "Фёллер": {
+      "games": "18",
+      "goals": "5",
+      "passes": "14",
+      "score": "19",
+      "mvp": null
+    },
+    "Дацюк": {
+      "games": "7",
+      "goals": "4",
+      "passes": "12",
+      "score": "16",
+      "mvp": null
+    },
+    "Дизилёк": {
+      "games": "12",
+      "goals": "5",
+      "passes": "11",
+      "score": "16",
+      "mvp": null
+    },
+    "Макс": {
+      "games": "7",
+      "goals": "7",
+      "passes": "7",
+      "score": "14",
+      "mvp": null
+    },
+    "Кузя": {
+      "games": "26",
+      "goals": "5",
+      "passes": "8",
+      "score": "13",
+      "mvp": null
+    },
+    "Мандрагон": {
+      "games": "11",
+      "goals": "1",
+      "passes": "10",
+      "score": "11",
+      "mvp": null
+    },
+    "Лео": {
+      "games": "8",
+      "goals": "8",
+      "passes": "4",
+      "score": "12",
+      "mvp": null
+    },
+    "Иванов Дан": {
+      "games": "3",
+      "goals": "5",
+      "passes": "3",
+      "score": "8",
+      "mvp": null
+    },
+    "Ромарио": {
+      "games": "3",
+      "goals": "7",
+      "passes": "0",
+      "score": "7",
+      "mvp": null
+    },
+    "Деревяшкин": {
+      "games": "27",
+      "goals": "3",
+      "passes": "4",
+      "score": "7",
+      "mvp": null
+    },
+    "Женя": {
+      "games": "3",
+      "goals": "2",
+      "passes": "4",
+      "score": "6",
+      "mvp": null
+    },
+    "Степан": {
+      "games": "36",
+      "goals": "3",
+      "passes": "3",
+      "score": "6",
+      "mvp": null
+    },
+    "Тиранозавр": {
+      "games": "4",
+      "goals": "0",
+      "passes": "5",
+      "score": "5",
+      "mvp": null
+    },
+    "Давидович А.": {
+      "games": "4",
+      "goals": "0",
+      "passes": "4",
+      "score": "4",
+      "mvp": null
+    },
+    "Олег Питер": {
+      "games": "2",
+      "goals": "3",
+      "passes": "1",
+      "score": "4",
+      "mvp": null
+    },
+    "Дасаев": {
+      "games": "43",
+      "goals": "0",
+      "passes": "4",
+      "score": "4",
+      "mvp": null
+    },
+    "Ивар": {
+      "games": "4",
+      "goals": "3",
+      "passes": "1",
+      "score": "4",
+      "mvp": null
+    },
+    "Хабибуллин": {
+      "games": "27",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": null
+    },
+    "Романов Дима": {
+      "games": "1",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Давидович С.": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Биренбейн": {
+      "games": "6",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": null
+    },
+    "Никитонов": {
+      "games": "1",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Люба": {
+      "games": "5",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": null
+    },
+    "Базилио": {
+      "games": "44",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Илья": {
+      "games": "3",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Рома Петров": {
+      "games": "1",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Ларсен Х.": {
+      "games": "5",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Дмитриев": {
+      "games": "1",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": null
+    },
+    "Слава": {
+      "games": "3",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": null
+    },
+    "Пелцис Д.": {
+      "games": "4",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Травников": {
+      "games": "3",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Влад Питер": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Гатчина Олег": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Артём Ляшенко": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Рыбачок": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Супер Саша": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Алексей": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Романыч": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Худяков": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Винников": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Эдик": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Набоков": {
+      "games": "13",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "48",
+      "goals": "81",
+      "passes": "85",
+      "score": "166",
+      "mvp": "1"
+    },
+    "Витамин": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Анзор": {
+      "games": "45",
+      "goals": "31",
+      "passes": "45",
+      "score": "76",
+      "mvp": "8"
+    },
+    "Король Б.": {
+      "games": "39",
+      "goals": "20",
+      "passes": "51",
+      "score": "71",
+      "mvp": "5"
+    },
+    "Гретцки": {
+      "games": "45",
+      "goals": "20",
+      "passes": "49",
+      "score": "69",
+      "mvp": "2"
+    },
+    "Ник": {
+      "games": "23",
+      "goals": "17",
+      "passes": "35",
+      "score": "52",
+      "mvp": "8"
+    },
+    "Григорьев": {
+      "games": "14",
+      "goals": "26",
+      "passes": "26",
+      "score": "52",
+      "mvp": "5"
+    },
+    "Радулов": {
+      "games": "36",
+      "goals": "17",
+      "passes": "34",
+      "score": "51",
+      "mvp": "3"
+    },
+    "Игнат": {
+      "games": "44",
+      "goals": "14",
+      "passes": "37",
+      "score": "51",
+      "mvp": "1"
+    },
+    "Выскуб": {
+      "games": "25",
+      "goals": "23",
+      "passes": "19",
+      "score": "42",
+      "mvp": "4"
+    },
+    "Саулиус": {
+      "games": "18",
+      "goals": "11",
+      "passes": "24",
+      "score": "35",
+      "mvp": "4"
+    },
+    "Илгмар": {
+      "games": "18",
+      "goals": "8",
+      "passes": "22",
+      "score": "30",
+      "mvp": "2"
+    },
+    "Буре": {
+      "games": "9",
+      "goals": "7",
+      "passes": "19",
+      "score": "26",
+      "mvp": "3"
+    },
+    "Охотник": {
+      "games": "45",
+      "goals": "9",
+      "passes": "16",
+      "score": "25",
+      "mvp": null
+    },
+    "Алик": {
+      "games": "14",
+      "goals": "18",
+      "passes": "6",
+      "score": "24",
+      "mvp": "1"
+    },
+    "Кузя": {
+      "games": "42",
+      "goals": "9",
+      "passes": "14",
+      "score": "23",
+      "mvp": "2"
+    },
+    "Лео": {
+      "games": "17",
+      "goals": "9",
+      "passes": "14",
+      "score": "23",
+      "mvp": "2"
+    },
+    "Опаньки": {
+      "games": "8",
+      "goals": "9",
+      "passes": "13",
+      "score": "22",
+      "mvp": "3"
+    },
+    "Каспарайтис": {
+      "games": "8",
+      "goals": "3",
+      "passes": "19",
+      "score": "22",
+      "mvp": "3"
+    },
+    "Лукас": {
+      "games": "12",
+      "goals": "5",
+      "passes": "16",
+      "score": "21",
+      "mvp": null
+    },
+    "Танк": {
+      "games": "7",
+      "goals": "13",
+      "passes": "6",
+      "score": "19",
+      "mvp": "1"
+    },
+    "Романов Дима": {
+      "games": "6",
+      "goals": "12",
+      "passes": "4",
+      "score": "16",
+      "mvp": "4"
+    },
+    "Фёллер": {
+      "games": "13",
+      "goals": "5",
+      "passes": "9",
+      "score": "14",
+      "mvp": "1"
+    },
+    "Олигарх": {
+      "games": "16",
+      "goals": "8",
+      "passes": "7",
+      "score": "15",
+      "mvp": "2"
+    },
+    "Мандрагон": {
+      "games": "12",
+      "goals": "2",
+      "passes": "10",
+      "score": "12",
+      "mvp": null
+    },
+    "Мирман": {
+      "games": "7",
+      "goals": "6",
+      "passes": "5",
+      "score": "11",
+      "mvp": "1"
+    },
+    "Люба": {
+      "games": "5",
+      "goals": "3",
+      "passes": "6",
+      "score": "9",
+      "mvp": "1"
+    },
+    "Степан": {
+      "games": "25",
+      "goals": "4",
+      "passes": "5",
+      "score": "9",
+      "mvp": null
+    },
+    "Шиш": {
+      "games": "8",
+      "goals": "5",
+      "passes": "3",
+      "score": "8",
+      "mvp": null
+    },
+    "Макс": {
+      "games": "3",
+      "goals": "3",
+      "passes": "5",
+      "score": "8",
+      "mvp": null
+    },
+    "Антон": {
+      "games": "4",
+      "goals": "4",
+      "passes": "4",
+      "score": "8",
+      "mvp": null
+    },
+    "Хабибуллин": {
+      "games": "26",
+      "goals": "1",
+      "passes": "7",
+      "score": "8",
+      "mvp": "3"
+    },
+    "Базилио": {
+      "games": "46",
+      "goals": "1",
+      "passes": "7",
+      "score": "8",
+      "mvp": "0"
+    },
+    "Аватар": {
+      "games": "5",
+      "goals": "1",
+      "passes": "5",
+      "score": "6",
+      "mvp": null
+    },
+    "Коля": {
+      "games": "5",
+      "goals": "3",
+      "passes": "2",
+      "score": "5",
+      "mvp": null
+    },
+    "Матвеев": {
+      "games": "2",
+      "goals": "0",
+      "passes": "5",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Брижань": {
+      "games": "3",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": null
+    },
+    "Пелцис": {
+      "games": "3",
+      "goals": "0",
+      "passes": "5",
+      "score": "5",
+      "mvp": null
+    },
+    "Илья": {
+      "games": "4",
+      "goals": "2",
+      "passes": "2",
+      "score": "4",
+      "mvp": null
+    },
+    "Универсал": {
+      "games": "3",
+      "goals": "2",
+      "passes": "2",
+      "score": "4",
+      "mvp": null
+    },
+    "Артём Ляшенко": {
+      "games": "3",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": null
+    },
+    "Ларсен Х.": {
+      "games": "5",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Мангал": {
+      "games": "4",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Женя": {
+      "games": "2",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Дасаев": {
+      "games": "47",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "6"
+    },
+    "Дацюк": {
+      "games": "5",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": null
+    },
+    "Юра": {
+      "games": "2",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": null
+    },
+    "Руслан": {
+      "games": "3",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Скаленко": {
+      "games": "5",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Колюшкин": {
+      "games": "2",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Вадим": {
+      "games": "10",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": null
+    },
+    "Мадар": {
+      "games": "1",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": null
+    },
+    "Акентьев": {
+      "games": "3",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": null
+    },
+    "Бломе": {
+      "games": "2",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": null
+    },
+    "Деревяшкин": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Пелцис Д.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Набоков": {
+      "games": "25",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "3"
+    },
+    "Артур мл.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Рома Петров": {
+      "games": "3",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": null
+    },
+    "Брыль": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": null
+    },
+    "Амкар": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Гена": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Дизилёк": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Костя Рубин": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    },
+    "Ромарио": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": null
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "57",
+      "goals": "89",
+      "passes": "108",
+      "score": "197",
+      "mvp": "0"
+    },
+    "Анзор": {
+      "games": "41",
+      "goals": "35",
+      "passes": "56",
+      "score": "91",
+      "mvp": "11"
+    },
+    "Витамин": {
+      "games": "31",
+      "goals": "29",
+      "passes": "50",
+      "score": "79",
+      "mvp": "12"
+    },
+    "Аватар": {
+      "games": "37",
+      "goals": "31",
+      "passes": "47",
+      "score": "78",
+      "mvp": "14"
+    },
+    "Король Б.": {
+      "games": "39",
+      "goals": "20",
+      "passes": "46",
+      "score": "66",
+      "mvp": "3"
+    },
+    "Саулиус": {
+      "games": "39",
+      "goals": "24",
+      "passes": "39",
+      "score": "63",
+      "mvp": "5"
+    },
+    "Радулов": {
+      "games": "27",
+      "goals": "17",
+      "passes": "43",
+      "score": "60",
+      "mvp": "4"
+    },
+    "Гретцки": {
+      "games": "37",
+      "goals": "16",
+      "passes": "40",
+      "score": "56",
+      "mvp": "4"
+    },
+    "Ник": {
+      "games": "24",
+      "goals": "16",
+      "passes": "33",
+      "score": "49",
+      "mvp": "6"
+    },
+    "Выскуб": {
+      "games": "14",
+      "goals": "28",
+      "passes": "15",
+      "score": "43",
+      "mvp": "7"
+    },
+    "Буре": {
+      "games": "12",
+      "goals": "15",
+      "passes": "26",
+      "score": "41",
+      "mvp": "5"
+    },
+    "Илгмар": {
+      "games": "16",
+      "goals": "12",
+      "passes": "21",
+      "score": "33",
+      "mvp": "4"
+    },
+    "Дмитриев": {
+      "games": "12",
+      "goals": "10",
+      "passes": "22",
+      "score": "32",
+      "mvp": "3"
+    },
+    "Кузя": {
+      "games": "40",
+      "goals": "14",
+      "passes": "17",
+      "score": "31",
+      "mvp": "6"
+    },
+    "Игнат": {
+      "games": "27",
+      "goals": "10",
+      "passes": "21",
+      "score": "31",
+      "mvp": "0"
+    },
+    "Алик": {
+      "games": "13",
+      "goals": "17",
+      "passes": "10",
+      "score": "27",
+      "mvp": "3"
+    },
+    "Коля": {
+      "games": "16",
+      "goals": "12",
+      "passes": "14",
+      "score": "26",
+      "mvp": "2"
+    },
+    "Ларсен Х.": {
+      "games": "20",
+      "goals": "9",
+      "passes": "17",
+      "score": "26",
+      "mvp": "3"
+    },
+    "Мирман": {
+      "games": "7",
+      "goals": "6",
+      "passes": "12",
+      "score": "18",
+      "mvp": "2"
+    },
+    "Охотник": {
+      "games": "39",
+      "goals": "8",
+      "passes": "9",
+      "score": "17",
+      "mvp": "3"
+    },
+    "Базилио": {
+      "games": "42",
+      "goals": "7",
+      "passes": "8",
+      "score": "15",
+      "mvp": "2"
+    },
+    "Попов": {
+      "games": "5",
+      "goals": "10",
+      "passes": "4",
+      "score": "14",
+      "mvp": "3"
+    },
+    "Олигарх": {
+      "games": "15",
+      "goals": "9",
+      "passes": "5",
+      "score": "14",
+      "mvp": "1"
+    },
+    "Григорьев": {
+      "games": "9",
+      "goals": "6",
+      "passes": "6",
+      "score": "12",
+      "mvp": "1"
+    },
+    "Лео": {
+      "games": "12",
+      "goals": "6",
+      "passes": "6",
+      "score": "12",
+      "mvp": "3"
+    },
+    "Рома Петров": {
+      "games": "6",
+      "goals": "4",
+      "passes": "6",
+      "score": "10",
+      "mvp": "1"
+    },
+    "Дизилёк": {
+      "games": "12",
+      "goals": "4",
+      "passes": "6",
+      "score": "10",
+      "mvp": "1"
+    },
+    "Шустров": {
+      "games": "1",
+      "goals": "2",
+      "passes": "6",
+      "score": "8",
+      "mvp": "1"
+    },
+    "Макс": {
+      "games": "3",
+      "goals": "3",
+      "passes": "5",
+      "score": "8",
+      "mvp": "0"
+    },
+    "Ярослав": {
+      "games": "4",
+      "goals": "5",
+      "passes": "3",
+      "score": "8",
+      "mvp": "0"
+    },
+    "Дасаев": {
+      "games": "45",
+      "goals": "0",
+      "passes": "7",
+      "score": "7",
+      "mvp": "7"
+    },
+    "Дацюк": {
+      "games": "3",
+      "goals": "2",
+      "passes": "4",
+      "score": "6",
+      "mvp": "1"
+    },
+    "Люба": {
+      "games": "7",
+      "goals": "1",
+      "passes": "5",
+      "score": "6",
+      "mvp": "1"
+    },
+    "Никита Буре": {
+      "games": "1",
+      "goals": "0",
+      "passes": "5",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Брижань": {
+      "games": "4",
+      "goals": "4",
+      "passes": "1",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Хабибуллин": {
+      "games": "19",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": "2"
+    },
+    "Элисс": {
+      "games": "2",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Руслан": {
+      "games": "4",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Фёллер": {
+      "games": "7",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Слава": {
+      "games": "3",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Гриша": {
+      "games": "2",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "1"
+    },
+    "Шмаля": {
+      "games": "1",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": "1"
+    },
+    "Универсал": {
+      "games": "1",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Амкар": {
+      "games": "1",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Степан": {
+      "games": "15",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Томас": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Шиш": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Мадар": {
+      "games": "3",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Чеботарев": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Карклиньш": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Стивен": {
+      "games": "4",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Деревяшкин": {
+      "games": "14",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Карамба": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Биренбейн": {
+      "games": "4",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Саша": {
+      "games": "2",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Павел": {
+      "games": "4",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Тиранозавр": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Баранов": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Хупения": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Ромарио": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Мандрагон": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Набоков": {
+      "games": "20",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "3"
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "48",
+      "goals": "47",
+      "passes": "56",
+      "score": "103",
+      "mvp": "0"
+    },
+    "Анзор": {
+      "games": "47",
+      "goals": "28",
+      "passes": "49",
+      "score": "77",
+      "mvp": "12"
+    },
+    "Выскуб": {
+      "games": "29",
+      "goals": "32",
+      "passes": "42",
+      "score": "74",
+      "mvp": "12"
+    },
+    "Ник": {
+      "games": "48",
+      "goals": "26",
+      "passes": "40",
+      "score": "66",
+      "mvp": "6"
+    },
+    "Витамин": {
+      "games": "38",
+      "goals": "17",
+      "passes": "44",
+      "score": "61",
+      "mvp": "8"
+    },
+    "Гретцки": {
+      "games": "46",
+      "goals": "7",
+      "passes": "45",
+      "score": "52",
+      "mvp": "6"
+    },
+    "Радулов": {
+      "games": "36",
+      "goals": "23",
+      "passes": "28",
+      "score": "51",
+      "mvp": "7"
+    },
+    "Алик": {
+      "games": "23",
+      "goals": "27",
+      "passes": "23",
+      "score": "50",
+      "mvp": "6"
+    },
+    "Король Б.": {
+      "games": "39",
+      "goals": "9",
+      "passes": "26",
+      "score": "35",
+      "mvp": "3"
+    },
+    "Лео": {
+      "games": "37",
+      "goals": "11",
+      "passes": "23",
+      "score": "34",
+      "mvp": "3"
+    },
+    "Попов": {
+      "games": "12",
+      "goals": "13",
+      "passes": "15",
+      "score": "28",
+      "mvp": "3"
+    },
+    "Игнат": {
+      "games": "27",
+      "goals": "14",
+      "passes": "13",
+      "score": "27",
+      "mvp": "5"
+    },
+    "Илгмар": {
+      "games": "22",
+      "goals": "6",
+      "passes": "20",
+      "score": "26",
+      "mvp": "1"
+    },
+    "Дмитриев": {
+      "games": "16",
+      "goals": "6",
+      "passes": "18",
+      "score": "24",
+      "mvp": "2"
+    },
+    "Саулиус": {
+      "games": "29",
+      "goals": "8",
+      "passes": "13",
+      "score": "21",
+      "mvp": "1"
+    },
+    "Олигарх": {
+      "games": "26",
+      "goals": "10",
+      "passes": "7",
+      "score": "17",
+      "mvp": "5"
+    },
+    "Дизилёк": {
+      "games": "23",
+      "goals": "5",
+      "passes": "11",
+      "score": "16",
+      "mvp": "3"
+    },
+    "Олег Питер": {
+      "games": "16",
+      "goals": "5",
+      "passes": "10",
+      "score": "15",
+      "mvp": "1"
+    },
+    "Аватар": {
+      "games": "25",
+      "goals": "11",
+      "passes": "6",
+      "score": "17",
+      "mvp": "3"
+    },
+    "Буре": {
+      "games": "7",
+      "goals": "8",
+      "passes": "6",
+      "score": "14",
+      "mvp": "1"
+    },
+    "Мадар": {
+      "games": "10",
+      "goals": "7",
+      "passes": "7",
+      "score": "14",
+      "mvp": "2"
+    },
+    "Шустров": {
+      "games": "3",
+      "goals": "6",
+      "passes": "5",
+      "score": "11",
+      "mvp": "3"
+    },
+    "Мирман": {
+      "games": "11",
+      "goals": "2",
+      "passes": "8",
+      "score": "10",
+      "mvp": "0"
+    },
+    "Макс": {
+      "games": "10",
+      "goals": "5",
+      "passes": "5",
+      "score": "10",
+      "mvp": "0"
+    },
+    "Дима": {
+      "games": "51",
+      "goals": "4",
+      "passes": "6",
+      "score": "10",
+      "mvp": "2"
+    },
+    "Томас": {
+      "games": "3",
+      "goals": "5",
+      "passes": "3",
+      "score": "8",
+      "mvp": "1"
+    },
+    "Григорьев": {
+      "games": "5",
+      "goals": "1",
+      "passes": "6",
+      "score": "7",
+      "mvp": "1"
+    },
+    "Коля": {
+      "games": "8",
+      "goals": "4",
+      "passes": "3",
+      "score": "7",
+      "mvp": "2"
+    },
+    "Кузя": {
+      "games": "23",
+      "goals": "2",
+      "passes": "4",
+      "score": "6",
+      "mvp": "2"
+    },
+    "Дацюк": {
+      "games": "12",
+      "goals": "0",
+      "passes": "6",
+      "score": "6",
+      "mvp": "0"
+    },
+    "Крижановский": {
+      "games": "2",
+      "goals": "4",
+      "passes": "2",
+      "score": "6",
+      "mvp": "1"
+    },
+    "Ларсен Х.": {
+      "games": "9",
+      "goals": "3",
+      "passes": "2",
+      "score": "5",
+      "mvp": "0"
+    },
+    "Гена": {
+      "games": "16",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": "2"
+    },
+    "Опаньки": {
+      "games": "4",
+      "goals": "4",
+      "passes": "0",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Никита Буре": {
+      "games": "2",
+      "goals": "0",
+      "passes": "4",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Охотник": {
+      "games": "36",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "1"
+    },
+    "Танк": {
+      "games": "1",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": "1"
+    },
+    "Пелцис": {
+      "games": "1",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": "1"
+    },
+    "Рома Петров": {
+      "games": "5",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Базилио": {
+      "games": "41",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Рыбачок": {
+      "games": "2",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Илья": {
+      "games": "4",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Колюшкин": {
+      "games": "3",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Хабибуллин": {
+      "games": "18",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "1"
+    },
+    "Набоков": {
+      "games": "16",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Брижань": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Руслан": {
+      "games": "4",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Степан": {
+      "games": "12",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Пеньковский": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Евгений": {
+      "games": "2",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Бернатович": {
+      "games": "7",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Шиш": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Деревяшкин": {
+      "games": "9",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Баскетболист": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Вратарь": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Яруткин": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Вонаг": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Ярослав": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Люба": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Худяков": {
+      "games": "9",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Татарин": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Стивен": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дрея": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Тимур": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дасаев": {
+      "games": "46",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "2"
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "50",
+      "goals": "41",
+      "passes": "72",
+      "score": "113",
+      "mvp": "0"
+    },
+    "Витамин": {
+      "games": "46",
+      "goals": "34",
+      "passes": "57",
+      "score": "91",
+      "mvp": "17"
+    },
+    "Ник": {
+      "games": "50",
+      "goals": "33",
+      "passes": "48",
+      "score": "81",
+      "mvp": "12"
+    },
+    "Выскуб": {
+      "games": "23",
+      "goals": "32",
+      "passes": "29",
+      "score": "61",
+      "mvp": "9"
+    },
+    "Гретцки": {
+      "games": "42",
+      "goals": "13",
+      "passes": "47",
+      "score": "60",
+      "mvp": "7"
+    },
+    "Анзор": {
+      "games": "40",
+      "goals": "19",
+      "passes": "32",
+      "score": "51",
+      "mvp": "7"
+    },
+    "Радулов": {
+      "games": "28",
+      "goals": "15",
+      "passes": "26",
+      "score": "41",
+      "mvp": "5"
+    },
+    "Алик": {
+      "games": "23",
+      "goals": "21",
+      "passes": "19",
+      "score": "40",
+      "mvp": "5"
+    },
+    "Аватар": {
+      "games": "32",
+      "goals": "15",
+      "passes": "22",
+      "score": "37",
+      "mvp": "7"
+    },
+    "Попов": {
+      "games": "22",
+      "goals": "18",
+      "passes": "19",
+      "score": "37",
+      "mvp": "5"
+    },
+    "Король Б.": {
+      "games": "44",
+      "goals": "8",
+      "passes": "28",
+      "score": "36",
+      "mvp": "1"
+    },
+    "Игнат": {
+      "games": "45",
+      "goals": "8",
+      "passes": "25",
+      "score": "33",
+      "mvp": "3"
+    },
+    "Саулиус": {
+      "games": "44",
+      "goals": "17",
+      "passes": "15",
+      "score": "32",
+      "mvp": "6"
+    },
+    "Мамыкин": {
+      "games": "42",
+      "goals": "11",
+      "passes": "19",
+      "score": "30",
+      "mvp": "2"
+    },
+    "Дима": {
+      "games": "35",
+      "goals": "11",
+      "passes": "6",
+      "score": "17",
+      "mvp": "4"
+    },
+    "Дацюк": {
+      "games": "15",
+      "goals": "2",
+      "passes": "14",
+      "score": "16",
+      "mvp": "1"
+    },
+    "Женя": {
+      "games": "7",
+      "goals": "11",
+      "passes": "4",
+      "score": "15",
+      "mvp": "2"
+    },
+    "Лео": {
+      "games": "12",
+      "goals": "6",
+      "passes": "6",
+      "score": "12",
+      "mvp": "3"
+    },
+    "Марцинский": {
+      "games": "3",
+      "goals": "6",
+      "passes": "4",
+      "score": "10",
+      "mvp": "2"
+    },
+    "Пеньковский": {
+      "games": "7",
+      "goals": "2",
+      "passes": "8",
+      "score": "10",
+      "mvp": "3"
+    },
+    "Мадар": {
+      "games": "5",
+      "goals": "5",
+      "passes": "4",
+      "score": "9",
+      "mvp": "2"
+    },
+    "Илгмар": {
+      "games": "11",
+      "goals": "2",
+      "passes": "7",
+      "score": "9",
+      "mvp": "2"
+    },
+    "Олигарх": {
+      "games": "18",
+      "goals": "3",
+      "passes": "5",
+      "score": "8",
+      "mvp": "1"
+    },
+    "Фокс": {
+      "games": "14",
+      "goals": "3",
+      "passes": "5",
+      "score": "8",
+      "mvp": "2"
+    },
+    "Макс": {
+      "games": "11",
+      "goals": "4",
+      "passes": "3",
+      "score": "7",
+      "mvp": "2"
+    },
+    "Руслан": {
+      "games": "12",
+      "goals": "3",
+      "passes": "4",
+      "score": "7",
+      "mvp": "1"
+    },
+    "Колюшкин": {
+      "games": "3",
+      "goals": "4",
+      "passes": "2",
+      "score": "6",
+      "mvp": "0"
+    },
+    "Чеботарев": {
+      "games": "1",
+      "goals": "2",
+      "passes": "4",
+      "score": "6",
+      "mvp": "1"
+    },
+    "Базилио": {
+      "games": "45",
+      "goals": "0",
+      "passes": "6",
+      "score": "6",
+      "mvp": "2"
+    },
+    "Татарин": {
+      "games": "17",
+      "goals": "1",
+      "passes": "5",
+      "score": "6",
+      "mvp": "0"
+    },
+    "Саша Левша": {
+      "games": "2",
+      "goals": "1",
+      "passes": "4",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Феллер": {
+      "games": "5",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": "0"
+    },
+    "Мирман": {
+      "games": "5",
+      "goals": "0",
+      "passes": "5",
+      "score": "5",
+      "mvp": "0"
+    },
+    "Брыль": {
+      "games": "2",
+      "goals": "1",
+      "passes": "4",
+      "score": "5",
+      "mvp": "0"
+    },
+    "Павел Фёдоров": {
+      "games": "3",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": "0"
+    },
+    "Ларсен Х.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "4",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Олег Питер": {
+      "games": "4",
+      "goals": "2",
+      "passes": "2",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Дизилёк": {
+      "games": "7",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Саша": {
+      "games": "11",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Рома Петров": {
+      "games": "10",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Эдик": {
+      "games": "6",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Григорьев": {
+      "games": "4",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Филипп": {
+      "games": "2",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Охотник": {
+      "games": "43",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Кузя": {
+      "games": "11",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Деревяшкин": {
+      "games": "37",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "1"
+    },
+    "Коля": {
+      "games": "4",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "1"
+    },
+    "Роберт": {
+      "games": "1",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Велосипедист": {
+      "games": "6",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Тарзан": {
+      "games": "1",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Дима Нов.": {
+      "games": "2",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Гена": {
+      "games": "28",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "1"
+    },
+    "Степан": {
+      "games": "22",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "1"
+    },
+    "Скаленко": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "1"
+    },
+    "Тиранозавр": {
+      "games": "6",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Танк": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Лукас": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Артём Ляшенко": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Пелцис": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Бангур": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Люба": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Лёша Дл.": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Сурен": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Биренбейн": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дасаев": {
+      "games": "44",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "9"
+    },
+    "Шмелев": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Илья": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Худяков": {
+      "games": "11",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Хабибуллин": {
+      "games": "19",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "2"
+    },
+    "Гера": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Бородавко": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Богдан": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дрея": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "45",
+      "goals": "48",
+      "passes": "45",
+      "score": "93",
+      "mvp": "0"
+    },
+    "Аватар": {
+      "games": "38",
+      "goals": "21",
+      "passes": "48",
+      "score": "69",
+      "mvp": "13"
+    },
+    "Выскуб": {
+      "games": "33",
+      "goals": "24",
+      "passes": "41",
+      "score": "65",
+      "mvp": "9"
+    },
+    "Попов": {
+      "games": "30",
+      "goals": "29",
+      "passes": "31",
+      "score": "60",
+      "mvp": "10"
+    },
+    "Ник": {
+      "games": "38",
+      "goals": "19",
+      "passes": "37",
+      "score": "56",
+      "mvp": "7"
+    },
+    "Анзор": {
+      "games": "34",
+      "goals": "17",
+      "passes": "34",
+      "score": "51",
+      "mvp": "8"
+    },
+    "Радулов": {
+      "games": "38",
+      "goals": "18",
+      "passes": "33",
+      "score": "51",
+      "mvp": "10"
+    },
+    "Мамыкин": {
+      "games": "37",
+      "goals": "16",
+      "passes": "27",
+      "score": "43",
+      "mvp": "7"
+    },
+    "Король Б.": {
+      "games": "41",
+      "goals": "8",
+      "passes": "31",
+      "score": "39",
+      "mvp": "3"
+    },
+    "Игнат": {
+      "games": "45",
+      "goals": "15",
+      "passes": "22",
+      "score": "37",
+      "mvp": "4"
+    },
+    "Витамин": {
+      "games": "33",
+      "goals": "12",
+      "passes": "24",
+      "score": "36",
+      "mvp": "5"
+    },
+    "Гретцки": {
+      "games": "35",
+      "goals": "5",
+      "passes": "20",
+      "score": "25",
+      "mvp": "0"
+    },
+    "Женя": {
+      "games": "22",
+      "goals": "18",
+      "passes": "7",
+      "score": "25",
+      "mvp": "4"
+    },
+    "Саулиус": {
+      "games": "36",
+      "goals": "16",
+      "passes": "7",
+      "score": "23",
+      "mvp": "3"
+    },
+    "Макс": {
+      "games": "16",
+      "goals": "11",
+      "passes": "9",
+      "score": "20",
+      "mvp": "3"
+    },
+    "Семенов Ж.": {
+      "games": "16",
+      "goals": "3",
+      "passes": "15",
+      "score": "18",
+      "mvp": "1"
+    },
+    "Дмитриев": {
+      "games": "7",
+      "goals": "5",
+      "passes": "11",
+      "score": "16",
+      "mvp": "3"
+    },
+    "Эдик": {
+      "games": "23",
+      "goals": "1",
+      "passes": "11",
+      "score": "12",
+      "mvp": "0"
+    },
+    "Илгмар": {
+      "games": "8",
+      "goals": "2",
+      "passes": "9",
+      "score": "11",
+      "mvp": "1"
+    },
+    "Охотник": {
+      "games": "32",
+      "goals": "6",
+      "passes": "5",
+      "score": "11",
+      "mvp": "2"
+    },
+    "Дизилёк": {
+      "games": "20",
+      "goals": "3",
+      "passes": "7",
+      "score": "10",
+      "mvp": "3"
+    },
+    "Алик": {
+      "games": "16",
+      "goals": "6",
+      "passes": "4",
+      "score": "10",
+      "mvp": "2"
+    },
+    "Дима": {
+      "games": "12",
+      "goals": "5",
+      "passes": "5",
+      "score": "10",
+      "mvp": "2"
+    },
+    "Пеньковский": {
+      "games": "4",
+      "goals": "4",
+      "passes": "5",
+      "score": "9",
+      "mvp": "2"
+    },
+    "Марцинский": {
+      "games": "6",
+      "goals": "3",
+      "passes": "4",
+      "score": "7",
+      "mvp": "2"
+    },
+    "Томас": {
+      "games": "3",
+      "goals": "4",
+      "passes": "3",
+      "score": "7",
+      "mvp": "1"
+    },
+    "Григорьев": {
+      "games": "9",
+      "goals": "3",
+      "passes": "4",
+      "score": "7",
+      "mvp": "0"
+    },
+    "Илья": {
+      "games": "9",
+      "goals": "5",
+      "passes": "1",
+      "score": "6",
+      "mvp": "0"
+    },
+    "Ромарио": {
+      "games": "4",
+      "goals": "4",
+      "passes": "2",
+      "score": "6",
+      "mvp": "1"
+    },
+    "Базилио": {
+      "games": "46",
+      "goals": "1",
+      "passes": "4",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Татарин": {
+      "games": "42",
+      "goals": "1",
+      "passes": "4",
+      "score": "5",
+      "mvp": "0"
+    },
+    "Степан": {
+      "games": "29",
+      "goals": "0",
+      "passes": "6",
+      "score": "6",
+      "mvp": "1"
+    },
+    "Брыль": {
+      "games": "2",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Олигарх": {
+      "games": "14",
+      "goals": "3",
+      "passes": "2",
+      "score": "5",
+      "mvp": "0"
+    },
+    "Дракон": {
+      "games": "23",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": "0"
+    },
+    "Рома Петров": {
+      "games": "6",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Шиш": {
+      "games": "4",
+      "goals": "2",
+      "passes": "2",
+      "score": "4",
+      "mvp": "0"
+    },
+    "Фокс": {
+      "games": "9",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Шмаля": {
+      "games": "3",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Семенов М.": {
+      "games": "3",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Олег Питер": {
+      "games": "3",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Эдвард": {
+      "games": "5",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Брижань": {
+      "games": "2",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Мадар": {
+      "games": "2",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Колюшкин": {
+      "games": "2",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Пелцис Д.": {
+      "games": "2",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Мандрагон": {
+      "games": "3",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Велосипедист": {
+      "games": "6",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Деревяшкин": {
+      "games": "28",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "1"
+    },
+    "Дацюк": {
+      "games": "5",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Артур Judo": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Пономарев": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Дима Дзюдо": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Мирман": {
+      "games": "1",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Ларсен Х.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Александр Фёдоров": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Кузя": {
+      "games": "14",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дасаев": {
+      "games": "41",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "6"
+    },
+    "Лео": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Сергей Вр.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Биренбейн": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Коля": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Филипп": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Руслан": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Феллер": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Тиранозавр": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Худяков": {
+      "games": "20",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Артур М.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Цска": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Гена": {
+      "games": "16",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Скаленко": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Спартак": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Володя Эд.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Гавриленок": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Леша Майори": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Тимур": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Китаец": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Хабибуллин": {
+      "games": "21",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "3"
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "49",
+      "goals": "31",
+      "passes": "70",
+      "score": "101",
+      "mvp": "0"
+    },
+    "Выскуб": {
+      "games": "43",
+      "goals": "31",
+      "passes": "35",
+      "score": "66",
+      "mvp": "13"
+    },
+    "Радулов": {
+      "games": "43",
+      "goals": "18",
+      "passes": "44",
+      "score": "62",
+      "mvp": "9"
+    },
+    "Женя": {
+      "games": "43",
+      "goals": "26",
+      "passes": "27",
+      "score": "53",
+      "mvp": "13"
+    },
+    "Брижань": {
+      "games": "29",
+      "goals": "26",
+      "passes": "23",
+      "score": "49",
+      "mvp": "12"
+    },
+    "Аватар": {
+      "games": "41",
+      "goals": "8",
+      "passes": "39",
+      "score": "47",
+      "mvp": "4"
+    },
+    "Анзор": {
+      "games": "46",
+      "goals": "12",
+      "passes": "33",
+      "score": "45",
+      "mvp": "7"
+    },
+    "Ник": {
+      "games": "45",
+      "goals": "16",
+      "passes": "28",
+      "score": "44",
+      "mvp": "7"
+    },
+    "Король Б.": {
+      "games": "50",
+      "goals": "8",
+      "passes": "32",
+      "score": "40",
+      "mvp": "4"
+    },
+    "Гретцки": {
+      "games": "45",
+      "goals": "3",
+      "passes": "30",
+      "score": "33",
+      "mvp": "3"
+    },
+    "Мамыкин": {
+      "games": "43",
+      "goals": "18",
+      "passes": "15",
+      "score": "33",
+      "mvp": "3"
+    },
+    "Семенов Ж.": {
+      "games": "44",
+      "goals": "14",
+      "passes": "17",
+      "score": "31",
+      "mvp": "4"
+    },
+    "Дизилёк": {
+      "games": "37",
+      "goals": "14",
+      "passes": "16",
+      "score": "30",
+      "mvp": "6"
+    },
+    "Марцинский": {
+      "games": "26",
+      "goals": "12",
+      "passes": "16",
+      "score": "28",
+      "mvp": "5"
+    },
+    "Алик": {
+      "games": "24",
+      "goals": "13",
+      "passes": "13",
+      "score": "26",
+      "mvp": "6"
+    },
+    "Игнат": {
+      "games": "41",
+      "goals": "8",
+      "passes": "15",
+      "score": "23",
+      "mvp": "5"
+    },
+    "Попов": {
+      "games": "20",
+      "goals": "12",
+      "passes": "11",
+      "score": "23",
+      "mvp": "5"
+    },
+    "Саулиус": {
+      "games": "49",
+      "goals": "1",
+      "passes": "16",
+      "score": "17",
+      "mvp": "4"
+    },
+    "Крижановский": {
+      "games": "3",
+      "goals": "12",
+      "passes": "2",
+      "score": "14",
+      "mvp": "3"
+    },
+    "Велосипедист": {
+      "games": "24",
+      "goals": "3",
+      "passes": "9",
+      "score": "12",
+      "mvp": "1"
+    },
+    "Пеньковский": {
+      "games": "6",
+      "goals": "8",
+      "passes": "3",
+      "score": "11",
+      "mvp": "2"
+    },
+    "Акебоно": {
+      "games": "37",
+      "goals": "4",
+      "passes": "6",
+      "score": "10",
+      "mvp": "2"
+    },
+    "Томас": {
+      "games": "8",
+      "goals": "5",
+      "passes": "5",
+      "score": "10",
+      "mvp": "1"
+    },
+    "Илья": {
+      "games": "15",
+      "goals": "4",
+      "passes": "4",
+      "score": "8",
+      "mvp": "1"
+    },
+    "Эдик": {
+      "games": "34",
+      "goals": "2",
+      "passes": "6",
+      "score": "8",
+      "mvp": "0"
+    },
+    "Богдан": {
+      "games": "27",
+      "goals": "4",
+      "passes": "4",
+      "score": "8",
+      "mvp": "5"
+    },
+    "Степан": {
+      "games": "36",
+      "goals": "1",
+      "passes": "6",
+      "score": "7",
+      "mvp": "2"
+    },
+    "Охотник": {
+      "games": "42",
+      "goals": "1",
+      "passes": "5",
+      "score": "6",
+      "mvp": "0"
+    },
+    "Брыль": {
+      "games": "3",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Ромарио": {
+      "games": "5",
+      "goals": "2",
+      "passes": "3",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Лапковский Игорь": {
+      "games": "3",
+      "goals": "0",
+      "passes": "4",
+      "score": "4",
+      "mvp": "0"
+    },
+    "Илгмар": {
+      "games": "6",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": "0"
+    },
+    "Дима": {
+      "games": "10",
+      "goals": "4",
+      "passes": "0",
+      "score": "4",
+      "mvp": "2"
+    },
+    "Макс": {
+      "games": "6",
+      "goals": "0",
+      "passes": "4",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Дмитриев": {
+      "games": "3",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Дацюк": {
+      "games": "5",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Фокс": {
+      "games": "5",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Лео": {
+      "games": "16",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "2"
+    },
+    "Дракон": {
+      "games": "37",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Базилио": {
+      "games": "23",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Семенов М.": {
+      "games": "3",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Олег Питер": {
+      "games": "3",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Мирман": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Кузя": {
+      "games": "24",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "2"
+    },
+    "Лёша Дл.": {
+      "games": "3",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Мандрагон": {
+      "games": "12",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Татарин": {
+      "games": "39",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "1"
+    },
+    "Гена": {
+      "games": "28",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "1"
+    },
+    "Дима Борец": {
+      "games": "4",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Колюшкин": {
+      "games": "3",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Фёллер": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Иваница": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Селезнёв": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Скаленко": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Ляшенко Вадим": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Олигарх": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Деревяшкин": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Лукас": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Худяков": {
+      "games": "17",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дасаев": {
+      "games": "46",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "5"
+    },
+    "Хабибуллин": {
+      "games": "21",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "4"
+    },
+    "Пономарев": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Матвеев": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Андрей": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Опаньки": {
+      "games": "3",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Агент": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Степан Друг": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Эраст": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Эмиль": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Пелцис Д.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Костя": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Тимур": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Петров": {
+      "games": "7",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "46",
+      "goals": "30",
+      "passes": "58",
+      "score": "88",
+      "mvp": "0"
+    },
+    "Женя": {
+      "games": "42",
+      "goals": "44",
+      "passes": "19",
+      "score": "63",
+      "mvp": "13"
+    },
+    "Анзор": {
+      "games": "46",
+      "goals": "11",
+      "passes": "49",
+      "score": "60",
+      "mvp": "10"
+    },
+    "Выскуб": {
+      "games": "37",
+      "goals": "27",
+      "passes": "30",
+      "score": "57",
+      "mvp": "7"
+    },
+    "Брижань": {
+      "games": "32",
+      "goals": "22",
+      "passes": "32",
+      "score": "54",
+      "mvp": "12"
+    },
+    "Аватар": {
+      "games": "34",
+      "goals": "24",
+      "passes": "26",
+      "score": "50",
+      "mvp": "12"
+    },
+    "Мамыкин": {
+      "games": "42",
+      "goals": "31",
+      "passes": "16",
+      "score": "47",
+      "mvp": "10"
+    },
+    "Ник": {
+      "games": "44",
+      "goals": "16",
+      "passes": "31",
+      "score": "47",
+      "mvp": "8"
+    },
+    "Гретцки": {
+      "games": "51",
+      "goals": "2",
+      "passes": "41",
+      "score": "43",
+      "mvp": "2"
+    },
+    "Король Б.": {
+      "games": "44",
+      "goals": "10",
+      "passes": "33",
+      "score": "43",
+      "mvp": "7"
+    },
+    "Семенов Ж.": {
+      "games": "36",
+      "goals": "11",
+      "passes": "32",
+      "score": "43",
+      "mvp": "4"
+    },
+    "Радулов": {
+      "games": "37",
+      "goals": "12",
+      "passes": "28",
+      "score": "40",
+      "mvp": "6"
+    },
+    "Алик": {
+      "games": "21",
+      "goals": "13",
+      "passes": "19",
+      "score": "32",
+      "mvp": "4"
+    },
+    "Саулиус": {
+      "games": "50",
+      "goals": "10",
+      "passes": "14",
+      "score": "24",
+      "mvp": "5"
+    },
+    "Марцинский": {
+      "games": "15",
+      "goals": "7",
+      "passes": "15",
+      "score": "22",
+      "mvp": "3"
+    },
+    "Дизилёк": {
+      "games": "37",
+      "goals": "7",
+      "passes": "13",
+      "score": "20",
+      "mvp": "4"
+    },
+    "Пеньковский": {
+      "games": "12",
+      "goals": "6",
+      "passes": "13",
+      "score": "19",
+      "mvp": "4"
+    },
+    "Игнат": {
+      "games": "34",
+      "goals": "7",
+      "passes": "12",
+      "score": "19",
+      "mvp": "2"
+    },
+    "Дилшот": {
+      "games": "11",
+      "goals": "9",
+      "passes": "8",
+      "score": "17",
+      "mvp": "2"
+    },
+    "Охотник": {
+      "games": "37",
+      "goals": "5",
+      "passes": "11",
+      "score": "16",
+      "mvp": "2"
+    },
+    "Велосипедист": {
+      "games": "12",
+      "goals": "4",
+      "passes": "7",
+      "score": "11",
+      "mvp": "1"
+    },
+    "Дацюк": {
+      "games": "5",
+      "goals": "2",
+      "passes": "8",
+      "score": "10",
+      "mvp": "2"
+    },
+    "Мишута": {
+      "games": "5",
+      "goals": "5",
+      "passes": "4",
+      "score": "9",
+      "mvp": "1"
+    },
+    "Акебоно": {
+      "games": "30",
+      "goals": "2",
+      "passes": "6",
+      "score": "8",
+      "mvp": "4"
+    },
+    "Илгмар": {
+      "games": "15",
+      "goals": "1",
+      "passes": "7",
+      "score": "8",
+      "mvp": "0"
+    },
+    "Богдан": {
+      "games": "30",
+      "goals": "2",
+      "passes": "5",
+      "score": "7",
+      "mvp": "1"
+    },
+    "Татарин": {
+      "games": "45",
+      "goals": "1",
+      "passes": "6",
+      "score": "7",
+      "mvp": "2"
+    },
+    "Ярик": {
+      "games": "13",
+      "goals": "3",
+      "passes": "3",
+      "score": "6",
+      "mvp": "1"
+    },
+    "Дима": {
+      "games": "15",
+      "goals": "3",
+      "passes": "2",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Эдик": {
+      "games": "15",
+      "goals": "1",
+      "passes": "4",
+      "score": "5",
+      "mvp": "0"
+    },
+    "Григорьев": {
+      "games": "11",
+      "goals": "1",
+      "passes": "3",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Пелцис Д.": {
+      "games": "4",
+      "goals": "2",
+      "passes": "2",
+      "score": "4",
+      "mvp": "1"
+    },
+    "Илья": {
+      "games": "5",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Иосифов": {
+      "games": "6",
+      "goals": "0",
+      "passes": "3",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Мадар": {
+      "games": "4",
+      "goals": "2",
+      "passes": "1",
+      "score": "3",
+      "mvp": "1"
+    },
+    "Хупения": {
+      "games": "16",
+      "goals": "1",
+      "passes": "2",
+      "score": "3",
+      "mvp": "0"
+    },
+    "Волоха": {
+      "games": "8",
+      "goals": "1",
+      "passes": "1",
+      "score": "2",
+      "mvp": "1"
+    },
+    "Матвеев": {
+      "games": "2",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Дасаев": {
+      "games": "44",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "11"
+    },
+    "Данга Э.": {
+      "games": "4",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Ермак Л.": {
+      "games": "3",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Лео": {
+      "games": "17",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "2"
+    },
+    "Макс": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Олег Питер": {
+      "games": "3",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Попов": {
+      "games": "1",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Степан": {
+      "games": "31",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "4"
+    },
+    "Хабибуллин": {
+      "games": "26",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "10"
+    },
+    "Артем Эд.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Булыкин": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "1"
+    },
+    "Гена": {
+      "games": "24",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "1"
+    },
+    "Дегтярев": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дмитриев": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дракон": {
+      "games": "15",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "1"
+    },
+    "Ермак В.": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Кузя": {
+      "games": "7",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Кясиль": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Мандрагон": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Милан": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Ричард": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Романчук": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Томиньш": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Фёллер": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Фокс": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Худяков": {
+      "games": "27",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Эдвард": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    }
+  },
+  {
+    "С.Фёдоров": {
+      "games": "16",
+      "goals": "16",
+      "passes": "30",
+      "score": "46",
+      "mvp": "0"
+    },
+    "Аватар": {
+      "games": "14",
+      "goals": "9",
+      "passes": "19",
+      "score": "28",
+      "mvp": "7"
+    },
+    "Женя": {
+      "games": "12",
+      "goals": "18",
+      "passes": "7",
+      "score": "25",
+      "mvp": "5"
+    },
+    "Семенов Ж.": {
+      "games": "12",
+      "goals": "11",
+      "passes": "12",
+      "score": "23",
+      "mvp": "7"
+    },
+    "Игнат": {
+      "games": "12",
+      "goals": "12",
+      "passes": "9",
+      "score": "21",
+      "mvp": "6"
+    },
+    "Ник": {
+      "games": "14",
+      "goals": "5",
+      "passes": "15",
+      "score": "20",
+      "mvp": "4"
+    },
+    "Анзор": {
+      "games": "14",
+      "goals": "2",
+      "passes": "15",
+      "score": "17",
+      "mvp": "1"
+    },
+    "Король Б.": {
+      "games": "16",
+      "goals": "4",
+      "passes": "13",
+      "score": "17",
+      "mvp": "3"
+    },
+    "Радулов": {
+      "games": "7",
+      "goals": "5",
+      "passes": "10",
+      "score": "15",
+      "mvp": "3"
+    },
+    "Мамыкин": {
+      "games": "14",
+      "goals": "4",
+      "passes": "8",
+      "score": "12",
+      "mvp": "1"
+    },
+    "Мишута": {
+      "games": "8",
+      "goals": "6",
+      "passes": "5",
+      "score": "11",
+      "mvp": "2"
+    },
+    "Алик": {
+      "games": "11",
+      "goals": "4",
+      "passes": "6",
+      "score": "10",
+      "mvp": "1"
+    },
+    "Хупения": {
+      "games": "10",
+      "goals": "1",
+      "passes": "9",
+      "score": "10",
+      "mvp": "2"
+    },
+    "Дилшот": {
+      "games": "4",
+      "goals": "6",
+      "passes": "3",
+      "score": "9",
+      "mvp": "1"
+    },
+    "Богдан": {
+      "games": "11",
+      "goals": "3",
+      "passes": "6",
+      "score": "9",
+      "mvp": "1"
+    },
+    "Марцинский": {
+      "games": "6",
+      "goals": "2",
+      "passes": "6",
+      "score": "8",
+      "mvp": "1"
+    },
+    "Саулиус": {
+      "games": "14",
+      "goals": "2",
+      "passes": "4",
+      "score": "6",
+      "mvp": "0"
+    },
+    "Выскуб": {
+      "games": "3",
+      "goals": "4",
+      "passes": "1",
+      "score": "5",
+      "mvp": "1"
+    },
+    "Гретцки": {
+      "games": "12",
+      "goals": "0",
+      "passes": "5",
+      "score": "5",
+      "mvp": "0"
+    },
+    "Гена": {
+      "games": "10",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "1"
+    },
+    "Охотник": {
+      "games": "12",
+      "goals": "2",
+      "passes": "0",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Акебоно": {
+      "games": "12",
+      "goals": "0",
+      "passes": "2",
+      "score": "2",
+      "mvp": "0"
+    },
+    "Дизилёк": {
+      "games": "2",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Худяков": {
+      "games": "14",
+      "goals": "0",
+      "passes": "1",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Мадар": {
+      "games": "2",
+      "goals": "1",
+      "passes": "0",
+      "score": "1",
+      "mvp": "0"
+    },
+    "Дима": {
+      "games": "4",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дасаев": {
+      "games": "14",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Степан": {
+      "games": "5",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Дракон": {
+      "games": "7",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Кузя": {
+      "games": "6",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Лео": {
+      "games": "2",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Велосипедист": {
+      "games": "1",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "0"
+    },
+    "Хабибуллин": {
+      "games": "6",
+      "goals": "0",
+      "passes": "0",
+      "score": "0",
+      "mvp": "1"
+    }
+  }
+]
