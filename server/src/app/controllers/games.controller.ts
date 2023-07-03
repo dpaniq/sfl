@@ -4,6 +4,7 @@ import {User} from '../data';
 import {Games} from '../data/entities/games.entity';
 import {gamesRepositoryFactory} from '../repositories/games.repository';
 
+// Check this out
 export class GamesController {
   private readonly _repository: IRepository<Games>;
 
