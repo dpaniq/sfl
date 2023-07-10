@@ -7,17 +7,32 @@ import {isSaturday, nextSaturday} from 'date-fns';
 
 type GamesWithNoId = Omit<Games, 'id'>;
 
-export class Games20111687103802221 implements MigrationInterface {
+const makeGame = (tableName: string): string =>
+  `CREATE TABLE IF NOT EXISTS ${tableName} (
+  event_day DATE NOT NULL,
+  player_id INTEGER NOT NULL,
+  goals SMALLINT,
+  passes SMALLINT,
+  mvp BOOLEAN,
+  FOREIGN KEY(player_id) REFERENCES users(id)
+);`;
+
+export class GenerateAndSeedGamesTable1585862017522 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE IF NOT EXISTS games2011 (
-        event_day DATE NOT NULL,
-        player_id INTEGER NOT NULL,
-        goals SMALLINT,
-        passes SMALLINT,
-        mvp BOOLEAN,
-        FOREIGN KEY(player_id) REFERENCES users(id)
-      );`,
+      makeGame('games2011') +
+        makeGame('games2012') +
+        makeGame('games2013') +
+        makeGame('games2014') +
+        makeGame('games2015') +
+        makeGame('games2016') +
+        makeGame('games2017') +
+        makeGame('games2018') +
+        makeGame('games2019') +
+        makeGame('games2020') +
+        makeGame('games2021') +
+        makeGame('games2022') +
+        makeGame('games2023'),
       undefined,
     );
     await this.seed();
@@ -25,14 +40,26 @@ export class Games20111687103802221 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP TABLE "games2011"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2012"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2013"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2014"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2015"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2016"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2017"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2018"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2019"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2020"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2021"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2022"`, undefined);
+    await queryRunner.query(`DROP TABLE "games2023"`, undefined);
   }
 
   private async seed(): Promise<void> {
-    const games: GamesWithNoId[] = await this.getAll2011Games();
+    const games: GamesWithNoId[] = await this.getAllGames();
     await getRepository(Games2011).save(games);
   }
 
-  private async getAll2011Games(): Promise<GamesWithNoId[]> {
+  private async getAllGames(): Promise<GamesWithNoId[]> {
     const year = 2011;
     const json = sflJSON as unknown as TSFLJson;
 
