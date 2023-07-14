@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -16,6 +17,7 @@ import {BaseEntity} from './base.entity';
 
 @Entity()
 export class Games extends BaseEntity {
+  @Index()
   @Column({
     type: 'datetime',
     nullable: false,
@@ -41,6 +43,12 @@ export class Games extends BaseEntity {
     type: 'int2',
     nullable: true,
   })
+  head_goals: number | null;
+
+  @Column({
+    type: 'int2',
+    nullable: true,
+  })
   passes: number | null;
 
   @Column({
@@ -48,4 +56,10 @@ export class Games extends BaseEntity {
     nullable: true,
   })
   mvp: boolean | null;
+
+  @Column({
+    type: 'boolean',
+    nullable: true,
+  })
+  capitan: boolean | null;
 }

@@ -12,14 +12,22 @@ export class GamesController {
     this._repository = new GamesRepository();
   }
 
-  public async getGames(request: Request, response: Response, next: NextFunction): Promise<any> {
+  public async getGames(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<Response> {
     return this._repository
       .findAll()
       .then((entities) => response.status(200).send(entities))
       .catch((error) => response.status(500).send({error: error}));
   }
 
-  public async getGame(request: Request, response: Response, next: NextFunction): Promise<any> {
+  public async getGame(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<Response> {
     return this._repository
       .findOne(request.params.id)
       .then((entities) => response.status(200).send(entities))

@@ -1,5 +1,5 @@
-const { pathsToModuleNameMapper } = require('ts-jest');
-const { compilerOptions } = require('./tsconfig');
+const {pathsToModuleNameMapper} = require('ts-jest');
+const {compilerOptions} = require('./tsconfig');
 
 // https://github.com/kulshekhar/ts-jest/issues/2709
 

@@ -9,7 +9,11 @@ export class UsersController {
     this._repository = repository;
   }
 
-  public async getAllUsers(request: Request, response: Response, next: NextFunction): Promise<any> {
+  public async getAllUsers(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<Response> {
     return this._repository
       .findAll()
       .then((users) => response.status(200).send(users))

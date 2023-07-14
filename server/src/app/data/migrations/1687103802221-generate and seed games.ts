@@ -6,6 +6,7 @@ import sflJSON from '../../../assets/SFL (json-check-all).json';
 import {isSaturday, nextSaturday} from 'date-fns';
 import {range} from '@root/app/utils/array';
 import {GamesRepository} from '@root/app/repositories/games.repository';
+import {sleep} from '@root/app/utils/tool';
 
 const gamesRepository = new GamesRepository();
 
@@ -41,6 +42,8 @@ export class GenerateAndSeedGamesTable1685862017522 implements MigrationInterfac
     ]) {
       const games = await this.getGamesByYear(year as unknown as keyof TSFLJson);
       gamesRepository.use.save(games);
+      console.log('sleep');
+      await sleep(500);
     }
   }
 
@@ -83,8 +86,10 @@ export class GenerateAndSeedGamesTable1685862017522 implements MigrationInterfac
           event_day: dateGame,
           player_id: user.id,
           goals: player.goals,
+          head_goals: null,
           passes: player.passes,
           mvp: player.mvp,
+          capitan: null,
         });
         firstRecord = false;
       } else {
@@ -92,8 +97,10 @@ export class GenerateAndSeedGamesTable1685862017522 implements MigrationInterfac
           event_day: dateGame,
           player_id: user.id,
           goals: null,
+          head_goals: null,
           passes: null,
           mvp: null,
+          capitan: null,
         });
       }
       dateGame = nextSaturday(dateGame);
