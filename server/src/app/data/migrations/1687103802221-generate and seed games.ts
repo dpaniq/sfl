@@ -17,8 +17,10 @@ const makeGame = (tableName: string): string =>
   event_day DATE NOT NULL,
   player_id INTEGER NOT NULL,
   goals SMALLINT,
+  head_goals SMALLINT,
   passes SMALLINT,
   mvp BOOLEAN,
+  capitan BOOLEAN,
   FOREIGN KEY(player_id) REFERENCES users(id)
 );`;
 
