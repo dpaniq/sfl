@@ -11,7 +11,7 @@ export class GenerateAndSeedUserTable1585862017523 implements MigrationInterface
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE user (
+      `CREATE TABLE IF NOT EXISTS user (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT, 
         surname TEXT,

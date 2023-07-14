@@ -3,7 +3,6 @@ import {UsersController} from '../controllers';
 import {IRepository, UsersRepository} from '../repositories';
 import {User} from '../data';
 import {GamesController} from '../controllers/games.controller';
-import {gamesRepositoryFactory} from '../repositories/games.repository';
 
 const router: Router = express.Router();
 

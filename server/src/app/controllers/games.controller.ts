@@ -2,14 +2,14 @@ import {Request, Response, NextFunction} from 'express';
 import {IRepository} from '../repositories';
 import {User} from '../data';
 import {Games} from '../data/entities/games.entity';
-import {gamesRepositoryFactory} from '../repositories/games.repository';
+import {GamesRepository} from '../repositories/games.repository';
 
 // Check this out 3
 export class GamesController {
   private readonly _repository: IRepository<Games>;
 
-  constructor(year: number) {
-    this._repository = gamesRepositoryFactory(year);
+  constructor() {
+    this._repository = new GamesRepository();
   }
 
   public async getGames(request: Request, response: Response, next: NextFunction): Promise<any> {

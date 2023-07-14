@@ -14,10 +14,8 @@ import {
 import {User} from './user.entity';
 import {BaseEntity} from './base.entity';
 
-@Entity({
-  synchronize: false,
-})
-export abstract class Games extends BaseEntity {
+@Entity()
+export class Games extends BaseEntity {
   @Column({
     type: 'datetime',
     nullable: false,
@@ -51,6 +49,3 @@ export abstract class Games extends BaseEntity {
   })
   mvp: boolean | null;
 }
-
-@Entity()
-export class Games2011 extends Games {}

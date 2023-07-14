@@ -1,9 +1,13 @@
 import {START_SEASON_AT} from '@root/constants';
 import {MigrationInterface, QueryRunner, getRepository} from 'typeorm';
 import {User} from '@entities/user.entity';
-import {Games, Games2011} from '@entities/games.entity';
+import {Games} from '@entities/games.entity';
 import sflJSON from '../../../assets/SFL (json-check-all).json';
 import {isSaturday, nextSaturday} from 'date-fns';
+import {range} from '@root/app/utils/array';
+import {GamesRepository} from '@root/app/repositories/games.repository';
+
+const gamesRepository = new GamesRepository();
 
 type GamesWithNoId = Omit<Games, 'id'>;
 
@@ -17,56 +21,36 @@ const makeGame = (tableName: string): string =>
   FOREIGN KEY(player_id) REFERENCES users(id)
 );`;
 
-export class GenerateAndSeedGamesTable1585862017522 implements MigrationInterface {
+export class GenerateAndSeedGamesTable1685862017522 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      makeGame('games2011') +
-        makeGame('games2012') +
-        makeGame('games2013') +
-        makeGame('games2014') +
-        makeGame('games2015') +
-        makeGame('games2016') +
-        makeGame('games2017') +
-        makeGame('games2018') +
-        makeGame('games2019') +
-        makeGame('games2020') +
-        makeGame('games2021') +
-        makeGame('games2022') +
-        makeGame('games2023'),
-      undefined,
-    );
+    await queryRunner.query(makeGame('games'), undefined);
     await this.seed();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TABLE "games2011"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2012"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2013"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2014"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2015"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2016"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2017"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2018"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2019"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2020"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2021"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2022"`, undefined);
-    await queryRunner.query(`DROP TABLE "games2023"`, undefined);
+    await queryRunner.query(`DROP TABLE "games"`, undefined);
   }
 
   private async seed(): Promise<void> {
-    const games: GamesWithNoId[] = await this.getAllGames();
-    await getRepository(Games2011).save(games);
+    await this.getAllGames();
   }
 
-  private async getAllGames(): Promise<GamesWithNoId[]> {
-    const year = 2011;
+  private async getAllGames(): Promise<void> {
+    for (const year of [
+      2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023,
+    ]) {
+      const games = await this.getGamesByYear(year as unknown as keyof TSFLJson);
+      gamesRepository.use.save(games);
+    }
+  }
+
+  private async getGamesByYear(year: keyof TSFLJson): Promise<GamesWithNoId[]> {
     const json = sflJSON as unknown as TSFLJson;
+    const users = await this.getUsers();
 
     const games: GamesWithNoId[] = [];
-    const games2011 = json[2011];
-    for (const player of games2011) {
-      const user = await this.getUser(player.name);
+    for (const player of json[year]) {
+      const user = users?.find((user) => user.nickname === player.name);
       if (!user) {
         continue;
       }
@@ -77,7 +61,7 @@ export class GenerateAndSeedGamesTable1585862017522 implements MigrationInterfac
   }
 
   private async getSeasonGame(
-    year: number,
+    year: keyof TSFLJson,
     user: User,
     player: TPlayerJson,
   ): Promise<GamesWithNoId[]> {
@@ -118,11 +102,7 @@ export class GenerateAndSeedGamesTable1585862017522 implements MigrationInterfac
     return games;
   }
 
-  private async getUser(nickname: string): Promise<User | undefined> {
-    return await getRepository(User).findOne({
-      where: {
-        nickname,
-      },
-    });
+  private async getUsers(): Promise<User[] | undefined> {
+    return await getRepository(User).find();
   }
 }
