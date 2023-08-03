@@ -1,25 +1,47 @@
-# How To Build a Todo App with React, TypeScript, NodeJS, and MongoDB
+# node-typescript-starter
 
-In this tutorial, we will be using TypeScript on both sides (server and client) to build a Todo App from scratch with React, NodeJS, Express, and MongoDB.
+This is a very stripped down base project to get started with Node/Express with Typescript
 
-So, let's start by planning the API.
+Forked by:
+https://github.com/jmw5598/node-typescript-express-starter/tree/master
 
-[Read the article](https://www.ibrahima-ndaw.com/fr/blog/advanced-typescript-cheat-sheet/)
 
-- [API with NodeJS, Express, MongoDB and TypeScript](#api-with-nodejs-express-mongodb-and-typescript)
-  - [Setting up](#setting-up)
-  - [Create a Todo Type](#create-a-todo-type)
-  - [Create a Todo Model](#create-a-todo-model)
-  - [Create API controllers](#create-api-controllers)
-    - [Get, Add, Update and Delete Todos](#get-add-update-and-delete-todos)
-  - [Create API routes](#create-api-routes)
-  - [Create a Server](#create-a-server)
-- [Client-side with React and TypeScript](#client-side-with-react-and-typescript)
-  - [Setting up](#setting-up-1)
-  - [Create a Todo Type](#create-a-todo-type-1)
-  - [Fetch data from the API](#fetch-data-from-the-api)
-  - [Create the components](#create-the-components)
-    - [Add Todo Form](#add-todo-form)
-    - [Display a Todo](#display-a-todo)
-  - [Fetch and Display data](#fetch-and-display-data)
-- [Resources](#resources)
+Paths resolves:
+https://medium.com/@fmoessle/typescript-paths-with-ts-node-ts-node-dev-and-jest-671deacf6428
+https://levelup.gitconnected.com/path-aliases-with-typescript-in-node-js-230803e3f200
+https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
+
+Fastify:
+https://github.com/hmake98/fastify-typescript/blob/main/src/index.ts
+
+
+Plan:
+- [ ] - Create user table and seed it with all players for all years
+  https://orkhan-gitbook-io.translate.goog/typeorm/docs/migrations?_x_tr_sl=en&_x_tr_tl=ru&_x_tr_hl=ru&_x_tr_pto=wapp
+  - [x] - 2011
+  - [ ] - 2012
+  - [ ] - 2013
+  - [ ] - 2014
+  - [ ] - 2015
+  - [ ] - 2016
+  - [ ] - 2017
+  - [ ] - 2018
+  - [ ] - 2019
+  - [ ] - 2020
+  - [ ] - 2021
+  - [ ] - 2022
+  - [ ] - 2023
+
+
+
+
+
+Features:
+- [ ] - Capitans score
+- [ ] - KPI's player
+- [ ] - Export to pdf
+- [ ] - goal type (head, kick)
+
+
+Todo client:
+- [ ] - Make solidjs

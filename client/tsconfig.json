@@ -1,20 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": ["es2015", "es2016", "es2017", "dom"],
     "strict": true,
-    "sourceMap": true,
-    "module": "es2015",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "."
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ]
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"],
+    "noEmit": true,
+    "isolatedModules": true
+  }
 }

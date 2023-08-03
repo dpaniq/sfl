@@ -1,11 +1,15 @@
-import { createRoot } from 'react-dom/client';
+/* @refresh reload */
+import { render } from 'solid-js/web';
 
+import './index.css';
 import App from './App';
-import './index.css'
 
-// 👇️ passed wrong ID to getElementById() method
-const rootElement = document.getElementById('root');
-const root = createRoot(rootElement!);
-root.render(
-    <App />
-);
+const root = document.getElementById('root');
+
+if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
+  throw new Error(
+    'Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?',
+  );
+}
+
+render(() => <App />, root!);
