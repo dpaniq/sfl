@@ -43,5 +43,3 @@ Features:
 - [ ] - goal type (head, kick)
 
 
-Todo client:
-- [ ] - Make solidjs

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"],
+    "noEmit": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@root/*": ["./*"],
+      "@pages/*": ["src/pages/*"],
+      "@entities/*": ["app/data/entities/*"]
+    }
+  }
+}
