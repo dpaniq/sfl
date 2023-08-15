@@ -6,9 +6,15 @@ const AsideNavigation: Component = () => {
   return (
     <aside>
       <nav class="">
-        <A href="/home">{Home} Home</A>
-        <A href="/users">{PersonSearch} Users</A>
-        <A href="/about">{Info} About</A>
+        <A href="/home">
+          <Home class="nav-icon" /> Home
+        </A>
+        <A href="/players">
+          <PersonSearch class="nav-icon" /> Players
+        </A>
+        <A href="/about">
+          <Info class="nav-icon" /> About
+        </A>
       </nav>
     </aside>
   );
