@@ -1079,6 +1079,21 @@ solid-devtools@^0.27.3:
     "@solid-devtools/debugger" "^0.22.4"
     "@solid-devtools/shared" "^0.12.3"
 
+solid-infinite-scroll@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/solid-infinite-scroll/-/solid-infinite-scroll-1.0.1.tgz#ce7c0af44e421411dec65cbf0af6b408f3e895ae"
+  integrity sha512-yIDyr61316jyHSxuQqidMUTcauKDQyPIzIAKawTrTadqxij2wOcM3ei6/MR6WPBCcR0ZMJ8E0aQInFSnL9w2Hg==
+  dependencies:
+    solid-js "^1.4.7"
+
+solid-js@^1.4.7:
+  version "1.7.11"
+  resolved "https://registry.yarnpkg.com/solid-js/-/solid-js-1.7.11.tgz#c37706382bcfd563459810434b1382b550c27867"
+  integrity sha512-JkuvsHt8jqy7USsy9xJtT18aF9r2pFO+GB8JQ2XGTvtF49rGTObB46iebD25sE3qVNvIbwglXOXdALnJq9IHtQ==
+  dependencies:
+    csstype "^3.1.0"
+    seroval "^0.5.0"
+
 solid-js@^1.7.6:
   version "1.7.8"
   resolved "https://registry.yarnpkg.com/solid-js/-/solid-js-1.7.8.tgz#6856983e3edbcc57b0e003e6fd0c741dd8865892"

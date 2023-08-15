@@ -3,18 +3,23 @@ import {User} from '../data';
 import {IRepository} from '../repositories';
 import {isNumber} from '../utils/number';
 
-export class UsersController {
+export class PlayersController {
   private readonly _repository: IRepository<User>;
 
   constructor(repository: IRepository<User>) {
     this._repository = repository;
   }
 
-  public async getAllUsers(
+  public async findAll(
     request: Request,
     response: Response,
     next: NextFunction,
   ): Promise<Response> {
+    console.log('asdasdas');
+    console.log('asdasdas');
+    console.log('asdasdas');
+    console.log('asdasdas');
+    console.log('asdasdas');
     console.log('asdasdas');
     return this._repository
       .findAll()
@@ -22,11 +27,7 @@ export class UsersController {
       .catch((error) => response.status(500).send({error: error}));
   }
 
-  public async getUsersList(
-    request: Request,
-    response: Response,
-    next: NextFunction,
-  ): Promise<Response> {
+  public async list(request: Request, response: Response, next: NextFunction): Promise<Response> {
     console.log(request.query);
 
     const take = isNumber(request.query.take) ? Number(request.query.take) : undefined;
