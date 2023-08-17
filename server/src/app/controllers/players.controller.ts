@@ -27,7 +27,11 @@ export class PlayersController {
       .catch((error) => response.status(500).send({error: error}));
   }
 
-  public async list(request: Request, response: Response, next: NextFunction): Promise<Response> {
+  public async getList(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<Response> {
     console.log(request.query);
 
     const take = isNumber(request.query.take) ? Number(request.query.take) : undefined;

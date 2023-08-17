@@ -9,12 +9,11 @@ const controller = new PlayersController(usersRepository);
 
 router.get('/', async (request: Request, response: Response, next: NextFunction) => {
   console.log('asdasdas');
-  // await controller.findAll(request, response, next);
+  await controller.findAll(request, response, next);
 });
 
-// router.get('/list', async (request: Request, response: Response, next: NextFunction) => {
-//   console.log('jhere');
-//   await controller.getUsersList(request, response, next);
-// });
+router.get('/list', async (request: Request, response: Response, next: NextFunction) => {
+  await controller.getList(request, response, next);
+});
 
 export const playersRouter: Router = router;

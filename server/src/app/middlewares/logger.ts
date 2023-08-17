@@ -59,7 +59,5 @@ const logger = winston.createLogger({
 
 export function loggerMiddleware(req: Request, res: Response, next: NextFunction): void {
   logger.info(`${req.method} ${req.url} - ${req.ip}`);
-  logger.warn(`${req.method} ${req.url} - ${req.ip}`);
-  logger.error(`${req.method} ${req.url} - ${req.ip}`);
   next();
 }

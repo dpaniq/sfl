@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
 } from '@suid/material';
-import {Accessor, For, createSignal} from 'solid-js';
+import {Accessor, For, createSignal, Component, ParentComponent, children} from 'solid-js';
 
 type Row = {
   name: string;
@@ -31,28 +31,31 @@ const rows: Row[] = [
   createData('Violeta Sineva', 356, 16.0, 49, 3.9),
 ];
 
-export default function BasicTable({searchString}: {searchString?: Accessor<string>}) {
+// export default function BasicTable({searchString}: {searchString?: Accessor<string>}) {
+export default function BasicTable<ParentComponent>({children, searchString}) {
   const [rows$, setRows$] = createSignal<Row[]>(rows);
-
-  const filteredRows$ = () => rows$().filter((row) => row.name.match(searchString()));
+  // const filteredRows$ = () => rows$().filter((row) => row.name.match(searchString()));
+  const filteredRows$ = () => rows$();
 
   return (
     <>
       <br />
-      <em>SearchString: {searchString()}</em>
+      {/* <em>SearchString: {searchString()}</em> */}
       <TableContainer component={Paper}>
         <Table sx={{minWidth: 650}} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="right">Protein&nbsp;(g)</TableCell>
+              <TableCell>ID</TableCell>
+              <TableCell align="right">Email</TableCell>
+              <TableCell align="right">Name</TableCell>
+              <TableCell align="right">Nickname</TableCell>
+              <TableCell align="right">Surname</TableCell>
+              <TableCell align="right">Age</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <For each={filteredRows$()}>
+            {children}
+            {/* <For each={filteredRows$()}>
               {(row, i) => (
                 <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                   <TableCell component="th" scope="row">
@@ -64,7 +67,7 @@ export default function BasicTable({searchString}: {searchString?: Accessor<stri
                   <TableCell align="right">{row.protein}</TableCell>
                 </TableRow>
               )}
-            </For>
+            </For> */}
           </TableBody>
         </Table>
       </TableContainer>
