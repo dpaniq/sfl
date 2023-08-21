@@ -1068,7 +1068,7 @@ seroval@^0.5.0:
   resolved "https://registry.yarnpkg.com/seroval/-/seroval-0.5.1.tgz#e6d17365cdaaae7e50815c7e0bcd7102facdadf3"
   integrity sha512-ZfhQVB59hmIauJG5Ydynupy8KHyr5imGNtdDhbZG68Ufh1Ynkv9KOYOAABf71oVbQxJ8VkWnMHAjEHE7fWkH5g==
 
-solid-devtools@^0.27.3:
+solid-devtools@^0.27.7:
   version "0.27.7"
   resolved "https://registry.yarnpkg.com/solid-devtools/-/solid-devtools-0.27.7.tgz#b6e46ab3504714f58521a9323de67f51f6188363"
   integrity sha512-eRUk+mzszEM6nt+TNT2iU2J6T1F0NSJCRFPP4Y78Wt8HVAepnwB6H2WAE1S/5EH8PL0+NIHsVdHI/+6ReZPO5g==

@@ -1,7 +1,10 @@
+import {getRepository} from 'typeorm';
 import {User} from '../data';
 import {BaseRepository} from './base.repository';
 
 export class PlayersRepository extends BaseRepository<User> {
+  _r = getRepository(User);
+
   // public async findAll(): Promise<User[]> {
   //   const repository: Repository<User> = getRepository(User);
   //   return repository.find();

@@ -1,16 +1,15 @@
-import {EntityTarget, FindOneOptions, getRepository, ObjectLiteral, Repository} from 'typeorm';
+import {
+  EntityTarget,
+  FindOneOptions,
+  getConnectionManager,
+  getRepository,
+  ObjectLiteral,
+  Repository,
+} from 'typeorm';
 import {IRepository} from './repository.interface';
 
 export abstract class BaseRepository<T extends ObjectLiteral> implements IRepository<T> {
   _r!: Repository<T>;
-
-  constructor(entity) {
-    this.repo(entity);
-  }
-
-  private repo(entity: EntityTarget<T>): void {
-    this._r = getRepository(entity);
-  }
 
   public async findAll(): Promise<T[]> {
     // const repository: Repository<T> = getRepository(User);
@@ -24,7 +23,7 @@ export abstract class BaseRepository<T extends ObjectLiteral> implements IReposi
   public async findAllPagination({
     take,
     skip,
-    searchQuery,
+    // searchQuery,
     where,
     order,
   }: {
@@ -38,13 +37,21 @@ export abstract class BaseRepository<T extends ObjectLiteral> implements IReposi
   }): Promise<Paginate<T>> {
     const qtake = take || 10;
     const qskip = skip || 0;
-    const qkeyword = searchQuery || '';
+    // const qkeyword = searchQuery || '';
 
     // const where = searchQuery ? {where: {nickname: Like('%' + qkeyword + '%')}} : {};
 
-    const [result, total] = await this._r.findAndCount({
+    console.log('FROM BASE REPOSITORY', this._r, {
       ...where,
       ...order,
+      take: qtake,
+      skip: qskip,
+    });
+
+    const [result, total] = await this._r.findAndCount({
+      // ...where,
+      ...order,
+      ...where,
       take: qtake,
       skip: qskip,
     });

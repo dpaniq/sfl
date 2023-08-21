@@ -83,7 +83,7 @@ export default function BasicTable({searchQuery}: {searchQuery?: Accessor<string
   const [apiArguments, setApiArguments] = createSignal({
     take: listNumber,
     skip: 0,
-    searchQuery: searchQuery(),
+    searchQuery: '',
   });
 
   const [api] = createResource(apiArguments, getPlayersList);
@@ -98,33 +98,44 @@ export default function BasicTable({searchQuery}: {searchQuery?: Accessor<string
   };
 
   const [rows$, setRows$] = createSignal<IPlayer[]>([]);
-  const filteredRows$ = () => {
-    console.log('filteredRows');
-    if (!rows$().length) {
-      return rows$();
-    }
-    return !searchQuery() ? rows$() : rows$().filter((row) => row.name.match(searchQuery()));
-  };
+  // const filteredRows$ = () => {
+  //   console.log('filteredRows');
+  //   if (!rows$().length) {
+  //     return rows$();
+  //   }
+  //   return !searchQuery() ? rows$() : rows$()?.filter((row) => row.nickname.match(searchQuery()));
+  // };
 
-  createEffect((totalRows: number) => {
-    console.log('createEffect Called');
-    const data = api()?.data;
-    // debugger;
-    if (data) {
-      // setScrollIndex(totalScrollIndex);
-      setRows$((prev) => [...prev, ...data]);
-      // setScrollIndex(Math.min(scrollIndex() + listNumber, totalRows));
-      setScrollIndex(rows$().length);
-    }
-    console.log(api()?.data);
-    // setRows$((prev) => [...prev, ...api().data]);
-    return totalRows + listNumber;
-  }, 0);
+  createEffect(() => {
+    console.log('CHANGE searchquery', searchQuery());
+    searchQuery();
+    setRows$([]);
+    setScrollIndex(listNumber);
+    setApiArguments((prev) => ({...prev, skip: 0, searchQuery: searchQuery() || ''}));
+  });
+
+  createEffect(
+    () => {
+      console.log('createEffect Called');
+      const data = api()?.data;
+      if (data) {
+        setRows$((prev) => {
+          console.log('---> setRows will change', prev);
+          return [...prev, ...data];
+        });
+        setScrollIndex(rows$().length);
+      }
+    },
+    undefined,
+    {
+      name: 'here',
+    },
+  );
 
   const TableRowEnd = (
     <TableRow class="players-infinite-table--end-row">
       <TableCell colspan="6" align="center">
-        END
+        <em>END</em>
       </TableCell>
     </TableRow>
   );
@@ -136,8 +147,10 @@ export default function BasicTable({searchQuery}: {searchQuery?: Accessor<string
       </Show>
       <p>ScrollIndex:{scrollIndex()}</p>
       <p>Rows:{rows$().length}</p>
-      <em>SearchString: {searchQuery()}</em>
-      <em>apiArguments: {JSON.stringify(apiArguments())}</em>
+      <p>SearchString: {searchQuery()}</p>
+      <p>apiArguments: {JSON.stringify(apiArguments())}</p>
+
+      <p>total.count: {api()?.count}</p>
 
       <TableContainer component={Paper}>
         <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -154,7 +167,7 @@ export default function BasicTable({searchQuery}: {searchQuery?: Accessor<string
 
           <TableBody>
             <InfiniteScroll
-              each={filteredRows$()}
+              each={rows$()}
               hasMore={scrollIndex() < api()?.count}
               next={scrollNext}
               // scrollTreshold={200}
