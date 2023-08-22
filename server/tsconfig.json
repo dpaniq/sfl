@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es6",                         
-    "module": "commonjs",                    
-    "strict": true,                          
-    "esModuleInterop": true,                  
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
     "sourceMap": true,
@@ -12,7 +12,7 @@
     "emitDeclarationOnly": true,
     "outDir": "dist",
     "baseUrl": "src",
-    "forceConsistentCasingInFileNames": true, 
+    "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -21,7 +21,9 @@
       "@root/*": ["./*"],
       "@utils/*": ["app/utils/*"],
       "@entities/*": ["app/data/entities/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./src"],
+    "types": ["jest", "node"]
   },
   "include": ["src/**/*", "tests"],
   "exclude": ["node_modules"]
