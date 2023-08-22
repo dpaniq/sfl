@@ -29,12 +29,24 @@ const {compilerOptions} = require('./tsconfig');
 //   ]
 
 module.exports = {
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   transform: {
-    // See reference: https://kulshekhar.github.io/ts-jest/docs/getting-started/options/tsconfig
-    'ts-jest': {
-      tsconfig: 'tsconfig.jest.json',
-    },
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        //the content you'd placed at "global"
+        babel: true,
+        tsConfig: 'tsconfig.json',
+      },
+    ],
   },
+
+  // transform: {
+  //   // See reference: https://kulshekhar.github.io/ts-jest/docs/getting-started/options/tsconfig
+  //   'ts-jest': {
+  //     tsconfig: 'tsconfig.jest.json',
+  //   },
+  // },
   preset: 'ts-jest',
   testEnvironment: 'node',
   testPathIgnorePatterns: ['<rootDir>/tests/fixtures/'],
