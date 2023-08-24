@@ -1,38 +1,58 @@
-import {createEffect, createSignal, onCleanup} from 'solid-js';
+import {createEffect, createSignal, onCleanup, Component} from 'solid-js';
 import {Observable, Subject} from 'rxjs';
-import {Show} from 'solid-js';
+import {Show, ParentProps} from 'solid-js';
+import {JSX} from 'solid-js';
 
-function InfiniteScroll(props) {
+interface InfiniteScrollInterface {
+  hasMore: boolean;
+  observerElem: string;
+  loadingMessage?: JSX.Element;
+  endMessage?: JSX.Element;
+  scrollTreshold?: number;
+  onLoadMore: () => any;
+}
+
+export const InfiniteScroll: Component<ParentProps<InfiniteScrollInterface>> = (props) => {
+  let observerRef: any;
+  const [loading, setLoading] = createSignal(false);
   const [wasTriggered, setWasTriggered] = createSignal<boolean>(false);
+
+  // Life cycle hooks
+
+  // onMount(() => {
+  //   const observer = new IntersectionObserver((entries) => {
+  //     if (entries[0].isIntersecting) {
+  //       if (props.hasMore) {
+  //         setLoading(true);
+  //         props.next();
+  //       }
+  //     } else {
+  //       setLoading(false);
+  //     }
+  //   });
+
+  //   observer.observe(observerRef);
+
+  //   onCleanup(() => {
+  //     observer.unobserve(observerRef);
+  //   });
+  // });
 
   createEffect(() => {
     if (!wasTriggered()) {
-      console.log('here');
       setWasTriggered(true);
       props.onLoadMore();
     }
 
-    const observerElem = document.querySelector('[data-inf-scroll]');
+    const observerElem = document.querySelector(props.observerElem);
 
     const observable = new Observable((observer) => {
       const intersectionObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              console.log(
-                entry,
-                entry.target,
-                entry.isIntersecting,
-                `Элемент видим на ${entry.intersectionRatio * 100}%`,
-              );
-              if (entry.intersectionRatio === 1) {
-                console.log('FIRST HAS MORE', props.hasMore);
-                if (props.hasMore) {
-                  console.log('HAS MORE');
-                  observer.next();
-                } else {
-                  console.log('NO HAS MORE');
-                }
+            if (entry.isIntersecting && entry.intersectionRatio === 1) {
+              if (props.hasMore) {
+                observer.next();
               }
             }
           });
@@ -59,16 +79,29 @@ function InfiniteScroll(props) {
     });
   });
 
+  const observerObjectHeight = !props.scrollTreshold ? '50px' : props.scrollTreshold + 'px';
+
+  createEffect(() => {
+    if (!props.hasMore) {
+      setLoading(false);
+    }
+  });
+
   return (
     <>
       <p>wasTriggered: {wasTriggered() ? 'true' : 'false'}</p>
       <p>hasMore: {props.hasMore ? 'true' : 'false'}</p>
       {props.children}
-      <Show when={!props.hasMore}>
-        <div>END (no more)</div>
-      </Show>
+      <div
+        ref={observerRef}
+        style={{
+          height: observerObjectHeight,
+          'margin-top': '-' + observerObjectHeight,
+          'z-index': '-999',
+        }}
+      />
+      <Show when={loading()} children={props.loadingMessage || <div>Loading...</div>} />
+      <Show when={!props.hasMore} children={props.endMessage} />
     </>
   );
-}
-
-export default InfiniteScroll;
+};

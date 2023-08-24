@@ -11,8 +11,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "solid-devtools": "^0.27.7",
-    "solid-infinite-scroll": "^1.0.1",
     "typescript": "^5.1.6",
     "vite": "^4.4.8",
     "vite-plugin-solid": "^2.7.0"
