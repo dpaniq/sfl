@@ -1,6 +1,7 @@
-import express, {Express} from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import express, {Express} from 'express';
+import {loggerMiddleware} from './middlewares/logger';
 import {applicationRouter} from './routes';
 
 export class Application {
@@ -9,10 +10,14 @@ export class Application {
   constructor() {
     this._server = express();
     this._server.set('host', process.env.HOST || 'localhost');
-    this._server.set('port', process.env.PORT || 3000);
+    this._server.set('port', process.env.PORT || 3001);
     this._server.use(bodyParser.json());
     this._server.use(bodyParser.urlencoded({extended: true}));
     this._server.use(cors());
+
+    // Middlewares
+    this._server.use(loggerMiddleware);
+
     this._server.use(applicationRouter);
   }
 

@@ -1,17 +1,12 @@
 {
+  "name": "default",
   "type": "better-sqlite3",
   "database": "database.sqlite",
   "synchronize": true,
   "logging": false,
-  "entities": [
-    "src/app/data/entities/**/*.entity.ts"
-  ],
-  "migrations": [
-    "src/app/data/migrations/**/*.ts"
-  ],
-  "subscribers": [
-    "src/app/data/subscribers/**/*.subscriber.ts"
-  ],
+  "entities": ["src/app/data/entities/**/*.entity.ts"],
+  "migrations": ["src/app/data/migrations/**/*.ts"],
+  "subscribers": ["src/app/data/subscribers/**/*.subscriber.ts"],
   "cli": {
     "entitiesDir": "src/app/data/entities",
     "migrationsDir": "src/app/data/migrations",

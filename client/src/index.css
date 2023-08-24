@@ -13,6 +13,7 @@ code {
 }
 
 :root {
+  --c0: whitesmoke;
   --c1: #d9d9d9;
   --c2: #bfbfbf;
   --c3: #8c8c8c;
@@ -63,19 +64,17 @@ code {
 }
 
 header {
-  background-color: lime;
+  background-color: rgba(0, 255, 0, 0.068);
   grid-area: header;
 }
 
 aside {
   z-index: 10;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  background-color: lightblue;
   grid-area: aside;
-  background-color: var(--c4);
-  box-shadow: 1px 0px 30px 5px var(--c3);
+  background-color: var(--c0);
 
   > nav {
     display: flex;
@@ -101,7 +100,8 @@ aside {
         color: var(--c3);
       }
       &:hover {
-        color: var(--c1);
+        color: var(--c4);
+        scale: 1.1;
       }
 
       & svg.nav-icon {
@@ -112,13 +112,19 @@ aside {
 }
 
 main {
-  background-color: yellow;
+  background-color: var(--c0);
   grid-area: main;
   padding: 30px 20px;
+
+  & table {
+    & tr[data-inf-scroll] {
+      height: 250px;
+    }
+  }
 }
 
 footer {
-  background-color: red;
+  background-color: var(--c0);
   grid-area: footer;
 }
 
@@ -132,7 +138,6 @@ footer {
 }
 
 section.players {
-  text-align: center;
   > .players-input {
     margin: 30px 0;
     padding: 10px 20px;

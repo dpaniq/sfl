@@ -1,16 +1,29 @@
-import {JSX, createSignal} from 'solid-js';
-import BasicTable from '../components/UserTable';
-
+import InfiniteScroll from 'solid-infinite-scroll';
+import {JSX, createResource, createSignal, type Component} from 'solid-js';
+import PlayersInfiniteTable from '../components/PlayersInfiniteTable';
+import {TableCell, TableRow} from '@suid/material';
 // const handleSearchInput: JSX.EventHandler<HTMLInputElement, InputEvent> = (event) => {
 //   console.log(event.currentTarget.value);
 // };
+// import listJSON from '../api/list.json';
+
+// const listPromise = new Promise<{data: IPlayer[]; count: number}>(function (resolve, reject) {
+//   setTimeout(function () {
+//     resolve(listJSON);
+//   }, 200);
+// });
+
+// const fetchApi = async () => await (await fetch('https://api.example.com/list')).json();
+// const fetchApi = async () => listPromise;
+
+// https://libraries.io/npm/solid-infinite-scroll
 
 export default function Players<Component>({number}) {
-  const [searchString, setSearchString] = createSignal('');
+  const [searchQuery, setSearchQuery] = createSignal('');
 
   const handleSearchInput: JSX.EventHandler<HTMLInputElement, InputEvent> = (event) => {
     console.log(event.currentTarget.value);
-    setSearchString(event.currentTarget.value);
+    setSearchQuery(event.currentTarget.value);
   };
 
   return (
@@ -20,9 +33,9 @@ export default function Players<Component>({number}) {
         class="players-input"
         type="text"
         onInput={handleSearchInput}
-        value={searchString()}
+        value={searchQuery()}
       />
-      <BasicTable searchString={searchString} />
+      <PlayersInfiniteTable searchQuery={searchQuery} />
     </section>
   );
 }

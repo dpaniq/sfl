@@ -17,7 +17,6 @@ type TYears =
   | '2022'
   | '2023';
 
-type Number = number;
 type JSONNumber = number | null;
 
 type TPlayerJson = {
@@ -36,3 +35,8 @@ type TSFLJson = {
 // Utils types
 type Maybe<T> = T | null;
 // type
+
+type Paginate<T> = {
+  data: T[];
+  count: number;
+};

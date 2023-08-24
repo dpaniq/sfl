@@ -1,0 +1,18 @@
+import express, {NextFunction, Request, Response, Router} from 'express';
+import {PlayersController} from '../controllers/players.controller';
+import {User} from '../data';
+import {IRepository, PlayersRepository} from '../repositories';
+
+const router: Router = express.Router();
+// const usersRepository: IRepository<User> = new PlayersRepository(User);
+
+// router.get('/', async (request: Request, response: Response, next: NextFunction) => {
+//   await controller.findAll(request, response, next);
+// });
+
+router.get('/list', async (request: Request, response: Response, next: NextFunction) => {
+  const controller = new PlayersController();
+  await controller.getList(request, response, next);
+});
+
+export const playersRouter: Router = router;
