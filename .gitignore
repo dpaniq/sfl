@@ -1,7 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-#client
+# client
 # See http://help.github.com/ignore-files/ for more about ignoring files.
+/client/.vscode
 
 # Compiled output
 /dist
@@ -24,6 +25,7 @@ yarn-error.log
 *.sublime-workspace
 
 # Visual Studio Code
+/.vscode/*
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
