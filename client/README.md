@@ -14,7 +14,13 @@
 
 ## Team distribution story
 
-### Backend 
+### Backend
+
 ### Frontend
+
 - [ ] Design
 - [ ] Api
+
+# FSD
+
+https://medium.com/@fed4wet/feature-sliced-design-modern-architectural-methodology-on-angular-d0ef705ef598
