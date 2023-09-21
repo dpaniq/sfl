@@ -1,0 +1,8 @@
+<aside>
+  <nav>
+    <a [routerLink]="link.href" *ngFor="let link of links">
+      <mat-icon *ngIf="link.icon" [fontIcon]="link.icon"></mat-icon
+      >{{ link.name | uppercase }}
+    </a>
+  </nav>
+</aside>

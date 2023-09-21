@@ -1,0 +1,30 @@
+:host {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  grid-template:
+    [header-left] "aside header header" max-content [header-right]
+    [main-left] "  aside main   main  " max-content [main-right]
+    [footer-left] "aside footer footer" max-content [footer-right]
+    / 100px 1fr 1fr;
+}
+
+header {
+  grid-area: header;
+}
+
+app-aside {
+  grid-area: aside;
+}
+
+main {
+  margin: 10px auto;
+  padding: 0 10px;
+  grid-area: main;
+  width: 1200px;
+}
+
+footer {
+  grid-area: footer;
+}

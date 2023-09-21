@@ -1,0 +1,97 @@
+<button mat-raised-button (click)="isEditable = !isEditable">
+  {{ !isEditable ? "Enable edit mode" : "Disable edit mode" }}
+</button>
+
+<mat-stepper linear #stepper>
+  <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+    <ng-template matStepLabel>Available captains</ng-template>
+    <form class="search-captain-form">
+      <mat-form-field class="search-captain-field-full-width">
+        <mat-label>Capitan to add...</mat-label>
+        <input
+          type="text"
+          placeholder="Pick one"
+          aria-label="Number"
+          matInput
+          [formControl]="myControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option
+            *ngFor="let captainToAdd of options$ | async"
+            [value]="captainToAdd"
+          >
+            {{ captainToAdd.nickname }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+    <button mat-flat-button matStepperNext color="primary">Next</button>
+    <br />
+    <br />
+    <sfl-captains-cards
+      [captains]="(captains$ | async) ?? []"
+      [variant]="variantEnum.Full"
+    ></sfl-captains-cards>
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+    <div
+      *ngIf="
+        choosenCaptains$().length as choosenCaptains;
+        else noChoosenCaptains
+      "
+    >
+      <div *ngFor="let choosenCaptain of choosenCaptains$()">
+        <sfl-captain-card
+          [captain]="choosenCaptain"
+          [variant]="variantEnum.Full"
+        ></sfl-captain-card>
+        <button
+          mat-button
+          mat-raised-button
+          color="warn"
+          (click)="removeCaptain(choosenCaptain.id)"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+    <ng-template #noChoosenCaptains>
+      Hmm, it seems that captains not choosen yet.
+    </ng-template>
+    <!-- Captains Cards -->
+    <sfl-captains-cards
+      *ngIf="availableTeams$().length"
+      [captains]="(captains$ | async) ?? []"
+      [variant]="variantEnum.Simple"
+      captainToChoose
+    ></sfl-captains-cards>
+
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Fill out your address</ng-template>
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input
+          matInput
+          formControlName="secondCtrl"
+          placeholder="Ex. 1 Main St, New York, NY"
+          required
+        />
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-stepper>
