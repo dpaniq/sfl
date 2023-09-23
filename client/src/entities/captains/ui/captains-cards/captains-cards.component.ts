@@ -54,7 +54,8 @@ import { Variant } from '../../constants';
         [captain]="captain"
         [variant]="variant"
         [attr.data-captain-id]="captain.id"
-        *ngFor="let captain of captains"
+        *ngFor="let captain of captains; odd as oddd"
+        [class.odd]="oddd"
       ></sfl-captain-card>
     </section>
   `,

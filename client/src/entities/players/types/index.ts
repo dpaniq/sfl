@@ -1,13 +1,11 @@
-export type TCaptain = {
+export type TPlayer = {
   id: string;
-  avatar: number;
-
   number: number;
+  avatar: number;
+  captain: boolean;
   nickname: string;
   name: string;
   surname: string;
-
-  captain: boolean;
   totalGames: number;
   draws: number;
   lostGames: number;
@@ -17,4 +15,4 @@ export type TCaptain = {
   team?: string;
 };
 
-export type TChosenCaptain = TCaptain & { team: string };
+export type TChosenPlayer = TPlayer & { team: string };

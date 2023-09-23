@@ -4,10 +4,13 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { TCaptain, TChosenCaptain } from '../types';
 import { TEAMS } from '../constants';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CaptainsService {
+  private readonly useMock = true;
+  async getCaptains() {
+    return this.useMock ? await getCaptainsListMock() : [];
+  }
+
   players$ = signal<TCaptain[]>([]);
   // players = new BehaviorSubject<TCaptain[]>([]);
   // players$ = new Subject<TCaptain[]>([]);
@@ -41,7 +44,7 @@ export class CaptainsService {
     this.getCaptains();
   }
 
-  async getCaptains() {
+  async getCaptains___() {
     const captains = await getCaptainsListMock();
     console.log(captains);
     if (captains?.length) {

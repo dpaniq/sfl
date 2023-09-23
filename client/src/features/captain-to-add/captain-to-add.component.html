@@ -1,0 +1,36 @@
+<form class="search-captain-form">
+  <mat-progress-bar
+    mode="indeterminate"
+    *ngIf="loading$ | async"
+  ></mat-progress-bar>
+
+  <mat-form-field class="search-captain-field-full-width">
+    <mat-label>Capitan to add...</mat-label>
+    <input
+      type="text"
+      placeholder="Pick one"
+      aria-label="Number"
+      matInput
+      [formControl]="captainFormControl"
+      [matAutocomplete]="auto"
+    />
+
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option
+        *ngFor="
+          let captainToAdd of (filteredPlayers$ | async) || (players$ | async)
+        "
+        [value]="captainToAdd"
+      >
+        #{{ captainToAdd.number }} /
+        {{ captainToAdd.nickname }}
+        ({{ captainToAdd.name }} - {{ captainToAdd.surname }})
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+<sfl-captains-cards
+  [captains]="(captains$ | async) ?? []"
+  [variant]="variantEnum.Full"
+></sfl-captains-cards>

@@ -17,11 +17,15 @@ import { Variant } from '../../constants';
   imports: [CommonModule, MatCardModule],
   styles: [
     `
+      :host.odd {
+        box-shadow: 2px 0 2px 2px #ccc;
+      }
+
       .captain-card {
         & img {
           max-width: 100%;
         }
-        transition: scale 1s;
+        transition: scale 1ms;
         transition-timing-function: ease;
 
         &.simple {

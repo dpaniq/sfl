@@ -5,35 +5,8 @@
 <mat-stepper linear #stepper>
   <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
     <ng-template matStepLabel>Available captains</ng-template>
-    <form class="search-captain-form">
-      <mat-form-field class="search-captain-field-full-width">
-        <mat-label>Capitan to add...</mat-label>
-        <input
-          type="text"
-          placeholder="Pick one"
-          aria-label="Number"
-          matInput
-          [formControl]="myControl"
-          [matAutocomplete]="auto"
-        />
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option
-            *ngFor="let captainToAdd of options$ | async"
-            [value]="captainToAdd"
-          >
-            {{ captainToAdd.nickname }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-
+    <sfl-captain-to-add></sfl-captain-to-add>
     <button mat-flat-button matStepperNext color="primary">Next</button>
-    <br />
-    <br />
-    <sfl-captains-cards
-      [captains]="(captains$ | async) ?? []"
-      [variant]="variantEnum.Full"
-    ></sfl-captains-cards>
   </mat-step>
 
   <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">

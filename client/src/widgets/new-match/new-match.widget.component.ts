@@ -31,6 +31,7 @@ import {
   CaptainsStore,
   Variant,
 } from 'src/entities/captains';
+
 import {
   BehaviorSubject,
   Observable,
@@ -42,6 +43,8 @@ import {
 } from 'rxjs';
 import { TCaptain } from 'src/entities/captains/types';
 import { provideComponentStore } from '@ngrx/component-store';
+import { PlayersStore } from 'src/entities/players';
+import { CaptainToAddComponent } from 'src/features';
 
 @Component({
   standalone: true,
@@ -65,11 +68,17 @@ import { provideComponentStore } from '@ngrx/component-store';
     MatAutocompleteModule,
     CaptainCardComponent,
     CaptainsCardsComponent,
+    CaptainToAddComponent,
   ],
-  providers: [CaptainsService, provideComponentStore(CaptainsStore)],
+  providers: [
+    CaptainsService,
+    provideComponentStore(CaptainsStore),
+    provideComponentStore(PlayersStore),
+  ],
 })
 export class NewMatchWidgetComponent implements OnInit {
   readonly captains$ = this.captainsStore.captains$;
+  readonly players$ = this.playersStore.players$;
 
   isEditable = false;
   isLinear = false;
@@ -84,12 +93,11 @@ export class NewMatchWidgetComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private captainsService: CaptainsService,
-    private readonly captainsStore: CaptainsStore
+    private readonly captainsStore: CaptainsStore,
+    private readonly playersStore: PlayersStore
   ) {}
 
   readonly variantEnum = Variant;
-  public readonly players$ = this.captainsService.players$;
-  // public readonly captains$ = this.captainsService.captains$;
 
   public readonly captainsToAdd$ = this.captainsService.captainsToAdd$;
   public readonly choosenCaptains$ = this.captainsService.choosenCaptains_s$;
@@ -128,10 +136,6 @@ export class NewMatchWidgetComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
-  displayFn(captain: TCaptain): string {
-    return captain ? `#${captain.number} - ${captain.nickname}` : '';
-  }
-
   ngOnInit() {
     this.captainsStore.captains$
       .pipe(takeUntil(this.unsubscribe$))
@@ -142,28 +146,5 @@ export class NewMatchWidgetComponent implements OnInit {
     console.log(this.captainsStore.captains$);
 
     console.log('t2', this.captainsToAdd$(), this.options_.value);
-    this.myControl.valueChanges
-      .pipe(startWith(''), takeUntil(this.unsubscribe$))
-      .subscribe((value) => {
-        if (typeof value === 'string') {
-          const captains = this.captainsService
-            .captainsToAdd$()
-            .filter((captain) =>
-              captain.nickname.toLowerCase().includes(value)
-            );
-          console.log(captains);
-          this.options_.next(captains);
-          return;
-        }
-        console.log('TCAPTAIN', value);
-        // this.options_.next()
-        this.captainsService.addCaptain((value as TCaptain).id);
-
-        // Captain's store logic
-        this.captainsStore.add({
-          ...(value as TCaptain),
-          captain: true,
-        });
-      });
   }
 }
