@@ -1,2 +1,3 @@
 import { CaptainToAddComponent } from './captain-to-add/captain-to-add.component';
-export { CaptainToAddComponent };
+import { CaptainsSelectionComponent } from './captains-selection/captains-selection.component';
+export { CaptainToAddComponent, CaptainsSelectionComponent };

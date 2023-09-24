@@ -1,9 +1,9 @@
-import CaptainCards from "../captains-cards";
+import CaptainCards from "../list";
 
 import CapitansListJSON from "../../../shared/api/captains/mock/list.json";
 import { Button, Box, Grid, Typography } from "@suid/material";
 import { createSignal, For, Switch, Match, Show } from "solid-js";
-import CaptainCard from "../captain-card";
+import CaptainCard from "../card";
 import { useNewMatchStore } from "@root/src/context/newMatchContext";
 
 interface PropsInterface {

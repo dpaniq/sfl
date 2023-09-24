@@ -10,7 +10,6 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
-  NgModel,
   FormControl,
 } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -28,11 +27,12 @@ import {
   CaptainsCardsComponent,
   CaptainsService,
   CaptainsStore,
-  Variant,
   TCaptain,
 } from '@entities/captains';
 import { PlayersStore } from '@entities/players';
-import { CaptainToAddComponent } from '@features';
+import { CaptainToAddComponent, CaptainsSelectionComponent } from '@features';
+import { CardVariantEnum } from '@shared/constants/card';
+import { TeamEnum } from '@shared/constants/team';
 
 @Component({
   standalone: true,
@@ -57,6 +57,7 @@ import { CaptainToAddComponent } from '@features';
     CaptainCardComponent,
     CaptainsCardsComponent,
     CaptainToAddComponent,
+    CaptainsSelectionComponent,
   ],
   providers: [
     CaptainsService,
@@ -79,6 +80,11 @@ export class NewMatchWidgetComponent implements OnInit {
     secondCtrl: ['', Validators.required],
   });
 
+  captainsFormGroup = this._formBuilder.group({
+    firstCaptain: [null, Validators.required],
+    secondCaptain: [null, Validators.required],
+  });
+
   constructor(
     private _formBuilder: FormBuilder,
     private captainsService: CaptainsService,
@@ -86,11 +92,8 @@ export class NewMatchWidgetComponent implements OnInit {
     private readonly playersStore: PlayersStore
   ) {}
 
-  readonly variantEnum = Variant;
-
-  public readonly captainsToAdd$ = this.captainsService.captainsToAdd$;
-  public readonly choosenCaptains$ = this.captainsService.choosenCaptains_s$;
-  public readonly availableTeams$ = this.captainsService.availableTeams$;
+  readonly variantEnum = CardVariantEnum;
+  readonly teamEnum = TeamEnum;
 
   options_ = new BehaviorSubject<TCaptain[]>([]);
   options$ = this.options_.asObservable();
@@ -98,27 +101,6 @@ export class NewMatchWidgetComponent implements OnInit {
   readonly unsubscribe$ = new Subject<void>();
 
   myControl = new FormControl<TCaptain | string>('');
-
-  @HostListener('click', ['$event.target'])
-  handleClick(target: Element) {
-    const captainEl = target.closest('sfl-captain-card');
-    if (captainEl) {
-      const id = captainEl.getAttribute('data-captain-id');
-      console.log(id);
-      id &&
-        this.availableTeams$().length &&
-        this.captainsService.toggleChoosenCaptains(
-          id,
-          this.availableTeams$()[0]
-        );
-
-      id && this.captainsStore.delete(id);
-    }
-  }
-
-  removeCaptain(id: string) {
-    this.captainsService.removeCaptain(id);
-  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -131,9 +113,5 @@ export class NewMatchWidgetComponent implements OnInit {
       .subscribe((captains) =>
         console.log('WE GET CAPTAINS FROM STORE', captains)
       );
-
-    console.log(this.captainsStore.captains$);
-
-    console.log('t2', this.captainsToAdd$(), this.options_.value);
   }
 }

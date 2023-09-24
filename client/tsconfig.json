@@ -22,13 +22,13 @@
     "lib": ["ES2022", "dom"],
     "paths": {
       "@environment/*": ["src/environments/*"],
-      "@app/*": ["src/app/*"],
       "@config/*": ["src/config/*"],
       "@shared/*": ["src/shared/*"],
       "@entities/*": ["src/entities/*"],
       "@features": ["src/features/index"],
       "@widgets": ["src/widgets/index"],
-      "@pages": ["src/pages/index"]
+      "@pages": ["src/pages/index"],
+      "@app/*": ["src/app/*"]
     }
   },
   "angularCompilerOptions": {

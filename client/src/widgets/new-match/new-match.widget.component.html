@@ -2,45 +2,46 @@
   {{ !isEditable ? "Enable edit mode" : "Disable edit mode" }}
 </button>
 
+<p>Selected: {{ stepper.selected?.state | json }}</p>
+
 <mat-stepper linear #stepper>
+  <!-- Captain to add (skip) -->
   <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
     <ng-template matStepLabel>Available captains</ng-template>
     <sfl-captain-to-add></sfl-captain-to-add>
     <button mat-flat-button matStepperNext color="primary">Next</button>
   </mat-step>
 
+  <mat-step
+    [stepControl]="captainsFormGroup.controls.firstCaptain"
+    [editable]="isEditable"
+  >
+    <ng-template matStepLabel>Choose First Captain</ng-template>
+    <sfl-captains-selection
+      [team]="teamEnum.TeamA"
+      [control]="captainsFormGroup.controls.firstCaptain"
+    ></sfl-captains-selection>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext>Next</button>
+  </mat-step>
+
+  <mat-step
+    [stepControl]="captainsFormGroup.controls.secondCaptain"
+    [editable]="isEditable"
+  >
+    <ng-template matStepLabel>Choose Second Captain</ng-template>
+    <sfl-captains-selection
+      [team]="teamEnum.TeamB"
+      [control]="captainsFormGroup.controls.secondCaptain"
+    ></sfl-captains-selection>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext>Next</button>
+  </mat-step>
+
   <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
-    <div
-      *ngIf="
-        choosenCaptains$().length as choosenCaptains;
-        else noChoosenCaptains
-      "
-    >
-      <div *ngFor="let choosenCaptain of choosenCaptains$()">
-        <sfl-captain-card
-          [captain]="choosenCaptain"
-          [variant]="variantEnum.Full"
-        ></sfl-captain-card>
-        <button
-          mat-button
-          mat-raised-button
-          color="warn"
-          (click)="removeCaptain(choosenCaptain.id)"
-        >
-          Remove
-        </button>
-      </div>
-    </div>
     <ng-template #noChoosenCaptains>
       Hmm, it seems that captains not choosen yet.
     </ng-template>
-    <!-- Captains Cards -->
-    <sfl-captains-cards
-      *ngIf="availableTeams$().length"
-      [captains]="(captains$ | async) ?? []"
-      [variant]="variantEnum.Simple"
-      captainToChoose
-    ></sfl-captains-cards>
 
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Fill out your address</ng-template>

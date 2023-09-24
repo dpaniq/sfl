@@ -1,3 +1,5 @@
+import { TeamEnum } from '@shared/constants/team';
+
 export type TPlayer = {
   id: string;
   number: number;
@@ -12,7 +14,7 @@ export type TPlayer = {
   wonGames: number;
   maxWinStreak: number;
   maxLostStreak: number;
-  team?: string;
+  team?: TeamEnum;
 };
 
-export type TChosenPlayer = TPlayer & { team: string };
+export type TChosenPlayer = TPlayer & { team: TeamEnum };

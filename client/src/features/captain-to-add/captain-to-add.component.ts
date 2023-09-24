@@ -29,7 +29,6 @@ import {
   CaptainCardComponent,
   CaptainsCardsComponent,
   CaptainsStore,
-  Variant,
   TCaptain,
 } from 'src/entities/captains';
 
@@ -41,6 +40,7 @@ import {
 } from '../../entities/captains/utils/autocomplete';
 import { BaseUnsubscribeComponent } from 'src/shared/classes/base-unsubscribe-component';
 import { TPlayer } from 'src/entities/players/types';
+import { CardVariantEnum } from '@shared/constants/card';
 
 @Component({
   standalone: true,
@@ -67,10 +67,10 @@ import { TPlayer } from 'src/entities/players/types';
     CaptainsCardsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    provideComponentStore(CaptainsStore),
-    provideComponentStore(PlayersStore),
-  ],
+  // providers: [
+  //   provideComponentStore(CaptainsStore),
+  //   provideComponentStore(PlayersStore),
+  // ],
 })
 export class CaptainToAddComponent extends BaseUnsubscribeComponent {
   constructor(
@@ -81,7 +81,7 @@ export class CaptainToAddComponent extends BaseUnsubscribeComponent {
   }
 
   readonly displayFn = displayFn;
-  readonly variantEnum = Variant;
+  readonly variantEnum = CardVariantEnum;
   readonly players$ = this.playersStore.players$;
   readonly captains$ = this.captainsStore.captains$;
   readonly captainFormControl = new FormControl<TCaptain | string | null>('');

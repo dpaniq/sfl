@@ -8,7 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { TCaptain } from '../../types';
-import { Variant } from '../../constants';
+import { CardVariantEnum } from '@shared/constants/card';
 
 @Component({
   standalone: true,
@@ -51,19 +51,15 @@ import { Variant } from '../../constants';
   ],
   template: `
     <ng-container [ngSwitch]="variant">
-      <ng-container *ngSwitchCase="variantEnum.Small"
-        >NO SMALL YET</ng-container
-      >
-
-      <ng-container *ngSwitchCase="variantEnum.Simple"
+      <ng-container *ngSwitchCase="variantEnum.Stats"
         ><ng-container *ngTemplateOutlet="simple"></ng-container
       ></ng-container>
 
-      <ng-container *ngSwitchCase="variantEnum.Full"
+      <ng-container *ngSwitchCase="variantEnum.Preview"
         ><ng-container *ngTemplateOutlet="full"></ng-container
       ></ng-container>
 
-      <ng-container *ngSwitchDefault>HAHAHA</ng-container>
+      <ng-container *ngSwitchDefault>Default card</ng-container>
     </ng-container>
 
     <!-- Captain Card [Simple] -->
@@ -110,7 +106,7 @@ import { Variant } from '../../constants';
         </mat-card-header>
         <img
           mat-card-image
-          src="https://picsum.photos/id/{{ captain.avatar }}/200/300"
+          src="https://picsum.photos/id/{{ captain.avatar }}/300/400"
           alt="Photo of a Shiba Inu"
         />
         <!-- <mat-card-content> </mat-card-content>
@@ -120,8 +116,8 @@ import { Variant } from '../../constants';
   `,
 })
 export class CaptainCardComponent {
-  readonly variantEnum = Variant;
+  readonly variantEnum = CardVariantEnum;
   @Input({ required: true }) captain!: TCaptain;
   @Input() hasData = false;
-  @Input() variant?: Variant;
+  @Input() variant?: CardVariantEnum;
 }

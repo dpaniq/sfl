@@ -1,3 +1,5 @@
+import { TeamEnum } from '@shared/constants/team';
+
 export type TCaptain = {
   id: string;
   avatar: number;
@@ -14,7 +16,7 @@ export type TCaptain = {
   wonGames: number;
   maxWinStreak: number;
   maxLostStreak: number;
-  team?: string;
+  team?: TeamEnum;
 };
 
-export type TChosenCaptain = TCaptain & { team: string };
+export type TCaptainSelected = Required<TCaptain>;
