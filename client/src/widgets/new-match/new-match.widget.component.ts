@@ -1,12 +1,9 @@
 import {
-  AfterViewInit,
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
   HostListener,
-  Injectable,
   OnInit,
-  inject,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -16,7 +13,7 @@ import {
   NgModel,
   FormControl,
 } from '@angular/forms';
-import { MatStepperIntl, MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,27 +21,18 @@ import { NgFor, NgIf, JsonPipe, AsyncPipe } from '@angular/common';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { provideComponentStore } from '@ngrx/component-store';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import {
   CaptainCardComponent,
   CaptainsCardsComponent,
   CaptainsService,
   CaptainsStore,
   Variant,
-} from 'src/entities/captains';
-
-import {
-  BehaviorSubject,
-  Observable,
-  Subject,
-  combineLatest,
-  of,
-  startWith,
-  takeUntil,
-} from 'rxjs';
-import { TCaptain } from 'src/entities/captains/types';
-import { provideComponentStore } from '@ngrx/component-store';
-import { PlayersStore } from 'src/entities/players';
-import { CaptainToAddComponent } from 'src/features';
+  TCaptain,
+} from '@entities/captains';
+import { PlayersStore } from '@entities/players';
+import { CaptainToAddComponent } from '@features';
 
 @Component({
   standalone: true,
@@ -75,6 +63,7 @@ import { CaptainToAddComponent } from 'src/features';
     provideComponentStore(CaptainsStore),
     provideComponentStore(PlayersStore),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewMatchWidgetComponent implements OnInit {
   readonly captains$ = this.captainsStore.captains$;
