@@ -1,0 +1,29 @@
+:host {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 20% 60% 20%;
+  gap: 40px 10px;
+  box-sizing: border-box;
+
+  .players {
+    position: relative;
+    display: grid;
+    gap: 10px 0;
+
+    .player-card {
+      min-width: none;
+    }
+  }
+}
+
+img.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.button-right {
+  mat-icon {
+    transform: scaleX(-1);
+  }
+}

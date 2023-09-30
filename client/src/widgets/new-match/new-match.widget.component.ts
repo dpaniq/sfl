@@ -30,7 +30,11 @@ import {
   TCaptain,
 } from '@entities/captains';
 import { PlayersStore } from '@entities/players';
-import { CaptainToAddComponent, CaptainsSelectionComponent } from '@features';
+import {
+  CaptainToAddComponent,
+  CaptainsSelectionComponent,
+  PlayersSelectionComponent,
+} from '@features';
 import { CardVariantEnum } from '@shared/constants/card';
 import { TeamEnum } from '@shared/constants/team';
 
@@ -58,6 +62,7 @@ import { TeamEnum } from '@shared/constants/team';
     CaptainsCardsComponent,
     CaptainToAddComponent,
     CaptainsSelectionComponent,
+    PlayersSelectionComponent,
   ],
   providers: [
     CaptainsService,

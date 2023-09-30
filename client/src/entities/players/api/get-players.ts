@@ -217,7 +217,7 @@ export async function getPlayersListMock(): Promise<TPlayer[]> {
       maxLostStreak: 88,
     },
     {
-      id: '650b2a034cc1b5d1077c97c9',
+      id: '650b2a034cc1b5d1077c97c9ddd',
       name: 'Bo',
       draws: 5,
       avatar: 17,
