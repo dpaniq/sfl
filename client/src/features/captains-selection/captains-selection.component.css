@@ -1,0 +1,13 @@
+.captains-corousel {
+  display: grid;
+  grid-auto-flow: column;
+  overflow-x: scroll;
+  /* scroll-padding: 0 80%; */
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  gap: 0 1rem;
+
+  & sfl-captain-stats-card {
+    scroll-snap-align: center;
+  }
+}

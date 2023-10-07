@@ -1,0 +1,15 @@
+@use "src/assets/styles/variables" as *;
+
+:host {
+  display: block;
+  padding: $card-padding;
+}
+
+.search-captain-form {
+  min-width: 150px;
+  width: 100%;
+}
+
+.search-captain-field-full-width {
+  width: 100%;
+}

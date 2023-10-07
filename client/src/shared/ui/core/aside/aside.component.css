@@ -1,0 +1,48 @@
+aside {
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  grid-area: aside;
+  background-color: var(--c0);
+  border-right: 1px dashed #ccc;
+  height: 100vh;
+
+  > nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px 20px;
+
+    color: black;
+
+    & a {
+      /* em rem?*/
+      padding: calc(10px + 15%);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      text-align: center;
+
+      height: 100px;
+
+      &:active {
+        color: var(--c3);
+      }
+      &:hover {
+        color: var(--c4);
+        scale: 1.1;
+      }
+
+      > mat-icon {
+        font-size: 30px;
+        height: 30px;
+        width: 30px;
+      }
+    }
+  }
+}
