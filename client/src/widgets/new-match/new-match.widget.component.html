@@ -38,17 +38,20 @@
     <button mat-button matStepperNext>Next</button>
   </mat-step> -->
 
-  <mat-step
-    [stepControl]="captainsFormGroup.controls.secondCaptain"
-    [editable]="isEditable"
-  >
+  <mat-step [stepControl]="playersFormControl" [editable]="isEditable">
     <ng-template matStepLabel>Choose Second Players</ng-template>
     <sfl-players-selection
-      [team]="teamEnum.TeamB"
-      [control]="captainsFormGroup.controls.secondCaptain"
+      [control]="playersFormControl"
     ></sfl-players-selection>
     <button mat-button matStepperPrevious>Back</button>
-    <button mat-button matStepperNext>Next</button>
+    <button
+      mat-raised-button
+      matStepperNext
+      color="primary"
+      [disabled]="!playersFormControl.value"
+    >
+      Next
+    </button>
   </mat-step>
 
   <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">

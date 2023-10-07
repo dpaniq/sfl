@@ -5,6 +5,8 @@ import {
   AfterViewInit,
   OnInit,
   signal,
+  DestroyRef,
+  Input,
 } from '@angular/core';
 import { CommonModule, AsyncPipe, NgFor, NgForOf, NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -17,12 +19,15 @@ import {
   TChosenPlayer,
   TPlayer,
 } from '@entities/players';
-import { combineLatest, distinctUntilChanged, map, takeUntil } from 'rxjs';
+
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { combineLatest, map, takeUntil } from 'rxjs';
 import { BaseUnsubscribeComponent } from '@shared/classes/base-unsubscribe-component';
 import { CaptainsStore } from '@entities/captains';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TeamEnum } from '@shared/constants/team';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -41,17 +46,13 @@ import { TeamEnum } from '@shared/constants/team';
   ],
   providers: [],
 })
-export class PlayersSelectionComponent
-  extends BaseUnsubscribeComponent
-  implements OnInit
-{
+export class PlayersSelectionComponent implements OnInit {
   constructor(
+    private _destroyRef: DestroyRef,
     private _liveAnnouncer: LiveAnnouncer,
     private playersStore: PlayersStore,
     private captainsStore: CaptainsStore
-  ) {
-    super();
-  }
+  ) {}
 
   readonly teamEnum = TeamEnum;
   readonly currentTeam$ = signal<TeamEnum>(TeamEnum.TeamA);
@@ -60,11 +61,24 @@ export class PlayersSelectionComponent
   readonly playerTeamA$ = this.playersStore.playersTeamsA$;
   readonly playerTeamB$ = this.playersStore.playersTeamsB$;
 
+  @Input({ required: true }) control!: FormControl<boolean>;
+
   @ViewChild(MatSort) sort!: MatSort;
 
-  //https://www.htmlgoodies.com/javascript/custom-sort-javascript-tables/
+  ngOnDestroy() {}
+
   ngOnInit() {
-    // this.captainsStore.selectedCaptains$.pipe
+    combineLatest([
+      this.captainsStore.selectedCaptains$.pipe(
+        map((captains) => captains.length),
+        map(() => 2)
+      ),
+      this.playersStore.selected$.pipe(map((players) => players.length)),
+    ])
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(([captainsCount, playersCounts]) => {
+        this.control.patchValue(captainsCount >= 2 && playersCounts >= 2);
+      });
 
     combineLatest([
       this.playerTeamA$.pipe(map((players) => players.map(({ id }) => id))),
@@ -80,7 +94,7 @@ export class PlayersSelectionComponent
             (player) => ![...playersIdsA, ...playersIdsB].includes(player.id)
           );
         }),
-        takeUntil(this.unsubscribe$)
+        takeUntilDestroyed(this._destroyRef)
       )
       .subscribe((players) => {
         console.log(players);

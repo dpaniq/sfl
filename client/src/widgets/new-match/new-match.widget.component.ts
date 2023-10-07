@@ -14,6 +14,7 @@ import {
 } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgFor, NgIf, JsonPipe, AsyncPipe } from '@angular/common';
@@ -58,6 +59,8 @@ import { TeamEnum } from '@shared/constants/team';
     MatButtonModule,
     MatIconModule,
     MatAutocompleteModule,
+    MatDividerModule,
+    MatIconModule,
     CaptainCardComponent,
     CaptainsCardsComponent,
     CaptainToAddComponent,
@@ -90,9 +93,13 @@ export class NewMatchWidgetComponent implements OnInit {
     secondCaptain: [null, Validators.required],
   });
 
+  playersFormControl = new FormControl<boolean>(false, {
+    nonNullable: true,
+    validators: [Validators.requiredTrue],
+  });
+
   constructor(
     private _formBuilder: FormBuilder,
-    private captainsService: CaptainsService,
     private readonly captainsStore: CaptainsStore,
     private readonly playersStore: PlayersStore
   ) {}
