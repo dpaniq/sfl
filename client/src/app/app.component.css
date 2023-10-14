@@ -4,7 +4,7 @@
   height: 100vh;
   justify-content: center;
   grid-template:
-    [header-left] "aside header header" max-content [header-right]
+    [header-left] "header header header" max-content [header-right]
     [main-left] "  aside main   main  " max-content [main-right]
     [footer-left] "aside footer footer" max-content [footer-right]
     / 100px 1fr 1fr;
@@ -12,6 +12,21 @@
 
 header {
   grid-area: header;
+
+  & a.logotype {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  > .mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+
+    & div {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 app-aside {
