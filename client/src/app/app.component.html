@@ -1,20 +1,40 @@
 <header>
-  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur nulla
-  illo reprehenderit porro sed, doloribus sunt? Ullam facere nemo, non odit fuga
-  modi dolore corrupti quod aspernatur beatae vitae doloribus error. Labore,
-  expedita. Alias quod veritatis, et nostrum neque iure totam fugiat corporis
-  quidem magni. Deleniti, laborum dolores ex nemo animi saepe consequuntur, sed
-  sapiente obcaecati error placeat? Animi quisquam a aperiam non vitae. Harum
-  nam provident accusamus nisi eos? Itaque praesentium ab ratione perspiciatis
-  reiciendis eum repudiandae quam autem rem, cupiditate laudantium facere a
-  provident tenetur. Labore incidunt, earum accusamus optio dolor tempore a
-  voluptates quo quidem, aspernatur ut nobis culpa sequi sint? Libero
-  cupiditate, laudantium assumenda recusandae, dignissimos necessitatibus, dolor
-  qui a sunt officiis eaque corrupti ipsam temporibus incidunt excepturi
-  eveniet. Nemo recusandae voluptas laboriosam asperiores repudiandae. Et hic
-  asperiores velit doloremque officia repellendus est doloribus aliquam suscipit
-  soluta ipsa vel facilis, mollitia quas in, cum assumenda officiis?
+  <mat-toolbar color="primary">
+    <div class="header-menu-and-logo-block">
+      <button
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with menu icon"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <a class="logotype" mat-button href="/">
+        <b>SFL: Suturday Football League</b>
+      </a>
+    </div>
+
+    <div class="header-side-block">
+      <button
+        [disabled]="true"
+        mat-icon-button
+        class="example-icon favorite-icon"
+        aria-label="Example icon-button with heart icon"
+      >
+        <mat-icon>favorite</mat-icon>
+      </button>
+      <button
+        [disabled]="true"
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with share icon"
+      >
+        <mat-icon>share</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
 </header>
+
+<div class="container"></div>
 
 <app-aside></app-aside>
 
