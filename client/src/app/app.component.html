@@ -1,11 +1,7 @@
 <header>
   <mat-toolbar color="primary">
     <div class="header-menu-and-logo-block">
-      <button
-        mat-icon-button
-        class="example-icon"
-        aria-label="Example icon-button with menu icon"
-      >
+      <button mat-icon-button class="example-icon" (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
       <a class="logotype" mat-button href="/">
@@ -34,12 +30,17 @@
   </mat-toolbar>
 </header>
 
-<div class="container"></div>
+<!-- Main container -->
+<mat-sidenav-container class="container" autosize>
+  <mat-sidenav #sidenav mode="side" [opened]="false" class="aside">
+    <app-aside></app-aside>
+  </mat-sidenav>
 
-<app-aside></app-aside>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
+  <mat-sidenav-content>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
 <footer>footer</footer>
