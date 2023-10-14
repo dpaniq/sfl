@@ -1,13 +1,13 @@
 :host {
-  display: grid;
+  /* display: grid;
   width: 100vw;
   height: 100vh;
   justify-content: center;
   grid-template:
     [header-left] "header header header" max-content [header-right]
-    [main-left] "  aside main   main  " max-content [main-right]
-    [footer-left] "aside footer footer" max-content [footer-right]
-    / 100px 1fr 1fr;
+    [main-left] "container container container  " max-content [main-right]
+    [footer-left] "footer footer footer" max-content [footer-right]
+    / 1fr 1fr 1fr; */
 }
 
 header {
@@ -29,15 +29,14 @@ header {
   }
 }
 
-app-aside {
-  grid-area: aside;
-}
-
-main {
+.container {
   margin: 10px auto;
   padding: 0 10px;
-  grid-area: main;
-  width: 1200px;
+  grid-area: container;
+
+  .aside {
+    width: max-content;
+  }
 }
 
 footer {

@@ -3,10 +3,7 @@ aside {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  grid-area: aside;
   background-color: var(--c0);
-  border-right: 1px dashed #ccc;
-  height: 100vh;
 
   > nav {
     display: flex;
