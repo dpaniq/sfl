@@ -12,4 +12,12 @@ export const routes: Routes = [
         (m) => m.NewMatchComponent
       ),
   },
+  {
+    path: 'captains',
+    title: 'Captains CRUD',
+    loadComponent: () =>
+      import('../pages/captains-page/captains-page.component').then(
+        (m) => m.CaptainsPageComponent
+      ),
+  },
 ];

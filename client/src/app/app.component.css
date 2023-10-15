@@ -31,10 +31,14 @@ header {
 
 .container {
   margin: 10px auto;
-  padding: 0 10px;
   grid-area: container;
+  min-height: calc(100% - 60px);
 
-  .aside {
+  & main {
+    padding: 20px 10px;
+  }
+
+  & .aside {
     width: max-content;
   }
 }

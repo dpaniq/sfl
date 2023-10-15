@@ -30,7 +30,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "sfl",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
