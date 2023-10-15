@@ -1,4 +1,4 @@
-import { Link } from './types';
+import { Link, TreePage } from './types';
 
 export const LINKS: Link[] = [
   {
@@ -10,5 +10,10 @@ export const LINKS: Link[] = [
     name: 'New match',
     href: '/new-match',
     icon: 'add-cicrle',
+  },
+  {
+    name: 'Captains',
+    href: '/captains',
+    icon: 'settings_accessibility',
   },
 ];
