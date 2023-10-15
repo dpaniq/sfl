@@ -7,13 +7,18 @@ export const LINKS: Link[] = [
     icon: 'home',
   },
   {
+    name: 'Captains',
+    href: '/captains',
+    icon: 'person',
+  },
+  {
+    name: 'Players',
+    href: '/players',
+    icon: 'groups',
+  },
+  {
     name: 'New match',
     href: '/new-match',
     icon: 'add-cicrle',
-  },
-  {
-    name: 'Captains',
-    href: '/captains',
-    icon: 'settings_accessibility',
   },
 ];
