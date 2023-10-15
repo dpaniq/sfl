@@ -14,10 +14,18 @@ export const routes: Routes = [
   },
   {
     path: 'captains',
-    title: 'Captains CRUD',
+    title: 'Captains',
     loadComponent: () =>
       import('../pages/captains-page/captains-page.component').then(
         (m) => m.CaptainsPageComponent
+      ),
+  },
+  {
+    path: 'players',
+    title: 'Players',
+    loadComponent: () =>
+      import('../pages/players-page/players-page.component').then(
+        (m) => m.PlayersPageComponent
       ),
   },
 ];
