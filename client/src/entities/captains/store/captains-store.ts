@@ -1,6 +1,6 @@
 import { ComponentStore, OnStoreInit } from '@ngrx/component-store';
 import { TCaptain, TCaptainSelected } from '../types';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnInit, inject } from '@angular/core';
 import { getCaptainsListMock } from '../api/get-captains';
 import { Observable } from 'rxjs';
 import { CaptainsService } from '../services/captains.service';
@@ -21,6 +21,8 @@ export class CaptainsStore
   extends ComponentStore<CaptainsState>
   implements OnStoreInit
 {
+  private captainsService = inject(CaptainsService);
+
   readonly captains$ = this.select(({ captains }) => captains);
   readonly selectedCaptains$ = this.select(({ selected }) => selected);
   readonly captainsWithoutTeam$ = this.select(({ captains, selected }) => {
@@ -28,7 +30,7 @@ export class CaptainsStore
     return captains.filter((captain) => !selectedIds.includes(captain.id));
   });
 
-  constructor(private captainsService: CaptainsService) {
+  constructor() {
     super(INITIAL_CAPTAINS_STATE);
   }
 
