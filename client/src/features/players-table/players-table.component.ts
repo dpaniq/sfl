@@ -14,12 +14,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { CaptainsService, CaptainsStore, TCaptain } from '@entities/captains';
 import { provideComponentStore } from '@ngrx/component-store';
+import { PlayersStore, TPlayer } from '@entities/players';
 
 @Component({
-  selector: 'sfl-captains-table',
+  selector: 'sfl-players-table',
   standalone: true,
-  templateUrl: './captains-table.component.html',
-  styleUrls: ['./captains-table.component.css'],
+  templateUrl: './players-table.component.html',
+  styleUrls: ['./players-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
@@ -35,13 +36,13 @@ import { provideComponentStore } from '@ngrx/component-store';
     CaptainsService,
 
     // To use CaptainsService - useEffects
-    provideComponentStore(CaptainsStore),
+    provideComponentStore(PlayersStore),
   ],
 })
-export class CaptainsTableComponent {
+export class PlayersTableComponent {
   constructor(
     private _destroyRef: DestroyRef,
-    private captainsStore: CaptainsStore
+    private playersStore: PlayersStore
   ) {}
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -49,10 +50,10 @@ export class CaptainsTableComponent {
   ngOnDestroy() {}
 
   ngOnInit() {
-    this.captainsStore.captains$
+    this.playersStore.players$
       .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((captains) => {
-        this.dataSource.data.push(...captains);
+      .subscribe((players) => {
+        this.dataSource.data.push(...players);
       });
   }
 
@@ -60,9 +61,10 @@ export class CaptainsTableComponent {
     this.dataSource.sort = this.sort;
   }
 
-  readonly dataSource = new MatTableDataSource<TCaptain>([]);
-  readonly displayedColumns: (keyof TCaptain)[] = [
+  readonly dataSource = new MatTableDataSource<TPlayer>([]);
+  readonly displayedColumns: (keyof TPlayer | 'actions')[] = [
     'avatar',
+    'number',
     'name',
     'surname',
     'nickname',
@@ -74,6 +76,8 @@ export class CaptainsTableComponent {
 
     'maxWinStreak',
     'maxLostStreak',
+
+    'actions',
 
     // TBC
     // playsForA: number
