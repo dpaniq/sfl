@@ -5,12 +5,14 @@ import { CaptainsTableComponent } from './captains-table/captains-table.componen
 
 import { PlayersSelectionComponent } from './players-selection/players-selection.component';
 import { PlayersTableComponent } from './players-table/players-table.component';
+import { CaptainsToggleComponent } from './captains-toggle/captains-toggle.component';
 
 export {
   // Captains
   CaptainToAddComponent,
   CaptainsSelectionComponent,
   CaptainsTableComponent,
+  CaptainsToggleComponent,
 
   // Players
   PlayersSelectionComponent,

@@ -135,7 +135,7 @@ export class CaptainToAddComponent extends BaseUnsubscribeComponent {
         this.captainFormControl.reset();
         this.captainsStore.add({
           ...suggestedCaptain,
-          captain: true,
+          isCaptain: true,
         });
       });
   }
