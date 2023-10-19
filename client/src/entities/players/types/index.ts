@@ -5,7 +5,7 @@ export type TPlayer = {
 
   number: number;
   avatar: number;
-  captain: boolean;
+  isCaptain: boolean;
 
   nickname: string;
   name: string;

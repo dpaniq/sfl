@@ -69,4 +69,19 @@ export class CaptainsStore
     ...state,
     selected: state.selected.filter((captain) => captain.id !== id),
   }));
+
+  readonly toggleCaptain = this.updater(
+    (state, { id, isCaptain }: { id: string; isCaptain: boolean }) => ({
+      ...state,
+      captains: state.captains.map((captain) => {
+        if (captain.id === id) {
+          return {
+            ...captain,
+            isCaptain,
+          };
+        }
+        return captain;
+      }),
+    })
+  );
 }

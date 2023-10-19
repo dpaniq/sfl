@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { CaptainsTableComponent } from '@features';
+import { CaptainsTableComponent, CaptainsToggleComponent } from '@features';
 
 @Component({
   selector: 'sfl-captains-page',
@@ -15,6 +15,7 @@ import { CaptainsTableComponent } from '@features';
 
     // Features
     CaptainsTableComponent,
+    CaptainsToggleComponent,
   ],
   templateUrl: './captains-page.component.html',
   styleUrls: ['./captains-page.component.css'],

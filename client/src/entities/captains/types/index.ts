@@ -9,7 +9,7 @@ export type TCaptain = {
   name: string;
   surname: string;
 
-  captain: boolean;
+  isCaptain: boolean;
   totalGames: number;
   draws: number;
   lostGames: number;
