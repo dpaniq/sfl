@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { PlayersTableComponent } from '@features';
+import { PlayersAdminWidgetComponent } from '@widgets';
 
 @Component({
   selector: 'sfl-players-page',
@@ -15,9 +16,16 @@ import { PlayersTableComponent } from '@features';
 
     // Features
     PlayersTableComponent,
+
+    // Widgets
+    PlayersAdminWidgetComponent,
   ],
   templateUrl: './players-page.component.html',
   styleUrls: ['./players-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayersPageComponent {}
+export class PlayersPageComponent {
+  // @temporary
+  // TODO JWT
+  user: { isAdmin: boolean } = { isAdmin: true };
+}
