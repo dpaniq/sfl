@@ -29,14 +29,6 @@ import { provideComponentStore } from '@ngrx/component-store';
     MatButtonModule,
     MatIconModule,
   ],
-  providers: [
-    // Fixme: CaptainsStore uses CaptainsService, idk how to fix this
-    // https://angular.io/api/core/FactoryProvider
-    CaptainsService,
-
-    // To use CaptainsService - useEffects
-    provideComponentStore(CaptainsStore),
-  ],
 })
 export class CaptainsTableComponent {
   constructor(
