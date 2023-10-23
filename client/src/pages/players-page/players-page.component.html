@@ -8,10 +8,12 @@
     <sfl-players-table></sfl-players-table>
   </mat-tab>
 
-  <mat-tab>
+  <mat-tab *ngIf="user.isAdmin">
     <ng-template mat-tab-label>
-      <mat-icon fontIcon="toggle_on"></mat-icon> Add / remove player
+      <mat-icon fontIcon="manage_accounts"></mat-icon>
+      Admin panel
     </ng-template>
-    Content 2
+
+    <sfl-players-admin-widget></sfl-players-admin-widget>
   </mat-tab>
 </mat-tab-group>
