@@ -9,13 +9,12 @@
     <sfl-captains-table></sfl-captains-table>
   </mat-tab>
 
-  <mat-tab>
+  <mat-tab *ngIf="user.isAdmin">
     <ng-template mat-tab-label>
-      <mat-icon fontIcon="toggle_on"></mat-icon>
-      Add / remove captain
+      <mat-icon fontIcon="manage_accounts"></mat-icon>
+      Admin panel
     </ng-template>
 
-    <!-- Captains toggle -->
-    <sfl-captains-toggle></sfl-captains-toggle>
+    <sfl-captains-admin-widget></sfl-captains-admin-widget>
   </mat-tab>
 </mat-tab-group>

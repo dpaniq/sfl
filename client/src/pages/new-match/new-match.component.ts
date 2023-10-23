@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewMatchWidgetComponent } from 'src/widgets/new-match';
+import { NewMatchWidgetComponent } from '@widgets';
 
 @Component({
   standalone: true,
