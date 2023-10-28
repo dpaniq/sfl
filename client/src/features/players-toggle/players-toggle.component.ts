@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   ViewChild,
@@ -15,16 +16,12 @@ import {
   MatSlideToggleModule,
 } from '@angular/material/slide-toggle';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-import { CaptainsService, CaptainsStore, TCaptain } from '@entities/captains';
-import { provideComponentStore } from '@ngrx/component-store';
+import { PlayersStore, TPlayer } from '@entities/players';
+import { filter } from 'rxjs';
 
 @Component({
-  selector: 'sfl-captains-toggle',
+  selector: 'sfl-players-toggle',
   standalone: true,
-  templateUrl: './captains-toggle.component.html',
-  styleUrls: ['./captains-toggle.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     MatTableModule,
@@ -34,31 +31,20 @@ import { provideComponentStore } from '@ngrx/component-store';
     MatIconModule,
     MatSlideToggleModule,
   ],
+  templateUrl: './players-toggle.component.html',
+  styleUrls: ['./players-toggle.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CaptainsToggleComponent {
+export class PlayersToggleComponent {
   constructor(
     private _destroyRef: DestroyRef,
-    private captainsStore: CaptainsStore
+    private playersStore: PlayersStore
   ) {}
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnDestroy() {}
-
-  ngOnInit() {
-    this.captainsStore.captains$
-      .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((captains) => {
-        this.dataSource.data = captains;
-      });
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-  }
-
-  readonly dataSource = new MatTableDataSource<TCaptain>([]);
-  readonly displayedColumns: (keyof TCaptain | 'actions')[] = [
+  readonly dataSource = new MatTableDataSource<TPlayer>([]);
+  readonly displayedColumns: (keyof TPlayer | 'actions')[] = [
     'avatar',
     'name',
     'surname',
@@ -66,7 +52,21 @@ export class CaptainsToggleComponent {
     'actions',
   ];
 
-  onToggle(id: string, event: MatSlideToggleChange) {
-    this.captainsStore.toggleCaptain({ id, isCaptain: event.checked });
+  ngOnDestroy() {}
+
+  ngOnInit() {
+    this.playersStore.players$
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe((players) => {
+        this.dataSource.data = players;
+      });
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
+  setAsCaptain(id: string) {
+    this.playersStore.setAsCaptain(id);
   }
 }

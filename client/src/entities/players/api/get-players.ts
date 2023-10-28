@@ -145,7 +145,7 @@ export async function getPlayersListMock(): Promise<TPlayer[]> {
       id: '650b2a03d62ad15bb9dacd46',
       name: 'consequat',
       draws: 10,
-      avatar: 226,
+      avatar: 225,
       number: 37,
       isCaptain: false,
       surname: 'ipsum',
