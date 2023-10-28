@@ -73,4 +73,18 @@ export class PlayersStore
       };
     }
   );
+
+  // TODO change to effects
+  readonly setAsCaptain = this.updater((state, id: string) => ({
+    ...state,
+    captains: state.players.map((players) => {
+      if (players.id === id) {
+        return {
+          ...players,
+          isCaptain: true,
+        };
+      }
+      return players;
+    }),
+  }));
 }
