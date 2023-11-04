@@ -23,7 +23,8 @@ img.avatar {
 }
 
 .button-right {
+  text-align: right;
   mat-icon {
-    transform: scaleX(-1);
+    transform: translateX(10px) scaleX(-1);
   }
 }

@@ -21,6 +21,7 @@
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
     "paths": {
+      // Feature slice design
       "@environment/*": ["src/environments/*"],
       "@config/*": ["src/config/*"],
       "@shared/*": ["src/shared/*"],
