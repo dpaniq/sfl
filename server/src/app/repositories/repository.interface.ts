@@ -1,5 +1,5 @@
 export interface IRepository<T> {
-  findOne(id: string): Promise<T | undefined>;
+  findOne(id: number): Promise<T | null>;
   findAll(): Promise<T[]>;
   findAllPagination(queryParams: {
     take?: number;

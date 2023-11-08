@@ -1,16 +1,16 @@
-import {getRepository, Like, Repository} from 'typeorm';
-import {User} from '../data';
+import {Like, Repository} from 'typeorm';
+import {User, db} from '@db';
 import {IRepository} from './repository.interface';
 
 export class UsersRepository implements IRepository<User> {
   public async findAll(): Promise<User[]> {
-    const repository: Repository<User> = getRepository(User);
+    const repository: Repository<User> = db.getRepository(User);
     return repository.find();
   }
 
-  public async findOne(id: string): Promise<User | undefined> {
-    const repository: Repository<User> = getRepository(User);
-    return repository.findOne(id);
+  public async findOne(id: number): Promise<User | null> {
+    const repository: Repository<User> = db.getRepository(User);
+    return repository.findOne({where: {id}});
   }
 
   public async findAllPagination({
@@ -25,7 +25,7 @@ export class UsersRepository implements IRepository<User> {
     const qtake = take || 10;
     const qskip = skip || 0;
     const qkeyword = searchQuery || '';
-    const repository: Repository<User> = getRepository(User);
+    const repository: Repository<User> = db.getRepository(User);
 
     const where = searchQuery ? {where: {nickname: Like('%' + qkeyword + '%')}} : {};
 

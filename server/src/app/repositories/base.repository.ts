@@ -16,8 +16,8 @@ export abstract class BaseRepository<T extends ObjectLiteral> implements IReposi
     return this._r.find();
   }
 
-  public async findOne(id: string): Promise<T | undefined> {
-    return this._r.findOne(id);
+  public async findOne(id: number): Promise<T | null> {
+    return this._r.findOne({where: {id}} as any);
   }
 
   public async findAllPagination({

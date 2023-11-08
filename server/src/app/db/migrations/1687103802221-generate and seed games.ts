@@ -1,7 +1,7 @@
 import {START_SEASON_AT} from '@root/constants';
 import {MigrationInterface, QueryRunner, getRepository} from 'typeorm';
-import {User} from '@entities/user.entity';
-import {Games} from '@entities/games.entity';
+import {User} from '@root/app/bd/entities/user.entity';
+import {Games} from '@root/app/bd/entities/games.entity';
 import sflJSON from '../../../assets/SFL (json-check-all).json';
 import {isSaturday, nextSaturday} from 'date-fns';
 import {range} from '@root/app/utils/array';

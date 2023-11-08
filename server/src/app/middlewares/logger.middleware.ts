@@ -19,7 +19,8 @@ const alignColorsAndTime = winston.format.combine(
     format: 'YY-MM-DD HH:mm:ss',
   }),
   winston.format.printf(
-    (info) => `${info.label} [${info.timestamp}] ( ${info.level} ) : ${info.message}`,
+    (info) =>
+      `${info.label} [${info.timestamp}] ( ${info.level} ) : ${info.message} privet violetta`,
   ),
 );
 

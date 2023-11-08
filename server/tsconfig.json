@@ -19,8 +19,13 @@
     "resolveJsonModule": true,
     "paths": {
       "@root/*": ["./*"],
+      "@constants": ["app/constants"],
       "@utils/*": ["app/utils/*"],
-      "@entities/*": ["app/data/entities/*"]
+      "@entities/*": ["app/db/entities/*"],
+      "@models": ["app/models"],
+      "@middlewares": ["app/middlewares"],
+      "@routes": ["app/routes"],
+      "@db": ["app/db"]
     },
     "typeRoots": ["./node_modules/@types", "./src"],
     "types": ["jest", "node"]

@@ -1,6 +1,6 @@
 import express, {NextFunction, Request, Response, Router} from 'express';
 import {UsersController} from '../controllers';
-import {User} from '../data';
+import {User} from '@db';
 import {IRepository, UsersRepository} from '../repositories';
 
 const router: Router = express.Router();

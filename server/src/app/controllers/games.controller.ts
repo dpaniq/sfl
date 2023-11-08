@@ -1,7 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import {IRepository} from '../repositories';
-import {User} from '../data';
-import {Games} from '../data/entities/games.entity';
+import {User, Games} from '@db';
 import {GamesRepository} from '../repositories/games.repository';
 
 // Check this out 3
@@ -29,7 +28,7 @@ export class GamesController {
     next: NextFunction,
   ): Promise<Response> {
     return this._repository
-      .findOne(request.params.id)
+      .findOne(Number(request.params.id))
       .then((entities) => response.status(200).send(entities))
       .catch((error) => response.status(500).send({error: error}));
   }

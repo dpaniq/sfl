@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
-import {User} from '../data';
+import {User, Games} from '@db';
 import {IRepository} from '../repositories';
 import {isNumber} from '../utils/number';
 
