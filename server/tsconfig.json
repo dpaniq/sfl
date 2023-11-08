@@ -20,7 +20,8 @@
     "paths": {
       "@root/*": ["./*"],
       "@utils/*": ["app/utils/*"],
-      "@entities/*": ["app/data/entities/*"]
+      "@entities/*": ["app/data/entities/*"],
+      "@middlewares": ["app/middlewares"]
     },
     "typeRoots": ["./node_modules/@types", "./src"],
     "types": ["jest", "node"]
