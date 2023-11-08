@@ -1,4 +1,4 @@
-import {verifyAccessTokenMiddleware} from './auth';
-import {loggerMiddleware} from './logger';
+import {authMiddleware} from './auth.middleware';
+import {loggerMiddleware} from './logger.middleware';
 
-export {verifyAccessTokenMiddleware, loggerMiddleware};
+export {authMiddleware, loggerMiddleware};

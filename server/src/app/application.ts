@@ -1,8 +1,9 @@
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, {Express} from 'express';
-import {loggerMiddleware} from './middlewares/logger';
-import {applicationRouter} from './routes';
+import {appRouter} from '@routes';
+import {loggerMiddleware} from '@middlewares';
 
 export class Application {
   private _server: Express;
@@ -13,12 +14,13 @@ export class Application {
     this._server.set('port', process.env.PORT || 3001);
     this._server.use(bodyParser.json());
     this._server.use(bodyParser.urlencoded({extended: true}));
+    this._server.use(cookieParser());
     this._server.use(cors());
 
     // Middlewares
     this._server.use(loggerMiddleware);
 
-    this._server.use(applicationRouter);
+    this._server.use(appRouter);
   }
 
   public startServer(): void {

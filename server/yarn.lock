@@ -748,6 +748,13 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.12.tgz#d70faba7039d5fca54c83c7dbab41051d2b6f6cb"
   integrity sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==
 
+"@types/jsonwebtoken@^9.0.4":
+  version "9.0.5"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-9.0.5.tgz#0bd9b841c9e6c5a937c17656e2368f65da025588"
+  integrity sha512-VRLSGzik+Unrup6BsouBeHsf4d1hOEgYWTm/7Nmw1sXoN1+tRly/Gy/po3yeahnP4jfnQWWAhQAqcNfH7ngOkA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/md5@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@types/md5/-/md5-2.3.2.tgz#529bb3f8a7e9e9f621094eb76a443f585d882528"

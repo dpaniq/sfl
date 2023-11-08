@@ -54,6 +54,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
     "jest": "^29.5.0",
+    "@types/jsonwebtoken": "^9.0.4",
     "lint-staged": "^10.1.0",
     "nodemon": "^2.0.22",
     "prettier": "^2.0.2",
