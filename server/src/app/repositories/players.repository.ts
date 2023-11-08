@@ -1,5 +1,5 @@
 import {getRepository} from 'typeorm';
-import {User} from '../data';
+import {User} from '@db';
 import {BaseRepository} from './base.repository';
 
 export class PlayersRepository extends BaseRepository<User> {

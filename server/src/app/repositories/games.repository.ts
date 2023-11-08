@@ -1,9 +1,9 @@
-import {Games} from '@entities/games.entity';
-import {getRepository, Like, Repository} from 'typeorm';
+import {db, Games} from '@db';
+import {Like, Repository} from 'typeorm';
 import {IRepository} from './repository.interface';
 
 export class GamesRepository implements IRepository<Games> {
-  #repository: Repository<Games> = getRepository(Games);
+  #repository: Repository<Games> = db.getRepository(Games);
 
   get use(): Repository<Games> {
     return this.#repository;
@@ -13,8 +13,8 @@ export class GamesRepository implements IRepository<Games> {
     return this.#repository.find();
   }
 
-  public async findOne(id: string): Promise<Games | undefined> {
-    return this.#repository.findOne(id);
+  public async findOne(id: number): Promise<Games | null> {
+    return this.#repository.findOne({where: {id}});
   }
 
   public async findAllPagination({
@@ -29,12 +29,11 @@ export class GamesRepository implements IRepository<Games> {
     const qtake = take || 10;
     const qskip = skip || 0;
     const qkeyword = searchQuery || '';
-    const repository: Repository<Games> = getRepository(Games);
 
     const where = searchQuery ? {where: {nickname: Like('%' + qkeyword + '%')}} : {};
 
-    const [result, total] = await repository.findAndCount({
-      ...where,
+    const [result, total] = await this.#repository.findAndCount({
+      // ...where, // TODO
       order: {capitan: 'ASC'},
       take: qtake,
       skip: qskip,
