@@ -5,6 +5,14 @@ export const routes: Routes = [
   { path: '', title: 'Home', component: HomeComponent },
   { path: 'home', title: 'Home', component: HomeComponent },
   {
+    path: 'sign-in',
+    title: 'Sign In',
+    loadComponent: () =>
+      import('../pages/sign-in-page/sign-in-page.component').then(
+        (m) => m.SignInPageComponent
+      ),
+  },
+  {
     path: 'new-match',
     title: 'New Match',
     loadComponent: () =>
