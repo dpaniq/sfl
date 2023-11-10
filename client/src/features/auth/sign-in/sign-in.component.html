@@ -1,0 +1,48 @@
+<section class="sign-in">
+  <form [formGroup]="signInFG" (ngSubmit)="onSubmit()">
+    <mat-progress-bar mode="indeterminate" *ngIf="loading()"></mat-progress-bar>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input
+        required
+        matInput
+        type="text"
+        placeholder="email@..."
+        formControlName="email"
+      />
+      <mat-icon
+        matSuffix
+        [color]="emailFG.touched && emailFG.errors ? 'warn' : 'primary'"
+        >mail</mat-icon
+      >
+      <mat-hint>Input your <b>email</b></mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        required
+        matInput
+        type="password"
+        placeholder="password..."
+        formControlName="password"
+      />
+      <mat-icon
+        matSuffix
+        [color]="passwordFG.touched && passwordFG.errors ? 'warn' : 'primary'"
+        >password</mat-icon
+      >
+      <mat-hint>Input your <b>password</b></mat-hint>
+    </mat-form-field>
+
+    <button
+      mat-stroked-button
+      color="primary"
+      type="submit"
+      [disabled]="!signInFG.valid"
+    >
+      Submit
+    </button>
+  </form>
+</section>

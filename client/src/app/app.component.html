@@ -1,15 +1,18 @@
 <header>
   <mat-toolbar color="primary">
     <div class="header-menu-and-logo-block">
+      <strong>SFL</strong>
       <button mat-icon-button class="example-icon" (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
       <a class="logotype" mat-button href="/">
-        <b>SFL: Suturday Football League</b>
+        <b>Suturday Football League</b>
       </a>
     </div>
 
     <div class="header-side-block">
+      <a mat-button href="/sign-in" aria-label="Sign in"> Login </a>
+
       <button
         [disabled]="true"
         mat-icon-button
@@ -18,6 +21,7 @@
       >
         <mat-icon>favorite</mat-icon>
       </button>
+
       <button
         [disabled]="true"
         mat-icon-button
