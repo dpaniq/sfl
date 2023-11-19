@@ -10,7 +10,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpHeaders,
+} from '@angular/common/http';
 import { NEVER, catchError, delay } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -42,7 +46,7 @@ export class SignInComponent {
       nonNullable: true,
       validators: [Validators.email, Validators.required],
     }),
-    password: new FormControl<string>('', {
+    password: new FormControl<string>('password', {
       nonNullable: true,
       validators: [Validators.min(5), Validators.required],
     }),
@@ -62,8 +66,20 @@ export class SignInComponent {
     console.warn(this.signInFG.getRawValue());
     const payload = this.signInFG.getRawValue();
 
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+
+    // ToDo /sign-in
+    // ToDo /sign-out
     this.httpClient
-      .post('http://localhost:3001/auth/login', payload)
+      .post<any>('https://sfl.com:3001/auth/login', payload, {
+        withCredentials: true,
+        headers: new HttpHeaders({
+          ...headers,
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        }),
+      })
       .pipe(
         delay(1500),
         catchError((err) => {
@@ -76,6 +92,7 @@ export class SignInComponent {
       .subscribe((response) => {
         if (response) {
           console.log(response);
+          localStorage.setItem('accessToken', response?.accessToken);
           this.loading.set(false);
           this.router.navigate(['/']);
         }

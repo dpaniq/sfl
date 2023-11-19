@@ -13,14 +13,6 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   const accessToken = authHeader && authHeader.split(' ')[1];
   const refreshToken = req.cookies.refreshToken;
 
-  req.cookies;
-  console.log('at authmiddlaware', {
-    accessToken,
-    refreshToken,
-    others: req.cookies,
-    other2: req.headers.cookies,
-  });
-
   if (!accessToken || !refreshToken)
     return res.sendStatus(HTTP_STATUS.CLIENT_ERRORS_4XX.UNAUTHORIZED);
 
