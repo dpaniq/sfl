@@ -8,6 +8,7 @@ import md5 from 'md5';
 import {HTTP_STATUS} from '@constants';
 import {addDays} from 'date-fns';
 import * as dotenv from 'dotenv';
+import {authMiddleware} from '../middlewares';
 
 dotenv.config();
 
@@ -32,10 +33,30 @@ router.post('/login', async (req, res) => {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      maxAge: addDays(new Date(), 1).getTime(),
+      expires: addDays(new Date(), 1),
+      sameSite: true,
+      domain: 'sfl.com',
     });
 
     res.json({accessToken});
+  } catch (error) {
+    res.status(HTTP_STATUS.SERVER_ERRORS_5XX.INTERNAL_SERVER_ERROR).json({message: 'Server error'});
+  }
+});
+
+router.get('/logout', authMiddleware, async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (!user) {
+      return res
+        .status(HTTP_STATUS.CLIENT_ERRORS_4XX.UNAUTHORIZED)
+        .json({message: 'Authentication failed or you are not signed in'});
+    }
+
+    res.clearCookie('refreshToken');
+
+    res.sendStatus(HTTP_STATUS.SUCCESS_2XX.OK);
   } catch (error) {
     res.status(HTTP_STATUS.SERVER_ERRORS_5XX.INTERNAL_SERVER_ERROR).json({message: 'Server error'});
   }
