@@ -16,7 +16,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   if (!accessToken || !refreshToken)
     return res.sendStatus(HTTP_STATUS.CLIENT_ERRORS_4XX.UNAUTHORIZED);
 
-  verify(token, ACCESS_TOKEN_SECRET, async (err, payload) => {
+  verify(accessToken, ACCESS_TOKEN_SECRET, async (err, payload) => {
     if (err) {
       return res.sendStatus(HTTP_STATUS.CLIENT_ERRORS_4XX.FORBIDDEN); // Token is not valid
     }

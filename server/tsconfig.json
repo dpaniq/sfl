@@ -1,35 +1,48 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "esnext",
+    // "module": "commonjs",
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "es2015.proxy",
+      "es2015.reflect",
+      "es2017.object",
+      "es2017.sharedmemory",
+      "es2017.string",
+      "es2017.intl",
+      "es2017.typedarrays"
+      // Add more libraries as needed
+    ],
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": true,
+    // "emitDeclarationOnly": true,
     "outDir": "dist",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "paths": {
-      "@root/*": ["./*"],
-      "@constants": ["app/constants"],
-      "@utils/*": ["app/utils/*"],
-      "@entities/*": ["app/db/entities/*"],
-      "@models": ["app/models"],
-      "@middlewares": ["app/middlewares"],
-      "@routes": ["app/routes"],
-      "@db": ["app/db"]
+      "@constants": ["./src/app/constants"],
+      "@utils/*": ["./src/app/utils/*"],
+      "@entities/*": ["./src/app/db/entities/*"],
+      "@models": ["./src/app/models"],
+      "@middlewares": ["./src/app/middlewares"],
+      "@routes": ["./src/app/routes"],
+      "@db": ["./src/app/db"],
+      "@env": ["./src/environment"]
     },
     "typeRoots": ["./node_modules/@types", "./src"],
     "types": ["jest", "node"]
   },
-  "include": ["src/**/*", "tests"],
+  "include": ["src/**/*", "src/tests"],
   "exclude": ["node_modules"]
 }

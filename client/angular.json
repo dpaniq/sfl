@@ -84,7 +84,13 @@
               "browserTarget": "sfl-client:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "disableHostCheck": true,
+            "ssl": true,
+            "sslKey": "./../ssl/localhost.key",
+            "sslCert": "./../ssl/localhost.crt"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
