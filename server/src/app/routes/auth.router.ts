@@ -9,6 +9,7 @@ import {HTTP_STATUS} from '@constants';
 import {addDays} from 'date-fns';
 import * as dotenv from 'dotenv';
 import {authMiddleware} from '../middlewares';
+import {CLIENT_HOSTNAME} from '../../environment';
 
 dotenv.config();
 
@@ -35,7 +36,6 @@ router.post('/login', async (req, res) => {
       httpOnly: true,
       expires: addDays(new Date(), 1),
       sameSite: true,
-      domain: 'sfl.com',
     });
 
     res.json({accessToken});
@@ -54,9 +54,17 @@ router.get('/logout', authMiddleware, async (req, res) => {
         .json({message: 'Authentication failed or you are not signed in'});
     }
 
+    // For clearing cookie: domain and path are required?
+    /**
+     * , {
+      domain: `.${CLIENT_HOSTNAME}`,
+      path: '/',
+      httpOnly: true,
+    }
+     */
     res.clearCookie('refreshToken');
 
-    res.sendStatus(HTTP_STATUS.SUCCESS_2XX.OK);
+    res.sendStatus(HTTP_STATUS.SUCCESS_2XX.NO_CONTENT);
   } catch (error) {
     res.status(HTTP_STATUS.SERVER_ERRORS_5XX.INTERNAL_SERVER_ERROR).json({message: 'Server error'});
   }
