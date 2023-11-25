@@ -17,6 +17,11 @@ export const LINKS: Link[] = [
     icon: 'groups',
   },
   {
+    name: 'Games',
+    href: '/games',
+    icon: 'scoreboard',
+  },
+  {
     name: 'New match',
     href: '/new-match',
     icon: 'add-cicrle',
