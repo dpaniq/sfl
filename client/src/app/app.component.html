@@ -12,6 +12,16 @@
 
     <div class="header-side-block">
       <a mat-button href="/sign-in" aria-label="Sign in"> Login </a>
+      <button
+        #logoutBtn
+        mat-stroked-button
+        aria-label="logout"
+        color="default"
+        (click)="logoutBtn.disabled = true; onLogout()"
+        [disabled]="false"
+      >
+        Logout
+      </button>
 
       <button
         [disabled]="true"
