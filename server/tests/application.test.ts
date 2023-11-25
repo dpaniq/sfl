@@ -1,4 +1,4 @@
-import {Application} from '../app';
+import { Application } from '../src/app';
 
 describe('application.ts', () => {
   let application: Application;
