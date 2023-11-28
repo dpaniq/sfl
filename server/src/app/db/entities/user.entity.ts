@@ -26,4 +26,9 @@ export class User extends BaseEntity {
     nullable: true,
   })
   age?: number;
+
+  @Column({
+    nullable: true,
+  })
+  avatar?: string;
 }

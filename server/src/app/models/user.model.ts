@@ -6,6 +6,7 @@ export class UserModel {
   getPublicData(): Omit<User, 'password'> {
     return {
       id: this._user.id,
+      avatar: this._user.avatar,
       nickname: this._user.nickname,
       email: this._user.email,
       name: this._user.name,
