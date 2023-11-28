@@ -14,6 +14,12 @@ import {
 
 import {User} from './user.entity';
 import {BaseEntity} from './base.entity';
+import {Player} from './player.entity';
+
+export enum TeamEnum {
+  HONDA = 'honda',
+  BMW = 'bwm',
+}
 
 @Entity()
 export class Games extends BaseEntity {
@@ -25,13 +31,6 @@ export class Games extends BaseEntity {
   event_day: Date;
 
   // @OneToMany((type) => User, (user) => user.id)
-  @ManyToOne((type) => User, (user) => user.id, {
-    eager: false,
-    onDelete: 'CASCADE',
-  })
-  // To named column
-  @JoinColumn({name: 'player_id'})
-  player_id: number;
 
   @Column({
     type: 'int2',
@@ -61,5 +60,20 @@ export class Games extends BaseEntity {
     type: 'boolean',
     nullable: true,
   })
-  capitan: boolean | null;
+  asCaptain: boolean | null;
+
+  @Column({
+    type: 'boolean',
+    nullable: true,
+    enum: TeamEnum,
+    enumName: 'TeamEnum',
+  })
+  team?: TeamEnum;
+
+  @ManyToOne((type) => Player, (player) => player.id, {
+    eager: false,
+  })
+  // To named column
+  @JoinColumn({name: 'player_id'})
+  player_id: number;
 }

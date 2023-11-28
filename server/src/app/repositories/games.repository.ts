@@ -34,7 +34,7 @@ export class GamesRepository implements IRepository<Games> {
 
     const [result, total] = await this.#repository.findAndCount({
       // ...where, // TODO
-      order: {capitan: 'ASC'},
+      order: {asCaptain: 'ASC'},
       take: qtake,
       skip: qskip,
     });
