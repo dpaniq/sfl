@@ -27,22 +27,6 @@ export const createPlayer = async (model: typeof PlayerModel, fields: IPlayer): 
     ...fields,
   });
 
-// export const createGameGoal = async (
-//   model: typeof GameGoalModel,
-//   fields: IGameGoal,
-// ): Promise<IGameGoal> =>
-//   await model.create({
-//     ...fields,
-//   });
-
-// export const createGamePlayer = async (
-//   model: typeof GamePlayerModel,
-//   fields: IGamePlayer,
-// ): Promise<IGamePlayer> =>
-//   await model.create({
-//     ...fields,
-//   });
-
 export const createGame = async (model: typeof GameModel, fields: IGame): Promise<IGame> =>
   await model.create({
     ...fields,

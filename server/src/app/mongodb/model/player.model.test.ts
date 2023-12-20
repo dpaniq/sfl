@@ -64,8 +64,13 @@ describe('Test player model', () => {
     });
 
     // Create user, clone and than remove to throw error
-    const role = await createRole(RoleModelTest);
-    const user = await createUser([role], UserModelTest);
+    const role = await createRole(RoleModelTest, {
+      name: EnumRole.Guest,
+    });
+    const user = await createUser(UserModelTest, {
+      email: 'player@email.com',
+      roles: [role],
+    });
     await UserModelTest.findOneAndDelete({email: user.email});
     await PlayerModelTest.create({userId: user}).catch((e: Error) => {
       expect(e.name).toBe('ValidationError');
@@ -79,11 +84,12 @@ describe('Test player model', () => {
       createRole(RoleModelTest, {name: EnumRole.QA}),
     ]);
 
-    const user = await createUser(roles, UserModelTest, {email: 'email@unique.lv'});
-    const player = await createPlayer(user, PlayerModelTest, {
+    const user = await createUser(UserModelTest, {email: 'email@unique.lv', roles});
+    const player = await createPlayer(PlayerModelTest, {
       nickname: 'nickname',
       status: EnumPlayerStatus.Active,
       position: EnumPlayerPosition.DefenderCenter,
+      userId: user,
     });
 
     expect(player.nickname).toBe('nickname');

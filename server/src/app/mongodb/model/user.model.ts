@@ -50,9 +50,5 @@ export const UserSchema = new Schema<IUser>(
     versionKey: false,
   },
 );
-// .pre('find', function (next) {
-//   this.populate('roles');
-//   next();
-// });
 
 export const UserModel = model<IUser>(EnumUserCollection.User, UserSchema);
