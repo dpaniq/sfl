@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    // "module": "commonjs",
     "lib": [
       "esnext",
       "dom",
@@ -13,7 +12,6 @@
       "es2017.string",
       "es2017.intl",
       "es2017.typedarrays"
-      // Add more libraries as needed
     ],
     "strict": true,
     "esModuleInterop": true,
@@ -22,7 +20,6 @@
     "sourceMap": false,
     "declaration": true,
     "declarationMap": true,
-    // "emitDeclarationOnly": true,
     "outDir": "dist",
     "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,

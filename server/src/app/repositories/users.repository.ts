@@ -1,4 +1,4 @@
-import {Like, Repository} from 'typeorm';
+import {Like, Repository, Entity, FindOperator} from 'typeorm';
 import {User, db} from '@db';
 import {IRepository} from './repository.interface';
 
@@ -8,37 +8,39 @@ export class UsersRepository implements IRepository<User> {
     return repository.find();
   }
 
-  public async findOne(id: number): Promise<User | null> {
+  public async findOne(id: string): Promise<User | null> {
     const repository: Repository<User> = db.getRepository(User);
     return repository.findOne({where: {id}});
   }
 
-  public async findAllPagination({
-    take,
-    skip,
-    searchQuery,
-  }: {
-    take?: number;
-    skip?: number;
-    searchQuery?: string;
-  }): Promise<Paginate<User>> {
-    const qtake = take || 10;
-    const qskip = skip || 0;
-    const qkeyword = searchQuery || '';
-    const repository: Repository<User> = db.getRepository(User);
+  // public async findAllPagination<T extends typeof Entity>(
+  //   entity: T,
+  //   {
+  //     take,
+  //     skip,
+  //     searchQuery,
+  //   }: {
+  //     FindManyOptions<T>
+  //     searchQuery?: string;
+  //   },
+  // ): Promise<Paginate<T>> {
+  //   const qtake = take || 10;
+  //   const qskip = skip || 0;
+  //   const qkeyword = searchQuery || '';
+  //   const repository: Repository<T> = db.getRepository(entity);
 
-    const where = searchQuery ? {where: {nickname: Like('%' + qkeyword + '%')}} : {};
+  //   const where = searchQuery ? {where: {email: Like('%' + qkeyword + '%')}} : {};
 
-    const [result, total] = await repository.findAndCount({
-      ...where,
-      order: {nickname: 'ASC'},
-      take: qtake,
-      skip: qskip,
-    });
+  //   const [result, total] = await repository.findAndCount({
+  //     ...where,
+  //     order: 'ASC',
+  //     take: qtake,
+  //     skip: qskip,
+  //   });
 
-    return {
-      data: result,
-      count: total,
-    };
-  }
+  //   return {
+  //     data: result,
+  //     count: total,
+  //   };
+  // }
 }

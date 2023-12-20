@@ -38,7 +38,7 @@ const alignColorsAndTime = winston.format.combine(
 
 const colorizer = winston.format.colorize();
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   levels: {
     error: 0,
     warn: 1,

@@ -1,14 +1,11 @@
 import {NextFunction, Request, Response} from 'express';
-import {User, Games} from '@db';
+import {User, Games, db} from '@db';
 import {IRepository} from '../repositories';
 import {isNumber} from '../utils/number';
+import {HTTP_STATUS} from '../constants/http';
 
 export class UsersController {
-  private readonly _repository: IRepository<User>;
-
-  constructor(repository: IRepository<User>) {
-    this._repository = repository;
-  }
+  private readonly _repository = db.getRepository(User);
 
   public async getAllUsers(
     request: Request,
@@ -17,7 +14,7 @@ export class UsersController {
   ): Promise<Response> {
     console.log('asdasdas');
     return this._repository
-      .findAll()
+      .find()
       .then((users) => response.status(200).send(users))
       .catch((error) => response.status(500).send({error: error}));
   }
@@ -34,11 +31,11 @@ export class UsersController {
     const searchQuery = request.query.searchQuery as string;
 
     console.log(take, skip, searchQuery);
-
-    return this._repository
-      .findAllPagination({take, skip, searchQuery})
-      .then((users) => response.status(200).send(users))
-      .catch((error) => response.status(500).send({error: error}));
+    return response.status(HTTP_STATUS.SUCCESS_2XX.NO_CONTENT);
+    // return db.getRepository(User)
+    //   .findAllPagination({take, skip, searchQuery})
+    //   .then((users) => response.status(200).send(users))
+    //   .catch((error) => response.status(500).send({error: error}));
   }
 
   // public async getUserList(request: Request, response: Response, next: NextFunction): Promise<any> {

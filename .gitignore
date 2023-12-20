@@ -71,9 +71,13 @@ Thumbs.db
 /client/yarn-debug.log*
 /client/yarn-error.log*
 
+# server
+/server/data/
+
 # env
 .env
 .env.*
 
 ssl/
 /ssl
+
