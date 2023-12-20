@@ -6,3 +6,4 @@ coverage/
 *.sqlite-wal
 
 ssl/
+data/

@@ -8,10 +8,6 @@
     "coverage": "jest --coverage",
     "lint": "eslint \"{src,test}/**/*.{js,ts}\"",
     "lint-fix": "yarn lint -- --fix",
-    "torm:revert": "ts-node --files -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:revert",
-    "torm:create": "ts-node --files -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:create",
-    "torm:gen": "ts-node --files -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:generate",
-    "torm:run": "ts-node --files -r tsconfig-paths/register ./node_modules/.bin/typeorm migration:run",
     "start": "ts-node --files -r tsconfig-paths/register src/index.ts",
     "dev": "ts-node-dev --files -r tsconfig-paths/register src/index.ts",
     "build": "tsc && yarn copy-assets",
@@ -30,7 +26,6 @@
   },
   "homepage": "https://github.com/jmw5598/node-typescript-starter#readme",
   "dependencies": {
-    "better-sqlite3": "^9.1.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -41,7 +36,6 @@
     "md5": "^2.3.0",
     "mongoose": "^8.0.2",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.17",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
