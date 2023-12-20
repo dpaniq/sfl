@@ -2,14 +2,13 @@ import {Router} from 'express';
 import {generateAccessToken, generateRefreshToken} from '@utils/jwt';
 import {verify, sign} from 'jsonwebtoken';
 import {ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET} from '@utils/jwt';
-import {Repository} from 'typeorm';
-import {db, User} from '@db';
 import md5 from 'md5';
 import {HTTP_STATUS} from '@constants';
 import {addDays} from 'date-fns';
 import * as dotenv from 'dotenv';
 import {authMiddleware} from '../middlewares';
 import {CLIENT_HOSTNAME} from '../../environment';
+import {UserModel} from '../mongodb/model/user.model';
 
 dotenv.config();
 
@@ -20,7 +19,9 @@ router.post('/login', async (req, res) => {
     const {email, password} = req.body;
 
     // Authenticate the user (e.g., by checking username and password)
-    const user = await db.getRepository(User).findOne({where: {email}});
+    const user = await UserModel.findOne({email});
+
+    console.log(user);
 
     if (!user || user.password !== md5(password)) {
       return res

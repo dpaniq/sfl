@@ -1,3 +1,0 @@
-DROP TABLE games;
-DROP TABLE game2011;
-DROP TABLE games2011;
