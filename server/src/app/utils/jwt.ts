@@ -2,8 +2,7 @@
 
 import {sign} from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
-
-import {User} from '@db';
+import {IUser} from '../mongodb/model/user.model';
 
 dotenv.config();
 
@@ -24,7 +23,7 @@ export const ACCESS_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET!;
 if (!ACCESS_TOKEN_SECRET) {
   throw 'ACCESS TOKEN SECRET required';
 }
-export const generateAccessToken = ({email}: User) => {
+export const generateAccessToken = ({email}: IUser) => {
   return sign({email}, ACCESS_TOKEN_SECRET, {
     expiresIn: '15m',
   });
@@ -50,6 +49,6 @@ if (!REFRESH_TOKEN_SECRET) {
   throw 'REFRESH TOKEN SECRET required';
 }
 
-export const generateRefreshToken = ({email}: User) => {
+export const generateRefreshToken = ({email}: IUser) => {
   return sign({email}, REFRESH_TOKEN_SECRET);
 };
