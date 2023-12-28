@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
-import {IRepository} from '../repositories';
-import {GamesRepository} from '../repositories/games.repository';
+// import {IRepository} from '../repositories';
+// import {GamesRepository} from '../repositories/games.repository';
 
 // Check this out 3
 export class GamesController {

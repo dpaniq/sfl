@@ -2,14 +2,17 @@
 version: '3.8'
 
 services:
-  mongo:
+  mongodb:
     image: mongo
     container_name: sfl-mongo
+    command: mongod --auth
     restart: always
     ports:
       - '27017:27017'
     volumes:
       - ./data/db:/data/db # Mount a volume for persistent data storage
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: test
+      MONGO_INITDB_ROOT_USERNAME: test_user
+      MONGO_INITDB_ROOT_PASSWORD: test_password

@@ -17,7 +17,7 @@ collectionRouters.use('/games', gamesRouter);
 collectionRouters.use('/players', playersRouter);
 
 const apiRouter: Router = express.Router();
-apiRouter.use('/api', collectionRouters);
+apiRouter.use('/rest', collectionRouters);
 
 // Main router
 const appRouter: Router = express.Router();
