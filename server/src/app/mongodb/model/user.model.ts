@@ -26,7 +26,7 @@ export const UserSchema = new Schema<IUser>(
   {
     _id: {
       type: Schema.Types.UUID,
-      default: randomUUID(),
+      default: randomUUID,
       required: true,
     },
     name: String,

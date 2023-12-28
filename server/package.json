@@ -7,10 +7,9 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "lint": "eslint \"{src,test}/**/*.{js,ts}\"",
-    "lint-fix": "yarn lint -- --fix",
     "start": "ts-node --files -r tsconfig-paths/register src/index.ts",
     "dev": "ts-node-dev --files -r tsconfig-paths/register src/index.ts",
-    "build": "tsc && yarn copy-assets",
+    "build": "tsc && pnpm copy-assets",
     "prepare": "cd .. && husky install server/.husky",
     "copy-assets": "copyfiles -u 1 src/assets/**/* dist/assets/ && copyfiles -u 1 src/ssl/**/* dist/ssl/"
   },
@@ -68,12 +67,12 @@
     "winston": "^3.11.0"
   },
   "lint-staged": {
-    "*.ts": "yarn lint"
+    "*.ts": "pnpm lint"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn test"
+      "pre-push": "pnpm test"
     }
   }
 }

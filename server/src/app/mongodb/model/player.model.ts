@@ -37,7 +37,7 @@ export enum EnumPlayerCollection {
 export const PlayerSchema = new Schema<IPlayer>({
   nickname: {type: String, index: true},
   isCaptain: {type: Boolean, default: false},
-  status: {type: String, enum: EnumPlayerStatus},
+  status: {type: String, enum: EnumPlayerStatus, default: EnumPlayerStatus.Inactive},
   position: {type: String, enum: EnumPlayerPosition},
   userId: useUserModelReference(EnumUserCollection.User, UserModel),
 });
