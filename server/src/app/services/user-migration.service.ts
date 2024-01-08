@@ -13,8 +13,8 @@ import {sleep} from '@utils/tool';
 
 export class UserMigrationService {
   async seedUsersTransaction(): Promise<{success: number; failure: number[]}> {
-    let failure: number[] = [];
-    let session: ClientSession | null = null;
+    const failure: number[] = [];
+    const session: ClientSession | null = null;
 
     // Todo: Check role = admin
 
@@ -63,84 +63,10 @@ export class UserMigrationService {
     return data;
   }
 
-  async seedUsersTransactionDraft(): Promise<{success: number; failure: number[]}> {
-    let failure: number[] = [];
-    let session: ClientSession | null = null;
-
-    // Todo: Check role = admin
-
-    logger.info('User migration drop collection');
-    UserModel.collection.drop();
-
-    // const role = await createRole(RoleModel, {name: EnumRole.User});
-    const role = await RoleModel.findOne({name: EnumRole.User}); //  (RoleModel, {name: EnumRole.User});
-
-    await UserModel.createCollection()
-      .then(() => UserModel.startSession())
-      // The `withTransaction()` function's first parameter is a function
-      // that returns a promise.
-      .then((_session) => {
-        session = _session;
-        return session.withTransaction(async () => {
-          for (const user of userJSON.rows) {
-            try {
-              const userSaved = await UserModel.create(
-                [
-                  {
-                    email: user.email,
-                    password: user.password,
-                    roles: [role],
-                  },
-                ],
-                {session},
-              );
-
-              await PlayerModel.create(
-                [
-                  {
-                    userId: userSaved,
-                    nickname: user.nickname,
-                  },
-                ],
-                {session},
-              );
-
-              const total = await PlayerModel.countDocuments({session});
-
-              console.log(`${total}/220 players`);
-              await sleep(5);
-            } catch (error) {
-              failure.push(user.id);
-              logger.error('Error at user seed transactions:', error);
-              continue;
-            }
-          }
-          return Promise.resolve();
-        });
-      })
-      .catch((error) => {
-        logger.error('User seeds transaction error:\n', error);
-      })
-      .finally(() => {
-        if (session) {
-          session.commitTransaction();
-          session.endSession();
-        }
-      });
-
-    const data = {
-      success: await UserModel.countDocuments(),
-      failure,
-    };
-
-    this.log(data);
-    return data;
-  }
-
   private async log(data: any) {
     try {
       await fs.writeFile(
-        `user-migration-${format(new Date(), 'yyyy-MM-dd')}.json`,
+        `${__dirname}/user-migration-${format(new Date(), 'yyyy-MM-dd')}.json`,
         JSON.stringify(data),
       );
     } catch (err) {

@@ -1,13 +1,14 @@
 {
-  "name": "asdasd",
+  "name": "sfl-client",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "dev": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
+  "type": "module",
   "private": true,
   "dependencies": {
     "@angular/animations": "~17.0.4",
@@ -22,6 +23,8 @@
     "@angular/router": "~17.0.4",
     "@ngrx/component-store": "~17.0.0",
     "@ngrx/store": "~17.0.0",
+    "date-fns": "^3.1.0",
+    "got": "^14.0.0",
     "rxjs": "~7.8.0",
     "tslib": "~2.3.0",
     "zone.js": "~0.14.2"

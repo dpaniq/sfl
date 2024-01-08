@@ -14,12 +14,13 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
+    "esModuleInterop": true,
     "paths": {
       // Feature slice design
       "@environment/*": ["src/environments/*"],
@@ -29,13 +30,17 @@
       "@features": ["src/features/index"],
       "@widgets": ["src/widgets/index"],
       "@pages": ["src/pages/index"],
-      "@app/*": ["src/app/*"]
+      "@app/*": ["src/app/*"],
+      "got": ["./node_modules/got/dist/source"]
     }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+
+    "fullTemplateTypeCheck": true,
+    "allowSyntheticDefaultImports": true
   }
 }

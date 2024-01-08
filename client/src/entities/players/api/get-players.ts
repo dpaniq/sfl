@@ -1,8 +1,15 @@
-import { TPlayer } from '../types';
+import { TPlayer } from '../types/index.js';
 
-export async function getPlayersList(): Promise<TPlayer[]> {
-  return [];
-}
+import api from '../../../shared/api/index.js';
+import { TCaptain } from '../../captains/types/index.js';
+
+// export async function getPlayersList(page?: number): Promise<TPlayer[]> {
+//   const data = await api
+//     .post<{ captains: TCaptain[]; page: number }>('captains', {})
+//     .json();
+
+//   return data.ca
+// }
 
 export async function getPlayersListMock(): Promise<TPlayer[]> {
   /**

@@ -2,12 +2,7 @@ import {NextFunction, Request, Response, response} from 'express';
 import {isNumber} from '../utils/number';
 import {HTTP_STATUS} from '../constants/http';
 import {UserMigrationService} from '../services/user-migration.service';
-
-interface IControllerArgs {
-  request: Request;
-  response: Response;
-  next: NextFunction;
-}
+import {IControllerArgs} from '.';
 
 export class UsersController {
   // private readonly _repository = db.getRepository(User);
@@ -49,7 +44,9 @@ export class UsersController {
   //   return response.send(Array.from(names).sort());
   // }
 
-  public async seedUsers({response}: Pick<IControllerArgs, 'response'>): Promise<void> {
+  public async seedUsers({
+    response,
+  }: Pick<IControllerArgs, 'response'>): Promise<void> {
     const usersMigrationService = new UserMigrationService();
     await usersMigrationService.seedUsersTransaction();
 

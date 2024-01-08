@@ -1,6 +1,10 @@
 import {Schema, model, connect} from 'mongoose';
 import {EnumTeamCollection, TeamModel} from './team.model';
-import {EnumPlayerCollection, EnumPlayerPosition, PlayerModel} from './player.model';
+import {
+  EnumPlayerCollection,
+  EnumPlayerPosition,
+  PlayerModel,
+} from './player.model';
 import {usePlayerModelReference, useTeamModelReference} from '../utils/refs';
 
 export interface IGamePlayer {
@@ -23,6 +27,7 @@ export interface IGameGoal {
   pass1?: Schema.Types.ObjectId;
   pass2?: Schema.Types.ObjectId;
   pass3?: Schema.Types.ObjectId;
+  autoGoal?: Schema.Types.ObjectId;
 }
 
 export interface IGame {
@@ -30,6 +35,7 @@ export interface IGame {
   goals: IGameGoal[];
   players: IGamePlayer[];
   playedAt: Date;
+  verified: boolean;
 }
 
 export enum EnumGameCollection {
@@ -54,11 +60,36 @@ export const GameGoalSchema = new Schema<IGameGoal>(
       required: true,
     },
     teamId: useTeamModelReference(EnumTeamCollection.Team, TeamModel),
-    goal: usePlayerModelReference(EnumPlayerCollection.Player, PlayerModel, false),
-    goalHead: usePlayerModelReference(EnumPlayerCollection.Player, PlayerModel, false),
-    pass3: usePlayerModelReference(EnumPlayerCollection.Player, PlayerModel, false),
-    pass2: usePlayerModelReference(EnumPlayerCollection.Player, PlayerModel, false),
-    pass1: usePlayerModelReference(EnumPlayerCollection.Player, PlayerModel, false),
+    goal: usePlayerModelReference(
+      EnumPlayerCollection.Player,
+      PlayerModel,
+      false,
+    ),
+    goalHead: usePlayerModelReference(
+      EnumPlayerCollection.Player,
+      PlayerModel,
+      false,
+    ),
+    pass3: usePlayerModelReference(
+      EnumPlayerCollection.Player,
+      PlayerModel,
+      false,
+    ),
+    pass2: usePlayerModelReference(
+      EnumPlayerCollection.Player,
+      PlayerModel,
+      false,
+    ),
+    pass1: usePlayerModelReference(
+      EnumPlayerCollection.Player,
+      PlayerModel,
+      false,
+    ),
+    autoGoal: usePlayerModelReference(
+      EnumPlayerCollection.Player,
+      PlayerModel,
+      false,
+    ),
   },
   {_id: false},
 );
@@ -81,6 +112,7 @@ export const GameSchema = new Schema<IGame>(
     goals: [GameGoalSchema],
     players: [GamePlayerSchema],
     playedAt: {type: Date, required: true},
+    verified: {type: Boolean, default: false},
   },
   {
     timestamps: true,

@@ -1,9 +1,22 @@
-import {NextFunction, Request, Response} from 'express';
-import {IRepository, PlayersRepository, UsersRepository} from '../repositories';
-import {isNumber} from '../utils/number';
+import {IControllerArgs} from '.';
+import {PlayerModel} from '../mongodb/model/player.model';
 
 export class PlayersController {
-  private readonly _r = new PlayersRepository();
+  public async getCaptains({request, response}: Omit<IControllerArgs, 'next'>) {
+    const perPage = 10;
+
+    const {page} = request.body;
+
+    // Move to service
+    const captains = PlayerModel.find({isCaptain: true})
+      .skip(page * perPage)
+      .sort({nickname: 'asc'});
+
+    response.json({
+      captains,
+      page: page + 1,
+    });
+  }
 
   // public async findAll(
   //   request: Request,

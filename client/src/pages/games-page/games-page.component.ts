@@ -6,6 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { GamesTableComponent } from 'src/features/games-table/games-table.component';
 import { CaptainsService, CaptainsStore } from '@entities/captains';
 import { provideComponentStore } from '@ngrx/component-store';
+import { GameCreationWidgetComponent } from 'src/widgets/game-creation-widget/game-creation-widget.component';
 
 @Component({
   selector: 'sfl-games-page',
@@ -16,6 +17,7 @@ import { provideComponentStore } from '@ngrx/component-store';
 
     // Component
     GamesTableComponent,
+    GameCreationWidgetComponent,
   ],
   templateUrl: './games-page.component.html',
   styleUrl: './games-page.component.css',
