@@ -7,8 +7,10 @@ export class PlayersController {
 
     const {page} = request.body;
 
+    console.log(perPage, page);
+
     // Move to service
-    const captains = PlayerModel.find({isCaptain: true})
+    const captains = await PlayerModel.find({isCaptain: true})
       .skip(page * perPage)
       .sort({nickname: 'asc'});
 

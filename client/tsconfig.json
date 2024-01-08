@@ -16,8 +16,8 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
+    "moduleResolution": "Node",
+    "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
     "esModuleInterop": true,
@@ -30,8 +30,7 @@
       "@features": ["src/features/index"],
       "@widgets": ["src/widgets/index"],
       "@pages": ["src/pages/index"],
-      "@app/*": ["src/app/*"],
-      "got": ["./node_modules/got/dist/source"]
+      "@app/*": ["src/app/*"]
     }
   },
   "angularCompilerOptions": {

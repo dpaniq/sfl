@@ -1,6 +1,5 @@
 import { TPlayer } from '../types/index.js';
 
-import api from '../../../shared/api/index.js';
 import { TCaptain } from '../../captains/types/index.js';
 
 // export async function getPlayersList(page?: number): Promise<TPlayer[]> {

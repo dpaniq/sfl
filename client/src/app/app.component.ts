@@ -12,6 +12,7 @@ import { JwtService } from '@shared/services/jwt.service';
 import { LocalStorageService } from '@shared/services/local-storage.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NEVER, catchError, delay } from 'rxjs';
+import { HttpService } from '@shared/services/http.service';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ import { NEVER, catchError, delay } from 'rxjs';
     RouterModule,
   ],
   providers: [
+    HttpService,
     CookieService,
     JwtService,
     LocalStorageService,

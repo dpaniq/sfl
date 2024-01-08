@@ -19,7 +19,7 @@ const router: Router = express.Router();
 //   },
 // );
 
-router.get(
+router.post(
   '/captains',
   async (request: Request, response: Response, next: NextFunction) => {
     // const controller = new PlayersController();
