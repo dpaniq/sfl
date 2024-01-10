@@ -18,7 +18,7 @@
   >
     <ng-template matStepLabel>Choose First Captain</ng-template>
     <sfl-captains-selection
-      [team]="teamEnum.TeamA"
+      [team]="TeamEnum.teamA"
       [control]="captainsFormGroup.controls.firstCaptain"
     ></sfl-captains-selection>
     <button mat-button matStepperPrevious>Back</button>
@@ -31,7 +31,7 @@
   >
     <ng-template matStepLabel>Choose Second Captain</ng-template>
     <sfl-captains-selection
-      [team]="teamEnum.TeamB"
+      [team]="TeamEnum.teamB"
       [control]="captainsFormGroup.controls.secondCaptain"
     ></sfl-captains-selection>
     <button mat-button matStepperPrevious>Back</button>

@@ -19,6 +19,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ISOWeekPipe } from './iso-week.pipe';
 import { getLastSaturday, totalWeeksByYear } from './utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TeamCreateComponent } from 'src/features/team/team-create/team-create.component';
 
 @Component({
   selector: 'sfl-game-create',
@@ -36,6 +37,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ReactiveFormsModule,
 
     // Custom
+    TeamCreateComponent,
     ISOWeekPipe,
   ],
   templateUrl: './game-create.component.html',

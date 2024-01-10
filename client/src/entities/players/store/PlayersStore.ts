@@ -24,10 +24,10 @@ export class PlayersStore
   readonly players$ = this.select(({ players }) => players);
   readonly selected$ = this.select(({ selected }) => selected);
   readonly playersTeamsA$ = this.select(({ selected }) =>
-    selected.filter((select) => select.team === TeamEnum.TeamA)
+    selected.filter((select) => select.team === TeamEnum.teamA)
   );
   readonly playersTeamsB$ = this.select(({ selected }) =>
-    selected.filter((select) => select.team === TeamEnum.TeamB)
+    selected.filter((select) => select.team === TeamEnum.teamB)
   );
 
   constructor() {

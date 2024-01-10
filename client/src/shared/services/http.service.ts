@@ -11,7 +11,7 @@ headers.append(
   `Bearer ${localStorage.getItem('accessToken')}`
 );
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class HttpService {
   #httpClient = inject(HttpClient);
 

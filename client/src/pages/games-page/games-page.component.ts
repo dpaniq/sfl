@@ -7,11 +7,15 @@ import { GamesTableComponent } from 'src/features/games-table/games-table.compon
 import { CaptainsService, CaptainsStore } from '@entities/captains';
 import { provideComponentStore } from '@ngrx/component-store';
 import { GameCreationWidgetComponent } from 'src/widgets/game-creation-widget/game-creation-widget.component';
+import { PlayersService } from '@entities/players/services/players.service';
+import { HttpClientModule } from '@angular/common/http';
+import { PlayersStore } from '@entities/players';
 
 @Component({
   selector: 'sfl-games-page',
   standalone: true,
   imports: [
+    // Material
     MatIconModule,
     MatTabsModule,
 
@@ -26,9 +30,11 @@ import { GameCreationWidgetComponent } from 'src/widgets/game-creation-widget/ga
     // Fixme: CaptainsStore uses CaptainsService, idk how to fix this
     // https://angular.io/api/core/FactoryProvider
     CaptainsService,
+    PlayersService,
 
     // To use CaptainsService - useEffects
     provideComponentStore(CaptainsStore),
+    provideComponentStore(PlayersStore),
   ],
 })
 export class GamesPageComponent {

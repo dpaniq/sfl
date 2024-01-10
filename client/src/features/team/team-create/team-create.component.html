@@ -1,0 +1,21 @@
+<mat-form-field>
+  <mat-label>Team</mat-label>
+  <mat-select>
+    @for (team of teams; track team) {
+    <mat-option [value]="team">{{ team | uppercase }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Captain</mat-label>
+  <mat-select>
+    @for (captain of captains$ | async; track captain) {
+    <mat-option [value]="captain.id">{{ captain.nickname }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+table player here table player here table player here table player here table
+player here table player here table player here table player here table player
+here table player here table player here table player here table player here

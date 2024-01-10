@@ -1,5 +1,10 @@
 import mongoose, {Schema, model} from 'mongoose';
-import {TeamSchema, TeamModel, EnumTeamColor, EnumTeamCollection} from './team.model';
+import {
+  TeamSchema,
+  TeamModel,
+  EnumTeamColor,
+  EnumTeamCollection,
+} from './team.model';
 import {connectMongoDB} from '..';
 import {createTeam} from '../utils/creators';
 
@@ -21,10 +26,16 @@ beforeAll(async () => {
 
 describe('Test team model', () => {
   test('should throw erorr', async () => {
-    TestModel.create({}).catch((e: Error) => expect(e.name).toMatch('ValidationError'));
+    TestModel.create({}).catch((e: Error) =>
+      expect(e.name).toMatch('ValidationError'),
+    );
 
-    TestModel.create({name: 'BMW', description: 'description', color: 'BAD_COLOR'}).catch(
-      (e: Error) => expect(e.message).toMatch(/is not a valid enum value/),
+    TestModel.create({
+      name: 'BMW',
+      description: 'description',
+      color: 'BAD_COLOR',
+    }).catch((e: Error) =>
+      expect(e.message).toMatch(/is not a valid enum value/),
     );
   });
 
