@@ -44,7 +44,8 @@ export class CaptainsTableComponent {
     this.captainsStore.captains$
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe((captains) => {
-        this.dataSource.data.push(...captains);
+        console.log(captains);
+        this.dataSource.data = captains;
       });
   }
 

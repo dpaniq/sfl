@@ -1,7 +1,25 @@
 import {IControllerArgs} from '.';
-import {PlayerModel} from '../mongodb/model/player.model';
+import {IPlayer, PlayerModel} from '../mongodb/model/player.model';
 
 export class PlayersController {
+  public async getList({request, response}: Omit<IControllerArgs, 'next'>) {
+    const perPage = 10;
+
+    const {page} = request.body;
+
+    console.log(perPage, page);
+
+    // Move to service
+    const players = await PlayerModel.find()
+      .skip(page * perPage)
+      .sort({nickname: 'asc'});
+
+    response.json({
+      players,
+      page: page + 1,
+    });
+  }
+
   public async getCaptains({request, response}: Omit<IControllerArgs, 'next'>) {
     const perPage = 10;
 
@@ -18,6 +36,11 @@ export class PlayersController {
       captains,
       page: page + 1,
     });
+  }
+
+  public async patch(id: string, player: Partial<IPlayer>) {
+    await PlayerModel.findOneAndUpdate({_id: id}, player);
+    return await PlayerModel.findById({_id: id});
   }
 
   // public async findAll(

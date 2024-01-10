@@ -1,10 +1,8 @@
 import { ComponentStore, OnStoreInit } from '@ngrx/component-store';
-import { TPlayer } from '../types';
-import { Injectable, OnInit } from '@angular/core';
-import { getPlayersListMock } from '../api/get-players';
-import { Observable } from 'rxjs';
-import { TChosenPlayer } from '../types/index';
+import { Injectable, OnInit, inject } from '@angular/core';
+import { TChosenPlayer, TPlayer } from '../types';
 import { TeamEnum } from '@shared/constants/team';
+import { PlayersService } from '../services/players.service';
 
 export interface PlayersState {
   players: TPlayer[];
@@ -21,6 +19,8 @@ export class PlayersStore
   extends ComponentStore<PlayersState>
   implements OnStoreInit
 {
+  private playersService = inject(PlayersService);
+
   readonly players$ = this.select(({ players }) => players);
   readonly selected$ = this.select(({ selected }) => selected);
   readonly playersTeamsA$ = this.select(({ selected }) =>
@@ -35,7 +35,7 @@ export class PlayersStore
   }
 
   async ngrxOnStoreInit(): Promise<void> {
-    const players = await getPlayersListMock();
+    const players = (await this.playersService.getList()).players ?? [];
     this.setState((state) => ({ ...state, players }));
   }
 
@@ -75,16 +75,31 @@ export class PlayersStore
   );
 
   // TODO change to effects
-  readonly setAsCaptain = this.updater((state, id: string) => ({
-    ...state,
-    captains: state.players.map((players) => {
-      if (players.id === id) {
+  private readonly toggleCaptain = this.updater(
+    (state, { id, isCaptain }: TPlayer) => ({
+      ...state,
+      players: state.players.map((player) => {
+        if (player.id !== id) {
+          return player;
+        }
+
+        console.log('Update player', id, isCaptain);
         return {
-          ...players,
-          isCaptain: true,
+          ...player,
+          isCaptain,
         };
+      }),
+    })
+  );
+
+  // Try Catch (todo: move to effects)
+  async tryToggleCaptain(player: TPlayer) {
+    try {
+      if (await this.playersService.patch(player)) {
+        this.toggleCaptain(player);
       }
-      return players;
-    }),
-  }));
+    } catch (error) {
+      console.log('OOOOH MY, not pormoted', player.id);
+    }
+  }
 }

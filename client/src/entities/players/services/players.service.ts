@@ -1,38 +1,39 @@
 import { Injectable, Signal, computed, inject, signal } from '@angular/core';
-import { getCaptainsListMock } from '../api/get-captains';
 import { BehaviorSubject, Observable, Subject, firstValueFrom } from 'rxjs';
-import { TCaptain, TCaptainSelected } from '../types';
-import { TEAMS } from '../constants';
-import { HttpClient } from '@angular/common/http';
+import { TPlayer } from '../types';
 import { HttpService } from '@shared/services/http.service';
 
 type ResponseCaptains = {
-  captains: TCaptain[];
+  players: TPlayer[];
   page: number;
 };
 
 @Injectable()
-export class CaptainsService {
+export class PlayersService {
   private readonly useMock = true;
 
   #httpService = inject(HttpService);
 
-  async getCaptains(page: number = 0): Promise<ResponseCaptains> {
+  async getList(page: number = 0): Promise<ResponseCaptains> {
     // if (this.useMock) {
     //   return (await getCaptainsListMock()) ?? [];
     // }
 
     const data = await firstValueFrom(
-      this.#httpService.post<ResponseCaptains>('players/captains', { page })
+      this.#httpService.post<ResponseCaptains>('players/list', { page })
     );
 
     return {
-      captains: data?.captains ?? [],
+      players: data?.players ?? [],
       page: data.page ?? 0,
     };
   }
 
-  async promoteToCaptain(id: string) {}
+  async patch(player: TPlayer) {
+    return await firstValueFrom(
+      this.#httpService.patch<TPlayer>(`players/${player.id}`, player)
+    );
+  }
 
   // players$ = signal<TCaptain[]>([]);
   // // players = new BehaviorSubject<TCaptain[]>([]);

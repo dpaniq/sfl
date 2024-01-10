@@ -8,6 +8,7 @@ import { PlayersAdminWidgetComponent } from '@widgets';
 import { CaptainsService } from '@entities/captains';
 import { PlayersStore } from '@entities/players';
 import { provideComponentStore } from '@ngrx/component-store';
+import { PlayersService } from '@entities/players/services/players.service';
 
 @Component({
   selector: 'sfl-players-page',
@@ -30,8 +31,10 @@ import { provideComponentStore } from '@ngrx/component-store';
     // Fixme: CaptainsStore uses CaptainsService, idk how to fix this
     // https://angular.io/api/core/FactoryProvider
     CaptainsService,
+    PlayersService,
 
-    // To use CaptainsService - useEffects
+    // Move to the widget
+    // // To use CaptainsService - useEffects
     provideComponentStore(PlayersStore),
   ],
 })

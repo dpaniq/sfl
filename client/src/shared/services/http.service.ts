@@ -28,9 +28,22 @@ export class HttpService {
       );
   }
 
-  post<T>(url: string, data: object): Observable<T> {
+  post<T>(url: string, data: Partial<T>): Observable<T> {
     return this.#httpClient
       .post<T>(API_URL + '/' + url, data, {
+        withCredentials: true,
+        headers: headers as any,
+      })
+      .pipe(
+        catchError((err) => {
+          return NEVER;
+        })
+      );
+  }
+
+  patch<T>(url: string, data: T): Observable<T> {
+    return this.#httpClient
+      .patch<T>(API_URL + '/' + url, data, {
         withCredentials: true,
         headers: headers as any,
       })

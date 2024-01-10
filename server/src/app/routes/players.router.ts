@@ -20,6 +20,27 @@ const router: Router = express.Router();
 // );
 
 router.post(
+  '/list',
+  async (request: Request, response: Response, next: NextFunction) => {
+    controller.getList({request, response});
+  },
+);
+
+router.patch(
+  '/:id',
+  async (request: Request, response: Response, next: NextFunction) => {
+    const {id} = request.params;
+    const player = request.body;
+
+    console.log({id, player});
+
+    const patchedPlayer = await controller.patch(id, player);
+    console.log({patchedPlayer});
+    response.json(patchedPlayer);
+  },
+);
+
+router.post(
   '/captains',
   async (request: Request, response: Response, next: NextFunction) => {
     // const controller = new PlayersController();
