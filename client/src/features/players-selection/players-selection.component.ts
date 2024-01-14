@@ -55,7 +55,7 @@ export class PlayersSelectionComponent implements OnInit {
   ) {}
 
   readonly teamEnum = TeamEnum;
-  readonly currentTeam$ = signal<TeamEnum>(TeamEnum.TeamA);
+  readonly currentTeam$ = signal<TeamEnum>(TeamEnum.teamA);
   readonly lastAction = signal(null);
 
   readonly playerTeamA$ = this.playersStore.playersTeamsA$;
@@ -147,14 +147,14 @@ export class PlayersSelectionComponent implements OnInit {
     console.log(player, team);
     this.playersStore.addSelected({ id: player.id, team });
     this.currentTeam$.update((team) => {
-      return team === TeamEnum.TeamA ? TeamEnum.TeamB : TeamEnum.TeamA;
+      return team === TeamEnum.teamA ? TeamEnum.teamB : TeamEnum.teamA;
     });
   }
 
   deleteSelected(id: string) {
     this.playersStore.deleteSelected(id);
     this.currentTeam$.update((team) => {
-      return team === TeamEnum.TeamA ? TeamEnum.TeamB : TeamEnum.TeamA;
+      return team === TeamEnum.teamA ? TeamEnum.teamB : TeamEnum.teamA;
     });
   }
 }

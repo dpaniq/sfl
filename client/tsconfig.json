@@ -14,12 +14,13 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
+    "moduleResolution": "Node",
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
+    "esModuleInterop": true,
     "paths": {
       // Feature slice design
       "@environment/*": ["src/environments/*"],
@@ -36,6 +37,9 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+
+    "fullTemplateTypeCheck": true,
+    "allowSyntheticDefaultImports": true
   }
 }

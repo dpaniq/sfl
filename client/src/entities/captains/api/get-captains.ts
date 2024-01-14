@@ -1,8 +1,24 @@
-import { TCaptain } from '../types';
+import { TCaptain } from '../types/index.js';
 
-export async function getCaptainsList(): Promise<TCaptain[]> {
-  return [];
-}
+type ResponseCaptains = {
+  captains: TCaptain[];
+  page: number;
+};
+
+// export async function getPlayersList(page?: number): Promise<ResponseCaptains> {
+//   const data = await client
+//     .post('captains', {
+//       json: {
+//         page,
+//       },
+//     })
+//     .json<ResponseCaptains>();
+
+//   return {
+//     captains: data?.captains ?? [],
+//     page: data.page ?? 0,
+//   };
+// }
 
 export async function getCaptainsListMock(): Promise<TCaptain[]> {
   /**

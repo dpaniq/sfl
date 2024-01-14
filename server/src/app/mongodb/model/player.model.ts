@@ -34,12 +34,39 @@ export enum EnumPlayerCollection {
   Test = '_players_tests',
 }
 
-export const PlayerSchema = new Schema<IPlayer>({
-  nickname: {type: String, index: true},
-  isCaptain: {type: Boolean, default: false},
-  status: {type: String, enum: EnumPlayerStatus, default: EnumPlayerStatus.Inactive},
-  position: {type: String, enum: EnumPlayerPosition},
-  userId: useUserModelReference(EnumUserCollection.User, UserModel),
-});
+export const PlayerSchema = new Schema<IPlayer>(
+  {
+    nickname: {type: String, index: true},
+    isCaptain: {type: Boolean, default: false},
+    status: {
+      type: String,
+      enum: EnumPlayerStatus,
+      default: EnumPlayerStatus.Inactive,
+    },
+    position: {type: String, enum: EnumPlayerPosition},
+    userId: useUserModelReference(EnumUserCollection.User, UserModel),
+  },
+  {
+    toObject: {
+      transform: (doc, ret, options) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.userId;
+        return ret;
+      },
+    },
+    toJSON: {
+      transform: (doc, ret, options) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.userId;
+        return ret;
+      },
+    },
+  },
+);
 
-export const PlayerModel = model<IPlayer>(EnumPlayerCollection.Player, PlayerSchema);
+export const PlayerModel = model<IPlayer>(
+  EnumPlayerCollection.Player,
+  PlayerSchema,
+);

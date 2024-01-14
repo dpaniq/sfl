@@ -78,10 +78,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sfl-client:build:production"
+              "buildTarget": "sfl-client:build:production"
             },
             "development": {
-              "browserTarget": "sfl-client:build:development"
+              "buildTarget": "sfl-client:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -95,7 +95,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sfl-client:build"
+            "buildTarget": "sfl-client:build"
           }
         },
         "test": {
@@ -113,5 +113,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

@@ -5,7 +5,7 @@
       *ngFor="let player of playerTeamA$ | async; let index = index"
       [player]="player"
     >
-      <ng-container *ngIf="index === 0 && currentTeam$() === teamEnum.TeamB">
+      <ng-container *ngIf="index === 0 && currentTeam$() === teamEnum.teamB">
         <button
           mat-stroked-button
           color="warn"
@@ -36,9 +36,9 @@
         <button
           mat-stroked-button
           color="primary"
-          (click)="addIntoTeam(element, teamEnum.TeamA)"
+          (click)="addIntoTeam(element, teamEnum.teamA)"
           class="button button-left"
-          [disabled]="currentTeam$() === teamEnum.TeamB"
+          [disabled]="currentTeam$() === teamEnum.teamB"
         >
           <mat-icon>menu_open</mat-icon>
         </button>
@@ -52,9 +52,9 @@
         <button
           mat-stroked-button
           color="primary"
-          (click)="addIntoTeam(element, teamEnum.TeamB)"
+          (click)="addIntoTeam(element, teamEnum.teamB)"
           class="button button-right"
-          [disabled]="currentTeam$() === teamEnum.TeamA"
+          [disabled]="currentTeam$() === teamEnum.teamA"
         >
           <mat-icon>menu_open</mat-icon>
         </button>
@@ -124,7 +124,7 @@
       *ngFor="let player of playerTeamB$ | async; let index = index"
       [player]="player"
     >
-      <ng-container *ngIf="index === 0 && currentTeam$() === teamEnum.TeamA">
+      <ng-container *ngIf="index === 0 && currentTeam$() === teamEnum.teamA">
         <button
           mat-stroked-button
           color="warn"

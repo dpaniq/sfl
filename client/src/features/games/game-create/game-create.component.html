@@ -1,0 +1,38 @@
+<form [formGroup]="formGroup">
+  <h1>{{ playedAtFC.value | ISOWeek }}/{{ totalWeeks }} game of year</h1>
+
+  <mat-form-field>
+    <label for="Is verified?"></label>
+    <input matInput type="text" [hidden]="true" />
+    <mat-radio-group aria-label="Is Verified">
+      <mat-radio-button value="UNVERIFIED" selected>Unverifed</mat-radio-button>
+      <mat-radio-button value="IN_PROGRESS">In progress</mat-radio-button>
+      <mat-radio-button value="VERIFIED">Verifed</mat-radio-button>
+    </mat-radio-group>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Choose a date</mat-label>
+    <input
+      matInput
+      placeholder="Choose a date"
+      formControlName="playedAt"
+      [matDatepicker]="picker"
+      [matDatepickerFilter]="isSaturday"
+      [min]="minDate"
+      [max]="maxDate"
+      [value]="lastSaturday"
+    />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker">
+      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <sup>{{ playedAtFC.value | date }}</sup>
+  </mat-form-field>
+
+  <section class="row">
+    <sfl-team-create></sfl-team-create>
+    <sfl-team-create></sfl-team-create>
+  </section>
+</form>

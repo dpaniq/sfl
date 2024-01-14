@@ -17,7 +17,6 @@ import {
 } from '@angular/material/slide-toggle';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PlayersStore, TPlayer } from '@entities/players';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'sfl-players-toggle',
@@ -66,7 +65,10 @@ export class PlayersToggleComponent {
     this.dataSource.sort = this.sort;
   }
 
-  setAsCaptain(id: string) {
-    this.playersStore.setAsCaptain(id);
+  toggleCaptain(player: TPlayer) {
+    this.playersStore.tryToggleCaptain({
+      ...player,
+      isCaptain: !player.isCaptain,
+    });
   }
 }

@@ -1,0 +1,34 @@
+:host {
+  width: 100%;
+
+  mat-list-item {
+    height: max-content;
+    height: 100px;
+  }
+}
+
+.mat-mdc-list-item {
+  height: 100px;
+}
+
+.column {
+  display: grid;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 10px;
+}
+
+.flex {
+  display: flex;
+  &.space-evenly {
+    gap: 10px;
+    justify-content: space-evenly;
+
+    mat-list-item {
+      height: fit-content;
+    }
+  }
+}

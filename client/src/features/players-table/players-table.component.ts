@@ -36,7 +36,7 @@ import { PlayersStore, TPlayer } from '@entities/players';
     CaptainsService,
 
     // To use CaptainsService - useEffects
-    provideComponentStore(PlayersStore),
+    // provideComponentStore(PlayersStore),
   ],
 })
 export class PlayersTableComponent {
@@ -53,7 +53,7 @@ export class PlayersTableComponent {
     this.playersStore.players$
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe((players) => {
-        this.dataSource.data.push(...players);
+        this.dataSource.data = players;
       });
   }
 
@@ -68,6 +68,7 @@ export class PlayersTableComponent {
     'name',
     'surname',
     'nickname',
+    'isCaptain',
 
     'totalGames',
     'wonGames',

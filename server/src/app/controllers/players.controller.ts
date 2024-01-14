@@ -1,9 +1,47 @@
-import {NextFunction, Request, Response} from 'express';
-import {IRepository, PlayersRepository, UsersRepository} from '../repositories';
-import {isNumber} from '../utils/number';
+import {IControllerArgs} from '.';
+import {IPlayer, PlayerModel} from '../mongodb/model/player.model';
 
 export class PlayersController {
-  private readonly _r = new PlayersRepository();
+  public async getList({request, response}: Omit<IControllerArgs, 'next'>) {
+    const perPage = 10;
+
+    const {page} = request.body;
+
+    console.log(perPage, page);
+
+    // Move to service
+    const players = await PlayerModel.find()
+      .skip(page * perPage)
+      .sort({nickname: 'asc'});
+
+    response.json({
+      players,
+      page: page + 1,
+    });
+  }
+
+  public async getCaptains({request, response}: Omit<IControllerArgs, 'next'>) {
+    const perPage = 10;
+
+    const {page} = request.body;
+
+    console.log(perPage, page);
+
+    // Move to service
+    const captains = await PlayerModel.find({isCaptain: true})
+      .skip(page * perPage)
+      .sort({nickname: 'asc'});
+
+    response.json({
+      captains,
+      page: page + 1,
+    });
+  }
+
+  public async patch(id: string, player: Partial<IPlayer>) {
+    await PlayerModel.findOneAndUpdate({_id: id}, player);
+    return await PlayerModel.findById({_id: id});
+  }
 
   // public async findAll(
   //   request: Request,

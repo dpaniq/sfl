@@ -65,6 +65,23 @@
     <td mat-cell *matCellDef="let element">{{ element.nickname }}</td>
   </ng-container>
 
+  <!-- Is Captain Column -->
+  <ng-container matColumnDef="isCaptain">
+    <th
+      mat-header-cell
+      mat-sort-header
+      *matHeaderCellDef
+      sortActionDescription="Sort by captain"
+    >
+      Is Captain
+    </th>
+    <td mat-cell *matCellDef="let element">
+      @if(element.isCaptain) {
+      <mat-icon fontIcon="check"></mat-icon>
+      }
+    </td>
+  </ng-container>
+
   <!-- Total Games Column -->
   <ng-container matColumnDef="totalGames">
     <th
