@@ -45,3 +45,5 @@ Features:
 
 Todo client:
 - [ ] - Make solidjs
+
+Check access to the repo
