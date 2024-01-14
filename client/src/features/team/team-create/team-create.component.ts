@@ -163,9 +163,14 @@ export class TeamCreateComponent implements OnInit {
         } else {
           this.playersFC.disable();
           this.playersFC.reset([]);
-          this.#newGameStore.patchPlayers(players.map((player) => {
-            if (player.team !== )
-          }))
+          this.#newGameStore.patchPlayers(
+            players.map((player) => {
+              if (player.team !== this.teamFC.value) {
+                return player;
+              }
+              return { ...player, team: null, disable: false };
+            })
+          );
         }
       });
 
