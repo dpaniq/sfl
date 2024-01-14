@@ -77,7 +77,7 @@ export class TeamCreateComponent implements OnInit {
   }
 
   readonly formGroup = new FormGroup({
-    team: new FormControl<GameTeam | null>(null),
+    team: new FormControl<TeamEnum | null>(null),
     captain: new FormControl<GamePlayer | null>({
       value: null,
       disabled: true,
@@ -90,19 +90,18 @@ export class TeamCreateComponent implements OnInit {
 
   teams$ = this.#newGameStore.teams$;
   captains$ = this.#newGameStore.captains$.pipe(
-    withLatestFrom(this.formGroup.controls.team.valueChanges),
-
     tap((x) => console.log('WTF TAP,', x)),
-    map(([players, team]) => {
+    map((players) => {
       return players.filter(
-        (player) => player.team === team?.name || !player.disable
+        (player) => player.team === this.teamFC.value || !player.disable
       );
     })
   );
   players$ = this.#newGameStore.players$.pipe(
-    withLatestFrom(this.teamFC.valueChanges),
-    map(([players, team]) =>
-      players.filter((player) => player.team === team?.name || !player.disable)
+    map((players) =>
+      players.filter(
+        (player) => player.team === this.teamFC.value || !player.disable
+      )
     ),
     tap((x) => console.log('players$', { x }))
   );
@@ -123,11 +122,11 @@ export class TeamCreateComponent implements OnInit {
         console.log('set Team', prevTeam, currentTeam);
 
         if (currentTeam) {
-          this.#newGameStore.patchTeam({ ...currentTeam, disable: true });
+          this.#newGameStore.patchTeam({ name: currentTeam, disable: true });
         }
 
         if (prevTeam) {
-          this.#newGameStore.patchTeam({ ...prevTeam, disable: false });
+          this.#newGameStore.patchTeam({ name: prevTeam, disable: false });
         }
 
         // Disable / enable captainFC
@@ -169,33 +168,23 @@ export class TeamCreateComponent implements OnInit {
     this.playersFC.valueChanges
       .pipe(
         startWith(this.playersFC.value),
-        // pairwise(),
-        withLatestFrom(
-          this.#newGameStore.players$,
-          this.teamFC.valueChanges.pipe(
-            filter(Boolean),
-            map(({ name }) => name)
-          )
-        ),
-        map<[GamePlayer[], GamePlayer[], TeamEnum], GamePlayer[]>(
-          // ([[prev, current], team]) => {
-          ([playersFC, players, team]) => {
-            const resetPlayers: GamePlayer[] = players.map((player) => {
-              const foundFC = playersFC.find(({ id }) => id === player.id);
+        withLatestFrom(this.#newGameStore.players$),
+        map(([playersFC, players]) => {
+          const resetPlayers: GamePlayer[] = players.map((player) => {
+            const foundFC = playersFC.find(({ id }) => id === player.id);
 
-              if (foundFC) {
-                return { ...player, team, disable: true };
-              }
-              // To keep player for another team
-              if (player.team) {
-                return player;
-              }
-              return { ...player, team: null, disable: false };
-            });
+            if (foundFC) {
+              return { ...player, team: this.teamFC.value, disable: true };
+            }
+            // To keep player from another team
+            if (player.team) {
+              return player;
+            }
+            return { ...player, team: null, disable: false };
+          });
 
-            return resetPlayers;
-          }
-        ),
+          return resetPlayers;
+        }),
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe((players) => {
