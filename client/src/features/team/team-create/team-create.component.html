@@ -42,38 +42,13 @@
     </mat-select>
   </mat-form-field>
 
-  <!-- List -->
-  <mat-list>
-    <div mat-subheader>Team: {{ teamFC.value }}</div>
-    @for (player of teamPlayers$ | async; track player) {
-    <mat-list-item>
-      <mat-icon matListItemIcon icon="folder" />
-      <div matListItemTitle>{{ player.nickname }}</div>
-      <div matListItemLine class="flex space-evenly">
-        <span>{{ player.isCaptain }}</span>
+  <!-- Table -->
 
-        <mat-form-field class="example-full-width">
-          <mat-label>Passes</mat-label>
-          <span matPrefix>+1 &nbsp;</span>
-          <input type="number" matInput />
-          <mat-icon matSuffix icon="plus" />
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <mat-label>Passes</mat-label>
-          <span matPrefix>+1 &nbsp;</span>
-          <input type="number" matInput />
-          <mat-icon matSuffix icon="plus" />
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <mat-label>Passes</mat-label>
-          <span matPrefix>+1 &nbsp;</span>
-          <input type="number" matInput />
-          <mat-icon matSuffix icon="plus" />
-        </mat-form-field>
-      </div>
-    </mat-list-item>
-    }
-  </mat-list>
+  @if((teamPlayers$ | async)?.length) {
+  {{ teamPlayers$ | async | json }}
+  <sfl-game-create-player-statistics
+    [team]="teamFC.value!"
+    [dataSource]="(teamPlayers$ | async)!"
+  />
+  }
 </div>

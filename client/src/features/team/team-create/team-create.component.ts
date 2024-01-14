@@ -39,6 +39,7 @@ import {
   GameTeam,
   NewGameState,
 } from '@entities/games/store/new-game.store';
+import { GameCreatePlayerStatisticsComponent } from 'src/features/games/game-create-player-statistics/game-create-player-statistics.component';
 
 @Component({
   selector: 'sfl-team-create',
@@ -55,6 +56,9 @@ import {
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    // Custom
+    // TODO FIX
+    GameCreatePlayerStatisticsComponent,
   ],
   templateUrl: './team-create.component.html',
   styleUrl: './team-create.component.css',

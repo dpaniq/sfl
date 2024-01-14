@@ -8,6 +8,10 @@ export type GameTeam = { name: TeamEnum; disable: boolean };
 export type GamePlayer = Omit<TPlayer, 'team'> & {
   team: TeamEnum | null;
   disable: boolean;
+  pass: number;
+  goal: number;
+  goalHead: number;
+  autoGoal: number;
 };
 
 export interface NewGameState {
@@ -51,6 +55,10 @@ export class NewGameStore
         ...player,
         team: null,
         disable: false,
+        pass: 0,
+        goal: 0,
+        goalHead: 0,
+        autoGoal: 0,
       })),
     }));
   }
