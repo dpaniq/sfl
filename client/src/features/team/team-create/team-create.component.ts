@@ -138,9 +138,10 @@ export class TeamCreateComponent implements OnInit {
         startWith(this.captainFC.value),
         pairwise(),
         // withLatestFrom(this.teamFC.valueChanges.pipe(filter(Boolean), map(({name}) => name))),
+        withLatestFrom(this.#newGameStore.players$),
         takeUntilDestroyed(this.#destroyRef)
       )
-      .subscribe(([prevCaptain, currentCaptain]) => {
+      .subscribe(([[prevCaptain, currentCaptain], players]) => {
         console.log('setCaptain', prevCaptain, currentCaptain);
 
         // this.#newGameStore.setPlayer({
@@ -162,6 +163,9 @@ export class TeamCreateComponent implements OnInit {
         } else {
           this.playersFC.disable();
           this.playersFC.reset([]);
+          this.#newGameStore.patchPlayers(players.map((player) => {
+            if (player.team !== )
+          }))
         }
       });
 

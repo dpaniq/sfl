@@ -1,7 +1,3 @@
-teamFC {{ teamFC.value | json }}
-<hr />
-teams$ {{ teams$ | async | json }}
-<hr />
 <div class="column">
   <div class="row">
     <mat-form-field>
@@ -16,10 +12,6 @@ teams$ {{ teams$ | async | json }}
       </mat-select>
     </mat-form-field>
 
-    <hr />
-    captainFC: {{ captainFC.value | json }}
-    <hr />
-    captains$: {{ captains$ | async | json }}
     <mat-form-field>
       <mat-label>Captain</mat-label>
       <mat-select [formControl]="captainFC" [compareWith]="captainCompareFn">
@@ -33,7 +25,6 @@ teams$ {{ teams$ | async | json }}
     </mat-form-field>
   </div>
 
-  playersFC$: {{ playersFC.value | json }}
   <mat-form-field>
     <mat-label>Players</mat-label>
     <mat-select
