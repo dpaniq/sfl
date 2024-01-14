@@ -20,6 +20,8 @@ import { ISOWeekPipe } from './iso-week.pipe';
 import { getLastSaturday, totalWeeksByYear } from './utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TeamCreateComponent } from 'src/features/team/team-create/team-create.component';
+import { provideComponentStore } from '@ngrx/component-store';
+import { NewGameStore } from '@entities/games';
 
 @Component({
   selector: 'sfl-game-create',
@@ -43,6 +45,7 @@ import { TeamCreateComponent } from 'src/features/team/team-create/team-create.c
   templateUrl: './game-create.component.html',
   styleUrl: './game-create.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideComponentStore(NewGameStore)],
 })
 export class GameCreateComponent implements OnInit {
   #destroyRef = inject(DestroyRef);

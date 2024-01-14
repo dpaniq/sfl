@@ -21,4 +21,7 @@ export type TPlayer = {
   team?: TeamEnum;
 };
 
-export type TChosenPlayer = TPlayer & { team: TeamEnum };
+export type TChosenPlayer = Required<TPlayer> & { team: TeamEnum | null };
+
+type MakeOptional<T, Keys extends keyof T> = Omit<T, Keys> &
+  Partial<Pick<T, Keys>>;
