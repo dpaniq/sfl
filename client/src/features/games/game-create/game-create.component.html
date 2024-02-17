@@ -35,4 +35,16 @@
     <sfl-team-create></sfl-team-create>
     <sfl-team-create></sfl-team-create>
   </section>
+
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
 </form>
+
+<!-- State -->
+@if(formGroup.controls.state.value) {
+<code>
+  <pre>
+      {{ formGroup.getRawValue() | json }}
+    </pre
+  >
+</code>
+}

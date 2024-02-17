@@ -14,6 +14,14 @@ export type GamePlayer = Omit<TPlayer, 'team'> & {
   autoGoal: number;
 };
 
+// Exclude<keyof GamePlayer, 'team' | 'disable'>
+export type GamePlayerStatisticKeys =
+  | 'pass'
+  | 'goal'
+  | 'goalHead'
+  | 'goalHead'
+  | 'autoGoal';
+
 export interface NewGameState {
   teams: GameTeam[];
   players: GamePlayer[];
@@ -96,4 +104,34 @@ export class NewGameStore
       }),
     };
   });
+
+  readonly patchPlayerStatistic = this.updater(
+    (
+      state,
+      {
+        player: { id },
+        action,
+        key,
+      }: {
+        player: GamePlayer;
+        action: 'decrement' | 'increment';
+        key: GamePlayerStatisticKeys;
+      }
+    ) => {
+      return {
+        ...state,
+        players: state.players.map((player) => {
+          if (player.id === id) {
+            if (action === 'decrement') {
+              player[key] -= 1;
+            } else {
+              player[key] += 1;
+            }
+            return player;
+          }
+          return player;
+        }),
+      };
+    }
+  );
 }

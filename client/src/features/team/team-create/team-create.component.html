@@ -45,7 +45,6 @@
   <!-- Table -->
 
   @if((teamPlayers$ | async)?.length) {
-  {{ teamPlayers$ | async | json }}
   <sfl-game-create-player-statistics
     [team]="teamFC.value!"
     [dataSource]="(teamPlayers$ | async)!"

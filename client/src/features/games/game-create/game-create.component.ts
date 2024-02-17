@@ -15,13 +15,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { isSaturday, previousSaturday, subWeeks } from 'date-fns';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 import { ISOWeekPipe } from './iso-week.pipe';
 import { getLastSaturday, totalWeeksByYear } from './utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TeamCreateComponent } from 'src/features/team/team-create/team-create.component';
 import { provideComponentStore } from '@ngrx/component-store';
 import { NewGameStore } from '@entities/games';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'sfl-game-create',
@@ -30,6 +31,7 @@ import { NewGameStore } from '@entities/games';
     CommonModule,
 
     // Material
+    MatButtonModule,
     MatRadioModule,
     MatFormFieldModule,
     MatInputModule,
@@ -49,11 +51,14 @@ import { NewGameStore } from '@entities/games';
 })
 export class GameCreateComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
+  #newGameStore = inject(NewGameStore);
 
   lastSaturday = getLastSaturday;
   minDate = '2010-01-01';
   maxDate = isSaturday(new Date()) ? new Date() : previousSaturday(new Date());
+
   formGroup = new FormGroup({
+    state: new FormControl<any>(null),
     playedAt: new FormControl<Date>(this.lastSaturday, { nonNullable: true }),
   });
 
@@ -70,5 +75,11 @@ export class GameCreateComponent implements OnInit {
       .subscribe((date) => {
         this.totalWeeks = totalWeeksByYear(date);
       });
+  }
+
+  save() {
+    this.#newGameStore.players$.pipe(take(1)).subscribe((player) => {
+      this.formGroup.controls.state.patchValue(player);
+    });
   }
 }

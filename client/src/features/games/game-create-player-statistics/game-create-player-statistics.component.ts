@@ -1,16 +1,23 @@
-import { GamePlayer } from '@entities/games/store/new-game.store';
+import {
+  GamePlayer,
+  GamePlayerStatisticKeys,
+  NewGameStore,
+} from '@entities/games/store/new-game.store';
 import {
   ChangeDetectionStrategy,
   Component,
   Input,
   Output,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatTableModule } from '@angular/material/table';
 import { TeamEnum } from '@shared/constants/team';
 
-type GamePlayerStatistic = GamePlayer;
+type GamePlayerStatistic = GamePlayer & {
+  key?: GamePlayerStatisticKeys;
+};
 
 @Component({
   selector: 'sfl-game-create-player-statistics',
@@ -21,11 +28,20 @@ type GamePlayerStatistic = GamePlayer;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCreatePlayerStatisticsComponent {
+  #newGameStore = inject(NewGameStore);
+
   @Input({ required: true }) team!: TeamEnum;
-  @Input({ required: true }) dataSource!: GamePlayerStatistic[];
+  @Input({ required: true }) dataSource: GamePlayerStatistic[] = [];
   @Output() readonly emitStatistic!: GamePlayerStatistic;
 
-  columns = [
+  patchPlayerStatistic = this.#newGameStore.patchPlayerStatistic;
+
+  columns: {
+    columnDef: string;
+    header: string;
+    cell: (element: GamePlayerStatistic) => string;
+    key?: GamePlayerStatisticKeys;
+  }[] = [
     {
       columnDef: 'nickname',
       header: 'Nickname',
@@ -33,29 +49,28 @@ export class GameCreatePlayerStatisticsComponent {
     },
     {
       columnDef: 'pass',
-      header: 'No.',
+      key: 'pass',
+      header: 'Passes',
       cell: (element: GamePlayerStatistic) => `${element.pass}`,
     },
     {
       columnDef: 'goal',
+      key: 'goal',
       header: 'Goal',
       cell: (element: GamePlayerStatistic) => `${element.goal}`,
     },
     {
       columnDef: 'goalHead',
+      key: 'goalHead',
       header: 'Goal head',
       cell: (element: GamePlayerStatistic) => `${element.goalHead}`,
     },
     {
       columnDef: 'autoGoal',
+      key: 'autoGoal',
       header: 'Autogoal',
       cell: (element: GamePlayerStatistic) => `${element.autoGoal}`,
     },
   ];
   displayedColumns = this.columns.map((c) => c.columnDef);
-
-  ngOnChanges(changes: any) {
-    // this.dataSource =
-    console.log(changes);
-  }
 }

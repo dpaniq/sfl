@@ -110,9 +110,11 @@ export class TeamCreateComponent implements OnInit {
     tap((x) => console.log('players$', { x }))
   );
   teamPlayers$ = this.#newGameStore.players$.pipe(
-    withLatestFrom(this.teamFC.valueChanges),
-    map(([players, team]) => players.filter((player) => player.team === team)),
-    tap((x) => console.log('teamPlayers$', { x }))
+    map((players) =>
+      players.filter(
+        (player) => player.team && player.team === this.teamFC.value
+      )
+    )
   );
 
   ngOnInit(): void {
