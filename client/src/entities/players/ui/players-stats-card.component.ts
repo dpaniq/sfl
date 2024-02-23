@@ -49,15 +49,13 @@ import { PlayerCardComponent } from '../../../shared/ui/players/card/player-card
     <mat-card class="player-card player-card__stats">
       <mat-card-header>
         <mat-card-title-group>
-          <mat-card-title
-            >{{ player.nickname }}
-            <span *ngIf="player?.team"
-              >({{ player.team }})</span
-            ></mat-card-title
-          >
-          <mat-card-subtitle
-            >{{ player.name }} {{ player.surname }}</mat-card-subtitle
-          >
+          <mat-card-title>
+            {{ player.nickname }}
+            <span *ngIf="player?.team">({{ player.team }})</span>
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ player.name }} {{ player.surname }}
+          </mat-card-subtitle>
           <img
             mat-card-avatar
             src="https://picsum.photos/id/{{ player.avatar }}/200/300"
@@ -79,5 +77,5 @@ import { PlayerCardComponent } from '../../../shared/ui/players/card/player-card
   `,
 })
 export class PlayerStatsCardComponent {
-  @Input({ required: true }) player!: TPlayer | TChosenPlayer;
+  @Input({ required: true }) player!: TChosenPlayer;
 }

@@ -8,11 +8,20 @@ type ResponseCaptains = {
   page: number;
 };
 
+export type PlayersResponse = {
+  players: TPlayer[];
+  page: number;
+};
+
 @Injectable()
 export class PlayersService {
   private readonly useMock = true;
 
   #httpService = inject(HttpService);
+
+  getPlayers(page: number = 0): Observable<PlayersResponse> {
+    return this.#httpService.post<PlayersResponse>('players/list', { page });
+  }
 
   async getList(page: number = 0): Promise<ResponseCaptains> {
     // if (this.useMock) {
@@ -20,7 +29,7 @@ export class PlayersService {
     // }
 
     const data = await firstValueFrom(
-      this.#httpService.post<ResponseCaptains>('players/list', { page })
+      this.#httpService.post<ResponseCaptains>('players/list', { page }),
     );
 
     return {
@@ -31,7 +40,7 @@ export class PlayersService {
 
   async patch(player: TPlayer) {
     return await firstValueFrom(
-      this.#httpService.patch<TPlayer>(`players/${player.id}`, player)
+      this.#httpService.patch<TPlayer>(`players/${player.id}`, player),
     );
   }
 
