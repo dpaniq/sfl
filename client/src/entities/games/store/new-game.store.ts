@@ -1,18 +1,43 @@
+import { TPlayer } from '../../players/types/index';
+// TODO REMOVE AS DEP
 import { ComponentStore, OnStoreInit } from '@ngrx/component-store';
-import { Injectable, OnInit, inject } from '@angular/core';
+import { Injectable, InjectionToken, computed, inject } from '@angular/core';
 import { TeamEnum } from '@shared/constants/team';
-import { TChosenPlayer, TPlayer } from '@entities/players';
 import { PlayersService } from '@entities/players/services/players.service';
+import {
+  EMPTY,
+  catchError,
+  delay,
+  finalize,
+  map,
+  pipe,
+  switchMap,
+  tap,
+} from 'rxjs';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
 export type GameTeam = { name: TeamEnum; disable: boolean };
-export type GamePlayer = Omit<TPlayer, 'team'> & {
-  team: TeamEnum | null;
-  disable: boolean;
+export type GameGoal = {
   pass: number;
   goal: number;
   goalHead: number;
   autoGoal: number;
 };
+export type GamePlayerInternalProcessProps = {
+  team: TeamEnum | null;
+  transferable: boolean;
+  disableAsPlayer: boolean;
+  disableAsCaptain: boolean;
+};
+export type GamePlayer = TPlayer & GamePlayerInternalProcessProps & GameGoal;
 
 // Exclude<keyof GamePlayer, 'team' | 'disable'>
 export type GamePlayerStatisticKeys =
@@ -23,115 +48,252 @@ export type GamePlayerStatisticKeys =
   | 'autoGoal';
 
 export interface NewGameState {
+  loading: boolean;
   teams: GameTeam[];
   players: GamePlayer[];
+  goals: GameGoal[];
 }
 
 const INITIAL_PLAYERS_STATE: NewGameState = {
+  loading: false,
   players: [],
+  goals: [],
   teams: [
     { name: TeamEnum.teamA, disable: false },
     { name: TeamEnum.teamB, disable: false },
   ],
 };
 
-@Injectable()
-export class NewGameStore
-  extends ComponentStore<NewGameState>
-  implements OnStoreInit
-{
-  private playersService = inject(PlayersService);
+// Read https://offering.solutions/blog/articles/2023/12/03/ngrx-signal-store-getting-started/
 
-  readonly players$ = this.select(({ players }) => players);
+export const NewGameStore = signalStore(
+  withState(INITIAL_PLAYERS_STATE),
 
-  readonly captains$ = this.select(({ players }) =>
-    players.filter((player) => player.isCaptain)
-  );
+  withComputed(({ teams, players }) => ({
+    // Teams
+    teamsAreDisabled: computed(() => teams().every(team => team.disable)),
+    // Players
+    captains: computed(() =>
+      players().filter(({ isCaptain }) => Boolean(isCaptain)),
+    ),
+  })),
+  withMethods((store, playersService = inject(PlayersService)) => ({
+    // init: rxMethod<void>(pipe()),
+    init: rxMethod<void>(
+      pipe(
+        tap(() => {
+          patchState(store, { loading: true });
+        }),
+        delay(2500),
+        switchMap(() =>
+          playersService.getPlayers().pipe(
+            map(({ players }) => players),
+            tap(players => {
+              patchState(store, {
+                players: players.map(player => ({
+                  ...player,
+                  pass: 0,
+                  goal: 0,
+                  goalHead: 0,
+                  autoGoal: 0,
 
-  readonly teams$ = this.select(({ teams }) => teams);
+                  // additional
+                  team: null,
+                  disableAsPlayer: false,
+                  disableAsCaptain: false,
+                  transferable: false,
+                })),
+              });
+            }),
 
-  constructor() {
-    super(INITIAL_PLAYERS_STATE);
-  }
+            catchError(error => {
+              console.error('GameStore Crashed with error:', error);
+              return EMPTY;
+            }),
+            finalize(() => {
+              patchState(store, { loading: false });
+            }),
+          ),
+        ),
+      ),
+    ),
+    // Teams
+    updateTeam(teamToUpdate: GameTeam): void {
+      patchState(store, state => {
+        return {
+          teams: state.teams.map(team => {
+            if (team.name === teamToUpdate.name) {
+              return teamToUpdate;
+            }
+            return team;
+          }),
+        };
+      });
+    },
 
-  async ngrxOnStoreInit(): Promise<void> {
-    const players = (await this.playersService.getList()).players ?? [];
-
-    this.setState((state) => ({
-      ...state,
-      players: players.map((player) => ({
-        ...player,
-        team: null,
-        disable: false,
-        pass: 0,
-        goal: 0,
-        goalHead: 0,
-        autoGoal: 0,
-      })),
-    }));
-  }
-
-  readonly patchPlayers = this.updater((state, players: GamePlayer[]) => {
-    console.log('patchPlayers', players);
-    return {
-      ...state,
-      players,
-      // players: state.players.map((player) => {
-      //   const found = players.find(({ id }) => id === player.id);
-      //   if (found) {
-      //     console.log('patchPlayer wtih', { ...player, ...found });
-      //   }
-      //   return { ...player, ...found };
-      // }),
-    };
-  });
-
-  readonly patchTeam = this.updater((state, { name, disable }: GameTeam) => {
-    console.log('inside patch team', name, disable);
-    if (!name) {
-      return state;
-    }
-
-    console.log('will changed team');
-
-    return {
-      ...state,
-      teams: state.teams.map((team) => {
-        if (team.name !== name) {
-          return team;
-        }
-        return { name, disable };
-      }),
-    };
-  });
-
-  readonly patchPlayerStatistic = this.updater(
-    (
-      state,
-      {
-        player: { id },
-        action,
-        key,
-      }: {
-        player: GamePlayer;
-        action: 'decrement' | 'increment';
-        key: GamePlayerStatisticKeys;
-      }
-    ) => {
-      return {
-        ...state,
-        players: state.players.map((player) => {
-          if (player.id === id) {
-            if (action === 'decrement') {
-              player[key] -= 1;
-            } else {
-              player[key] += 1;
+    // Captains
+    updateCaptain(captainToUpdate: GamePlayer): void {
+      patchState(store, state => {
+        return {
+          players: state.players.map(player => {
+            if (player.id === captainToUpdate.id) {
+              return captainToUpdate;
             }
             return player;
-          }
-          return player;
-        }),
-      };
-    }
-  );
-}
+          }),
+        };
+      });
+    },
+    // Players
+    setPlayers(team: TeamEnum | null, addedPlayers: GamePlayer[]): void {
+      // Set added players
+      patchState(store, state => {
+        return {
+          // Reset all player belonging to current team
+          players: state.players
+            // .map(player => {
+            //   // Skip players if
+            //   if (player.team !== team || player.transferable) {
+            //     return player;
+            //   }
+
+            //   return {
+            //     ...player,
+            //     disable: false,
+            //     team: null,
+            //   };
+            // })
+            /**
+             * Check player exists in added players
+             *
+             * Player exist in added players set:
+             *  + update player with team and set disable (selected) true
+             *  - skip player
+             *
+             * TODO: make it readable
+             */
+            .map(player => {
+              // An
+              if (player.team && player.team !== team) {
+                return player;
+              }
+
+              if (player.transferable) {
+                return player;
+              }
+
+              console.log(
+                addedPlayers,
+                addedPlayers.find(added => added.id === player.id),
+              );
+
+              return addedPlayers.find(added => added.id === player.id)
+                ? { ...player, disableAsPlayer: true, team }
+                : {
+                    ...player,
+                    disableAsPlayer: false,
+                    team: null,
+                  };
+            }),
+        };
+      });
+    },
+    patchPlayerStats: ({
+      player: { id, team },
+      action,
+      key,
+    }: {
+      player: GamePlayer;
+      action: 'decrement' | 'increment';
+      key: GamePlayerStatisticKeys;
+    }): void => {
+      patchState(store, state => {
+        return {
+          players: state.players.map(player => {
+            if (player.id === id && player.team === team) {
+              if (action === 'decrement') {
+                player[key] -= 1;
+              } else {
+                player[key] += 1;
+              }
+              return player;
+            }
+            return player;
+          }),
+        };
+      });
+    },
+    playerToggleTransferable: (
+      player: GamePlayer,
+      transferable: boolean,
+    ): void => {
+      console.group('playerToggleTransferable');
+      console.log(player, transferable);
+      /**
+       * If transferable turn:on:
+       *
+       * + replace player with transferable but set team as null
+       * + add new empty player
+       */
+      if (transferable) {
+        patchState(store, state => {
+          return {
+            players: [
+              // TODO: make map instead filter
+              ...state.players.filter(pl => pl.id !== player.id),
+              // Same player but + transferable
+              {
+                ...player,
+                transferable,
+              },
+              // Similar player + transferable
+              {
+                ...player,
+                transferable,
+                pass: 0,
+                goal: 0,
+                goalHead: 0,
+                autoGoal: 0,
+                team:
+                  player.team === TeamEnum.teamA
+                    ? TeamEnum.teamB
+                    : TeamEnum.teamA,
+              },
+            ],
+          };
+        });
+
+        return;
+      }
+
+      /**
+       * If transferable turn:off
+       *
+       * + remove player
+       */
+      patchState(store, state => {
+        return {
+          players: [
+            ...state.players.filter(pl => pl.id !== player.id),
+            {
+              ...player,
+              transferable,
+            },
+          ],
+        };
+      });
+
+      console.groupEnd();
+    },
+  })),
+  // Should be latest to read methods
+  withHooks({
+    onInit({ init }) {
+      console.info('new game store 2 initialization...');
+      init();
+    },
+    onDestroy({ players }) {
+      console.info('players on destroy', players());
+    },
+  }),
+);

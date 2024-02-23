@@ -1,58 +1,116 @@
-<h2>Team: {{ team }}</h2>
+<h2>Team: {{ team() }}</h2>
+<!-- 
+<code>
+  {{ dataSource | json }}
+</code> -->
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z1 demo-table">
+<table
+  mat-table
+  [dataSource]="dataSource()"
+  class="mat-elevation-z1"
+>
   @for (column of columns; track column) {
-  @if(['nickname'].includes(column.columnDef)) {
-  <ng-container [matColumnDef]="column.columnDef">
-    <th mat-header-cell *matHeaderCellDef>
-      {{ column.header }}
-    </th>
-
-    <td mat-cell *matCellDef="let row">
-      {{ column.cell(row) }}
-    </td>
-  </ng-container>
-  } @else {
-  <ng-container [matColumnDef]="column.columnDef">
-    <th mat-header-cell *matHeaderCellDef>
-      {{ column.header }}
-    </th>
-
-    <td mat-cell *matCellDef="let row">
-      <span class="row">
-        <button
-          [title]="column.key"
-          [disabled]="!row[column.key!]"
-          (click)="
-            patchPlayerStatistic({
-              player: row,
-              action: 'decrement',
-              key: column.key!
-            })
-          "
+    <!-- None increment/decrement logic -->
+    @if (['nickname'].includes(column.columnDef)) {
+      <ng-container [matColumnDef]="column.columnDef">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
         >
-          -
-        </button>
+          {{ column.header }}
+        </th>
 
-        <b>{{ column.cell(row) }}</b>
-
-        <button
-          [title]="column.key"
-          (click)="
-            patchPlayerStatistic({
-              player: row,
-              action: 'increment',
-              key: column.key!
-            })
-          "
+        <td
+          mat-cell
+          *matCellDef="let row"
         >
-          +
-        </button>
-      </span>
-    </td>
-  </ng-container>
-  } }
+          {{ column.cell(row) }}
+        </td>
+      </ng-container>
+    } @else if (column.columnDef === 'transferable') {
+      <ng-container [matColumnDef]="column.columnDef">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          {{ column.header }}
+        </th>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <td
+          mat-cell
+          *matCellDef="let row"
+        >
+          @if (row.disableAsCaptain) {
+            <b>C</b>
+          } @else {
+            <mat-slide-toggle
+              #playedForToggle
+              [checked]="row.transferable"
+              [disabled]="!newGameStore.teamsAreDisabled()"
+              (click)="
+                newGameStore.playerToggleTransferable(
+                  row,
+                  playedForToggle.checked
+                )
+              "
+            ></mat-slide-toggle>
+          }
+        </td>
+      </ng-container>
+    } @else {
+      <ng-container [matColumnDef]="column.columnDef">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          {{ column.header }}
+        </th>
+
+        <td
+          mat-cell
+          *matCellDef="let row"
+        >
+          <span class="row">
+            <button
+              [title]="column.key"
+              [disabled]="!row[column.key!]"
+              (click)="
+                newGameStore.patchPlayerStats({
+                  player: row,
+                  action: 'decrement',
+                  key: column.key!
+                })
+              "
+            >
+              -
+            </button>
+
+            <b>{{ column.cell(row) }}</b>
+
+            <button
+              [title]="column.key"
+              (click)="
+                newGameStore.patchPlayerStats({
+                  player: row,
+                  action: 'increment',
+                  key: column.key!
+                })
+              "
+            >
+              +
+            </button>
+          </span>
+        </td>
+      </ng-container>
+    }
+  }
+
+  <tr
+    mat-header-row
+    *matHeaderRowDef="displayedColumns"
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+  ></tr>
 </table>

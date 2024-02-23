@@ -3,9 +3,18 @@
 
   <mat-form-field>
     <label for="Is verified?"></label>
-    <input matInput type="text" [hidden]="true" />
+    <input
+      matInput
+      type="text"
+      [hidden]="true"
+    />
     <mat-radio-group aria-label="Is Verified">
-      <mat-radio-button value="UNVERIFIED" selected>Unverifed</mat-radio-button>
+      <mat-radio-button
+        value="UNVERIFIED"
+        selected
+      >
+        Unverifed
+      </mat-radio-button>
       <mat-radio-button value="IN_PROGRESS">In progress</mat-radio-button>
       <mat-radio-button value="VERIFIED">Verifed</mat-radio-button>
     </mat-radio-group>
@@ -24,27 +33,36 @@
       [value]="lastSaturday"
     />
     <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker">
+    <mat-datepicker-toggle
+      matIconSuffix
+      [for]="picker"
+    >
       <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
     </mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     <sup>{{ playedAtFC.value | date }}</sup>
   </mat-form-field>
 
+  @if (newGameStore.loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  <ol>
+    <!-- <li>Several captains are disabled</li> -->
+    <li>Several captains as 'C'</li>
+    <li>Not all players are in player FC</li>
+  </ol>
+
   <section class="row">
     <sfl-team-create></sfl-team-create>
     <sfl-team-create></sfl-team-create>
   </section>
 
-  <button mat-raised-button color="primary" (click)="save()">Save</button>
-</form>
-
-<!-- State -->
-@if(formGroup.controls.state.value) {
-<code>
-  <pre>
-      {{ formGroup.getRawValue() | json }}
-    </pre
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
   >
-</code>
-}
+    Save
+  </button>
+</form>

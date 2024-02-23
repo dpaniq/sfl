@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -17,18 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TeamEnum } from '@shared/constants/team';
-import { PlayersStore, TPlayer } from '@entities/players';
-import { CaptainsStore, TCaptain } from '@entities/captains';
-import { NewGameStore } from '@entities/games';
-import {
-  filter,
-  map,
-  pairwise,
-  startWith,
-  takeUntil,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { map, pairwise, startWith } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,9 +28,10 @@ import { MatButtonModule } from '@angular/material/button';
 import {
   GamePlayer,
   GameTeam,
-  NewGameState,
+  NewGameStore,
 } from '@entities/games/store/new-game.store';
 import { GameCreatePlayerStatisticsComponent } from 'src/features/games/game-create-player-statistics/game-create-player-statistics.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'sfl-team-create',
@@ -55,6 +47,7 @@ import { GameCreatePlayerStatisticsComponent } from 'src/features/games/game-cre
     MatInputModule,
     MatButtonModule,
     FormsModule,
+    MatAutocompleteModule,
     ReactiveFormsModule,
     // Custom
     // TODO FIX
@@ -66,7 +59,7 @@ import { GameCreatePlayerStatisticsComponent } from 'src/features/games/game-cre
 })
 export class TeamCreateComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
-  #newGameStore = inject(NewGameStore);
+  readonly newGameStore = inject(NewGameStore);
 
   get teamFC() {
     return this.formGroup.controls.team;
@@ -80,6 +73,8 @@ export class TeamCreateComponent implements OnInit {
     return this.formGroup.controls.players;
   }
 
+  public value = signal<string>('');
+
   readonly formGroup = new FormGroup({
     team: new FormControl<TeamEnum | null>(null),
     captain: new FormControl<GamePlayer | null>({
@@ -88,151 +83,131 @@ export class TeamCreateComponent implements OnInit {
     }),
     players: new FormControl<GamePlayer[]>(
       { value: [], disabled: true },
-      { nonNullable: true }
+      { nonNullable: true },
     ),
   });
 
-  teams$ = this.#newGameStore.teams$;
-  captains$ = this.#newGameStore.captains$.pipe(
-    tap((x) => console.log('WTF TAP,', x)),
-    map((players) => {
-      return players.filter(
-        (player) => player.team === this.teamFC.value || !player.disable
+  teamSignal = this.newGameStore.teams;
+  captainsSignal = computed(() => {
+    return this.newGameStore
+      .captains()
+      .filter(
+        player => player.team === this.teamFC.value || !player.disableAsCaptain,
       );
-    })
-  );
-  players$ = this.#newGameStore.players$.pipe(
-    map((players) =>
-      players.filter(
-        (player) => player.team === this.teamFC.value || !player.disable
-      )
-    ),
-    tap((x) => console.log('players$', { x }))
-  );
-  teamPlayers$ = this.#newGameStore.players$.pipe(
-    map((players) =>
-      players.filter(
-        (player) => player.team && player.team === this.teamFC.value
-      )
-    )
-  );
+  });
+
+  playersSignal = computed(() => {
+    return this.newGameStore
+      .players()
+      .filter(player => {
+        if (player.disableAsPlayer) {
+          return player;
+        }
+        const pattern = RegExp(`${this.value()}`);
+        return pattern.test(player.nickname);
+      })
+      .filter(
+        player =>
+          player.team === this.teamFC.value ||
+          !player.disableAsPlayer ||
+          (player.disableAsPlayer && player.transferable),
+      );
+  });
+
+  playersOfCurrentTeamSignal = computed(() => {
+    return this.newGameStore
+      .players()
+      .filter(player => player.team && player.team === this.teamFC.value);
+  });
 
   ngOnInit(): void {
     this.teamFC.valueChanges
       .pipe(
         startWith(this.teamFC.value),
         pairwise(),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(([prevTeam, currentTeam]) => {
         console.log('set Team', prevTeam, currentTeam);
 
-        if (currentTeam) {
-          this.#newGameStore.patchTeam({ name: currentTeam, disable: true });
-        }
-
+        // To relax previous team
         if (prevTeam) {
-          this.#newGameStore.patchTeam({ name: prevTeam, disable: false });
+          this.newGameStore.updateTeam({ name: prevTeam, disable: false });
         }
 
-        // Disable / enable captainFC
-        currentTeam ? this.captainFC.enable() : this.captainFC.disable();
+        // To set new team (from available)
+        if (currentTeam) {
+          this.newGameStore.updateTeam({ name: currentTeam, disable: true });
+          this.captainFC.enable();
+        } else {
+          // If no current team
+          this.captainFC.reset();
+          this.captainFC.disable();
+          this.playersFC.reset();
+          this.playersFC.disable();
+        }
       });
 
     this.captainFC.valueChanges
       .pipe(
         startWith(this.captainFC.value),
         pairwise(),
-        // withLatestFrom(this.teamFC.valueChanges.pipe(filter(Boolean), map(({name}) => name))),
-        withLatestFrom(this.#newGameStore.players$),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
       )
-      .subscribe(([[prevCaptain, currentCaptain], players]) => {
+      .subscribe(([prevCaptain, currentCaptain]) => {
         console.log('setCaptain', prevCaptain, currentCaptain);
 
-        // this.#newGameStore.setPlayer({
-        //   player: currentCaptain,
-        //   team,
-        // });
+        if (prevCaptain) {
+          this.newGameStore.updateCaptain({
+            ...prevCaptain,
+            team: null,
+            disableAsCaptain: false,
+          });
+        }
 
-        // // TODO zdesj mozno if ne null (set isCaptain null)
-        // this.#newGameStore.setPlayer({
-        //   player: prevCaptain,
-        //   team: null,
-        // });
-
-        // Set new player to PlayerFC
-        // Disable / enable playersFC
+        // Set new player to PlayerFC & disable / enable playersFC
         if (currentCaptain) {
           this.playersFC.enable();
-          this.playersFC.setValue([currentCaptain]);
+          this.playersFC.reset([currentCaptain]);
+          this.newGameStore.updateCaptain({
+            ...currentCaptain,
+            team: this.teamFC.value,
+            disableAsCaptain: true,
+            disableAsPlayer: true,
+          });
         } else {
           this.playersFC.disable();
-          this.playersFC.reset([]);
-          this.#newGameStore.patchPlayers(
-            players.map((player) => {
-              if (player.team !== this.teamFC.value) {
-                return player;
-              }
-              return { ...player, team: null, disable: false };
-            })
-          );
+          this.playersFC.reset();
         }
       });
 
     this.playersFC.valueChanges
       .pipe(
         startWith(this.playersFC.value),
-        withLatestFrom(this.#newGameStore.players$),
-        map(([playersFC, players]) => {
-          const resetPlayers: GamePlayer[] = players.map((player) => {
-            const foundFC = playersFC.find(({ id }) => id === player.id);
-
-            if (foundFC) {
-              return { ...player, team: this.teamFC.value, disable: true };
-            }
-            // To keep player from another team
-            if (player.team) {
-              return player;
-            }
-            return { ...player, team: null, disable: false };
-          });
-
-          return resetPlayers;
-        }),
-        takeUntilDestroyed(this.#destroyRef)
+        map(players =>
+          players.map(player => ({
+            ...player,
+            team: this.teamFC.value,
+            disableAsPlayer: true,
+          })),
+        ),
+        takeUntilDestroyed(this.#destroyRef),
       )
-      .subscribe((players) => {
-        console.log('to set', players);
-
-        // this.#newGameStore.setPlayer({
-        //   player: prevPlayer,
-        //   team,
-        // });
-
-        // // TODO zdesj mozno if ne null (set isCaptain null)
-        // this.#newGameStore.setPlayer({
-        //   player: currentPlayer,
-        //   team: null,
-        // });
-
-        this.#newGameStore.patchPlayers(players);
+      .subscribe(players => {
+        this.newGameStore.setPlayers(this.teamFC.value, players);
       });
   }
 
   teamCompareFn(option: GameTeam | null, value: GameTeam | null) {
-    console.log('teamCompareFn', option, value);
     return option?.name === value?.name;
   }
 
   captainCompareFn(option: GamePlayer | null, value: GamePlayer | null) {
-    // console.log('captainCompareFn', option, value);
+    // console.log(option?.id, value?.id, option?.id === value?.id);
     return option?.id === value?.id;
   }
 
   playersCompareFn(option: GamePlayer | null, value: GamePlayer) {
-    console.log('playersCompareFn', { option, value });
-    // return !!value?.find((val) => val.id === option?.id);
     return option?.id === value?.id;
   }
 }

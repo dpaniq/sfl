@@ -1,5 +1,5 @@
 import { ComponentStore, OnStoreInit } from '@ngrx/component-store';
-import { Injectable, OnInit, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TChosenPlayer, TPlayer } from '../types';
 import { TeamEnum } from '@shared/constants/team';
 import { PlayersService } from '../services/players.service';
@@ -24,10 +24,10 @@ export class PlayersStore
   readonly players$ = this.select(({ players }) => players);
   readonly selected$ = this.select(({ selected }) => selected);
   readonly playersTeamsA$ = this.select(({ selected }) =>
-    selected.filter((select) => select.team === TeamEnum.teamA)
+    selected.filter(select => select.team === TeamEnum.teamA),
   );
   readonly playersTeamsB$ = this.select(({ selected }) =>
-    selected.filter((select) => select.team === TeamEnum.teamB)
+    selected.filter(select => select.team === TeamEnum.teamB),
   );
 
   constructor() {
@@ -36,7 +36,7 @@ export class PlayersStore
 
   async ngrxOnStoreInit(): Promise<void> {
     const players = (await this.playersService.getList()).players ?? [];
-    this.setState((state) => ({ ...state, players }));
+    this.setState(state => ({ ...state, players }));
   }
 
   // readonly add = this.updater((state, player: TPlayer) => ({
@@ -50,35 +50,33 @@ export class PlayersStore
   readonly deleteSelected = this.updater((state, id: string) => {
     return {
       ...state,
-      selected: state.selected.filter((select) => select.id !== id),
+      selected: state.selected.filter(select => select.id !== id),
     };
   });
 
-  readonly addSelected = this.updater(
-    (state, { id, team }: { id: string; team: TeamEnum }) => {
-      const finded = state.players.find((player) => player.id === id);
-      if (!finded) {
-        return state;
-      }
+  // readonly addSelected = this.updater((state, { id, team }: any) => {
+  //   const finded = state.players.find(player => player.id === id);
+  //   if (!finded) {
+  //     return state;
+  //   }
 
-      // const selected = state.selected.filter(
-      //   (selected) => selected.team !== team
-      // );
+  //   // const selected = state.selected.filter(
+  //   //   (selected) => selected.team !== team
+  //   // );
 
-      console.log('addSelected', { id, team });
+  //   console.log('addSelected', { id, team });
 
-      return {
-        ...state,
-        selected: [{ ...finded, team }, ...state.selected],
-      };
-    }
-  );
+  //   return {
+  //     ...state,
+  //     selected: [{ ...finded, team }, ...state.selected],
+  //   };
+  // });
 
   // TODO change to effects
   private readonly toggleCaptain = this.updater(
     (state, { id, isCaptain }: TPlayer) => ({
       ...state,
-      players: state.players.map((player) => {
+      players: state.players.map(player => {
         if (player.id !== id) {
           return player;
         }
@@ -89,7 +87,7 @@ export class PlayersStore
           isCaptain,
         };
       }),
-    })
+    }),
   );
 
   // Try Catch (todo: move to effects)

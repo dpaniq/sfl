@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   OnInit,
+  effect,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,17 +13,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { isSaturday, previousSaturday, subWeeks } from 'date-fns';
+import { MatNativeDateModule } from '@angular/material/core';
+import { isSaturday, previousSaturday } from 'date-fns';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { BehaviorSubject, take } from 'rxjs';
+import { take } from 'rxjs';
 import { ISOWeekPipe } from './iso-week.pipe';
 import { getLastSaturday, totalWeeksByYear } from './utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TeamCreateComponent } from 'src/features/team/team-create/team-create.component';
 import { provideComponentStore } from '@ngrx/component-store';
-import { NewGameStore } from '@entities/games';
 import { MatButtonModule } from '@angular/material/button';
+import { NewGameStore } from '@entities/games/store/new-game.store';
+import { getState } from '@ngrx/signals';
+
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'sfl-game-create',
@@ -39,6 +43,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatNativeDateModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatProgressBarModule,
 
     // Custom
     TeamCreateComponent,
@@ -47,11 +52,11 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './game-create.component.html',
   styleUrl: './game-create.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [provideComponentStore(NewGameStore)],
+  providers: [NewGameStore],
 })
 export class GameCreateComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
-  #newGameStore = inject(NewGameStore);
+  readonly newGameStore = inject(NewGameStore);
 
   lastSaturday = getLastSaturday;
   minDate = '2010-01-01';
@@ -72,14 +77,10 @@ export class GameCreateComponent implements OnInit {
   ngOnInit() {
     this.playedAtFC.valueChanges
       .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((date) => {
+      .subscribe(date => {
         this.totalWeeks = totalWeeksByYear(date);
       });
   }
 
-  save() {
-    this.#newGameStore.players$.pipe(take(1)).subscribe((player) => {
-      this.formGroup.controls.state.patchValue(player);
-    });
-  }
+  save() {}
 }

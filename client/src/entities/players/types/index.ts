@@ -17,8 +17,6 @@ export type TPlayer = {
   wonGames: number;
   maxWinStreak: number;
   maxLostStreak: number;
-
-  team?: TeamEnum;
 };
 
 export type TChosenPlayer = Required<TPlayer> & { team: TeamEnum | null };

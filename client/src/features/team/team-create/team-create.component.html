@@ -1,53 +1,97 @@
+@if (false) {
+  <pre>
+    Team: {{teamFC.value}}
+    <hr>
+    Captains: {{captainFC.value | json }}
+    <hr>
+  </pre>
+}
+
 <div class="column">
   <div class="row">
     <mat-form-field>
       <mat-label>Team</mat-label>
       <mat-select [formControl]="teamFC">
         <mat-option>-</mat-option>
-        @for (team of teams$ | async; track team) {
-        <mat-option [value]="team.name" [disabled]="team.disable">{{
-          team.name
-        }}</mat-option>
+        <hr />
+        @for (team of teamSignal(); track team) {
+          <mat-option
+            [value]="team.name"
+            [disabled]="team.disable"
+          >
+            {{ team.name }}
+          </mat-option>
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Captain</mat-label>
-      <mat-select [formControl]="captainFC" [compareWith]="captainCompareFn">
+      <mat-select
+        [formControl]="captainFC"
+        [compareWith]="captainCompareFn"
+      >
         <mat-option>-</mat-option>
-        @for (captain of captains$ | async; track captain) {
-        <mat-option [value]="captain" [disabled]="captain.team">{{
-          captain.nickname
-        }}</mat-option>
+        <hr />
+        @for (captain of captainsSignal(); track captain) {
+          <mat-option
+            [value]="captain"
+            [disabled]="captain.disableAsCaptain"
+          >
+            {{ captain.nickname }}
+          </mat-option>
         }
       </mat-select>
     </mat-form-field>
+    <hr />
   </div>
+
+  <mat-form-field class="example-form-field">
+    <mat-label>Clearable input</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="value"
+    />
+    @if (value()) {
+      <button
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="value.set('')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
 
   <mat-form-field>
     <mat-label>Players</mat-label>
+
     <mat-select
       multiple
       [formControl]="playersFC"
       [compareWith]="playersCompareFn"
     >
-      @for (player of players$ | async; track player) {
-      <mat-option
-        [value]="player"
-        [disabled]="player.team && player.id === captainFC.value?.id"
-        >{{ player.nickname }}
-      </mat-option>
+      @for (player of playersSignal(); track player) {
+        <mat-option
+          [value]="player"
+          [disabled]="player.team && player.disableAsCaptain"
+        >
+          {{ player.nickname }}
+        </mat-option>
       }
     </mat-select>
   </mat-form-field>
 
   <!-- Table -->
 
-  @if((teamPlayers$ | async)?.length) {
-  <sfl-game-create-player-statistics
-    [team]="teamFC.value!"
-    [dataSource]="(teamPlayers$ | async)!"
-  />
+  @if (playersOfCurrentTeamSignal().length) {
+    <sfl-game-create-player-statistics
+      [team]="teamFC.value!"
+      [dataSource]="playersOfCurrentTeamSignal()"
+    />
+
+    <!-- [dataSource]="(teamPlayers$ | async)!" -->
   }
 </div>

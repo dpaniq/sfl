@@ -1,19 +1,19 @@
 import {
-  GamePlayer,
-  GamePlayerStatisticKeys,
-  NewGameStore,
-} from '@entities/games/store/new-game.store';
-import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  Output,
   inject,
+  input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { TeamEnum } from '@shared/constants/team';
+import {
+  NewGameStore,
+  GamePlayer,
+  GamePlayerStatisticKeys,
+} from '@entities/games/store/new-game.store';
 
 type GamePlayerStatistic = GamePlayer & {
   key?: GamePlayerStatisticKeys;
@@ -22,19 +22,16 @@ type GamePlayerStatistic = GamePlayer & {
 @Component({
   selector: 'sfl-game-create-player-statistics',
   standalone: true,
-  imports: [CommonModule, MatTableModule],
+  imports: [CommonModule, MatTableModule, MatSlideToggleModule],
   templateUrl: './game-create-player-statistics.component.html',
   styleUrl: './game-create-player-statistics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCreatePlayerStatisticsComponent {
-  #newGameStore = inject(NewGameStore);
+  readonly newGameStore = inject(NewGameStore);
 
-  @Input({ required: true }) team!: TeamEnum;
-  @Input({ required: true }) dataSource: GamePlayerStatistic[] = [];
-  @Output() readonly emitStatistic!: GamePlayerStatistic;
-
-  patchPlayerStatistic = this.#newGameStore.patchPlayerStatistic;
+  public team = input.required<TeamEnum>();
+  public dataSource = input.required<GamePlayer[]>();
 
   columns: {
     columnDef: string;
@@ -71,6 +68,12 @@ export class GameCreatePlayerStatisticsComponent {
       header: 'Autogoal',
       cell: (element: GamePlayerStatistic) => `${element.autoGoal}`,
     },
+
+    {
+      columnDef: 'transferable',
+      header: 'Transferable',
+      cell: (element: GamePlayerStatistic) => `${element.transferable}`,
+    },
   ];
-  displayedColumns = this.columns.map((c) => c.columnDef);
+  displayedColumns = this.columns.map(c => c.columnDef);
 }

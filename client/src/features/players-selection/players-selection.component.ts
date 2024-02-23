@@ -51,7 +51,7 @@ export class PlayersSelectionComponent implements OnInit {
     private _destroyRef: DestroyRef,
     private _liveAnnouncer: LiveAnnouncer,
     private playersStore: PlayersStore,
-    private captainsStore: CaptainsStore
+    private captainsStore: CaptainsStore,
   ) {}
 
   readonly teamEnum = TeamEnum;
@@ -70,10 +70,10 @@ export class PlayersSelectionComponent implements OnInit {
   ngOnInit() {
     combineLatest([
       this.captainsStore.selectedCaptains$.pipe(
-        map((captains) => captains.length),
-        map(() => 2)
+        map(captains => captains.length),
+        map(() => 2),
       ),
-      this.playersStore.selected$.pipe(map((players) => players.length)),
+      this.playersStore.selected$.pipe(map(players => players.length)),
     ])
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe(([captainsCount, playersCounts]) => {
@@ -81,8 +81,8 @@ export class PlayersSelectionComponent implements OnInit {
       });
 
     combineLatest([
-      this.playerTeamA$.pipe(map((players) => players.map(({ id }) => id))),
-      this.playerTeamB$.pipe(map((players) => players.map(({ id }) => id))),
+      this.playerTeamA$.pipe(map(players => players.map(({ id }) => id))),
+      this.playerTeamB$.pipe(map(players => players.map(({ id }) => id))),
       this.playersStore.players$,
     ])
       .pipe(
@@ -91,12 +91,12 @@ export class PlayersSelectionComponent implements OnInit {
         // ),
         map(([playersIdsA, playersIdsB, players]) => {
           return players.filter(
-            (player) => ![...playersIdsA, ...playersIdsB].includes(player.id)
+            player => ![...playersIdsA, ...playersIdsB].includes(player.id),
           );
         }),
-        takeUntilDestroyed(this._destroyRef)
+        takeUntilDestroyed(this._destroyRef),
       )
-      .subscribe((players) => {
+      .subscribe(players => {
         console.log(players);
         this.dataSource.data = players;
         this.dataSource.sort = this.sort;
@@ -145,15 +145,15 @@ export class PlayersSelectionComponent implements OnInit {
 
   addIntoTeam(player: TPlayer, team: TeamEnum) {
     console.log(player, team);
-    this.playersStore.addSelected({ id: player.id, team });
-    this.currentTeam$.update((team) => {
+    // this.playersStore.addSelected({ id: player.id, team });
+    this.currentTeam$.update(team => {
       return team === TeamEnum.teamA ? TeamEnum.teamB : TeamEnum.teamA;
     });
   }
 
   deleteSelected(id: string) {
     this.playersStore.deleteSelected(id);
-    this.currentTeam$.update((team) => {
+    this.currentTeam$.update(team => {
       return team === TeamEnum.teamA ? TeamEnum.teamB : TeamEnum.teamA;
     });
   }
