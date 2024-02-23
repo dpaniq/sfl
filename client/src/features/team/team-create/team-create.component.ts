@@ -73,6 +73,12 @@ export class TeamCreateComponent implements OnInit {
     return this.formGroup.controls.players;
   }
 
+  /**
+   * https://stackblitz.com/edit/angular-sx79hu?embed=1&file=app/multiselect-autocomplete-example.html
+   * https://stackoverflow.com/questions/49131094/is-there-a-way-to-make-a-multiselection-in-autocomplete-angular4
+   * https://stackblitz.com/run?file=src%2Fexample%2Fchips-autocomplete-example.html
+   * https://material.angular.io/components/chips/examples
+   */
   public value = signal<string>('');
 
   readonly formGroup = new FormGroup({
