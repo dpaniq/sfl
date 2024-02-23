@@ -1,3 +1,4 @@
+import { totalWeeksByYear } from '@entities/utils/date';
 import { GamePlayer } from './store/new-game.store';
 
 export const isCurrentCaptain = ({
@@ -7,3 +8,5 @@ export const isCurrentCaptain = ({
 }: GamePlayer): boolean => {
   return;
 };
+
+const totalWeeksOfYear = totalWeeksByYear(new Date());

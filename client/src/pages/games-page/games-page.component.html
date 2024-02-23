@@ -1,8 +1,17 @@
 <mat-tab-group [selectedIndex]="2">
   <mat-tab>
     <ng-template mat-tab-label>
+      <mat-icon fontIcon="card"></mat-icon>
+      Card of games
+    </ng-template>
+
+    <sfl-games-list></sfl-games-list>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
       <mat-icon fontIcon="list"></mat-icon>
-      List of games
+      Table of games
     </ng-template>
 
     <!-- Games table -->

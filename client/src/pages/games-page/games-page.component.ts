@@ -10,6 +10,7 @@ import { GameCreationWidgetComponent } from 'src/widgets/game-creation-widget/ga
 import { PlayersService } from '@entities/players/services/players.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PlayersStore } from '@entities/players';
+import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
 
 @Component({
   selector: 'sfl-games-page',
@@ -22,6 +23,7 @@ import { PlayersStore } from '@entities/players';
     // Component
     GamesTableComponent,
     GameCreationWidgetComponent,
+    GamesListComponent,
   ],
   templateUrl: './games-page.component.html',
   styleUrl: './games-page.component.css',

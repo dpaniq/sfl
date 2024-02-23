@@ -9,7 +9,7 @@ export const routes: Routes = [
     title: 'Sign In',
     loadComponent: () =>
       import('../pages/sign-in-page/sign-in-page.component').then(
-        (m) => m.SignInPageComponent
+        m => m.SignInPageComponent,
       ),
   },
   {
@@ -17,7 +17,7 @@ export const routes: Routes = [
     title: 'New Match',
     loadComponent: () =>
       import('../pages/new-match/new-match.component').then(
-        (m) => m.NewMatchComponent
+        m => m.NewMatchComponent,
       ),
   },
   {
@@ -25,7 +25,7 @@ export const routes: Routes = [
     title: 'Captains',
     loadComponent: () =>
       import('../pages/captains-page/captains-page.component').then(
-        (m) => m.CaptainsPageComponent
+        m => m.CaptainsPageComponent,
       ),
   },
   {
@@ -33,7 +33,7 @@ export const routes: Routes = [
     title: 'Players',
     loadComponent: () =>
       import('../pages/players-page/players-page.component').then(
-        (m) => m.PlayersPageComponent
+        m => m.PlayersPageComponent,
       ),
   },
   {
@@ -41,7 +41,12 @@ export const routes: Routes = [
     title: 'Games',
     loadComponent: () =>
       import('../pages/games-page/games-page.component').then(
-        (m) => m.GamesPageComponent
+        m => m.GamesPageComponent,
       ),
+    // children: [
+    //   {
+    //     path: ':id'
+    //   }
+    // ]
   },
 ];

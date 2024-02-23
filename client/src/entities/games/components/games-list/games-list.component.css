@@ -1,0 +1,6 @@
+section {
+  display: grid;
+  padding: 20px 40px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 40px;
+}

@@ -1,0 +1,9 @@
+<h1>Games</h1>
+<section>
+  @for (game of totalGames(); track game) {
+    <sfl-game-card
+      [gameIdx]="game.gameIdx"
+      [gameDate]="game.gameDate"
+    ></sfl-game-card>
+  }
+</section>
