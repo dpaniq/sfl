@@ -1,3 +1,11 @@
 img {
   max-width: 100%;
 }
+
+.further-game {
+  background: lightgray;
+
+  &:hover {
+    cursor: not-allowed;
+  }
+}

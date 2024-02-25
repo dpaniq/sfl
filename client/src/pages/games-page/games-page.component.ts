@@ -11,11 +11,13 @@ import { PlayersService } from '@entities/players/services/players.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PlayersStore } from '@entities/players';
 import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'sfl-games-page',
   standalone: true,
   imports: [
+    RouterOutlet,
     // Material
     MatIconModule,
     MatTabsModule,

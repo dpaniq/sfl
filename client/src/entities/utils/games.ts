@@ -31,9 +31,11 @@ export const getGameCards = (year: number): GameCard[] => {
     end: endOfSeason,
   }).length;
 
-  const weeks2 = differenceInWeeks(startOfSeason, endOfSeason);
+  // To make inclusive +1 week
+  const weeksInclusive =
+    Math.abs(differenceInWeeks(startOfSeason, endOfSeason)) + 1;
 
-  console.log(weeks, weeks2);
+  console.log(weeks, weeksInclusive);
 
   // for ()
 
@@ -54,33 +56,15 @@ export const getGameCards = (year: number): GameCard[] => {
   // const weeks = getISOWeeksInYear(startOfSeason);
 
   let lastSaturday = startOfSeason;
-  for (const gameIdx of Array(weeks).keys()) {
+  for (const gameIdx of Array(weeksInclusive).keys()) {
     lastSaturday = nextSaturday(lastSaturday);
 
     gameCards.push({
+      season: year,
       gameIdx: gameIdx + 1,
       gameDate: lastSaturday,
     });
   }
 
   return gameCards;
-
-  // const firstSaturday = setDay(startOfSeason, SATURDAY, {
-  //   weekStartsOn: SATURDAY,
-  // });
-
-  // const endOfSeason = addYears(startOfSeason, 1);
-
-  // const weekDates = eachWeekOfInterval({
-  //   start: startOfSeason,
-  //   end: endOfSeason,
-  // });
-
-  // return weekDates.map((weekDate, gameIdx) => {
-  //   // const gameDate = getLastSaturday(weekDate);
-  //   return {
-  //     gameIdx: gameIdx + 1,
-  //     gameDate: weekDate,
-  //   };
-  // });
 };

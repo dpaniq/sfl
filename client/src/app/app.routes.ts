@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from 'src/pages/home/home.component';
+import { GamePageDetailsComponent } from '../pages/game-page-details/game-page-details.component';
 
 export const routes: Routes = [
   { path: '', title: 'Home', component: HomeComponent },
@@ -9,7 +10,7 @@ export const routes: Routes = [
     title: 'Sign In',
     loadComponent: () =>
       import('../pages/sign-in-page/sign-in-page.component').then(
-        m => m.SignInPageComponent,
+        c => c.SignInPageComponent,
       ),
   },
   {
@@ -17,7 +18,7 @@ export const routes: Routes = [
     title: 'New Match',
     loadComponent: () =>
       import('../pages/new-match/new-match.component').then(
-        m => m.NewMatchComponent,
+        c => c.NewMatchComponent,
       ),
   },
   {
@@ -25,7 +26,7 @@ export const routes: Routes = [
     title: 'Captains',
     loadComponent: () =>
       import('../pages/captains-page/captains-page.component').then(
-        m => m.CaptainsPageComponent,
+        c => c.CaptainsPageComponent,
       ),
   },
   {
@@ -33,20 +34,34 @@ export const routes: Routes = [
     title: 'Players',
     loadComponent: () =>
       import('../pages/players-page/players-page.component').then(
-        m => m.PlayersPageComponent,
+        c => c.PlayersPageComponent,
       ),
   },
   {
     path: 'games',
     title: 'Games',
-    loadComponent: () =>
-      import('../pages/games-page/games-page.component').then(
-        m => m.GamesPageComponent,
-      ),
-    // children: [
-    //   {
-    //     path: ':id'
-    //   }
-    // ]
+    // loadComponent: () =>
+    //   import('../pages/games-page/games-page.component').then(
+    //     c => c.GamesPageComponent,
+    //   ),
+    children: [
+      {
+        path: '',
+        title: 'Games',
+        loadComponent: () =>
+          import('../pages/games-page/games-page.component').then(
+            c => c.GamesPageComponent,
+          ),
+      },
+      {
+        path: ':season/:id',
+        title: 'Game details',
+        loadComponent: () =>
+          import('../pages/game-page-details/game-page-details.component').then(
+            c => c.GamePageDetailsComponent,
+          ),
+        // TODO Resolver here
+      },
+    ],
   },
 ];

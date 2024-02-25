@@ -21,8 +21,7 @@ const weeks = totalWeeksByYear(new Date());
 })
 export class GamesListComponent implements OnInit {
   readonly year = 2023;
-  readonly gameOfYear = 1;
-  readonly totalGames = signal<GameCard[]>(getGameCards(this.year));
+  readonly gameCards = signal<GameCard[]>(getGameCards(this.year));
 
   // TODO need year/gameOfYear resolver
 
