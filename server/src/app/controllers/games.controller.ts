@@ -3,9 +3,14 @@ import {GameService} from '../services/game.service';
 
 export class GamesController {
   async create({request, response}: Omit<IControllerArgs, 'next'>) {
-    const gameService = new GameService();
-    const game = await gameService.create(request.body);
+    const body = request.body;
+    console.log(body);
 
-    response.json(game);
+    // const gameService = new GameService();
+    // const game = await gameService.create(request.body);
+
+    // response.json(game);
+
+    response.json({ok: true});
   }
 }

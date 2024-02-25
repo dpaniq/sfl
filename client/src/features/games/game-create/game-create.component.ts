@@ -27,6 +27,7 @@ import { NewGameStore } from '@entities/games/store/new-game.store';
 import { getState } from '@ngrx/signals';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { GameService } from '@entities/games';
 
 @Component({
   selector: 'sfl-game-create',
@@ -52,11 +53,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   templateUrl: './game-create.component.html',
   styleUrl: './game-create.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NewGameStore],
+  providers: [NewGameStore, GameService],
 })
 export class GameCreateComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
   readonly newGameStore = inject(NewGameStore);
+  readonly gameService = inject(GameService);
 
   lastSaturday = getLastSaturday;
   minDate = '2010-01-01';
@@ -82,5 +84,8 @@ export class GameCreateComponent implements OnInit {
       });
   }
 
-  save() {}
+  save() {
+    const state = getState(this.newGameStore);
+    this.gameService.save(state).subscribe();
+  }
 }

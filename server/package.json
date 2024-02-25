@@ -36,7 +36,8 @@
     "md5": "^2.3.0",
     "mongoose": "^8.0.2",
     "reflect-metadata": "^0.1.13",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "valibot": "^0.29.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.23.3",
