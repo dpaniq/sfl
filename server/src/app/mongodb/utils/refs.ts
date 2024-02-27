@@ -4,7 +4,10 @@ import {EnumUserCollection, IUser, UserModel} from '../model/user.model';
 import {EnumPlayerCollection, PlayerModel} from '../model/player.model';
 import {EnumTeamCollection, TeamModel} from '../model/team.model';
 
-export function useRoleModelReference(collection: EnumRoleCollection, model: typeof RoleModel) {
+export function useRoleModelReference(
+  collection: EnumRoleCollection,
+  model: typeof RoleModel,
+) {
   return {
     type: [
       {
@@ -16,7 +19,11 @@ export function useRoleModelReference(collection: EnumRoleCollection, model: typ
     validate: {
       validator: async (array: any[]) => {
         const rolesCount = await model.countDocuments({_id: {$in: array}});
-        return Array.isArray(array) && array.length > 0 && array.length === rolesCount;
+        return (
+          Array.isArray(array) &&
+          array.length > 0 &&
+          array.length === rolesCount
+        );
       },
       message: 'At least one role is required.',
     },
