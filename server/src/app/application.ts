@@ -31,8 +31,18 @@ export class Application {
   public startServer(): void {
     let options = {};
     try {
-      const keyPath = path.resolve(__dirname, '../../..', 'ssl', 'localhost.key');
-      const certPath = path.resolve(__dirname, '../../..', 'ssl', 'localhost.crt');
+      const keyPath = path.resolve(
+        __dirname,
+        '../../..',
+        'ssl',
+        'localhost.key',
+      );
+      const certPath = path.resolve(
+        __dirname,
+        '../../..',
+        'ssl',
+        'localhost.crt',
+      );
 
       options = {
         key: fs.readFileSync(keyPath),
@@ -42,8 +52,12 @@ export class Application {
       console.error('ssl connection error', error);
     }
 
-    https.createServer(options, this._server).listen(env.SERVER_PORT, env.SERVER_HOSTNAME, () => {
-      console.log(`Server works on https://${env.SERVER_HOSTNAME}:${env.SERVER_PORT}`);
-    });
+    https
+      .createServer(options, this._server)
+      .listen(env.SERVER_PORT, env.SERVER_HOSTNAME, () => {
+        console.log(
+          `Server works on https://${env.SERVER_HOSTNAME}:${env.SERVER_PORT}`,
+        );
+      });
   }
 }

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormGroup,
@@ -10,14 +16,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  HttpClient,
-  HttpClientModule,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NEVER, catchError, delay } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { HttpService } from '../../../shared/services/http.service';
+import { AuthService } from '@shared/services/auth.service';
 
 @Component({
   selector: 'sfl-sign-in',
@@ -29,7 +33,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatButtonModule,
     MatFormFieldModule,
     MatProgressBarModule,
-    HttpClientModule,
     RouterModule,
     ReactiveFormsModule,
   ],
@@ -37,12 +40,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   styleUrls: ['./sign-in.component.css'],
 })
 export class SignInComponent {
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  private readonly authService = inject(AuthService);
+
+  constructor(private router: Router) {}
 
   loading = signal(false);
 
   signInFG = new FormGroup({
-    email: new FormControl<string>('YE0x1@sfl.lv', {
+    email: new FormControl<string>('admin@admin.lv', {
       nonNullable: true,
       validators: [Validators.email, Validators.required],
     }),
@@ -62,40 +67,17 @@ export class SignInComponent {
 
   onSubmit() {
     this.loading.set(true);
-    // TODO: Use EventEmitter with form value
-    console.warn(this.signInFG.getRawValue());
     const payload = this.signInFG.getRawValue();
 
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
+    this.authService
+      .signIn(payload)
 
-    // ToDo /sign-in
-    // ToDo /sign-out
-    this.httpClient
-      .post<any>('https://sfl.com:3001/auth/login', payload, {
-        withCredentials: true,
-        headers: new HttpHeaders({
-          ...headers,
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        }),
-      })
-      .pipe(
-        delay(1500),
-        catchError((err) => {
-          console.warn(err);
-          this.signInFG.reset({ email: '', password: '' });
-          this.loading.set(false);
-          return NEVER;
-        })
-      )
-      .subscribe((response) => {
+      .subscribe(response => {
+        console.log(response);
         if (response) {
-          console.log(response);
-          localStorage.setItem('accessToken', response?.accessToken);
-          this.loading.set(false);
           this.router.navigate(['/']);
         }
+        this.loading.set(false);
       });
   }
 }

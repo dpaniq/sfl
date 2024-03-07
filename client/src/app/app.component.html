@@ -2,32 +2,56 @@
   <mat-toolbar color="primary">
     <div class="header-menu-and-logo-block">
       <strong>SFL</strong>
-      <button mat-icon-button class="example-icon" (click)="sidenav.toggle()">
+      <button
+        mat-icon-button
+        class="example-icon"
+        (click)="sidenav.toggle()"
+      >
         <mat-icon>menu</mat-icon>
       </button>
-      <a class="logotype" mat-button href="/">
+      <a
+        class="logotype"
+        mat-button
+        href="/"
+      >
         <b>Suturday Football League</b>
       </a>
     </div>
 
     <div class="header-side-block">
-      <a mat-button href="/sign-in" aria-label="Sign in"> Login </a>
-      <button
-        #logoutBtn
-        mat-stroked-button
-        aria-label="logout"
-        color="default"
-        (click)="logoutBtn.disabled = true; onLogout()"
-        [disabled]="false"
-      >
-        Logout
-      </button>
+      @if (userSignal()) {
+        <div>
+          <mat-icon fontIcon="person"></mat-icon>
+          {{ userSignal()?.email }}
+        </div>
+
+        <button
+          mat-stroked-button
+          (click)="onSignOut()"
+          [disabled]="false"
+        >
+          Logout
+          <mat-icon
+            fontIcon="logout"
+            iconPositionEnd
+          ></mat-icon>
+        </button>
+      } @else {
+        <a
+          mat-raised-button
+          href="/sign-in"
+        >
+          Sign In
+          <mat-icon
+            fontIcon="login"
+            iconPositionEnd
+          ></mat-icon>
+        </a>
+      }
 
       <button
         [disabled]="true"
         mat-icon-button
-        class="example-icon favorite-icon"
-        aria-label="Example icon-button with heart icon"
       >
         <mat-icon>favorite</mat-icon>
       </button>
@@ -35,8 +59,6 @@
       <button
         [disabled]="true"
         mat-icon-button
-        class="example-icon"
-        aria-label="Example icon-button with share icon"
       >
         <mat-icon>share</mat-icon>
       </button>
@@ -45,8 +67,16 @@
 </header>
 
 <!-- Main container -->
-<mat-sidenav-container class="container" autosize>
-  <mat-sidenav #sidenav mode="side" [opened]="true" class="aside">
+<mat-sidenav-container
+  class="container"
+  autosize
+>
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    [opened]="true"
+    class="aside"
+  >
     <sfl-aside></sfl-aside>
   </mat-sidenav>
 

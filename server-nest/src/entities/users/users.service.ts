@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { User, UserSchemaModel } from './users.model';
+import { IUser, User } from './users.model';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name)
-    private userModel: UserSchemaModel,
+    private userModel: Model<IUser>,
   ) {}
 
   async createUser({ settings, ...createUserDto }: any) {

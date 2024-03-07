@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export interface IAuth {
-  login: string;
+  email: string;
   password: string;
 }
 
-export class AuthModel implements IAuth {
+export class Auth implements IAuth {
   @ApiProperty()
-  login: string;
+  email: string;
 
   @ApiProperty()
   password: string;

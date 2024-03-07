@@ -1,12 +1,16 @@
 import * as v from 'valibot';
+import { Auth } from './auth.model';
 
-const AuthValiSchema = v.object({
-  login: v.string([]),
+const AuthValiSchema = v.object<Record<keyof Auth, any>>({
+  email: v.string([]),
   password: v.string([]),
 });
 
 export const AuthRequiredValiSchema = v.required(AuthValiSchema);
 export type AuthRequiredValiSchemaInput = v.Input<
+  typeof AuthRequiredValiSchema
+>;
+export type AuthRequiredValiSchemaOutput = v.Output<
   typeof AuthRequiredValiSchema
 >;
 // export type RequiredAuthDto = v.Input<typeof authDtoRequired>;

@@ -4,7 +4,14 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { jwtInterceptor } from '@shared/interceptors/jwt.interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimations(), provideStore()]
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([jwtInterceptor])),
+    provideAnimations(),
+    provideStore(),
+  ],
 };

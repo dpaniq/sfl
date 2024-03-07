@@ -27,6 +27,11 @@ header {
       align-items: center;
     }
   }
+
+  .header-side-block {
+    display: flex;
+    gap: 10px;
+  }
 }
 
 .container {

@@ -10,12 +10,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { CookieService } from '@shared/services/cookie.service';
 import { JwtService } from '@shared/services/jwt.service';
 import { LocalStorageService } from '@shared/services/local-storage.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { NEVER, catchError, delay } from 'rxjs';
 import { HttpService } from '@shared/services/http.service';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'sfl-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
@@ -27,7 +28,6 @@ import { HttpService } from '@shared/services/http.service';
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
-    HttpClientModule,
     RouterModule,
   ],
   providers: [
@@ -35,7 +35,6 @@ import { HttpService } from '@shared/services/http.service';
     CookieService,
     JwtService,
     LocalStorageService,
-    HttpClientModule,
     RouterModule,
   ],
 })
@@ -43,32 +42,16 @@ export class AppComponent {
   #cookieService = inject(CookieService);
   #jwtService = inject(JwtService);
   #httpClient = inject(HttpClient);
-  #router = inject(Router);
+  private readonly router = inject(Router);
 
-  onLogout() {
-    var headersx = new Headers();
-    headersx.append('Content-Type', 'application/json');
-    headersx.append('Accept', 'application/json');
+  private readonly authService = inject(AuthService);
+  readonly userSignal = this.authService.user;
 
-    this.#httpClient
-      .get('https://sfl.com:3001/auth/logout', {
-        withCredentials: true,
-        headers: {
-          ...(headersx as any),
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      })
-      .pipe(
-        delay(1500),
-        catchError((err) => {
-          return NEVER;
-        })
-      )
-      .subscribe((response) => {
-        if (response) {
-          console.log(response);
-          // this.#router.navigate(['/sign-in']);
-        }
-      });
+  onSignOut() {
+    this.authService.signOut().subscribe(response => {
+      if (response) {
+        this.router.navigate(['/']);
+      }
+    });
   }
 }

@@ -5,5 +5,5 @@ import { LocalStorageService } from './local-storage.service';
 
 @Injectable()
 export class JwtService {
-  #localStorageService = inject(LocalStorageService);
+  decode(token: string) {}
 }

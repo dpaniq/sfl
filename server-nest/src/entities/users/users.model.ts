@@ -82,4 +82,4 @@ export class User implements IUser {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-export type UserSchemaModel = Model<typeof UserSchema>;
+export type UserMongoModel = Model<IUser>;

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
@@ -8,7 +7,6 @@ import { CaptainsService, CaptainsStore } from '@entities/captains';
 import { provideComponentStore } from '@ngrx/component-store';
 import { GameCreationWidgetComponent } from 'src/widgets/game-creation-widget/game-creation-widget.component';
 import { PlayersService } from '@entities/players/services/players.service';
-import { HttpClientModule } from '@angular/common/http';
 import { PlayersStore } from '@entities/players';
 import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
 import { RouterOutlet } from '@angular/router';
