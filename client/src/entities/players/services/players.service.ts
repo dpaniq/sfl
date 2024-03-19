@@ -2,6 +2,7 @@ import { Injectable, Signal, computed, inject, signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, firstValueFrom } from 'rxjs';
 import { TPlayer } from '../types';
 import { HttpService } from '@shared/services/http.service';
+import { HttpParams } from '@angular/common/http';
 
 type ResponseCaptains = {
   players: TPlayer[];
@@ -19,8 +20,8 @@ export class PlayersService {
 
   #httpService = inject(HttpService);
 
-  getPlayers(page: number = 0): Observable<PlayersResponse> {
-    return this.#httpService.post<PlayersResponse>('players/list', { page });
+  getPlayers(page: number = 0): Observable<TPlayer[]> {
+    return this.#httpService.get<TPlayer[]>('players', { page });
   }
 
   async getList(page: number = 0): Promise<ResponseCaptains> {

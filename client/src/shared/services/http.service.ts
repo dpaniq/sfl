@@ -1,6 +1,6 @@
 import { Injectable, Signal, computed, inject, signal } from '@angular/core';
 import { BehaviorSubject, NEVER, Observable, Subject, catchError } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { API_URL } from '@shared/constants/api';
 
 const GET_HEADERS = new HttpHeaders();
@@ -15,13 +15,22 @@ const PATCH_HEADERS = new HttpHeaders({
   Accept: 'application/json',
 });
 
+interface GetParams {
+  page?: number;
+  skip?: number;
+  limit?: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class HttpService {
   #httpClient = inject(HttpClient);
 
-  get<T>(url: string): Observable<T> {
+  get<T>(url: string, params: GetParams = {}): Observable<T> {
     return this.#httpClient.get<T>(API_URL + '/' + url, {
       headers: GET_HEADERS,
+      params: {
+        ...params,
+      },
     });
   }
 

@@ -1,5 +1,5 @@
 import * as v from 'valibot';
-import { Auth } from './auth.model';
+import { Auth } from './auth.schema';
 
 const AuthValiSchema = v.object<Record<keyof Auth, any>>({
   email: v.string([]),

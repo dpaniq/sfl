@@ -10,7 +10,7 @@ import {
 import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
 import { AuthRequiredValiSchema } from './auth.dto';
 import { ApiTags, ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { Auth } from './auth.model';
+import { Auth } from './auth.schema';
 import { hash } from 'src/shared/utils/string';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
@@ -56,10 +56,10 @@ export class AuthController {
   }
 
   @Post('sign-out')
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'sign out (reset tokens)',
-  // })
+  @ApiResponse({
+    status: 200,
+    description: 'sign out (reset tokens)',
+  })
   signOut(@Res() res: Response) {
     res.cookie('refreshToken', null, {
       httpOnly: true,

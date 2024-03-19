@@ -7,6 +7,8 @@ import {
   tap,
 } from 'rxjs';
 import { HttpService } from '@shared/services/http.service';
+import { NewGameState } from '../store/new-game.store';
+import { getYear } from 'date-fns';
 
 @Injectable()
 export class GameService {
@@ -14,11 +16,22 @@ export class GameService {
 
   private readonly httpService = inject(HttpService);
 
-  public save<T>(game: any) {
-    return this.httpService.post<T>(`games/game`, game).pipe(
-      tap(x => {
-        console.log('saveGame', x);
-      }),
+  public save(playedAt: Date, game: NewGameState): any {
+    const newGame = Object.assign(
+      {},
+      {
+        playedAt,
+        players: game.players.filter(({ team }) => !!team),
+      },
     );
+
+    this.httpService
+      .post<any>(`games`, newGame)
+      .pipe(
+        tap(x => {
+          console.log('saveGame', x);
+        }),
+      )
+      .subscribe();
   }
 }

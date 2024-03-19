@@ -16,6 +16,8 @@ import { AuthController } from './entities/auth/auth.controller';
 import { UsersService } from './entities/users/users.service';
 import { ContextInterceptor } from './shared/interceptors/context/context.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { PlayersModule } from './entities/players/players.module';
+import { GamesModule } from './entities/games/games.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     }),
     AuthModule,
     UsersModule,
+    PlayersModule,
+    GamesModule,
   ],
   providers: [
     {

@@ -5,11 +5,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { IUser, User, UserMongoModel } from '../users';
+import { IUser, User } from '../users';
 import { AuthRequiredValiSchemaOutput } from './auth.dto';
 import { hash } from 'src/shared/utils/string';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,7 @@ export class AuthService {
 
   constructor(
     @InjectModel(User.name)
-    private userModel: UserMongoModel,
+    private userModel: Model<User>,
     private configService: ConfigService,
     private jwtService: JwtService,
   ) {}

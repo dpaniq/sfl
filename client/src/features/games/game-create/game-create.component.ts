@@ -86,6 +86,6 @@ export class GameCreateComponent implements OnInit {
 
   save() {
     const state = getState(this.newGameStore);
-    this.gameService.save(state).subscribe();
+    this.gameService.save(this.playedAtFC.value, state);
   }
 }

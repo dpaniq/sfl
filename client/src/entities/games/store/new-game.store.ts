@@ -48,6 +48,7 @@ export type GamePlayerStatisticKeys =
   | 'autoGoal';
 
 export interface NewGameState {
+  status: any;
   loading: boolean;
   teams: GameTeam[];
   players: GamePlayer[];
@@ -55,6 +56,7 @@ export interface NewGameState {
 }
 
 const INITIAL_PLAYERS_STATE: NewGameState = {
+  status: '',
   loading: false,
   players: [],
   goals: [],
@@ -87,8 +89,14 @@ export const NewGameStore = signalStore(
         delay(2500),
         switchMap(() =>
           playersService.getPlayers().pipe(
-            map(({ players }) => players),
             tap(players => {
+              console.log(
+                'players',
+                players,
+                typeof players,
+                Array.isArray(players),
+              );
+
               patchState(store, {
                 players: players.map(player => ({
                   ...player,
@@ -181,11 +189,6 @@ export const NewGameStore = signalStore(
               if (player.transferable) {
                 return player;
               }
-
-              console.log(
-                addedPlayers,
-                addedPlayers.find(added => added.id === player.id),
-              );
 
               return addedPlayers.find(added => added.id === player.id)
                 ? { ...player, disableAsPlayer: true, team }
