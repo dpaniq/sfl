@@ -5,11 +5,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { GamesTableComponent } from 'src/features/games-table/games-table.component';
 import { CaptainsService, CaptainsStore } from '@entities/captains';
 import { provideComponentStore } from '@ngrx/component-store';
-import { GameCreationWidgetComponent } from 'src/widgets/game-creation-widget/game-creation-widget.component';
+import { GameCreationWidgetComponent } from '@entities/games/widgets/game-creation-widget/game-creation-widget.component';
 import { PlayersService } from '@entities/players/services/players.service';
 import { PlayersStore } from '@entities/players';
 import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
 import { RouterOutlet } from '@angular/router';
+import { GameService } from '@entities/games';
 
 @Component({
   selector: 'sfl-games-page',
@@ -21,7 +22,7 @@ import { RouterOutlet } from '@angular/router';
     MatTabsModule,
 
     // Component
-    GamesTableComponent,
+    // GamesTableComponent,
     GameCreationWidgetComponent,
     GamesListComponent,
   ],
@@ -31,14 +32,18 @@ import { RouterOutlet } from '@angular/router';
   providers: [
     // Fixme: CaptainsStore uses CaptainsService, idk how to fix this
     // https://angular.io/api/core/FactoryProvider
-    CaptainsService,
-    PlayersService,
+    // CaptainsService,
+    // PlayersService,
 
     // To use CaptainsService - useEffects
-    provideComponentStore(CaptainsStore),
-    provideComponentStore(PlayersStore),
+    // provideComponentStore(CaptainsStore),
+    // provideComponentStore(PlayersStore),
+
+    GameService,
   ],
 })
 export class GamesPageComponent {
   user: { isAdmin: boolean } = { isAdmin: true };
+
+  // TODO resolved to go in
 }

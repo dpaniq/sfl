@@ -6,11 +6,11 @@ import { UUID, ObjectId } from 'src/constants';
 import { Collections } from 'src/enums';
 import { hash } from 'src/shared/utils/string';
 import { Player } from '../players/players.schema';
-import { Team } from '../teams/teams.schema';
+import { Team } from '../teams/team.schema';
 
 export interface IPlayerStatistic {
-  playerId: typeof ObjectId;
-  teamId: typeof ObjectId;
+  playerId: string;
+  teamId: string;
   goal?: number;
   goalHead?: number;
   autoGoal?: number;
@@ -25,6 +25,7 @@ export interface IPlayerStatistic {
 }
 
 export interface IGame {
+  number: number;
   season: number;
   playedAt: Date;
   status: EnumGameStatus;
@@ -43,11 +44,15 @@ export enum EnumGameStatus {
 export class PlayerStatistic implements IPlayerStatistic {
   @ApiProperty({ type: String })
   @Prop({ type: ObjectId, ref: Player.name, required: true })
-  playerId: typeof ObjectId;
+  playerId: string;
 
   @ApiProperty({ type: String })
-  @Prop({ type: ObjectId, ref: Team.name, required: true })
-  teamId: typeof ObjectId;
+  @Prop({
+    type: ObjectId,
+    ref: Team.name,
+    required: true,
+  })
+  teamId: string;
 
   @ApiProperty()
   @Prop({ type: Number })
@@ -79,8 +84,8 @@ export const PlayerStatisticSchema =
 })
 export class Game implements IGame {
   @ApiProperty({ default: 1 })
-  @Prop({ type: Number })
-  _id: number;
+  @Prop({ type: Number, reuqired: true, index: true, unique: true })
+  number: number;
 
   @ApiProperty({ default: 2010 })
   @Prop({ type: Number, reuqired: true, index: true })

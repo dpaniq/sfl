@@ -15,17 +15,20 @@ const PATCH_HEADERS = new HttpHeaders({
   Accept: 'application/json',
 });
 
-interface GetParams {
+type GetParams = {
   page?: number;
   skip?: number;
   limit?: number;
-}
+};
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
   #httpClient = inject(HttpClient);
 
-  get<T>(url: string, params: GetParams = {}): Observable<T> {
+  get<T, Params = Record<string, any>>(
+    url: string,
+    params: GetParams & Partial<Params> = {},
+  ): Observable<T> {
     return this.#httpClient.get<T>(API_URL + '/' + url, {
       headers: GET_HEADERS,
       params: {

@@ -1,4 +1,4 @@
-import { GameCard } from '@entities/games/types';
+import { TGameCard } from '@entities/games/types';
 import { forEach } from 'lodash';
 import { getLastSaturday } from './date';
 import {
@@ -17,12 +17,13 @@ import {
   format,
   differenceInWeeks,
 } from 'date-fns';
+import { EnumGameStatus } from '@entities/games/constants';
 
 // const third = 3;
 const SATURDAY = 6;
 
-export const getGameCards = (year: number): GameCard[] => {
-  const gameCards: GameCard[] = [];
+export const getGameCards = (year: number): TGameCard[] => {
+  const gameCards: TGameCard[] = [];
   const startOfSeason = startOfMonth(new Date(`${year}-12-01`));
   const endOfSeason = addYears(startOfSeason, 1);
 
@@ -60,9 +61,10 @@ export const getGameCards = (year: number): GameCard[] => {
     lastSaturday = nextSaturday(lastSaturday);
 
     gameCards.push({
+      status: EnumGameStatus.Draft,
       season: year,
-      gameIdx: gameIdx + 1,
-      gameDate: lastSaturday,
+      number: gameIdx + 1,
+      playedAt: lastSaturday,
     });
   }
 

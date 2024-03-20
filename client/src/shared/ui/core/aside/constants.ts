@@ -21,9 +21,4 @@ export const LINKS: Link[] = [
     href: '/games',
     icon: 'scoreboard',
   },
-  {
-    name: 'New match',
-    href: '/new-match',
-    icon: 'add-cicrle',
-  },
 ];

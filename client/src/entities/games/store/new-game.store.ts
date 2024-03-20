@@ -1,15 +1,16 @@
 import { TPlayer } from '../../players/types/index';
 // TODO REMOVE AS DEP
-import { ComponentStore, OnStoreInit } from '@ngrx/component-store';
-import { Injectable, InjectionToken, computed, inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { TeamEnum } from '@shared/constants/team';
 import { PlayersService } from '@entities/players/services/players.service';
 import {
   EMPTY,
   catchError,
+  concatMap,
   delay,
   finalize,
-  map,
+  from,
+  of,
   pipe,
   switchMap,
   tap,
@@ -24,20 +25,26 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
-export type GameTeam = { name: TeamEnum; disable: boolean };
+export type GameTeam = { id: string; name: TeamEnum; disable: boolean };
 export type GameGoal = {
   pass: number;
   goal: number;
   goalHead: number;
   autoGoal: number;
+  penalty: number;
+  mvp: boolean;
 };
 export type GamePlayerInternalProcessProps = {
-  team: TeamEnum | null;
   transferable: boolean;
   disableAsPlayer: boolean;
   disableAsCaptain: boolean;
 };
-export type GamePlayer = TPlayer & GamePlayerInternalProcessProps & GameGoal;
+
+export type GamePlayer = {
+  teamId: string | null;
+} & TPlayer &
+  GamePlayerInternalProcessProps &
+  GameGoal;
 
 // Exclude<keyof GamePlayer, 'team' | 'disable'>
 export type GamePlayerStatisticKeys =
@@ -45,7 +52,8 @@ export type GamePlayerStatisticKeys =
   | 'goal'
   | 'goalHead'
   | 'goalHead'
-  | 'autoGoal';
+  | 'autoGoal'
+  | 'penalty';
 
 export interface NewGameState {
   status: any;
@@ -61,8 +69,8 @@ const INITIAL_PLAYERS_STATE: NewGameState = {
   players: [],
   goals: [],
   teams: [
-    { name: TeamEnum.teamA, disable: false },
-    { name: TeamEnum.teamB, disable: false },
+    { id: '65f951d0e78734c2150ef003', name: TeamEnum.teamA, disable: false },
+    { id: '65f951dee78734c2150ef007', name: TeamEnum.teamB, disable: false },
   ],
 };
 
@@ -81,7 +89,52 @@ export const NewGameStore = signalStore(
   })),
   withMethods((store, playersService = inject(PlayersService)) => ({
     // init: rxMethod<void>(pipe()),
-    init: rxMethod<void>(
+    // TODO get teams
+    // initTeams: rxMethod<void>(
+    //   pipe(
+    //     tap(() => {
+    //       patchState(store, { loading: true });
+    //     }),
+    //     delay(2500),
+    //     switchMap(() =>
+    //       playersService.getPlayers().pipe(
+    //         tap(players => {
+    //           console.log(
+    //             'players',
+    //             players,
+    //             typeof players,
+    //             Array.isArray(players),
+    //           );
+
+    //           patchState(store, {
+    //             players: players.map(player => ({
+    //               ...player,
+    //               pass: 0,
+    //               goal: 0,
+    //               goalHead: 0,
+    //               autoGoal: 0,
+
+    //               // additional
+    //               team: null,
+    //               disableAsPlayer: false,
+    //               disableAsCaptain: false,
+    //               transferable: false,
+    //             })),
+    //           });
+    //         }),
+
+    //         catchError(error => {
+    //           console.error('GameStore Crashed with error:', error);
+    //           return EMPTY;
+    //         }),
+    //         finalize(() => {
+    //           patchState(store, { loading: false });
+    //         }),
+    //       ),
+    //     ),
+    //   ),
+    // ),
+    initPlayers: rxMethod<void>(
       pipe(
         tap(() => {
           patchState(store, { loading: true });
@@ -100,13 +153,17 @@ export const NewGameStore = signalStore(
               patchState(store, {
                 players: players.map(player => ({
                   ...player,
+
                   pass: 0,
                   goal: 0,
                   goalHead: 0,
                   autoGoal: 0,
+                  penalty: 0,
+                  mvp: false,
 
                   // additional
-                  team: null,
+                  playerId: player.id,
+                  teamId: null,
                   disableAsPlayer: false,
                   disableAsCaptain: false,
                   transferable: false,
@@ -153,7 +210,7 @@ export const NewGameStore = signalStore(
       });
     },
     // Players
-    setPlayers(team: TeamEnum | null, addedPlayers: GamePlayer[]): void {
+    setPlayers(teamId: string | null, addedPlayers: GamePlayer[]): void {
       // Set added players
       patchState(store, state => {
         return {
@@ -182,7 +239,7 @@ export const NewGameStore = signalStore(
              */
             .map(player => {
               // An
-              if (player.team && player.team !== team) {
+              if (player.teamId && player.teamId !== teamId) {
                 return player;
               }
 
@@ -191,18 +248,18 @@ export const NewGameStore = signalStore(
               }
 
               return addedPlayers.find(added => added.id === player.id)
-                ? { ...player, disableAsPlayer: true, team }
+                ? { ...player, disableAsPlayer: true, teamId }
                 : {
                     ...player,
                     disableAsPlayer: false,
-                    team: null,
+                    teamId: null,
                   };
             }),
         };
       });
     },
     patchPlayerStats: ({
-      player: { id, team },
+      player: { id, teamId },
       action,
       key,
     }: {
@@ -213,8 +270,9 @@ export const NewGameStore = signalStore(
       patchState(store, state => {
         return {
           players: state.players.map(player => {
-            if (player.id === id && player.team === team) {
+            if (player.id === id && player.teamId === teamId) {
               if (action === 'decrement') {
+                key;
                 player[key] -= 1;
               } else {
                 player[key] += 1;
@@ -257,10 +315,10 @@ export const NewGameStore = signalStore(
                 goal: 0,
                 goalHead: 0,
                 autoGoal: 0,
-                team:
-                  player.team === TeamEnum.teamA
-                    ? TeamEnum.teamB
-                    : TeamEnum.teamA,
+                // team:
+                //   player.team!.name === TeamEnum.teamA
+                //     ? '65f951dee78734c2150ef007
+                //     : '65f951d0e78734c2150ef003',
               },
             ],
           };
@@ -291,9 +349,10 @@ export const NewGameStore = signalStore(
   })),
   // Should be latest to read methods
   withHooks({
-    onInit({ init }) {
+    onInit({ /*initTeams, */ initPlayers }) {
       console.info('new game store 2 initialization...');
-      init();
+      initPlayers();
+      // initTeams(); // TODO
     },
     onDestroy({ players }) {
       console.info('players on destroy', players());

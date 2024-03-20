@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { Game, IGame } from './game.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -10,9 +10,20 @@ export class GamesService {
     private gameModel: Model<IGame>,
   ) {}
 
-  async save(game: IGame) {
-    console.log('BEFORE SAVE', JSON.stringify(game, null, 2));
+  async find(game: Partial<IGame>) {
+    return await this.gameModel.find({ ...game });
+  }
 
-    const saveGame = await this.gameModel.create(game);
+  async save(game: IGame) {
+    if (
+      await this.gameModel.findOne({
+        number: game.number,
+        season: game.season,
+      })
+    ) {
+      throw ConflictException;
+    }
+
+    return await this.gameModel.create(game);
   }
 }

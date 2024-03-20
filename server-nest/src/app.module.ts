@@ -18,6 +18,7 @@ import { ContextInterceptor } from './shared/interceptors/context/context.interc
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { PlayersModule } from './entities/players/players.module';
 import { GamesModule } from './entities/games/games.module';
+import { TeamsModule } from './entities/teams/teams.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { GamesModule } from './entities/games/games.module';
     UsersModule,
     PlayersModule,
     GamesModule,
+    TeamsModule,
   ],
   providers: [
     {

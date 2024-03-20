@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from 'src/pages/home/home.component';
-import { GamePageDetailsComponent } from '../pages/game-page-details/game-page-details.component';
+import { GAMES_ROUTES } from '@entities/games';
 
 export const routes: Routes = [
   { path: '', title: 'Home', component: HomeComponent },
@@ -37,31 +37,5 @@ export const routes: Routes = [
         c => c.PlayersPageComponent,
       ),
   },
-  {
-    path: 'games',
-    title: 'Games',
-    // loadComponent: () =>
-    //   import('../pages/games-page/games-page.component').then(
-    //     c => c.GamesPageComponent,
-    //   ),
-    children: [
-      {
-        path: '',
-        title: 'Games',
-        loadComponent: () =>
-          import('../pages/games-page/games-page.component').then(
-            c => c.GamesPageComponent,
-          ),
-      },
-      {
-        path: ':season/:id',
-        title: 'Game details',
-        loadComponent: () =>
-          import('../pages/game-page-details/game-page-details.component').then(
-            c => c.GamePageDetailsComponent,
-          ),
-        // TODO Resolver here
-      },
-    ],
-  },
+  ...GAMES_ROUTES,
 ];

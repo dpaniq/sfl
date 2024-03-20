@@ -9,6 +9,7 @@ import {
 import { HttpService } from '@shared/services/http.service';
 import { NewGameState } from '../store/new-game.store';
 import { getYear } from 'date-fns';
+import { IGame } from '../types';
 
 @Injectable()
 export class GameService {
@@ -16,22 +17,11 @@ export class GameService {
 
   private readonly httpService = inject(HttpService);
 
-  public save(playedAt: Date, game: NewGameState): any {
-    const newGame = Object.assign(
-      {},
-      {
-        playedAt,
-        players: game.players.filter(({ team }) => !!team),
-      },
-    );
+  public find(filter: Partial<IGame>): Observable<IGame[]> {
+    return this.httpService.get<IGame[]>('games', filter);
+  }
 
-    this.httpService
-      .post<any>(`games`, newGame)
-      .pipe(
-        tap(x => {
-          console.log('saveGame', x);
-        }),
-      )
-      .subscribe();
+  public save(game: IGame) {
+    return this.httpService.post<IGame>(`games`, game);
   }
 }

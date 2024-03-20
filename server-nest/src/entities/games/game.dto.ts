@@ -14,7 +14,7 @@ export const SavePlayerStatisticDTO = v.object({
 
 export const SaveGameDTO = v.transform(
   v.object({
-    _id: v.number([v.integer(), v.minValue(1), v.maxValue(53)]),
+    number: v.number([v.integer(), v.minValue(1), v.maxValue(53)]),
     season: v.number([v.integer(), v.minValue(2010)]),
     playedAt: v.string([v.isoTimestamp()]),
     status: v.enum_(EnumGameStatus),

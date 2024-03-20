@@ -8,11 +8,11 @@ import { CommonModule } from '@angular/common';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
-import { TeamEnum } from '@shared/constants/team';
 import {
   NewGameStore,
   GamePlayer,
   GamePlayerStatisticKeys,
+  GameTeam,
 } from '@entities/games/store/new-game.store';
 
 type GamePlayerStatistic = GamePlayer & {
@@ -30,7 +30,7 @@ type GamePlayerStatistic = GamePlayer & {
 export class GameCreatePlayerStatisticsComponent {
   readonly newGameStore = inject(NewGameStore);
 
-  public team = input.required<TeamEnum>();
+  public team = input.required<GameTeam>();
   public dataSource = input.required<GamePlayer[]>();
 
   columns: {

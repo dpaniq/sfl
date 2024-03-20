@@ -1,10 +1,30 @@
-import { Body, Controller, Param, Post, Put, UsePipes } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags, PartialType } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Optional,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  Res,
+  UsePipes,
+} from '@nestjs/common';
+import {
+  ApiBody,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+  PartialType,
+} from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { GamesService } from './games.service';
 import { Game, IGame, UpdateGame } from './game.schema';
 import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
 import { SaveGameDTO } from './game.dto';
+import { optional } from 'valibot';
 
 @ApiTags('games')
 @Controller('games')
@@ -23,6 +43,28 @@ export class GamesController {
   //   return res.json(captains);
   // }
 
+  @Get()
+  @ApiQuery({
+    name: 'season',
+    type: Number,
+    required: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get all games records',
+  })
+  async get(
+    @Res() res: Response,
+    @Query('season', new ParseIntPipe({ optional: true }))
+    season?: number | undefined,
+  ) {
+    return res.json(
+      await this.gamesService.find({
+        ...(season ? { season } : null),
+      }),
+    );
+  }
+
   @Post()
   @ApiBody({ type: Game })
   @ApiResponse({
@@ -33,9 +75,7 @@ export class GamesController {
   async save(@Body() game: IGame) {
     console.log(game);
 
-    await this.gamesService.save(game);
-
-    return { success: 'OK' };
+    return await this.gamesService.save(game);
   }
 
   // PUT /games/:id

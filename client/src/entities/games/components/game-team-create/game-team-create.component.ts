@@ -18,7 +18,6 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TeamEnum } from '@shared/constants/team';
 import { map, pairwise, startWith } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatListModule } from '@angular/material/list';
@@ -30,11 +29,11 @@ import {
   GameTeam,
   NewGameStore,
 } from '@entities/games/store/new-game.store';
-import { GameCreatePlayerStatisticsComponent } from 'src/features/games/game-create-player-statistics/game-create-player-statistics.component';
+import { GameCreatePlayerStatisticsComponent } from '../game-create-player-statistics/game-create-player-statistics.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
-  selector: 'sfl-team-create',
+  selector: 'sfl-game-team-create',
   standalone: true,
   imports: [
     CommonModule,
@@ -53,11 +52,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     // TODO FIX
     GameCreatePlayerStatisticsComponent,
   ],
-  templateUrl: './team-create.component.html',
-  styleUrl: './team-create.component.css',
+  templateUrl: './game-team-create.component.html',
+  styleUrl: './game-team-create.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamCreateComponent implements OnInit {
+export class GameTeamCreateComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
   readonly newGameStore = inject(NewGameStore);
 
@@ -82,7 +81,7 @@ export class TeamCreateComponent implements OnInit {
   public value = signal<string>('');
 
   readonly formGroup = new FormGroup({
-    team: new FormControl<TeamEnum | null>(null),
+    team: new FormControl<GameTeam | null>(null),
     captain: new FormControl<GamePlayer | null>({
       value: null,
       disabled: true,
@@ -98,7 +97,9 @@ export class TeamCreateComponent implements OnInit {
     return this.newGameStore
       .captains()
       .filter(
-        player => player.team === this.teamFC.value || !player.disableAsCaptain,
+        player =>
+          player.teamId === this.teamFC.value?.id ||
+          (!player.disableAsPlayer && !player.disableAsCaptain),
       );
   });
 
@@ -114,7 +115,7 @@ export class TeamCreateComponent implements OnInit {
       })
       .filter(
         player =>
-          player.team === this.teamFC.value ||
+          player.teamId === this.teamFC.value?.id ||
           !player.disableAsPlayer ||
           (player.disableAsPlayer && player.transferable),
       );
@@ -123,7 +124,9 @@ export class TeamCreateComponent implements OnInit {
   playersOfCurrentTeamSignal = computed(() => {
     return this.newGameStore
       .players()
-      .filter(player => player.team && player.team === this.teamFC.value);
+      .filter(
+        player => player.teamId && player.teamId === this.teamFC.value?.id,
+      );
   });
 
   ngOnInit(): void {
@@ -138,12 +141,12 @@ export class TeamCreateComponent implements OnInit {
 
         // To relax previous team
         if (prevTeam) {
-          this.newGameStore.updateTeam({ name: prevTeam, disable: false });
+          this.newGameStore.updateTeam({ ...prevTeam, disable: false });
         }
 
         // To set new team (from available)
         if (currentTeam) {
-          this.newGameStore.updateTeam({ name: currentTeam, disable: true });
+          this.newGameStore.updateTeam({ ...currentTeam, disable: true });
           this.captainFC.enable();
         } else {
           // If no current team
@@ -166,7 +169,7 @@ export class TeamCreateComponent implements OnInit {
         if (prevCaptain) {
           this.newGameStore.updateCaptain({
             ...prevCaptain,
-            team: null,
+            teamId: null,
             disableAsCaptain: false,
           });
         }
@@ -177,7 +180,7 @@ export class TeamCreateComponent implements OnInit {
           this.playersFC.reset([currentCaptain]);
           this.newGameStore.updateCaptain({
             ...currentCaptain,
-            team: this.teamFC.value,
+            teamId: this.teamFC.value?.id ?? null,
             disableAsCaptain: true,
             disableAsPlayer: true,
           });
@@ -193,19 +196,19 @@ export class TeamCreateComponent implements OnInit {
         map(players =>
           players.map(player => ({
             ...player,
-            team: this.teamFC.value,
+            teamId: this.teamFC.value?.id ?? null,
             disableAsPlayer: true,
           })),
         ),
         takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(players => {
-        this.newGameStore.setPlayers(this.teamFC.value, players);
+        this.newGameStore.setPlayers(this.teamFC.value?.id ?? null, players);
       });
   }
 
   teamCompareFn(option: GameTeam | null, value: GameTeam | null) {
-    return option?.name === value?.name;
+    return option?.id === value?.id;
   }
 
   captainCompareFn(option: GamePlayer | null, value: GamePlayer | null) {

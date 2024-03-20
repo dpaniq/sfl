@@ -20,8 +20,12 @@ export class PlayersService {
 
   #httpService = inject(HttpService);
 
-  getPlayers(page: number = 0): Observable<TPlayer[]> {
-    return this.#httpService.get<TPlayer[]>('players', { page });
+  getPlayers(): Observable<TPlayer[]> {
+    return this.#httpService.get<TPlayer[]>('players');
+  }
+
+  getCaptainsPlayers(): Observable<TPlayer[]> {
+    return this.#httpService.get<TPlayer[]>('players/captains');
   }
 
   async getList(page: number = 0): Promise<ResponseCaptains> {

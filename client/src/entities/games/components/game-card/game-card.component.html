@@ -1,4 +1,4 @@
-@if (hasGamePlayed()) {
+@if (gameCard().status === enumGameStatus.New) {
   <mat-card class="example-card">
     <mat-card-header>
       <div
@@ -6,10 +6,10 @@
         class="example-header-image"
       ></div>
       <mat-card-title>
-        Game {{ gameCard().gameIdx }}
+        Game {{ gameCard().number }}
         <sub>/ {{ TOTAL_GAMES_OF_YEAR }}</sub>
       </mat-card-title>
-      <mat-card-subtitle>{{ gameCard().gameDate | date }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ gameCard().playedAt | date }}</mat-card-subtitle>
     </mat-card-header>
 
     <img
@@ -36,6 +36,42 @@
       >
         Details
       </button>
+
+      <button
+        mat-button
+        mat-flat-button
+        color="primary"
+        (click)="edit()"
+      >
+        Edit
+        <mat-icon fontIcon="edit"></mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+} @else if (gameCard().status === enumGameStatus.Furture) {
+  <mat-card class="further-game">
+    <mat-card-header>
+      <div
+        mat-card-avatar
+        class="example-header-image"
+      ></div>
+      <mat-card-title>
+        Game {{ gameCard().number }}
+        <sub>/ {{ TOTAL_GAMES_OF_YEAR }}</sub>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div mat-card-image>Left 555 days 555 hours</div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="createGame()"
+      >
+        Create game
+      </button>
     </mat-card-actions>
   </mat-card>
 } @else {
@@ -46,7 +82,7 @@
         class="example-header-image"
       ></div>
       <mat-card-title>
-        Game {{ gameCard().gameIdx }}
+        Game {{ gameCard().number }}
         <sub>/ {{ TOTAL_GAMES_OF_YEAR }}</sub>
       </mat-card-title>
     </mat-card-header>
