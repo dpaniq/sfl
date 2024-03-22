@@ -24,4 +24,8 @@ export class GameService {
   public save(game: IGame) {
     return this.httpService.post<IGame>(`games`, game);
   }
+
+  public resave(id: string, game: IGame) {
+    return this.httpService.put<IGame>(`games/${id}`, game);
+  }
 }

@@ -11,12 +11,12 @@ import { MatTableModule } from '@angular/material/table';
 import {
   NewGameStore,
   GamePlayer,
-  GamePlayerStatisticKeys,
-  GameTeam,
+  PlayerStatisticNumberKeys,
 } from '@entities/games/store/new-game.store';
+import { ITeam } from '@entities/teams';
 
 type GamePlayerStatistic = GamePlayer & {
-  key?: GamePlayerStatisticKeys;
+  key?: PlayerStatisticNumberKeys;
 };
 
 @Component({
@@ -30,14 +30,14 @@ type GamePlayerStatistic = GamePlayer & {
 export class GameCreatePlayerStatisticsComponent {
   readonly newGameStore = inject(NewGameStore);
 
-  public team = input.required<GameTeam>();
+  public team = input.required<ITeam>();
   public dataSource = input.required<GamePlayer[]>();
 
   columns: {
     columnDef: string;
     header: string;
     cell: (element: GamePlayerStatistic) => string;
-    key?: GamePlayerStatisticKeys;
+    key?: PlayerStatisticNumberKeys;
   }[] = [
     {
       columnDef: 'nickname',

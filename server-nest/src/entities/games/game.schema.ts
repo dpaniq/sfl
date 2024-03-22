@@ -6,7 +6,7 @@ import { UUID, ObjectId } from 'src/constants';
 import { Collections } from 'src/enums';
 import { hash } from 'src/shared/utils/string';
 import { Player } from '../players/players.schema';
-import { Team } from '../teams/team.schema';
+import { ITeam, Team } from '../teams/team.schema';
 
 export interface IPlayerStatistic {
   playerId: string;
@@ -14,6 +14,7 @@ export interface IPlayerStatistic {
   goal?: number;
   goalHead?: number;
   autoGoal?: number;
+  pass?: number;
   penalty?: number;
   mvp?: boolean;
 
@@ -22,6 +23,7 @@ export interface IPlayerStatistic {
   // position?: IPlayerPosition;
   // injure?: boolean;
   // pulse?: number;
+  isCaptain: boolean;
 }
 
 export interface IGame {
@@ -29,7 +31,8 @@ export interface IGame {
   season: number;
   playedAt: Date;
   status: EnumGameStatus;
-  statistics: {};
+  teams: Record<string, ITeam>;
+  statistics: PlayerStatistic[];
 }
 
 export enum EnumGameStatus {
@@ -70,9 +73,17 @@ export class PlayerStatistic implements IPlayerStatistic {
   @Prop({ type: Number })
   penalty?: number;
 
+  @ApiProperty()
+  @Prop({ type: Number })
+  pass?: number;
+
   @ApiProperty({ default: false })
   @Prop({ type: Boolean })
   mvp?: boolean;
+
+  @ApiProperty({ type: Boolean, default: false })
+  @Prop({ type: Boolean })
+  isCaptain: boolean;
 }
 
 export const PlayerStatisticSchema =
@@ -81,6 +92,20 @@ export const PlayerStatisticSchema =
 @Schema({
   timestamps: true,
   versionKey: '_gen',
+  toObject: {
+    transform: (doc, ret, options) => {
+      ret.id = ret._id;
+      delete ret._id;
+      return ret;
+    },
+  },
+  toJSON: {
+    transform: (doc, ret, options) => {
+      ret.id = ret._id;
+      delete ret._id;
+      return ret;
+    },
+  },
 })
 export class Game implements IGame {
   @ApiProperty({ default: 1 })
@@ -102,6 +127,13 @@ export class Game implements IGame {
     required: true,
   })
   status: EnumGameStatus;
+
+  @ApiProperty({ type: Object })
+  @Prop({
+    type: Object,
+    required: true,
+  })
+  teams: Record<string, ITeam>;
 
   @ApiProperty({ type: [PlayerStatistic] })
   @Prop({

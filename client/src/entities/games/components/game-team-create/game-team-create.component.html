@@ -1,14 +1,15 @@
 @if (false) {
-  <pre>
+  <!-- <pre>
     Team: {{teamFC.value}}
     <hr>
     Captains: {{captainFC.value | json }}
     <hr>
-  </pre>
+  </pre> -->
 }
 
 <div class="column">
   <div class="row">
+    <!-- 
     <mat-form-field>
       <mat-label>Team</mat-label>
       <mat-select
@@ -26,7 +27,7 @@
           </mat-option>
         }
       </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <mat-form-field>
       <mat-label>Captain</mat-label>
@@ -90,8 +91,14 @@
   <!-- Table -->
 
   @if (playersOfCurrentTeamSignal().length) {
-    <sfl-game-create-player-statistics
+    <!-- <sfl-game-create-player-statistics
       [team]="teamFC.value!"
+      [team]="teamFC.value!"
+      [dataSource]="playersOfCurrentTeamSignal()"
+    /> -->
+
+    <sfl-game-create-player-statistics
+      [team]="team()"
       [dataSource]="playersOfCurrentTeamSignal()"
     />
 

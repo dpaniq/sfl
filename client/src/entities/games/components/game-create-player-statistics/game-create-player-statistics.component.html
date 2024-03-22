@@ -1,4 +1,4 @@
-<h2>Team: {{ team().name }}</h2>
+<h2>List of participants</h2>
 <!-- 
 <code>
   {{ dataSource | json }}
@@ -46,7 +46,6 @@
             <mat-slide-toggle
               #playedForToggle
               [checked]="row.transferable"
-              [disabled]="!newGameStore.teamsAreDisabled()"
               (click)="
                 newGameStore.playerToggleTransferable(
                   row,

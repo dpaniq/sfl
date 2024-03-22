@@ -9,7 +9,13 @@ export const SavePlayerStatisticDTO = v.object({
   goalHead: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
   autoGoal: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
   penalty: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
+  pass: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
   mvp: v.optional(v.boolean(), false),
+
+  // transferable: boolean;
+  // disableAsPlayer: boolean;
+  // disableAsCaptain: boolean;
+  isCaptain: v.boolean(),
 });
 
 export const SaveGameDTO = v.transform(
@@ -18,6 +24,7 @@ export const SaveGameDTO = v.transform(
     season: v.number([v.integer(), v.minValue(2010)]),
     playedAt: v.string([v.isoTimestamp()]),
     status: v.enum_(EnumGameStatus),
+    teams: v.record(v.any()),
     statistics: v.array(SavePlayerStatisticDTO),
   }),
   (input) => ({

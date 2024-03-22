@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { totalWeeksByYear } from '@entities/utils/date';
 import { GameCardComponent } from '../game-card/game-card.component';
-import { getGameCards } from '@entities/utils/games';
 import { IGame, TGameCard } from '@entities/games/types';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -73,9 +72,9 @@ export class GamesListComponent implements OnInit {
       .subscribe(games => {
         this.loading.set(false);
 
-        const date = new Date(`${this.season()}-11-01`);
+        let date = new Date(`${this.season() - 1}-11-01`);
         const newGames: TGameCard[] = [];
-        for (const number of range(1, weeks)) {
+        for (const number of range(1, weeks + 1)) {
           const numberSaturdayDate = nextSaturday(date);
 
           const found = games.find(game => game.number === number);
@@ -86,10 +85,13 @@ export class GamesListComponent implements OnInit {
             newGames.push({
               number,
               season: this.season(),
+              teams: {},
               playedAt: numberSaturdayDate,
               status: EnumGameStatus.Furture,
             });
           }
+
+          date = numberSaturdayDate;
         }
 
         // Set played and furture games

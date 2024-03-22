@@ -45,6 +45,11 @@ export class GamesController {
 
   @Get()
   @ApiQuery({
+    name: 'id',
+    type: String,
+    required: false,
+  })
+  @ApiQuery({
     name: 'season',
     type: Number,
     required: false,
@@ -55,11 +60,14 @@ export class GamesController {
   })
   async get(
     @Res() res: Response,
+    @Query('id')
+    _id?: string | undefined,
     @Query('season', new ParseIntPipe({ optional: true }))
     season?: number | undefined,
   ) {
     return res.json(
       await this.gamesService.find({
+        ...(_id ? { _id } : null),
         ...(season ? { season } : null),
       }),
     );
@@ -85,7 +93,11 @@ export class GamesController {
     status: 200,
     description: 'The record has been successfully updated.',
   })
-  update(@Param('id') id: string, @Body() updateGameDto: UpdateGame) {
+  async replace(
+    @Param('id') id: string,
+    @Body(new ValibotValidationPipe(SaveGameDTO)) game: IGame,
+  ) {
     // Update logic
+    return await this.gamesService.replace(id, game);
   }
 }

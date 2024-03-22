@@ -1,35 +1,29 @@
+<p>{{ playedAtFC.value | date }}</p>
 <h1>
+  {{ mode() === 'create' ? 'Create' : 'Edit' }}
   {{ formGroup.controls.number.value }}
   <sup>/ {{ totalWeeks }}</sup>
   game of year
 </h1>
 
+{{ state.mode() | json }}
+
 <form [formGroup]="formGroup">
   <mat-form-field>
     <mat-label>Number</mat-label>
     <mat-select formControlName="number">
-      <mat-option [value]="1">1</mat-option>
+      @for (number of numbers(); track number) {
+        <mat-option [value]="number">{{ number }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Season</mat-label>
     <mat-select formControlName="season">
-      <mat-option [value]="2024">2024</mat-option>
-      <mat-option [value]="2023">2023</mat-option>
-      <mat-option [value]="2022">2022</mat-option>
-      <mat-option [value]="2021">2021</mat-option>
-      <mat-option [value]="2020">2020</mat-option>
-      <mat-option [value]="2019">2019</mat-option>
-      <mat-option [value]="2018">2018</mat-option>
-      <mat-option [value]="2017">2017</mat-option>
-      <mat-option [value]="2016">2016</mat-option>
-      <mat-option [value]="2015">2015</mat-option>
-      <mat-option [value]="2014">2014</mat-option>
-      <mat-option [value]="2013">2013</mat-option>
-      <mat-option [value]="2012">2012</mat-option>
-      <mat-option [value]="2011">2011</mat-option>
-      <mat-option [value]="2010">2010</mat-option>
+      @for (season of seasons(); track season) {
+        <mat-option [value]="season">{{ season }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
@@ -60,7 +54,6 @@
       [max]="maxDate"
       [value]="lastSaturday"
     />
-    <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle
       matIconSuffix
       [for]="picker"
@@ -68,7 +61,6 @@
       <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
     </mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <sup>{{ playedAtFC.value | date }}</sup>
   </mat-form-field>
 </form>
 
@@ -76,21 +68,65 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
-<ol>
-  <!-- <li>Several captains are disabled</li> -->
-  <li>Several captains as 'C'</li>
-  <li>Not all players are in player FC</li>
-</ol>
+@if (teams().length) {
+  <div
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    class="drag-wrapper row"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (team of teams(); let idx = $index; track team._id) {
+      <div
+        class="drag-box"
+        cdkDrag
+      >
+        <h1>
+          {{ team.name | uppercase }}
+          <sup>#{{ idx + 1 }}</sup>
+        </h1>
+        <div
+          class="drag-handle"
+          cdkDragHandle
+        >
+          <svg
+            width="24px"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
+            ></path>
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            ></path>
+          </svg>
+        </div>
 
-<section class="row">
-  <sfl-game-team-create></sfl-game-team-create>
-  <sfl-game-team-create></sfl-game-team-create>
-</section>
+        <sfl-game-team-create [team]="team"></sfl-game-team-create>
+      </div>
+    }
+  </div>
+} @else {
+  <p>No teams found!</p>
+}
 
-<button
-  mat-raised-button
-  color="primary"
-  (click)="save()"
->
-  Save
-</button>
+@if (mode() === 'create') {
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="formGroup.invalid"
+    (click)="save()"
+  >
+    Save
+  </button>
+} @else {
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="formGroup.invalid"
+    (click)="update()"
+  >
+    Save
+  </button>
+}

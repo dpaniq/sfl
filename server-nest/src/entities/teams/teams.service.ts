@@ -10,7 +10,7 @@ export class TeamsService {
     private teamModel: Model<ITeam>,
   ) {}
 
-  async get() {
+  async find() {
     return await this.teamModel.find();
   }
 

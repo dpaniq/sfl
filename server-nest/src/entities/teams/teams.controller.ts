@@ -28,8 +28,8 @@ export class TeamsController {
     status: HttpStatus.OK,
     description: 'Get all teams records',
   })
-  async get(@Res() res: Response) {
-    return res.json(await this.teamsService.get());
+  async find(@Res() res: Response) {
+    return res.json(await this.teamsService.find());
   }
 
   @Post()

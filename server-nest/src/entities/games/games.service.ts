@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { Game, IGame } from './game.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -11,6 +15,7 @@ export class GamesService {
   ) {}
 
   async find(game: Partial<IGame>) {
+    console.log('find', game);
     return await this.gameModel.find({ ...game });
   }
 
@@ -25,5 +30,15 @@ export class GamesService {
     }
 
     return await this.gameModel.create(game);
+  }
+
+  async replace(_id: string, game: IGame) {
+    const replacedGame = await this.gameModel.findOneAndReplace({ _id }, game);
+
+    if (!replacedGame) {
+      throw BadRequestException;
+    }
+
+    return replacedGame;
   }
 }

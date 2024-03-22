@@ -5,6 +5,7 @@ import { GameCreateComponent } from './components/game-create/game-create.compon
 import { GameCreatePlayerStatisticsComponent } from './components/game-create-player-statistics/game-create-player-statistics.component';
 import { IGame } from './types';
 import { GAMES_ROUTES } from './routes';
+import { GameCreationWidgetComponent } from './widgets/game-creation-widget/game-creation-widget.component';
 
 export {
   // Types
@@ -24,7 +25,7 @@ export {
   GameCreatePlayerStatisticsComponent,
 
   // Widgets
-
+  GameCreationWidgetComponent,
   // Routes
   GAMES_ROUTES,
 };

@@ -60,12 +60,12 @@ export const getGameCards = (year: number): TGameCard[] => {
   for (const gameIdx of Array(weeksInclusive).keys()) {
     lastSaturday = nextSaturday(lastSaturday);
 
-    gameCards.push({
-      status: EnumGameStatus.Draft,
-      season: year,
-      number: gameIdx + 1,
-      playedAt: lastSaturday,
-    });
+    // gameCards.push({
+    //   status: EnumGameStatus.Draft,
+    //   season: year,
+    //   number: gameIdx + 1,
+    //   playedAt: lastSaturday,
+    // });
   }
 
   return gameCards;

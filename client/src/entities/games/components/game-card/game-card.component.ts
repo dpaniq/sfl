@@ -53,9 +53,9 @@ export class GameCardComponent {
   }
 
   edit() {
-    const { _id, number, season, status, playedAt } = this.gameCard();
-    console.log(_id);
+    const { id, number, season, status, playedAt } = this.gameCard();
+    console.log(id);
 
-    this.router.navigate(['games', 'edit', _id]);
+    this.router.navigate(['games', 'edit', id]);
   }
 }

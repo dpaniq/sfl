@@ -48,4 +48,10 @@ export class HttpService {
       headers: PATCH_HEADERS,
     });
   }
+
+  put<T>(url: string, data: T): Observable<T> {
+    return this.#httpClient.put<T>(API_URL + '/' + url, data, {
+      headers: PATCH_HEADERS,
+    });
+  }
 }
