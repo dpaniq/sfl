@@ -37,7 +37,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISOWeekPipe } from '@entities/games/components/game-create/iso-week.pipe';
+import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
 import { EnumGameStatus } from '@entities/games/constants';
 import { IPlayerStatistic } from '@entities/games/types';
 import { TeamsService, ITeam } from '@entities/teams';
