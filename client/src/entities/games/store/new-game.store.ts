@@ -77,10 +77,6 @@ const INITIAL_PLAYERS_STATE: NewGameState = {
   loading: false,
   players: [],
   mode: NewGameMode.Unknown,
-  // teams: [
-  //   { id: '65f951d0e78734c2150ef003', name: TeamEnum.teamA, disable: false },
-  //   { id: '65f951dee78734c2150ef007', name: TeamEnum.teamB, disable: false },
-  // ],
 };
 
 // Read https://offering.solutions/blog/articles/2023/12/03/ngrx-signal-store-getting-started/
@@ -88,9 +84,7 @@ const INITIAL_PLAYERS_STATE: NewGameState = {
 export const NewGameStore = signalStore(
   withState(INITIAL_PLAYERS_STATE),
 
-  withComputed(({ /*teams,*/ players }) => ({
-    // Teams
-    // teamsAreDisabled: computed(() => teams().every(team => team.disable)),
+  withComputed(({ players }) => ({
     // Players
     captains: computed(() =>
       players().filter(({ isCaptain }) => Boolean(isCaptain)),
@@ -105,52 +99,6 @@ export const NewGameStore = signalStore(
         playersService: inject(PlayersService),
       },
     ) => ({
-      // init: rxMethod<void>(pipe()),
-      // TODO get teams
-      // initTeams: rxMethod<void>(
-      //   pipe(
-      //     tap(() => {
-      //       patchState(store, { loading: true });
-      //     }),
-      //     delay(2500),
-      //     switchMap(() =>
-      //       playersService.getPlayers().pipe(
-      //         tap(players => {
-      //           console.log(
-      //             'players',
-      //             players,
-      //             typeof players,
-      //             Array.isArray(players),
-      //           );
-
-      //           patchState(store, {
-      //             players: players.map(player => ({
-      //               ...player,
-      //               pass: 0,
-      //               goal: 0,
-      //               goalHead: 0,
-      //               autoGoal: 0,
-
-      //               // additional
-      //               team: null,
-      //               disableAsPlayer: false,
-      //               disableAsCaptain: false,
-      //               transferable: false,
-      //             })),
-      //           });
-      //         }),
-
-      //         catchError(error => {
-      //           console.error('GameStore Crashed with error:', error);
-      //           return EMPTY;
-      //         }),
-      //         finalize(() => {
-      //           patchState(store, { loading: false });
-      //         }),
-      //       ),
-      //     ),
-      //   ),
-      // ),
       initGame: rxMethod<void>(
         pipe(
           tap(() => {
@@ -230,28 +178,6 @@ export const NewGameStore = signalStore(
                     players: mergedPlayers,
                   };
                 });
-
-                // patchState(store, state => ({
-                //   players: players.map(player => {
-                //     return {
-                //       ...player,
-
-                //       pass: 0,
-                //       goal: 0,
-                //       goalHead: 0,
-                //       autoGoal: 0,
-                //       penalty: 0,
-                //       mvp: false,
-
-                //       // additional
-                //       playerId: player.id,
-                //       teamId: null,
-                //       disableAsPlayer: false,
-                //       disableAsCaptain: false,
-                //       transferable: false,
-                //     };
-                //   }),
-                // }));
               }),
 
               catchError(error => {
@@ -265,20 +191,6 @@ export const NewGameStore = signalStore(
           }),
         ),
       ),
-      // // Teams REMOVE
-      // updateTeam(teamToUpdate: GameTeam): void {
-      //   patchState(store, state => {
-      //     return {
-      //       teams: state.teams.map(team => {
-      //         if (team.name === teamToUpdate.name) {
-      //           return teamToUpdate;
-      //         }
-      //         return team;
-      //       }),
-      //     };
-      //   });
-      // },
-
       // Captains
       updateCaptain(captainToUpdate: GamePlayer): void {
         patchState(store, state => {
@@ -293,53 +205,13 @@ export const NewGameStore = signalStore(
         });
       },
       // Players
-      // TODO switch these methods
-      // resetPlayers(playerStatistics: IPlayerStatistic[]) {
-      //   patchState(store, state => {
-      //     console.log('reset PLAYERS', state.players);
-      //     return {
-      //       players: state.players.map(player => {
-      //         const found = playerStatistics.find(
-      //           ({ playerId }) => playerId === player.id,
-      //         );
 
-      //         console.log({ found });
-
-      //         if (!found) {
-      //           return player;
-      //         }
-
-      //         console.log(found);
-
-      //         return {
-      //           ...player,
-      //           ...playerStatistics,
-      //           disableAsPlayer: true,
-      //           disableAsCaptain: true,
-      //           transferable: false,
-      //         };
-      //       }),
-      //     };
-      //   });
-      // },
       setPlayers(teamId: string | null, addedPlayers: GamePlayer[]): void {
         // Set added players
         patchState(store, state => {
           return {
             // Reset all player belonging to current team
             players: state.players
-              // .map(player => {
-              //   // Skip players if
-              //   if (player.team !== team || player.transferable) {
-              //     return player;
-              //   }
-
-              //   return {
-              //     ...player,
-              //     disable: false,
-              //     team: null,
-              //   };
-              // })
               /**
                * Check player exists in added players
                *
@@ -427,10 +299,6 @@ export const NewGameStore = signalStore(
                   goal: 0,
                   goalHead: 0,
                   autoGoal: 0,
-                  // team:
-                  //   player.team!.name === TeamEnum.teamA
-                  //     ? '65f951dee78734c2150ef007
-                  //     : '65f951d0e78734c2150ef003',
                 },
               ],
             };
