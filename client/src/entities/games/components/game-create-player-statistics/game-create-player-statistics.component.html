@@ -27,13 +27,41 @@
           {{ column.cell(row) }}
         </td>
       </ng-container>
-    } @else if (column.columnDef === 'transferable') {
+    } @else if (column.columnDef === 'mvp') {
       <ng-container [matColumnDef]="column.columnDef">
         <th
           mat-header-cell
           *matHeaderCellDef
         >
           {{ column.header }}
+        </th>
+
+        <td
+          mat-cell
+          *matCellDef="let row"
+        >
+          <mat-slide-toggle
+            #mvpToggle
+            [checked]="row.mvp"
+            (click)="
+              newGameStore.togglePlayerMVP({
+                player: row,
+                mvp: mvpToggle.checked
+              })
+            "
+          ></mat-slide-toggle>
+        </td>
+      </ng-container>
+    } @else if (column.columnDef === 'transferable') {
+      <ng-container [matColumnDef]="column.columnDef">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          <mat-icon
+            fontIcon="repeat"
+            matTooltip="Transferable (such a player play for both teams)"
+          ></mat-icon>
         </th>
 
         <td

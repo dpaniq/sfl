@@ -1,40 +1,40 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
-  effect,
   inject,
   input,
+  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { combineLatest, filter, map, pairwise, startWith, tap } from 'rxjs';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { EnumGameMode } from '@entities/games/constants';
 import {
   GamePlayer,
   GameTeam,
-  NewGameMode,
   NewGameStore,
 } from '@entities/games/store/new-game.store';
-import { GameCreatePlayerStatisticsComponent } from '../game-create-player-statistics/game-create-player-statistics.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ITeam } from '@entities/teams';
+import { distinctUntilChanged, map, pairwise, startWith } from 'rxjs';
+import { GameCreatePlayerStatisticsComponent } from '../game-create-player-statistics/game-create-player-statistics.component';
 
 @Component({
   selector: 'sfl-game-team-create',
@@ -60,16 +60,13 @@ import { ITeam } from '@entities/teams';
   styleUrl: './game-team-create.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameTeamCreateComponent implements OnInit {
+export class GameTeamCreateComponent implements OnInit, OnDestroy {
   #destroyRef = inject(DestroyRef);
   readonly newGameStore = inject(NewGameStore);
 
   public team = input.required<ITeam>();
+  public mode = input.required<EnumGameMode>();
   public readonly teamId = computed(() => this.team()._id);
-
-  // get teamFC() {
-  //   return this.formGroup.controls.team;
-  // }
 
   get captainFC() {
     return this.formGroup.controls.captain;
@@ -128,53 +125,68 @@ export class GameTeamCreateComponent implements OnInit {
   });
 
   playersOfCurrentTeamSignal = computed(() => {
-    return this.newGameStore.players().filter(
-      // player => player.teamId && player.teamId === this.teamFC.value?.id,
-      player => player.teamId && player.teamId === this.teamId(),
-    );
+    const players = this.newGameStore.players();
+
+    if (!players.length) {
+      return [];
+    }
+
+    const statisticPlayers = this.newGameStore.game
+      .statistics()
+      .filter(stat => stat.teamId && stat.teamId === this.teamId())
+      .map(stat => {
+        const found = players.find(player => {
+          return player.id === stat.playerId;
+        })!;
+
+        return {
+          ...stat,
+          nickname: found.nickname,
+        };
+      });
+
+    return statisticPlayers;
   });
 
-  effectMode = effect(() => {
-    const mode = this.newGameStore.mode();
-    console.log(mode);
-  });
+  ngOnDestroy() {
+    // Comments
+  }
 
-  private readonly modeEdit$ = combineLatest([
-    toObservable(this.newGameStore.mode),
-    toObservable(this.newGameStore.loading),
-  ]).pipe(
-    tap(mode => console.log(mode)),
-    filter(([mode, loading]) => loading === false && mode === NewGameMode.Edit),
-    takeUntilDestroyed(this.#destroyRef),
-  );
-  //   .subscribe(mode => {
-  //     console.log({ mode });
-  //   });
+  fillInControlsIfModeEdit() {
+    console.log('fillInControlsIfModeEdit', this.mode());
+
+    if (this.mode() !== EnumGameMode.Edit) {
+      return;
+    }
+
+    const captain = this.newGameStore.players().find(player => {
+      return player.disableAsCaptain && player.teamId === this.teamId();
+    });
+
+    if (captain) {
+      this.captainFC.setValue(captain, { onlySelf: true, emitEvent: false });
+    }
+
+    // Init players
+    const players = this.newGameStore.players().filter(player => {
+      return player.teamId === this.teamId();
+    });
+
+    if (players.length) {
+      this.playersFC.setValue(players, { onlySelf: true, emitEvent: false });
+      this.playersFC.enable();
+    }
+  }
+
+  readonly storeLoaded$ = toObservable(this.newGameStore.storeLoaded);
 
   ngOnInit(): void {
-    // Fill in controls if mode is edit
-    this.modeEdit$.subscribe(() => {
-      // Init captain
-      const captain = this.newGameStore.players().find(player => {
-        return player.disableAsCaptain && player.teamId === this.teamId();
+    this.storeLoaded$
+      .pipe(distinctUntilChanged(), takeUntilDestroyed(this.#destroyRef))
+      .subscribe(storeLoaded => {
+        console.log('storeLoaded', storeLoaded);
+        this.fillInControlsIfModeEdit();
       });
-
-      if (captain) {
-        this.captainFC.setValue(captain, { emitEvent: false });
-      }
-
-      // Init players
-      const players = this.newGameStore.players().filter(player => {
-        console.log('FIND PLAYER BY TEAM', player.teamId, this.teamId());
-        return player.teamId === this.teamId();
-      });
-
-      console.log('FILTERED PLAYERS:', players, players.length);
-
-      if (players.length) {
-        this.playersFC.setValue(players, { emitEvent: false });
-      }
-    });
 
     this.captainFC.valueChanges
       .pipe(
@@ -199,7 +211,6 @@ export class GameTeamCreateComponent implements OnInit {
           this.playersFC.reset([currentCaptain]);
           this.newGameStore.updateCaptain({
             ...currentCaptain,
-            // teamId: this.teamFC.value?.id ?? null,
             teamId: this.teamId() ?? null,
             disableAsCaptain: true,
             disableAsPlayer: true,
@@ -216,16 +227,14 @@ export class GameTeamCreateComponent implements OnInit {
         map(players =>
           players.map(player => ({
             ...player,
-            // teamId: this.teamFC.value?.id ?? null,
-            teamId: this.teamId() ?? null,
+            teamId: this.teamId(),
             disableAsPlayer: true,
           })),
         ),
         takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(players => {
-        console.log('SET PLAYERS', players);
-        this.newGameStore.setPlayers(this.teamId() ?? null, players);
+        this.newGameStore.setPlayers(this.teamId(), players);
       });
   }
 
@@ -234,7 +243,6 @@ export class GameTeamCreateComponent implements OnInit {
   }
 
   captainCompareFn(option: GamePlayer | null, value: GamePlayer | null) {
-    // console.log(option?.id, value?.id, option?.id === value?.id);
     return option?.id === value?.id;
   }
 

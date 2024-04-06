@@ -1,28 +1,39 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
-  NewGameStore,
   GamePlayer,
+  NewGameStore,
   PlayerStatisticNumberKeys,
 } from '@entities/games/store/new-game.store';
+import { IPlayerStatistic } from '@entities/games/types';
+import { TPlayer } from '@entities/players';
 import { ITeam } from '@entities/teams';
 
-type GamePlayerStatistic = GamePlayer & {
-  key?: PlayerStatisticNumberKeys;
-};
+type GamePlayerStatistic = GamePlayer &
+  IPlayerStatistic & {
+    key?: PlayerStatisticNumberKeys;
+  };
 
 @Component({
   selector: 'sfl-game-create-player-statistics',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatSlideToggleModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatTableModule,
+    MatSlideToggleModule,
+  ],
   templateUrl: './game-create-player-statistics.component.html',
   styleUrl: './game-create-player-statistics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +42,8 @@ export class GameCreatePlayerStatisticsComponent {
   readonly newGameStore = inject(NewGameStore);
 
   public team = input.required<ITeam>();
-  public dataSource = input.required<GamePlayer[]>();
+  public dataSource =
+    input.required<(Pick<TPlayer, 'nickname'> & IPlayerStatistic)[]>();
 
   columns: {
     columnDef: string;
@@ -68,10 +80,14 @@ export class GameCreatePlayerStatisticsComponent {
       header: 'Autogoal',
       cell: (element: GamePlayerStatistic) => `${element.autoGoal}`,
     },
-
+    {
+      columnDef: 'mvp',
+      header: 'MVP',
+      cell: (element: GamePlayerStatistic) => `${element.mvp}`,
+    },
     {
       columnDef: 'transferable',
-      header: 'Transferable',
+      header: '<->',
       cell: (element: GamePlayerStatistic) => `${element.transferable}`,
     },
   ];

@@ -1,30 +1,26 @@
 import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragHandle,
+  CdkDropList,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   inject,
+  Injector,
   OnInit,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
-  GameService,
-  GameTeamCreateComponent,
-  NewGameStore,
-} from '@entities/games';
-import { PlayersService } from '@entities/players/services/players.service';
-import {
-  CdkDropList,
-  CdkDrag,
-  CdkDragHandle,
-  CdkDragDrop,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  ReactiveFormsModule,
-  FormGroup,
   FormControl,
+  FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,15 +33,21 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
-import { EnumGameStatus } from '@entities/games/constants';
-import { IPlayerStatistic } from '@entities/games/types';
-import { TeamsService, ITeam } from '@entities/teams';
+import {
+  GameService,
+  GameTeamCreateComponent,
+  NewGameStore,
+} from '@entities/games';
+import { EnumGameMode, EnumGameStatus } from '@entities/games/constants';
+import { IGame } from '@entities/games/types';
+import { PlayersService } from '@entities/players/services/players.service';
+import { ITeam, TeamsService } from '@entities/teams';
 import { getLastSaturday, totalWeeksByYear } from '@entities/utils/date';
 import { getState } from '@ngrx/signals';
-import { isSaturday, previousSaturday, getYear, isDate } from 'date-fns';
-import { take, map, filter } from 'rxjs';
+import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
+import { getYear, isDate, isSaturday, previousSaturday } from 'date-fns';
 import { range } from 'lodash';
+import { distinctUntilChanged, filter, map } from 'rxjs';
 
 @Component({
   selector: 'sfl-game-creation-widget',
@@ -87,6 +89,7 @@ export class GameCreationWidgetComponent implements OnInit {
   readonly teamsService = inject(TeamsService);
   readonly activatedRoute = inject(ActivatedRoute);
   readonly router = inject(Router);
+  readonly injector = inject(Injector);
 
   lastSaturday = getLastSaturday;
   minDate = '2010-01-01';
@@ -94,13 +97,13 @@ export class GameCreationWidgetComponent implements OnInit {
 
   readonly enumGameStatus = EnumGameStatus;
 
-  // TODO align with newGameStore (mode)
-  public readonly mode = signal<undefined | 'create' | 'edit'>(undefined);
   public readonly numbers = signal<number[]>(range(1, 54));
   public readonly seasons = signal<number[]>(
     range(2010, getYear(new Date()) + 1),
   );
-  public readonly teams = signal<ITeam[]>([]);
+  public readonly teams = computed(() => {
+    return Object.values(this.newGameStore.game.teams()) ?? [];
+  });
 
   public readonly state = this.newGameStore;
 
@@ -146,110 +149,31 @@ export class GameCreationWidgetComponent implements OnInit {
     return this.formGroup.controls.playedAt;
   }
 
-  // get teamsFC() {
-  //   return this.formGroup.controls.teams;
-  // }
+  // Store signals
+  public readonly modeSignal = this.newGameStore.mode;
+  readonly isFormChangedSignal = this.newGameStore.isFormChanged;
+  readonly loadingSignal = computed(
+    () => this.newGameStore.loading() || this.newGameStore.initLoading(),
+  );
 
   ngOnInit() {
-    const urlParamMap = this.activatedRoute.snapshot.paramMap;
-    const urlQueryParamMap = this.activatedRoute.snapshot.queryParamMap;
-    const urlSegments = this.activatedRoute.snapshot.url.map(
-      segment => segment.path,
-    );
-
-    switch (true) {
-      // Create
-      case urlSegments.includes('create'): {
-        if (urlQueryParamMap.has('number')) {
-          this.formGroup.controls.number.setValue(
-            Number(urlQueryParamMap.get('number')),
-          );
-        }
-
-        if (urlQueryParamMap.has('season')) {
-          this.formGroup.controls.season.setValue(
-            Number(urlQueryParamMap.get('season')),
-          );
-        }
-
-        // TODO [!]
-        if (
-          urlQueryParamMap.has('playedAt') &&
-          urlQueryParamMap.get('playedAt') &&
-          isDate(new Date(urlQueryParamMap.get('playedAt')!))
-        ) {
-          this.formGroup.controls.playedAt.setValue(
-            new Date(urlQueryParamMap.get('playedAt')!),
-          );
-        }
-
-        this.mode.set('create');
-        break;
-      }
-
-      // Edit
-      case urlSegments.includes('edit'): {
-        this.gameService
-          .find({
-            id: urlParamMap.get('id') ?? '',
-          })
-          .pipe(
-            take(1),
-            map(games => games.at(0)),
-            takeUntilDestroyed(this.destroyRef),
-          )
-          .subscribe(game => {
-            if (!game) {
-              // TODO error / dialog?
-              return;
-            }
-            const { number, season, statistics, status, teams, playedAt } =
-              game;
-            console.log(game);
-
-            if (teams) {
-              this.teams.set(Object.values(teams));
-            }
-
-            if (number) {
-              this.formGroup.controls.number.setValue(Number(number));
-            }
-
-            if (season) {
-              this.formGroup.controls.season.setValue(Number(season));
-            }
-
-            if (status) {
-              this.formGroup.controls.status.setValue(status);
-              this.formGroup.controls.status.enable();
-            }
-
-            if (statistics) {
-              // console.log({ statistics });
-              // this.newGameStore.resetPlayers(statistics);
-            }
-
-            // TODO [!]
-            if (playedAt && isDate(new Date(playedAt))) {
-              this.formGroup.controls.playedAt.setValue(new Date(playedAt!));
-            }
-          });
-        this.mode.set('edit');
-        break;
-      }
-      default:
-        this.router.navigate(['games']);
-    }
-
-    // Init values
-    this.teamsService
-      .find()
+    toObservable(this.newGameStore.initLoading, { injector: this.injector })
       .pipe(
-        map(teams => teams ?? []),
+        distinctUntilChanged(),
+        filter(loading => !loading),
+        map(() => this.newGameStore.mode()),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(teams => {
-        this.teams.set(teams);
+      .subscribe(mode => {
+        if (mode === EnumGameMode.Unknown) {
+          this.router.navigate(['games']);
+        }
+
+        if (mode === EnumGameMode.Init) {
+          return;
+        }
+
+        this.fillControls(this.newGameStore.game());
       });
 
     this.playedAtFC.valueChanges
@@ -257,95 +181,50 @@ export class GameCreationWidgetComponent implements OnInit {
       .subscribe(date => {
         this.totalWeeks = totalWeeksByYear(date);
       });
+
+    this.formGroup.controls.status.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(status => {
+        this.newGameStore.updateStatus(status);
+      });
   }
 
   save() {
-    const state = getState(this.newGameStore);
-
-    const teams = Object.fromEntries(
-      this.teams().map((team, index) => {
-        return [index, team];
-      }),
-    );
-
-    const statistics: IPlayerStatistic[] = state.players
-      .filter(
-        ({ teamId, disableAsCaptain, disableAsPlayer }) =>
-          !!teamId && (disableAsCaptain || disableAsPlayer),
-      )
-      .map(statistic => {
-        return {
-          playerId: statistic.id,
-          teamId: statistic.teamId!,
-          autoGoal: statistic.autoGoal,
-          goal: statistic.goal,
-          goalHead: statistic.goalHead,
-          penalty: statistic.penalty,
-          pass: statistic.pass,
-          mvp: false,
-
-          // Check backend schema
-          isCaptain: statistic.disableAsCaptain,
-        };
-      });
-
     const raw = this.formGroup.getRawValue();
+    const state = getState(this.newGameStore);
+    const game = state.game;
 
     this.gameService
       .save({
         status: EnumGameStatus.New,
         number: raw.number,
         season: raw.season,
-        teams,
         playedAt: raw.playedAt,
-        statistics,
+        teams: game.teams,
+        statistics: game.statistics,
       })
       .subscribe(game => console.log('GAME IS SAVED', game));
+
+    this.newGameStore.initGame();
   }
 
+  // TODO REPLACE
   update() {
     const state = getState(this.newGameStore);
+    const game = state.game;
 
-    const teams = Object.fromEntries(
-      this.teams().map((team, index) => {
-        return [index, team];
-      }),
-    );
-
-    const statistics: IPlayerStatistic[] = state.players
-      .filter(
-        ({ teamId, disableAsCaptain, disableAsPlayer }) =>
-          !!teamId && (disableAsCaptain || disableAsPlayer),
-      )
-      .map(statistic => {
-        return {
-          playerId: statistic.id,
-          teamId: statistic.teamId!,
-          autoGoal: statistic.autoGoal,
-          goal: statistic.goal,
-          goalHead: statistic.goalHead,
-          penalty: statistic.penalty,
-          pass: statistic.pass,
-          mvp: false,
-
-          // Check backend schema
-          isCaptain: statistic.disableAsCaptain,
-        };
-      });
-
-    const { number, season, playedAt, status } = this.formGroup.getRawValue();
-
-    const id = this.activatedRoute.snapshot.paramMap.get('id') ?? 'unknown';
     this.gameService
-      .resave(id, {
-        status,
-        number,
-        season,
-        playedAt,
-        teams,
-        statistics,
+      .resave(game.id!, {
+        status: game.status,
+        number: game.number,
+        season: game.season,
+        playedAt: game.playedAt,
+        teams: game.teams,
+        statistics: game.statistics,
       })
-      .subscribe(game => console.log('GAME IS SAVED', game));
+      .subscribe(game => console.log('GAME IS UPDATED', game));
+
+    this.newGameStore.initGame();
   }
 
   drop(event: CdkDragDrop<ITeam[]>) {
@@ -356,6 +235,43 @@ export class GameCreationWidgetComponent implements OnInit {
     }
 
     moveItemInArray(array, event.previousIndex, event.currentIndex);
-    this.teams.set(array);
+
+    this.newGameStore.updateTeams(array);
+
+    // TODO not needed fix
+    // this.teams.set(array);
+  }
+
+  private fillControls({
+    number,
+    season,
+    status,
+    teams,
+    playedAt,
+  }: Partial<IGame>) {
+    console.log('fillControls', { number, season, status, teams, playedAt });
+
+    // TODO not needed
+    if (teams) {
+      // this.teams.set(Object.values(teams));
+    }
+
+    if (number) {
+      this.formGroup.controls.number.setValue(Number(number));
+    }
+
+    if (season) {
+      this.formGroup.controls.season.setValue(Number(season));
+    }
+
+    if (status) {
+      this.formGroup.controls.status.setValue(status);
+      this.formGroup.controls.status.enable();
+    }
+
+    // TODO [!]
+    if (playedAt && isDate(new Date(playedAt))) {
+      this.formGroup.controls.playedAt.setValue(new Date(playedAt!));
+    }
   }
 }

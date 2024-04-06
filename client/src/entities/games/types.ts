@@ -9,7 +9,7 @@ export interface IPlayerStatistic {
   autoGoal: number;
   penalty: number;
   pass: number;
-  mvp?: boolean;
+  mvp: boolean;
 
   isCaptain: boolean;
 

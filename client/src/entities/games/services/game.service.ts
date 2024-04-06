@@ -1,14 +1,6 @@
 import { Injectable, Signal, computed, inject, signal } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  Subject,
-  firstValueFrom,
-  tap,
-} from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpService } from '@shared/services/http.service';
-import { NewGameState } from '../store/new-game.store';
-import { getYear } from 'date-fns';
 import { IGame } from '../types';
 
 @Injectable()

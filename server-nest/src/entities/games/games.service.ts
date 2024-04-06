@@ -3,9 +3,9 @@ import {
   ConflictException,
   Injectable,
 } from '@nestjs/common';
-import { Game, IGame } from './game.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Game, IGame } from './game.schema';
 
 @Injectable()
 export class GamesService {
@@ -33,7 +33,11 @@ export class GamesService {
   }
 
   async replace(_id: string, game: IGame) {
-    const replacedGame = await this.gameModel.findOneAndReplace({ _id }, game);
+    const replacedGame = await this.gameModel
+      .findOneAndReplace({ _id }, game)
+      .exec();
+
+    console.log('replacedGame', replacedGame);
 
     if (!replacedGame) {
       throw BadRequestException;

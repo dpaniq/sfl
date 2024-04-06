@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   HttpStatus,
-  Optional,
   Param,
   ParseIntPipe,
   Post,
@@ -12,19 +11,12 @@ import {
   Res,
   UsePipes,
 } from '@nestjs/common';
-import {
-  ApiBody,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-  PartialType,
-} from '@nestjs/swagger';
-import { Request, Response } from 'express';
-import { GamesService } from './games.service';
-import { Game, IGame, UpdateGame } from './game.schema';
+import { ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
 import { SaveGameDTO } from './game.dto';
-import { optional } from 'valibot';
+import { Game, IGame, UpdateGame } from './game.schema';
+import { GamesService } from './games.service';
 
 @ApiTags('games')
 @Controller('games')
@@ -94,10 +86,11 @@ export class GamesController {
     description: 'The record has been successfully updated.',
   })
   async replace(
+    @Res() res: Response,
     @Param('id') id: string,
     @Body(new ValibotValidationPipe(SaveGameDTO)) game: IGame,
   ) {
     // Update logic
-    return await this.gamesService.replace(id, game);
+    return res.json(await this.gamesService.replace(id, game));
   }
 }

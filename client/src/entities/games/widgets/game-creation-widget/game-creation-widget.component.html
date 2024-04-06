@@ -1,6 +1,35 @@
+<!-- <pre>
+  initial / current
+  {{ formGroup.getRawValue() | json }}
+  {{ isFormChangedSignal() | json }}
+
+  id: {{ newGameStore.initialValue()?.id | json }} / {{
+    newGameStore.game?.id() | json
+  }}
+  status: {{ newGameStore.initialValue()?.status | json }} / {{
+    newGameStore.game.status() | json
+  }}
+  number: {{ newGameStore.initialValue()?.number | json }} / {{
+    newGameStore.game.number() | json
+  }}
+  season: {{ newGameStore.initialValue()?.season | json }} / {{
+    newGameStore.game.season() | json
+  }}
+  playedAt: {{ newGameStore.initialValue()?.playedAt | json }} / {{
+    newGameStore.game.playedAt() | json
+  }}
+  teams: {{ newGameStore.initialValue()?.teams | json }} / {{
+    newGameStore.game.teams() | json
+  }}
+  statistics: {{ newGameStore.initialValue()?.statistics | json }} / {{
+    newGameStore.game.statistics() | json
+  }}
+
+</pre> -->
+
 <p>{{ playedAtFC.value | date }}</p>
 <h1>
-  {{ mode() === 'create' ? 'Create' : 'Edit' }}
+  {{ modeSignal() === 'create' ? 'Create' : 'Edit' }}
   {{ formGroup.controls.number.value }}
   <sup>/ {{ totalWeeks }}</sup>
   game of year
@@ -62,7 +91,7 @@
   </mat-form-field>
 </form>
 
-@if (newGameStore.loading()) {
+@if (loadingSignal()) {
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
@@ -101,7 +130,14 @@
           </svg>
         </div>
 
-        <sfl-game-team-create [team]="team"></sfl-game-team-create>
+        @if (modeSignal() === 'create' || modeSignal() === 'edit') {
+          <sfl-game-team-create
+            [team]="team"
+            [mode]="modeSignal()"
+          ></sfl-game-team-create>
+        } @else {
+          Loading or error
+        }
       </div>
     }
   </div>
@@ -109,11 +145,11 @@
   <p>No teams found!</p>
 }
 
-@if (mode() === 'create') {
+@if (modeSignal() === 'create') {
   <button
     mat-raised-button
     color="primary"
-    [disabled]="formGroup.invalid"
+    [disabled]="formGroup.invalid || !isFormChangedSignal()"
     (click)="save()"
   >
     Save
@@ -122,9 +158,9 @@
   <button
     mat-raised-button
     color="primary"
-    [disabled]="formGroup.invalid"
+    [disabled]="formGroup.invalid || !isFormChangedSignal()"
     (click)="update()"
   >
-    Save
+    Update
   </button>
 }
