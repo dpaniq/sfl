@@ -82,6 +82,5 @@ mongodb/
 
 # hide app production
 sfl-ssr/
-sfl-ssr/
 sfl-ssr-keep/
 /client/build
