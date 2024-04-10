@@ -13,7 +13,7 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TeamEnum } from '@shared/constants/team';
 import { isDate } from 'date-fns';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash-es';
 import {
   EMPTY,
   Observable,

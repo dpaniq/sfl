@@ -46,7 +46,7 @@ import { getLastSaturday, totalWeeksByYear } from '@entities/utils/date';
 import { getState } from '@ngrx/signals';
 import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
 import { getYear, isDate, isSaturday, previousSaturday } from 'date-fns';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 import { distinctUntilChanged, filter, map } from 'rxjs';
 
 @Component({

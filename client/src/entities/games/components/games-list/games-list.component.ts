@@ -1,24 +1,24 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  signal,
+  DestroyRef,
   OnInit,
   inject,
-  DestroyRef,
+  signal,
 } from '@angular/core';
-import { totalWeeksByYear } from '@entities/utils/date';
-import { GameCardComponent } from '../game-card/game-card.component';
-import { IGame, TGameCard } from '@entities/games/types';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { map, switchMap, tap } from 'rxjs';
-import { GameService } from '@entities/games/services/game.service';
-import { addWeeks, getDate, getYear, nextSaturday, setDay } from 'date-fns';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { range } from 'lodash';
+import { MatSelectModule } from '@angular/material/select';
 import { EnumGameStatus } from '@entities/games/constants';
+import { GameService } from '@entities/games/services/game.service';
+import { TGameCard } from '@entities/games/types';
+import { totalWeeksByYear } from '@entities/utils/date';
+import { addWeeks, getDate, getYear, nextSaturday, setDay } from 'date-fns';
+import { range } from 'lodash-es';
+import { switchMap, tap } from 'rxjs';
+import { GameCardComponent } from '../game-card/game-card.component';
 
 const weeks = totalWeeksByYear(new Date());
 

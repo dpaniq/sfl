@@ -1,7 +1,9 @@
-import { Injectable, Signal, computed, inject, signal } from '@angular/core';
-import { BehaviorSubject, NEVER, Observable, Subject, catchError } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { API_URL } from '@shared/constants/api';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { environment } from '@environment/environment.development';
+import { Observable } from 'rxjs';
+
+const API_URL = environment.API_KEY;
 
 const GET_HEADERS = new HttpHeaders();
 
