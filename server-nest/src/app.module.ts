@@ -1,31 +1,36 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { MONGO_DB_CONNECTION } from './constants';
+import { MongooseModule } from '@nestjs/mongoose';
+import configuration from './config/configuration';
 import { AuthModule } from './entities/auth';
+import { AuthController } from './entities/auth/auth.controller';
+import { GamesModule } from './entities/games/games.module';
+import { PlayersModule } from './entities/players/players.module';
+import { TeamsModule } from './entities/teams/teams.module';
 import {
   User,
   UserSchema,
   UsersController,
   UsersModule,
 } from './entities/users';
-import { JwtMiddleware } from './shared/middlewares/user/jwt.middleware';
-import configuration from './config/configuration';
-import { AuthController } from './entities/auth/auth.controller';
 import { UsersService } from './entities/users/users.service';
 import { ContextInterceptor } from './shared/interceptors/context/context.interceptor';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { PlayersModule } from './entities/players/players.module';
-import { GamesModule } from './entities/games/games.module';
-import { TeamsModule } from './entities/teams/teams.module';
+import { JwtMiddleware } from './shared/middlewares/user/jwt.middleware';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
     }),
-    MongooseModule.forRoot(MONGO_DB_CONNECTION),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: `${configService.getOrThrow<string>('DATABASE_URL')}/${configService.getOrThrow<string>('DATABASE_DB')}`,
+      }),
+      inject: [ConfigService],
+    }),
     MongooseModule.forFeature([
       {
         name: User.name,

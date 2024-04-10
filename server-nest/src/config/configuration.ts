@@ -1,9 +1,21 @@
-import { bool, num, str, cleanEnv } from 'envalid';
+import { cleanEnv, num, str } from 'envalid';
 
 export default () => {
-  const processEnv = process.env;
+  const env = cleanEnv(process.env, {
+    DATABASE_URL: str(),
+    DATABASE_DB: str(),
 
-  const env = cleanEnv(process.env, {});
+    SERVER_HOSTNAME: str(),
+    SERVER_PORT: str(),
 
-  return { ...processEnv, ...env };
+    CLIENT_HOSTNAME: str(),
+    CLIENT_PORT: num(),
+
+    ACCESS_TOKEN_SECRET: str(),
+    REFRESH_TOKEN_SECRET: str(),
+  });
+
+  console.log(process.env);
+
+  return { ...env };
 };
