@@ -5,6 +5,7 @@
     "ng": "ng",
     "dev": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
@@ -53,5 +54,8 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "3.2.5",
     "typescript": "~5.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
