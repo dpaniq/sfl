@@ -18,8 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          path: server-nest
           sparse-checkout: server-nest
-          sparse-checkout-cone-mode: true
+          sparse-checkout-cone-mode: false
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
