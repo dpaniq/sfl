@@ -17,12 +17,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: server-nest
+          sparse-checkout-cone-mode: true
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          sparse-checkout: server-nest
-          sparse-checkout-cone-mode: true
           node-version: "20.x"
 
       - name: npm install, build, and test
