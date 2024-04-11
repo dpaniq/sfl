@@ -15,6 +15,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: server-nest
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,7 +27,6 @@ jobs:
 
       - name: Change directory
         run: |
-          cd server-nest
           pwd
           ls -lt
 
@@ -34,7 +37,6 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          cd server-nest
           pwd
           npm install
           npm run build --if-present
