@@ -23,7 +23,9 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Change directory
-        run: cd server-nest
+        run: |
+          cd server-nest
+          ls -lt
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
