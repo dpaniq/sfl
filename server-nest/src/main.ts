@@ -1,10 +1,10 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as cookieParser from 'cookie-parser';
-import { ConfigService } from '@nestjs/config';
+import { AppModule } from './app.module';
 
 const keyPath = path.resolve(__dirname, '../..', 'ssl', 'server.key');
 const certPath = path.resolve(__dirname, '../..', 'ssl', 'server.cert');
@@ -37,7 +37,6 @@ async function bootstrap() {
   // Cookies
   app.use(cookieParser());
 
-  // Cors
   const [CLIENT_HOSTNAME, CLIENT_PORT, SERVER_HOSTNAME, SERVER_PORT] = [
     configService.getOrThrow('CLIENT_HOSTNAME'),
     configService.getOrThrow('CLIENT_PORT'),
@@ -45,18 +44,21 @@ async function bootstrap() {
     configService.getOrThrow('SERVER_PORT'),
   ];
 
-  app.enableCors({
-    origin: [
-      // dev
-      `https://localhost:${CLIENT_PORT}`,
-      `https://${SERVER_HOSTNAME}:${SERVER_PORT}`,
-      `https://${CLIENT_HOSTNAME}:${CLIENT_PORT}`,
-    ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-    credentials: true,
-  });
+  // Cors
+  if (configService.get('STAGE') === 'dev') {
+    app.enableCors({
+      origin: [
+        // dev
+        `https://localhost:${CLIENT_PORT}`,
+        `https://${SERVER_HOSTNAME}:${SERVER_PORT}`,
+        `https://${CLIENT_HOSTNAME}:${CLIENT_PORT}`,
+      ],
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
+      credentials: true,
+    });
+  }
 
   await app.listen(SERVER_PORT, SERVER_HOSTNAME, () => {
     console.log(`Server works on https://${SERVER_HOSTNAME}:${SERVER_PORT}`);

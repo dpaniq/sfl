@@ -26,6 +26,9 @@ dependencies:
   cookie-parser:
     specifier: ^1.4.6
     version: 1.4.6
+  date-fns:
+    specifier: ^3.6.0
+    version: 3.6.0
   envalid:
     specifier: ^8.0.0
     version: 8.0.0
@@ -79,9 +82,6 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.0.0
     version: 6.21.0(eslint@8.57.0)(typescript@5.3.3)
-  date-fns:
-    specifier: ^3.3.1
-    version: 3.3.1
   eslint:
     specifier: ^8.42.0
     version: 8.57.0
@@ -2326,9 +2326,9 @@ packages:
       which: 2.0.2
     dev: true
 
-  /date-fns@3.3.1:
-    resolution: {integrity: sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==}
-    dev: true
+  /date-fns@3.6.0:
+    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
+    dev: false
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
