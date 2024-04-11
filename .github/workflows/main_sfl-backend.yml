@@ -18,12 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: server-nest
           sparse-checkout: server-nest
           sparse-checkout-cone-mode: false
 
       - name: Change directory
         run: |
+          ls -lt
           cd server-nest
           ls -lt
 
