@@ -26,9 +26,15 @@ import { JwtMiddleware } from './shared/middlewares/user/jwt.middleware';
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: `${configService.getOrThrow<string>('DATABASE_URL')}/${configService.getOrThrow<string>('DATABASE_DB')}`,
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const mongodb = `${configService.getOrThrow<string>('DATABASE_URL')}/${configService.getOrThrow<string>('DATABASE_DB')}`;
+
+        console.log('Connecting to the database:\n', mongodb);
+
+        return {
+          uri: mongodb,
+        };
+      },
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([
