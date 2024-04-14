@@ -69,11 +69,18 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.init();
-
   const PORT = configService.getOrThrow('PORT') || 3001;
-  https.createServer(httpsOptions, server).listen(PORT, () => {
-    console.log(`Server is running [https][${PORT}]`);
-  });
+
+  if (configService.getOrThrow('NODE_ENV') === 'production') {
+    app.listen(PORT, () => {
+      console.log(`Server is running [http][${PORT}]`);
+    });
+  } else {
+    await app.init();
+
+    https.createServer(httpsOptions, server).listen(PORT, () => {
+      console.log(`Server is running [https][${PORT}]`);
+    });
+  }
 }
 bootstrap();
