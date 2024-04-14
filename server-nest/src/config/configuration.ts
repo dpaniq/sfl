@@ -7,9 +7,6 @@ export default () => {
     DATABASE_URL: str(),
     DATABASE_DB: str(),
 
-    SERVER_HOSTNAME: str(),
-    SERVER_PORT: str(),
-
     CLIENT_HOSTNAME: str(),
     CLIENT_PORT: num(),
 

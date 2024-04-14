@@ -49,11 +49,9 @@ async function bootstrap() {
   // Cookies
   app.use(cookieParser());
 
-  const [CLIENT_HOSTNAME, CLIENT_PORT, SERVER_HOSTNAME, SERVER_PORT] = [
+  const [CLIENT_HOSTNAME, CLIENT_PORT] = [
     configService.getOrThrow('CLIENT_HOSTNAME'),
     configService.getOrThrow('CLIENT_PORT'),
-    configService.getOrThrow('SERVER_HOSTNAME'),
-    configService.getOrThrow('SERVER_PORT'),
   ];
 
   // Cors
@@ -62,7 +60,6 @@ async function bootstrap() {
       origin: [
         // dev
         `https://localhost:${CLIENT_PORT}`,
-        `https://${SERVER_HOSTNAME}:${SERVER_PORT}`,
         `https://${CLIENT_HOSTNAME}:${CLIENT_PORT}`,
       ],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
