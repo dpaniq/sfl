@@ -72,10 +72,17 @@ async function bootstrap() {
     });
   }
 
-  await app.listen(SERVER_PORT, SERVER_HOSTNAME, () => {
-    console.log(
-      `Server works on https://${SERVER_HOSTNAME}:${SERVER_PORT} [in ${process.env.NODE_ENV} mode]`,
-    );
-  });
+  if (process.env.NODE_ENV === 'production') {
+    const port = process.env.PORT || 3000;
+    await app.listen(port, () => {
+      console.log(`Server is run at http://localhost:${port}`);
+    });
+  } else {
+    await app.listen(SERVER_PORT, SERVER_HOSTNAME, () => {
+      console.log(
+        `Server works on https://${SERVER_HOSTNAME}:${SERVER_PORT} [in ${process.env.NODE_ENV} mode]`,
+      );
+    });
+  }
 }
 bootstrap();
