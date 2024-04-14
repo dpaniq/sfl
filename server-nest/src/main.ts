@@ -72,12 +72,16 @@ async function bootstrap() {
   if (process.env.NODE_ENV === 'production') {
     const port = process.env.PORT || 3000;
     await app.listen(port, () => {
-      console.log(`Server is run at http://localhost:${port}`);
+      console.log(
+        `Server is run at http://localhost:${port} [in ${process.env.NODE_ENV} mode]`,
+      );
     });
   } else {
-    await app.listen(SERVER_PORT, SERVER_HOSTNAME, () => {
+    const port = 3001;
+    const server = 'localhost';
+    await app.listen(port, server, () => {
       console.log(
-        `Server works on https://${SERVER_HOSTNAME}:${SERVER_PORT} [in ${process.env.NODE_ENV} mode]`,
+        `Server is run at http://locahost:${port} [in ${process.env.NODE_ENV} mode]`,
       );
     });
   }
