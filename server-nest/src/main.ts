@@ -55,7 +55,22 @@ async function bootstrap() {
   ];
 
   // Cors
-  if (configService.get('STAGE') === 'dev') {
+  if (process.env.NODE_ENV === 'production') {
+    app.enableCors({
+      origin: [
+        // dev
+        CLIENT_HOSTNAME,
+        `${CLIENT_HOSTNAME}:${CLIENT_PORT}`,
+        `https://localhost:${CLIENT_PORT}`,
+        `https://${CLIENT_HOSTNAME}`,
+        `https://${CLIENT_HOSTNAME}:${CLIENT_PORT}`,
+      ],
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
+      credentials: true,
+    });
+  } else {
     app.enableCors({
       origin: [
         // dev
