@@ -9,13 +9,25 @@ import { AppModule } from './app.module';
 const keyPath = path.resolve(__dirname, '../..', 'ssl', 'server.key');
 const certPath = path.resolve(__dirname, '../..', 'ssl', 'server.cert');
 
+let httpsOptions;
+if (process.env.NODE_ENV === 'production') {
+  // Load SSL certificates provided by Azure
+  // httpsOptions = {
+  //   key: fs.readFileSync('/path/to/azure/key'),
+  //   cert: fs.readFileSync('/path/to/azure/cert'),
+  // };
+} else {
+  // Load local SSL certificates for development
+  const keyPath = path.resolve(__dirname, '../..', 'ssl', 'server.key');
+  const certPath = path.resolve(__dirname, '../..', 'ssl', 'server.cert');
+  httpsOptions = {
+    key: fs.readFileSync(keyPath),
+    cert: fs.readFileSync(certPath),
+  };
+}
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions: {
-      key: fs.readFileSync(keyPath),
-      cert: fs.readFileSync(certPath),
-    },
-  });
+  const app = await NestFactory.create(AppModule, httpsOptions);
   const configService = app.get(ConfigService);
 
   // Prefix for endpoonts
@@ -61,7 +73,9 @@ async function bootstrap() {
   }
 
   await app.listen(SERVER_PORT, SERVER_HOSTNAME, () => {
-    console.log(`Server works on https://${SERVER_HOSTNAME}:${SERVER_PORT}`);
+    console.log(
+      `Server works on https://${SERVER_HOSTNAME}:${SERVER_PORT} [in ${process.env.NODE_ENV} mode]`,
+    );
   });
 }
 bootstrap();
