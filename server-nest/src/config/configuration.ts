@@ -7,6 +7,7 @@ export default () => {
     DATABASE_URL: str(),
     DATABASE_DB: str(),
 
+    PORT: num({ default: 3001 }), // Server PORT
     CLIENT_HOSTNAME: str(),
     CLIENT_PORT: num(),
 

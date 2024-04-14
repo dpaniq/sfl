@@ -102,7 +102,7 @@ export class GameCreationWidgetComponent implements OnInit {
     range(2010, getYear(new Date()) + 1),
   );
   public readonly teams = computed(() => {
-    return Object.values(this.newGameStore.game.teams()) ?? [];
+    return Object.values(this.newGameStore.game().teams) ?? [];
   });
 
   public readonly state = this.newGameStore;

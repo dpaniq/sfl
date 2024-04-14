@@ -207,14 +207,14 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
 
         // Set new player to PlayerFC & disable / enable playersFC
         if (currentCaptain) {
-          this.playersFC.enable();
-          this.playersFC.reset([currentCaptain]);
           this.newGameStore.updateCaptain({
             ...currentCaptain,
             teamId: this.teamId() ?? null,
             disableAsCaptain: true,
             disableAsPlayer: true,
           });
+          this.playersFC.enable();
+          this.playersFC.reset([currentCaptain]);
         } else {
           this.playersFC.disable();
           this.playersFC.reset();

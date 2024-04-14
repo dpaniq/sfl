@@ -171,7 +171,8 @@ export const NewGameStore = signalStore(
             if (!gameId) {
               return activatedRoute.queryParamMap.pipe(
                 map(queryParam => {
-                  const game = INITIAL_GAME_STATE;
+                  const game = cloneDeep(INITIAL_GAME_STATE);
+                  game.teams = teams;
 
                   if (queryParam.has('number')) {
                     game.number = Number(queryParam.get('number'));
@@ -314,6 +315,7 @@ export const NewGameStore = signalStore(
 
       // Captains
       updateCaptain(captainToUpdate: GamePlayer): void {
+        console.log({ captainToUpdate });
         patchState(
           store,
 
@@ -359,6 +361,7 @@ export const NewGameStore = signalStore(
 
       // Players
       setPlayers(teamId: string | null, addedPlayers: GamePlayer[]): void {
+        console.log({ addedPlayers });
         // Set added players
         patchState(store, state => {
           /**
@@ -511,6 +514,7 @@ export const NewGameStore = signalStore(
                   pass: 0,
                   goal: 0,
                   goalHead: 0,
+
                   autoGoal: 0,
                 },
               ],
