@@ -9,9 +9,6 @@ import * as https from 'https';
 import * as path from 'path';
 import { AppModule } from './app.module';
 
-const keyPath = path.resolve(__dirname, '../..', 'ssl', 'key.pem');
-const certPath = path.resolve(__dirname, '../..', 'ssl', 'cert.pem');
-
 let httpsOptions;
 if (process.env.NODE_ENV === 'production') {
   // Load SSL certificates provided by Azure
@@ -21,8 +18,8 @@ if (process.env.NODE_ENV === 'production') {
   // };
 } else {
   // Load local SSL certificates for development
-  // const keyPath = path.resolve(__dirname, '../..', 'ssl', 'private-key.pem');
-  // const certPath = path.resolve(__dirname, '../..', 'ssl', 'public-key.pem');
+  const keyPath = path.resolve(__dirname, '../..', 'ssl', 'key.pem');
+  const certPath = path.resolve(__dirname, '../..', 'ssl', 'cert.pem');
   httpsOptions = {
     key: fs.readFileSync(keyPath),
     cert: fs.readFileSync(certPath),
