@@ -17,15 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
 
-    defaults:
-      run:
-        working-directory: client
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          submodules: true
-          lfs: false
+          sparse-checkout: client
+          sparse-checkout-cone-mode: false
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -40,6 +37,11 @@ jobs:
           output_location: "dist/sfl-client" # Built app content directory - optional
           app_build_command: "npm run build:prod"
           ###### End of Repository/Build Configurations ######
+
+      - name: Check pahth
+        run: |
+          pwd
+          ls -a
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
