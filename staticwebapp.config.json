@@ -1,5 +1,15 @@
 {
   "platform": {
     "apiRuntime": "node:18"
-  }
+  },
+  "routes": [
+    {
+      "route": "/*",
+      "statusCode": 301,
+      "allowedRoles": [],
+      "rewrite": {
+        "to": "/"
+      }
+    }
+  ]
 }
