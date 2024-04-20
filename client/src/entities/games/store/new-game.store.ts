@@ -241,7 +241,7 @@ export const NewGameStore = signalStore(
           }),
           switchMap(playerStatistics => {
             console.log('playerStatistics', playerStatistics);
-            return playersService.getPlayers().pipe(
+            return playersService.find().pipe(
               tap(players => {
                 console.log(
                   'players',

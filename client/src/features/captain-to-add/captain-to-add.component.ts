@@ -1,19 +1,20 @@
+import { AsyncPipe, JsonPipe, NgFor, NgIf } from '@angular/common';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
   HostListener,
+  inject,
 } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgFor, NgIf, JsonPipe, AsyncPipe } from '@angular/common';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatIconModule } from '@angular/material/icon';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatStepperModule } from '@angular/material/stepper';
 
 import {
   BehaviorSubject,
@@ -32,15 +33,15 @@ import {
   TCaptain,
 } from 'src/entities/captains';
 
-import { provideComponentStore } from '@ngrx/component-store';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { CardVariantEnum } from '@shared/constants/card';
 import { PlayersStore } from 'src/entities/players';
+import { TPlayer } from 'src/entities/players/types';
+import { BaseUnsubscribeComponent } from 'src/shared/classes/base-unsubscribe-component';
 import {
   displayFn,
   hasSuggestedFilter,
 } from '../../entities/captains/utils/autocomplete';
-import { BaseUnsubscribeComponent } from 'src/shared/classes/base-unsubscribe-component';
-import { TPlayer } from 'src/entities/players/types';
-import { CardVariantEnum } from '@shared/constants/card';
 
 @Component({
   standalone: true,
@@ -67,22 +68,17 @@ import { CardVariantEnum } from '@shared/constants/card';
     CaptainsCardsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // providers: [
-  //   provideComponentStore(CaptainsStore),
-  //   provideComponentStore(PlayersStore),
-  // ],
 })
 export class CaptainToAddComponent extends BaseUnsubscribeComponent {
-  constructor(
-    private captainsStore: CaptainsStore,
-    private playersStore: PlayersStore
-  ) {
+  readonly playersStore = inject(PlayersStore);
+
+  constructor(private captainsStore: CaptainsStore) {
     super();
   }
 
   readonly displayFn = displayFn;
   readonly variantEnum = CardVariantEnum;
-  readonly players$ = this.playersStore.players$;
+  readonly players$ = toObservable(this.playersStore.players);
   readonly captains$ = this.captainsStore.captains$;
   readonly captainFormControl = new FormControl<TCaptain | string | null>('');
 
@@ -103,14 +99,14 @@ export class CaptainToAddComponent extends BaseUnsubscribeComponent {
 
   ngOnInit() {
     combineLatest([
-      this.playersStore.players$,
+      this.players$,
       this.captainsStore.captains$,
       this.captainFormControl.valueChanges.pipe(startWith(null)),
     ])
       .pipe(
         tap(() => this.loading$.next(true)),
         debounceTime(1500),
-        takeUntil(this.unsubscribe$)
+        takeUntil(this.unsubscribe$),
       )
       .subscribe(([players, captains, suggestedCaptain]) => {
         this.loading$.next(false);
@@ -124,10 +120,10 @@ export class CaptainToAddComponent extends BaseUnsubscribeComponent {
           const captainsIds = captains.map(({ id }) => id);
           return this.#filteredPlayers.next(
             players.filter(
-              (player) =>
+              player =>
                 !captainsIds.includes(player.id) &&
-                hasSuggestedFilter(player, suggestedCaptain)
-            )
+                hasSuggestedFilter(player, suggestedCaptain),
+            ),
           );
         }
 

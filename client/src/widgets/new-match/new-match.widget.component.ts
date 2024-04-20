@@ -1,28 +1,26 @@
+import { AsyncPipe, JsonPipe, NgFor, NgIf } from '@angular/common';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
-  HostListener,
   OnInit,
+  inject,
 } from '@angular/core';
 import {
   FormBuilder,
-  Validators,
+  FormControl,
   FormsModule,
   ReactiveFormsModule,
-  FormControl,
+  Validators,
 } from '@angular/forms';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgFor, NgIf, JsonPipe, AsyncPipe } from '@angular/common';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { provideComponentStore } from '@ngrx/component-store';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatStepperModule } from '@angular/material/stepper';
 import {
   CaptainCardComponent,
   CaptainsCardsComponent,
@@ -36,8 +34,10 @@ import {
   CaptainsSelectionComponent,
   PlayersSelectionComponent,
 } from '@features';
+import { provideComponentStore } from '@ngrx/component-store';
 import { CardVariantEnum } from '@shared/constants/card';
 import { TeamEnum } from '@shared/constants/team';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -67,16 +67,14 @@ import { TeamEnum } from '@shared/constants/team';
     CaptainsSelectionComponent,
     PlayersSelectionComponent,
   ],
-  providers: [
-    CaptainsService,
-    provideComponentStore(CaptainsStore),
-    provideComponentStore(PlayersStore),
-  ],
+  providers: [CaptainsService, provideComponentStore(CaptainsStore)],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewMatchWidgetComponent implements OnInit {
+  readonly playersStore = inject(PlayersStore);
+
   readonly captains$ = this.captainsStore.captains$;
-  readonly players$ = this.playersStore.players$;
+  readonly playersSignal = this.playersStore.players;
 
   isEditable = false;
   isLinear = false;
@@ -101,7 +99,6 @@ export class NewMatchWidgetComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private readonly captainsStore: CaptainsStore,
-    private readonly playersStore: PlayersStore
   ) {}
 
   readonly variantEnum = CardVariantEnum;
@@ -122,8 +119,8 @@ export class NewMatchWidgetComponent implements OnInit {
   ngOnInit() {
     this.captainsStore.captains$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((captains) =>
-        console.log('WE GET CAPTAINS FROM STORE', captains)
+      .subscribe(captains =>
+        console.log('WE GET CAPTAINS FROM STORE', captains),
       );
   }
 }

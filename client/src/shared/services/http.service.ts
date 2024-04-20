@@ -45,14 +45,14 @@ export class HttpService {
     });
   }
 
-  patch<T>(url: string, data: T): Observable<T> {
-    return this.#httpClient.patch<T>(API_URL + '/' + url, data, {
+  put<T>(url: string, data: T): Observable<T> {
+    return this.#httpClient.put<T>(API_URL + '/' + url, data, {
       headers: PATCH_HEADERS,
     });
   }
 
-  put<T>(url: string, data: T): Observable<T> {
-    return this.#httpClient.put<T>(API_URL + '/' + url, data, {
+  patch<TData, TResponse>(url: string, data: TData) {
+    return this.#httpClient.patch<TResponse>(API_URL + '/' + url, data, {
       headers: PATCH_HEADERS,
     });
   }

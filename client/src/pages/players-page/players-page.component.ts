@@ -1,14 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { PlayersTableComponent } from '@features';
-import { PlayersAdminWidgetComponent } from '@widgets';
 import { CaptainsService } from '@entities/captains';
 import { PlayersStore } from '@entities/players';
-import { provideComponentStore } from '@ngrx/component-store';
 import { PlayersService } from '@entities/players/services/players.service';
+import { PlayersTableComponent } from '@features';
+import { PlayersAdminWidgetComponent } from '@widgets';
 
 @Component({
   selector: 'sfl-players-page',
@@ -35,7 +34,7 @@ import { PlayersService } from '@entities/players/services/players.service';
 
     // Move to the widget
     // // To use CaptainsService - useEffects
-    provideComponentStore(PlayersStore),
+    PlayersStore,
   ],
 })
 export class PlayersPageComponent {

@@ -1,21 +1,20 @@
+import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
+  effect,
+  inject,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  MatSlideToggleChange,
-  MatSlideToggleModule,
-} from '@angular/material/slide-toggle';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PlayersStore, TPlayer } from '@entities/players';
 
 @Component({
@@ -34,11 +33,14 @@ import { PlayersStore, TPlayer } from '@entities/players';
   styleUrls: ['./players-toggle.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayersToggleComponent {
-  constructor(
-    private _destroyRef: DestroyRef,
-    private playersStore: PlayersStore
-  ) {}
+export class PlayersToggleComponent implements OnDestroy, AfterViewInit {
+  readonly playersStore = inject(PlayersStore);
+
+  readonly playersEffectRef = effect(() => {
+    this.dataSource.data = this.playersStore.players();
+  });
+
+  constructor(private _destroyRef: DestroyRef) {}
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -51,14 +53,8 @@ export class PlayersToggleComponent {
     'actions',
   ];
 
-  ngOnDestroy() {}
-
-  ngOnInit() {
-    this.playersStore.players$
-      .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((players) => {
-        this.dataSource.data = players;
-      });
+  ngOnDestroy() {
+    this.playersEffectRef.destroy();
   }
 
   ngAfterViewInit() {
@@ -66,9 +62,6 @@ export class PlayersToggleComponent {
   }
 
   toggleCaptain(player: TPlayer) {
-    this.playersStore.tryToggleCaptain({
-      ...player,
-      isCaptain: !player.isCaptain,
-    });
+    this.playersStore.patch(player);
   }
 }

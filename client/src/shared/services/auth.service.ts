@@ -1,9 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpService } from './http.service';
 import { delay, tap } from 'rxjs';
+import { HttpService } from './http.service';
 
 interface User {
-  _id: string;
+  id: string;
   email: string;
   roles: string[];
   accessToken?: string;
@@ -30,7 +30,7 @@ export class AuthService {
     this.httpService.get<User>('auth/whoami').subscribe(response => {
       if (response) {
         this.setUser({
-          _id: response._id,
+          id: response.id,
           email: response.email,
           roles: response.roles,
         });

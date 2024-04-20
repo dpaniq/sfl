@@ -1,19 +1,22 @@
+import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { CaptainsService, CaptainsStore, TCaptain } from '@entities/captains';
-import { provideComponentStore } from '@ngrx/component-store';
+import { CaptainsService } from '@entities/captains';
 import { PlayersStore, TPlayer } from '@entities/players';
 
 @Component({
@@ -39,22 +42,23 @@ import { PlayersStore, TPlayer } from '@entities/players';
     // provideComponentStore(PlayersStore),
   ],
 })
-export class PlayersTableComponent {
-  constructor(
-    private _destroyRef: DestroyRef,
-    private playersStore: PlayersStore
-  ) {}
+export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
+  private playersStore = inject(PlayersStore);
+
+  playersEffectRef = effect(() => {
+    this.dataSource.data = this.playersStore.players();
+  });
+
+  constructor(private _destroyRef: DestroyRef) {}
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.playersEffectRef.destroy();
+  }
 
   ngOnInit() {
-    this.playersStore.players$
-      .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((players) => {
-        this.dataSource.data = players;
-      });
+    // Comment
   }
 
   ngAfterViewInit() {

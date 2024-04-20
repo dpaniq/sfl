@@ -7,7 +7,6 @@ import { CaptainsService, CaptainsStore } from '@entities/captains';
 import { provideComponentStore } from '@ngrx/component-store';
 import { GameCreationWidgetComponent } from '@entities/games/widgets/game-creation-widget/game-creation-widget.component';
 import { PlayersService } from '@entities/players/services/players.service';
-import { PlayersStore } from '@entities/players';
 import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
 import { RouterOutlet } from '@angular/router';
 import { GameService } from '@entities/games';
@@ -37,7 +36,6 @@ import { GameService } from '@entities/games';
 
     // To use CaptainsService - useEffects
     // provideComponentStore(CaptainsStore),
-    // provideComponentStore(PlayersStore),
 
     GameService,
   ],

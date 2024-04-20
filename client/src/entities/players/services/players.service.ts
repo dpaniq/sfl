@@ -1,8 +1,7 @@
-import { Injectable, Signal, computed, inject, signal } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, firstValueFrom } from 'rxjs';
-import { TPlayer } from '../types';
+import { Injectable, inject } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
-import { HttpParams } from '@angular/common/http';
+import { Observable, firstValueFrom } from 'rxjs';
+import { TPlayer } from '../types';
 
 type ResponseCaptains = {
   players: TPlayer[];
@@ -20,7 +19,7 @@ export class PlayersService {
 
   #httpService = inject(HttpService);
 
-  getPlayers(): Observable<TPlayer[]> {
+  find(): Observable<TPlayer[]> {
     return this.#httpService.get<TPlayer[]>('players');
   }
 
@@ -43,9 +42,13 @@ export class PlayersService {
     };
   }
 
-  async patch(player: TPlayer) {
-    return await firstValueFrom(
-      this.#httpService.patch<TPlayer>(`players/${player.id}`, player),
+  patch(
+    id: string,
+    partialPlayer: Partial<TPlayer>,
+  ): Observable<TPlayer | null> {
+    return this.#httpService.patch<Partial<TPlayer>, TPlayer | null>(
+      `players/${id}`,
+      partialPlayer,
     );
   }
 
