@@ -1,3 +1,7 @@
+@if (loadingSingal()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
 <table
   mat-table
   matSort
@@ -7,182 +11,99 @@
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-  <!-- Avatar Column -->
-  <ng-container matColumnDef="avatar">
+  <!-- Season Column -->
+  <ng-container matColumnDef="season">
     <th
       mat-header-cell
       *matHeaderCellDef
-    ></th>
-    <td
-      mat-cell
-      *matCellDef="let element"
     >
-      <img
-        class="avatar"
-        src="https://picsum.photos/id/{{ element.avatar }}/50/50"
-      />
-    </td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-      sortActionDescription="Sort by name"
-    >
-      Name
+      Season
     </th>
     <td
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.name }}
+      {{ element.season }}
     </td>
   </ng-container>
 
-  <!-- Surname Column -->
-  <ng-container matColumnDef="surname">
+  <!-- Number Column -->
+  <ng-container matColumnDef="number">
     <th
       mat-header-cell
       *matHeaderCellDef
-      mat-sort-header
-      sortActionDescription="Sort by surname"
     >
-      Surname
+      Number
     </th>
     <td
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.surname }}
+      #{{ element.number }}
     </td>
   </ng-container>
 
-  <!-- Nickname Column -->
-  <ng-container matColumnDef="nickname">
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
     <th
       mat-header-cell
-      mat-sort-header
       *matHeaderCellDef
-      sortActionDescription="Sort by nickname"
     >
-      Nickname
+      Status
     </th>
     <td
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.nickname }}
+      {{ element.status | uppercase }}
     </td>
   </ng-container>
 
-  <!-- Total Games Column -->
-  <ng-container matColumnDef="totalGames">
+  <!-- Teams Column -->
+  <!-- <ng-container matColumnDef="teams">
     <th
       mat-header-cell
       *matHeaderCellDef
-      mat-sort-header
-      sortActionDescription="Sort by total games"
     >
-      Total games
+      Teams
     </th>
     <td
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.totalGames }}
+      {{ element.teams | json }}
     </td>
-  </ng-container>
+  </ng-container> -->
 
-  <!-- Won Games Column -->
-  <ng-container matColumnDef="wonGames">
+  <!-- Played at Column -->
+  <ng-container matColumnDef="playedAt">
     <th
       mat-header-cell
       *matHeaderCellDef
-      mat-sort-header
-      sortActionDescription="Sort by won games"
     >
-      Won games
+      PlayedAt
     </th>
     <td
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.wonGames }}
+      {{ element.playedAt | date: 'fullDate' }}
     </td>
   </ng-container>
 
-  <!-- Lost Games Column -->
-  <ng-container matColumnDef="lostGames">
+  <!-- Played at Column -->
+  <ng-container matColumnDef="result">
     <th
       mat-header-cell
       *matHeaderCellDef
-      mat-sort-header
-      sortActionDescription="Sort by lost games"
     >
-      Lost games
+      Result
     </th>
     <td
       mat-cell
       *matCellDef="let element"
     >
-      {{ element.lostGames }}
-    </td>
-  </ng-container>
-
-  <!-- Draws Column -->
-  <ng-container matColumnDef="draws">
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-      sortActionDescription="Sort by draws"
-    >
-      Draws
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.draws }}
-    </td>
-  </ng-container>
-
-  <!-- Max Win Streak Column -->
-  <ng-container matColumnDef="maxWinStreak">
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-      sortActionDescription="Sort by max win streak"
-    >
-      Max win streak
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.maxWinStreak }}
-    </td>
-  </ng-container>
-
-  <!-- Max Lost Streak Column -->
-  <ng-container matColumnDef="maxLostStreak">
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header
-      sortActionDescription="Sort by max lost streak"
-    >
-      Max lost streak
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-    >
-      {{ element.maxLostStreak }}
+      {{ element | gameListStatistics }}
     </td>
   </ng-container>
 

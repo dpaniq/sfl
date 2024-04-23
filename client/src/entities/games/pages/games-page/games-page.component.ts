@@ -2,14 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { GamesTableComponent } from 'src/features/games-table/games-table.component';
-import { CaptainsService, CaptainsStore } from '@entities/captains';
-import { provideComponentStore } from '@ngrx/component-store';
-import { GameCreationWidgetComponent } from '@entities/games/widgets/game-creation-widget/game-creation-widget.component';
-import { PlayersService } from '@entities/players/services/players.service';
-import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
 import { RouterOutlet } from '@angular/router';
-import { GameService } from '@entities/games';
+import { GameService, GameStore } from '@entities/games';
+import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
+import { GameCreationWidgetComponent } from '@entities/games/widgets/game-creation-widget/game-creation-widget.component';
+import { GamesTableComponent } from 'src/features/games-table/games-table.component';
 
 @Component({
   selector: 'sfl-games-page',
@@ -21,7 +18,7 @@ import { GameService } from '@entities/games';
     MatTabsModule,
 
     // Component
-    // GamesTableComponent,
+    GamesTableComponent,
     GameCreationWidgetComponent,
     GamesListComponent,
   ],
@@ -38,6 +35,7 @@ import { GameService } from '@entities/games';
     // provideComponentStore(CaptainsStore),
 
     GameService,
+    GameStore,
   ],
 })
 export class GamesPageComponent {

@@ -1,6 +1,6 @@
-import { Injectable, Signal, computed, inject, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
+import { Observable } from 'rxjs';
 import { IGame } from '../types';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class GameService {
 
   private readonly httpService = inject(HttpService);
 
-  public find(filter: Partial<IGame>): Observable<IGame[]> {
+  public find(filter: Partial<IGame> = {}): Observable<IGame[]> {
     return this.httpService.get<IGame[]>('games', filter);
   }
 

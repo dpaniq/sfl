@@ -1,19 +1,22 @@
+import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  effect,
+  inject,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { CaptainsService, CaptainsStore, TCaptain } from '@entities/captains';
-import { provideComponentStore } from '@ngrx/component-store';
+import { GameListStatisticsPipe, GameStore, IGame } from '@entities/games';
 
 @Component({
   selector: 'sfl-games-table',
@@ -27,52 +30,39 @@ import { provideComponentStore } from '@ngrx/component-store';
     MatCardModule,
     MatSortModule,
     MatButtonModule,
+    MatProgressBarModule,
     MatIconModule,
+    GameListStatisticsPipe,
   ],
+  providers: [],
 })
-export class GamesTableComponent {
-  constructor(
-    private _destroyRef: DestroyRef,
-    private captainsStore: CaptainsStore
-  ) {}
+export class GamesTableComponent implements OnDestroy, AfterViewInit {
+  readonly gameStore = inject(GameStore);
+
+  readonly loadingSingal = this.gameStore.loading;
+
+  readonly gamesEffectRef = effect(() => {
+    this.dataSource.data = this.gameStore.games();
+  });
+
+  constructor(private _destroyRef: DestroyRef) {}
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnDestroy() {}
-
-  ngOnInit() {
-    this.captainsStore.captains$
-      .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((captains) => {
-        this.dataSource.data.push(...captains);
-      });
+  ngOnDestroy() {
+    this.gamesEffectRef.destroy();
   }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
 
-  readonly dataSource = new MatTableDataSource<TCaptain>([]);
-  readonly displayedColumns: (keyof TCaptain)[] = [
-    'avatar',
-    'name',
-    'surname',
-    'nickname',
-
-    'totalGames',
-    'wonGames',
-    'lostGames',
-    'draws',
-
-    'maxWinStreak',
-    'maxLostStreak',
-
-    // TBC
-    // playsForA: number
-    // playsForB: number
-
-    // season[number]: + / - points
-    // season[number]: + / - points
-    // season[number]: + / - points
+  readonly dataSource = new MatTableDataSource<IGame>([]);
+  readonly displayedColumns: (keyof IGame | 'result')[] = [
+    'season',
+    'number',
+    'status',
+    'result',
+    'playedAt',
   ];
 }

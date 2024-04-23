@@ -74,11 +74,17 @@ export class GameCreatePlayerStatisticsComponent {
       header: 'Goal head',
       cell: (element: GamePlayerStatistic) => `${element.goalHead}`,
     },
+    // {
+    //   columnDef: 'autoGoal',
+    //   key: 'autoGoal',
+    //   header: 'Autogoal',
+    //   cell: (element: GamePlayerStatistic) => `${element.autoGoal}`,
+    // },
     {
-      columnDef: 'autoGoal',
-      key: 'autoGoal',
-      header: 'Autogoal',
-      cell: (element: GamePlayerStatistic) => `${element.autoGoal}`,
+      columnDef: 'penalty',
+      key: 'penalty',
+      header: 'Penalty',
+      cell: (element: GamePlayerStatistic) => `${element.penalty}`,
     },
     {
       columnDef: 'mvp',
