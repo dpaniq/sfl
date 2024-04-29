@@ -26,14 +26,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+
 import { EnumGameMode } from '@entities/games/constants';
 import {
   GamePlayer,
   GameTeam,
   NewGameStore,
 } from '@entities/games/store/new-game.store';
+import { PlayersAutocompleteComponent } from '@entities/players/components/players-autocomplete/players-autocomplete.component';
 import { ITeam } from '@entities/teams';
-import { distinctUntilChanged, map, pairwise, startWith } from 'rxjs';
+import { distinctUntilChanged, pairwise, startWith } from 'rxjs';
 import { GameCreatePlayerStatisticsComponent } from '../game-create-player-statistics/game-create-player-statistics.component';
 
 @Component({
@@ -55,6 +57,7 @@ import { GameCreatePlayerStatisticsComponent } from '../game-create-player-stati
     // Custom
     // TODO FIX
     GameCreatePlayerStatisticsComponent,
+    PlayersAutocompleteComponent,
   ],
   templateUrl: './game-team-create.component.html',
   styleUrl: './game-team-create.component.css',
@@ -105,24 +108,25 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
     );
   });
 
-  playersSignal = computed(() => {
-    return this.newGameStore
-      .players()
-      .filter(player => {
-        if (player.disableAsPlayer) {
-          return player;
-        }
-        const pattern = RegExp(`${this.value()}`);
-        return pattern.test(player.nickname);
-      })
-      .filter(
-        player =>
-          // player.teamId === this.teamFC.value?.id ||
-          player.teamId === this.teamId() ||
-          !player.disableAsPlayer ||
-          (player.disableAsPlayer && player.transferable),
-      );
-  });
+  // playersSignal = computed(() => {
+  //   return this.newGameStore
+  //     .players()
+  //     .filter(player => {
+  //       if (player.disableAsPlayer) {
+  //         return player;
+  //       }
+  //       const pattern = RegExp(`${this.value()}`);
+  //       console.log({ pattern });
+  //       return pattern.test(player.nickname);
+  //     })
+  //     .filter(
+  //       player =>
+  //         // player.teamId === this.teamFC.value?.id ||
+  //         player.teamId === this.teamId() ||
+  //         !player.disableAsPlayer ||
+  //         (player.disableAsPlayer && player.transferable),
+  //     );
+  // });
 
   playersOfCurrentTeamSignal = computed(() => {
     const players = this.newGameStore.players();
@@ -224,13 +228,6 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
     this.playersFC.valueChanges
       .pipe(
         startWith(this.playersFC.value),
-        map(players =>
-          players.map(player => ({
-            ...player,
-            teamId: this.teamId(),
-            disableAsPlayer: true,
-          })),
-        ),
         takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(players => {

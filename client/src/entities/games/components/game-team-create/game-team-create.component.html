@@ -1,34 +1,5 @@
-@if (false) {
-  <!-- <pre>
-    Team: {{teamFC.value}}
-    <hr>
-    Captains: {{captainFC.value | json }}
-    <hr>
-  </pre> -->
-}
-
 <div class="column">
   <div class="row">
-    <!-- 
-    <mat-form-field>
-      <mat-label>Team</mat-label>
-      <mat-select
-        [formControl]="teamFC"
-        [compareWith]="teamCompareFn"
-      >
-        <mat-option>-</mat-option>
-        <hr />
-        @for (team of teamSignal(); track team.id) {
-          <mat-option
-            [value]="team"
-            [disabled]="team.disable"
-          >
-            {{ team.name }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field> -->
-
     <mat-form-field>
       <mat-label>Captain</mat-label>
       <mat-select
@@ -50,58 +21,18 @@
     <hr />
   </div>
 
-  <mat-form-field class="example-form-field">
-    <mat-label>Clearable input</mat-label>
-    <input
-      matInput
-      type="text"
-      [(ngModel)]="value"
-    />
-    @if (value()) {
-      <button
-        matSuffix
-        mat-icon-button
-        aria-label="Clear"
-        (click)="value.set('')"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-  </mat-form-field>
+  <!-- Playrs store autocomeplete -->
+  <sfl-players-autocomplete
+    [ngControl]="playersFC"
+    [teamId]="teamId()"
+  />
+  <hr />
 
-  <mat-form-field>
-    <mat-label>Players</mat-label>
-
-    <mat-select
-      multiple
-      [formControl]="playersFC"
-      [compareWith]="playersCompareFn"
-    >
-      @for (player of playersSignal(); track player) {
-        <mat-option
-          [value]="player"
-          [disabled]="player.teamId && player.disableAsCaptain"
-        >
-          {{ player.nickname }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
-  <!-- Table -->
-
+  <!-- Stats table -->
   @if (playersOfCurrentTeamSignal().length) {
-    <!-- <sfl-game-create-player-statistics
-      [team]="teamFC.value!"
-      [team]="teamFC.value!"
-      [dataSource]="playersOfCurrentTeamSignal()"
-    /> -->
-
     <sfl-game-create-player-statistics
       [team]="team()"
       [dataSource]="playersOfCurrentTeamSignal()"
     />
-
-    <!-- [dataSource]="(teamPlayers$ | async)!" -->
   }
 </div>

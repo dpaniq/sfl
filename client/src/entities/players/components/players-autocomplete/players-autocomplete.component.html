@@ -1,0 +1,46 @@
+<mat-form-field>
+  <mat-label>Players</mat-label>
+
+  <!-- Chips -->
+  <mat-chip-grid
+    #chipGrid
+    [disabled]="disabled"
+  >
+    @for (player of ngControl.value; track player.id) {
+      <mat-chip-row (removed)="remove(player)">
+        {{ player.nickname }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    }
+  </mat-chip-grid>
+
+  <!-- Search -->
+  <input
+    placeholder="Enter a player nickname, surname, name or number"
+    [formControl]="playersSearchFC"
+    [matChipInputFor]="chipGrid"
+    [matAutocomplete]="auto"
+    [value]="playersSearchFC.value"
+    [disabled]="disabled"
+  />
+
+  <!-- Autocomplete (dropdown) -->
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-selection-list
+      (selectionChange)="onSelectOne($event)"
+      [disabled]="disabled"
+    >
+      @for (player of playersSignal(); track player.id) {
+        <mat-list-option
+          [selected]="!!player.teamId"
+          [value]="player.id"
+        >
+          {{ player.nickname }} ({{ player.teamId }})
+        </mat-list-option>
+      }
+      <mat-option [style.display]="'none'"></mat-option>
+    </mat-selection-list>
+  </mat-autocomplete>
+</mat-form-field>
