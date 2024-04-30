@@ -5,8 +5,7 @@
   "routes": [
     {
       "route": "/*",
-      "rewrite": "/",
-      "statusCode": 301
+      "rewrite": "/"
     }
   ]
 }
