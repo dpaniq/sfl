@@ -2,18 +2,15 @@
   "routes": [
     {
       "route": "/",
-      "rewrite": "/dist/index.html",
-      "statusCode": 200
+      "rewrite": "/dist/index.html"
     },
     {
-      "route": "/assets/*",
-      "rewrite": "/assets/*",
-      "statusCode": 404
+      "route": "dist/assets/*",
+      "rewrite": "dist/assets/*"
     },
     {
       "route": "/.*",
-      "rewrite": "/dist/index.html",
-      "statusCode": 200
+      "rewrite": "/dist/index.html"
     }
   ],
   "navigationFallback": {
