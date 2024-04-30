@@ -17,6 +17,8 @@
     "rewrite": "/index.html"
   },
   "globalHeaders": {
-    "Cache-Control": "no-cache"
+    "Cache-Control": "no-cache",
+    "Access-Control-Allow-Origin": "https://sfl-backend.azurewebsites.net",
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PATCH, PUT, DELETE"
   }
 }
