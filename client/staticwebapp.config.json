@@ -1,55 +1,25 @@
 {
-  "platform": {
-    "apiRuntime": "node:18"
-  },
+  "routes": [
+    {
+      "route": "/",
+      "rewrite": "/dist/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/assets/*",
+      "rewrite": "/assets/*",
+      "statusCode": 404
+    },
+    {
+      "route": "/.*",
+      "rewrite": "/dist/index.html",
+      "statusCode": 200
+    }
+  ],
   "navigationFallback": {
     "rewrite": "/dist/index.html"
   },
-  "mimeTypes": {
-    ".json": "application/json",
-    ".woff": "font/woff",
-    ".woff2": "font/woff2",
-    ".dat": "application/octet-stream",
-    ".dll": "application/octet-stream",
-    ".wasm": "application/wasm",
-    ".blat": "application/octet-stream",
-    ".js.gz": "application/javascript",
-    ".dat.gz": "application/octet-stream",
-    ".dll.gz": "application/octet-stream",
-    ".json.gz": "application/json",
-    ".wasm.gz": "application/wasm",
-    ".blat.gz": "application/octet-stream",
-    ".html.gz": "text/html",
-    ".css.gz": "text/css",
-    ".ico.gz": "image/x-icon",
-    ".svg.gz": "image/svg+xml",
-    ".js.br": "application/javascript",
-    ".dat.br": "application/octet-stream",
-    ".dll.br": "application/octet-stream",
-    ".json.br": "application/json",
-    ".wasm.br": "application/wasm",
-    ".blat.br": "application/octet-stream",
-    ".html.br": "text/html",
-    ".css.br": "text/css",
-    ".ico.br": "image/x-icon",
-    ".svg.br": "image/svg+xml"
-  },
   "globalHeaders": {
-    "Content-Encoding": [
-      {
-        "fileMatch": ".br",
-        "encoding": "br"
-      },
-      {
-        "fileMatch": ".gz",
-        "encoding": "gzip"
-      }
-    ],
-    "Vary": [
-      {
-        "fileMatch": ".*",
-        "value": "Accept-Encoding"
-      }
-    ]
+    "Cache-Control": "no-cache"
   }
 }
