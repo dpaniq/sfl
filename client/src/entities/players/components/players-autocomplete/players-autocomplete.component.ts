@@ -8,9 +8,16 @@ import {
   inject,
   Input,
   input,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import {
+  FormControl,
+  FormControlStatus,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -44,14 +51,13 @@ import { distinctUntilChanged, map } from 'rxjs';
   styleUrl: './players-autocomplete.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayersAutocompleteComponent {
+export class PlayersAutocompleteComponent implements OnChanges {
   private readonly newGameStore = inject(NewGameStore);
 
   @Input()
   ngControl!: FormControl<GamePlayer[]>;
 
   readonly teamId = input.required<string>();
-  readonly disabled = this.ngControl.disabled;
 
   playersSignal = computed(() => {
     return this.newGameStore
@@ -82,7 +88,10 @@ export class PlayersAutocompleteComponent {
 
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly playersSearchFC = new FormControl<string>('');
+  readonly playersSearchFC = new FormControl<string>({
+    value: '',
+    disabled: true,
+  });
 
   readonly playersSearchFCSignal = toSignal(
     this.playersSearchFC.valueChanges.pipe(
@@ -93,6 +102,21 @@ export class PlayersAutocompleteComponent {
       initialValue: '',
     },
   );
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const ngControlChanges = changes['ngControl'];
+    if (ngControlChanges?.isFirstChange()) {
+      ngControlChanges.currentValue.statusChanges
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((status: FormControlStatus) => {
+          if (status === 'DISABLED') {
+            this.playersSearchFC.disable();
+          } else {
+            this.playersSearchFC.enable();
+          }
+        });
+    }
+  }
 
   remove(player: GamePlayer): void {
     const raw = this.ngControl.getRawValue();

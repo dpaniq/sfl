@@ -4,7 +4,7 @@
   <!-- Chips -->
   <mat-chip-grid
     #chipGrid
-    [disabled]="disabled"
+    [disabled]="playersSearchFC.disabled"
   >
     @for (player of ngControl.value; track player.id) {
       <mat-chip-row (removed)="remove(player)">
@@ -23,14 +23,14 @@
     [matChipInputFor]="chipGrid"
     [matAutocomplete]="auto"
     [value]="playersSearchFC.value"
-    [disabled]="disabled"
+    autocomplete="off"
   />
 
   <!-- Autocomplete (dropdown) -->
   <mat-autocomplete #auto="matAutocomplete">
     <mat-selection-list
       (selectionChange)="onSelectOne($event)"
-      [disabled]="disabled"
+      [disabled]="playersSearchFC.disabled"
     >
       @for (player of playersSignal(); track player.id) {
         <mat-list-option
@@ -44,3 +44,8 @@
     </mat-selection-list>
   </mat-autocomplete>
 </mat-form-field>
+
+searchFC: {{ playersSearchFC.disabled | json }}
+<hr />
+ngControl:
+{{ ngControl.disabled | json }}
