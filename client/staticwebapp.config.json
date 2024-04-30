@@ -2,7 +2,7 @@
   "routes": [
     {
       "route": "/",
-      "rewrite": "/dist/index.html"
+      "rewrite": "/index.html"
     },
     {
       "route": "dist/assets/*",
@@ -10,11 +10,11 @@
     },
     {
       "route": "/.*",
-      "rewrite": "/dist/index.html"
+      "rewrite": "/index.html"
     }
   ],
   "navigationFallback": {
-    "rewrite": "/dist/index.html"
+    "rewrite": "/index.html"
   },
   "globalHeaders": {
     "Cache-Control": "no-cache"
