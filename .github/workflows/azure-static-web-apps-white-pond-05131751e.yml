@@ -23,7 +23,7 @@ jobs:
           sparse-checkout: client
           sparse-checkout-cone-mode: false
 
-      - name: Check pahth
+      - name: Check path
         run: |
           pwd
           ls -a
@@ -39,9 +39,14 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "client" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "dist/sfl-client" # Built app content directory - optional
+          output_location: "dist" # Built app content directory - optional
           app_build_command: "npm run build:prod"
           ###### End of Repository/Build Configurations ######
+
+      - name: Check path
+        run: |
+          pwd
+          ls -lt
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
