@@ -5,11 +5,8 @@
   "routes": [
     {
       "route": "/*",
-      "statusCode": 301,
-      "allowedRoles": [],
-      "rewrite": {
-        "to": "/"
-      }
+      "rewrite": "/",
+      "statusCode": 301
     }
   ]
 }
