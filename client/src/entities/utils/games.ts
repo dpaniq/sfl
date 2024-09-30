@@ -1,29 +1,17 @@
-import { TGameCard } from '@entities/games/types';
-import { forEach } from 'lodash';
-import { getLastSaturday } from './date';
+import { TGameFinalWithoutStatistics } from '@entities/games/types';
 import {
-  eachWeekOfInterval,
-  getYear,
-  startOfYear,
-  endOfYear,
-  startOfISOWeekYear,
-  endOfISOWeekYear,
   addYears,
-  setDay,
-  getDay,
-  startOfMonth,
-  getISOWeeksInYear,
-  nextSaturday,
-  format,
   differenceInWeeks,
+  eachWeekOfInterval,
+  nextSaturday,
+  startOfMonth,
 } from 'date-fns';
-import { EnumGameStatus } from '@entities/games/constants';
 
 // const third = 3;
 const SATURDAY = 6;
 
-export const getGameCards = (year: number): TGameCard[] => {
-  const gameCards: TGameCard[] = [];
+export const getGameCards = (year: number): TGameFinalWithoutStatistics[] => {
+  const gameCards: TGameFinalWithoutStatistics[] = [];
   const startOfSeason = startOfMonth(new Date(`${year}-12-01`));
   const endOfSeason = addYears(startOfSeason, 1);
 

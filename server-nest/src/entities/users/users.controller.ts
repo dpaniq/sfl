@@ -1,24 +1,14 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UsePipes,
-  ValidationPipe,
-  Get,
-  Param,
-  HttpException,
-  Patch,
-  Delete,
-} from '@nestjs/common';
-import { UsersService } from './users.service';
-import mongoose from 'mongoose';
+import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
 import {
   UpdateTestUsersDto,
   UpdateTestUsersDtoInput,
   UpdateTestUsersDtoOutput,
 } from './users.dto';
+import { UsersService } from './users.service';
 
+@ApiTags('user')
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}

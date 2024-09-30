@@ -28,14 +28,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 
 import { EnumGameMode } from '@entities/games/constants';
-import {
-  GamePlayer,
-  GameTeam,
-  NewGameStore,
-} from '@entities/games/store/new-game.store';
+import { GameTeam, NewGameStore } from '@entities/games/store/new-game.store';
 import { PlayersAutocompleteComponent } from '@entities/players/components/players-autocomplete/players-autocomplete.component';
 import { ITeam } from '@entities/teams';
-import { distinctUntilChanged, pairwise, startWith } from 'rxjs';
+import { distinctUntilChanged, startWith } from 'rxjs';
 import { GameCreatePlayerStatisticsComponent } from '../game-create-player-statistics/game-create-player-statistics.component';
 
 @Component({
@@ -44,6 +40,7 @@ import { GameCreatePlayerStatisticsComponent } from '../game-create-player-stati
   imports: [
     CommonModule,
     // Material
+    // TODO REMOVE EXTRA MATERIALS
     MatListModule,
     MatIconModule,
     MatDividerModule,
@@ -71,6 +68,11 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
   public mode = input.required<EnumGameMode>();
   public readonly teamId = computed(() => this.team()._id);
 
+  public readonly getState = computed(() => [
+    this.newGameStore.statistics(),
+    this.newGameStore.statisticsEntities(),
+  ]);
+
   get captainFC() {
     return this.formGroup.controls.captain;
   }
@@ -89,23 +91,24 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
 
   readonly formGroup = new FormGroup({
     // team: new FormControl<GameTeam | null>(this.team),
-    captain: new FormControl<GamePlayer | null>({
+    captain: new FormControl<any | null>({
       value: null,
       disabled: false,
     }),
-    players: new FormControl<GamePlayer[]>(
+    players: new FormControl<any[]>(
       { value: [], disabled: true },
       { nonNullable: true },
     ),
   });
 
   captainsSignal = computed(() => {
-    return this.newGameStore.captains().filter(
-      player =>
-        // player.teamId === this.teamFC.value?.id ||
-        player.teamId === this.teamId() ||
-        (!player.disableAsPlayer && !player.disableAsCaptain),
-    );
+    this.newGameStore.captains();
+    // TODO
+    // return this.newGameStore.captains().filter(
+    //   player =>
+    //     // player.teamId === this.teamFC.value?.id ||
+    //     player.teamId === this.teamId() || !player.disableAsCaptain,
+    // );
   });
 
   // playersSignal = computed(() => {
@@ -128,58 +131,32 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
   //     );
   // });
 
-  playersOfCurrentTeamSignal = computed(() => {
-    const players = this.newGameStore.players();
+  // playersOfCurrentTeamSignal = computed(() => {
+  //   const players = this.newGameStore.players();
 
-    if (!players.length) {
-      return [];
-    }
+  //   if (!players.length) {
+  //     return [];
+  //   }
 
-    const statisticPlayers = this.newGameStore.game
-      .statistics()
-      .filter(stat => stat.teamId && stat.teamId === this.teamId())
-      .map(stat => {
-        const found = players.find(player => {
-          return player.id === stat.playerId;
-        })!;
+  //   const statisticPlayers = this.newGameStore.game
+  //     .statistics()
+  //     .filter(stat => stat.teamId && stat.teamId === this.teamId())
+  //     .map(stat => {
+  //       const found = players.find(player => {
+  //         return player.id === stat.playerId;
+  //       })!;
 
-        return {
-          ...stat,
-          nickname: found.nickname,
-        };
-      });
+  //       return {
+  //         ...stat,
+  //         nickname: found.nickname,
+  //       };
+  //     });
 
-    return statisticPlayers;
-  });
+  //   return statisticPlayers;
+  // });
 
   ngOnDestroy() {
     // Comments
-  }
-
-  fillInControlsIfModeEdit() {
-    console.log('fillInControlsIfModeEdit', this.mode());
-
-    if (this.mode() !== EnumGameMode.Edit) {
-      return;
-    }
-
-    const captain = this.newGameStore.players().find(player => {
-      return player.disableAsCaptain && player.teamId === this.teamId();
-    });
-
-    if (captain) {
-      this.captainFC.setValue(captain, { onlySelf: true, emitEvent: false });
-    }
-
-    // Init players
-    const players = this.newGameStore.players().filter(player => {
-      return player.teamId === this.teamId();
-    });
-
-    if (players.length) {
-      this.playersFC.setValue(players, { onlySelf: true, emitEvent: false });
-      this.playersFC.enable();
-    }
   }
 
   readonly storeLoaded$ = toObservable(this.newGameStore.storeLoaded);
@@ -187,43 +164,39 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.storeLoaded$
       .pipe(distinctUntilChanged(), takeUntilDestroyed(this.#destroyRef))
-      .subscribe(storeLoaded => {
-        console.log('storeLoaded', storeLoaded);
-        this.fillInControlsIfModeEdit();
-      });
+      .subscribe(storeLoaded => {});
 
-    this.captainFC.valueChanges
-      .pipe(
-        startWith(this.captainFC.value),
-        pairwise(),
-        takeUntilDestroyed(this.#destroyRef),
-      )
-      .subscribe(([prevCaptain, currentCaptain]) => {
-        console.log('setCaptain', prevCaptain, currentCaptain);
+    // this.captainFC.valueChanges
+    //   .pipe(
+    //     startWith(this.captainFC.value),
+    //     pairwise(),
+    //     takeUntilDestroyed(this.#destroyRef),
+    //   )
+    //   .subscribe(([prevCaptain, currentCaptain]) => {
+    //     console.log('setCaptain', prevCaptain, currentCaptain);
 
-        if (prevCaptain) {
-          this.newGameStore.updateCaptain({
-            ...prevCaptain,
-            teamId: null,
-            disableAsCaptain: false,
-          });
-        }
+    //     if (prevCaptain) {
+    //       this.newGameStore.updateCaptain({
+    //         ...prevCaptain,
+    //         teamId: null,
+    //         disableAsCaptain: false,
+    //       });
+    //     }
 
-        // Set new player to PlayerFC & disable / enable playersFC
-        if (currentCaptain) {
-          this.newGameStore.updateCaptain({
-            ...currentCaptain,
-            teamId: this.teamId() ?? null,
-            disableAsCaptain: true,
-            disableAsPlayer: true,
-          });
-          this.playersFC.enable();
-          this.playersFC.reset([currentCaptain]);
-        } else {
-          this.playersFC.disable();
-          this.playersFC.reset();
-        }
-      });
+    //     // Set new player to PlayerFC & disable / enable playersFC
+    //     if (currentCaptain) {
+    //       this.newGameStore.updateCaptain({
+    //         ...currentCaptain,
+    //         teamId: this.teamId() ?? null,
+    //         disableAsCaptain: true,
+    //       });
+    //       this.playersFC.enable();
+    //       this.playersFC.reset([currentCaptain]);
+    //     } else {
+    //       this.playersFC.disable();
+    //       this.playersFC.reset();
+    //     }
+    //   });
 
     this.playersFC.valueChanges
       .pipe(
@@ -231,7 +204,7 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
         takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(players => {
-        this.newGameStore.setPlayers(this.teamId(), players);
+        // this.newGameStore.setPlayers(this.teamId(), players);
       });
   }
 
@@ -239,11 +212,11 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
     return option?.id === value?.id;
   }
 
-  captainCompareFn(option: GamePlayer | null, value: GamePlayer | null) {
+  captainCompareFn(option: any | null, value: any | null) {
     return option?.id === value?.id;
   }
 
-  playersCompareFn(option: GamePlayer | null, value: GamePlayer) {
+  playersCompareFn(option: any | null, value: any) {
     return option?.id === value?.id;
   }
 }

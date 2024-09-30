@@ -1,14 +1,8 @@
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { TCaptain } from '../../types';
 import { CardVariantEnum } from '@shared/constants/card';
+import { TCaptain } from '../../types';
 
 @Component({
   standalone: true,
@@ -51,13 +45,13 @@ import { CardVariantEnum } from '@shared/constants/card';
   ],
   template: `
     <ng-container [ngSwitch]="variant">
-      <ng-container *ngSwitchCase="variantEnum.Stats"
-        ><ng-container *ngTemplateOutlet="simple"></ng-container
-      ></ng-container>
+      <ng-container *ngSwitchCase="variantEnum.Stats">
+        <ng-container *ngTemplateOutlet="simple"></ng-container>
+      </ng-container>
 
-      <ng-container *ngSwitchCase="variantEnum.Preview"
-        ><ng-container *ngTemplateOutlet="full"></ng-container
-      ></ng-container>
+      <ng-container *ngSwitchCase="variantEnum.Preview">
+        <ng-container *ngTemplateOutlet="full"></ng-container>
+      </ng-container>
 
       <ng-container *ngSwitchDefault>Default card</ng-container>
     </ng-container>
@@ -67,15 +61,13 @@ import { CardVariantEnum } from '@shared/constants/card';
       <mat-card class="captain-card">
         <mat-card-header>
           <mat-card-title-group>
-            <mat-card-title
-              >{{ captain.nickname }}
-              <span *ngIf="captain?.team"
-                >({{ captain.team }})</span
-              ></mat-card-title
-            >
-            <mat-card-subtitle
-              >{{ captain.name }} {{ captain.surname }}</mat-card-subtitle
-            >
+            <mat-card-title>
+              {{ captain.nickname }}
+              <span *ngIf="captain?.team">({{ captain.team }})</span>
+            </mat-card-title>
+            <mat-card-subtitle>
+              {{ captain.nickname }}
+            </mat-card-subtitle>
             <!-- <img
               mat-card-sm-image
               src="https://material.angular.io/assets/img/examples/shiba2.jpg"
@@ -96,13 +88,14 @@ import { CardVariantEnum } from '@shared/constants/card';
     <ng-template #full>
       <mat-card class="captain-card full">
         <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title
-            >#{{ captain.number }} {{ captain.nickname }}</mat-card-title
-          >
-          <mat-card-subtitle
-            >{{ captain.name }} {{ captain.surname }}</mat-card-subtitle
-          >
+          <div
+            mat-card-avatar
+            class="example-header-image"
+          ></div>
+          <mat-card-title>
+            #{{ captain.number }} {{ captain.nickname }}
+          </mat-card-title>
+          <mat-card-subtitle>{{ captain.nickname }}</mat-card-subtitle>
         </mat-card-header>
         <img
           mat-card-image

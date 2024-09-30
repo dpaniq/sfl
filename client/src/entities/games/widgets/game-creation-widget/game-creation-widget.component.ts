@@ -39,9 +39,9 @@ import {
   NewGameStore,
 } from '@entities/games';
 import { EnumGameMode, EnumGameStatus } from '@entities/games/constants';
-import { IGame } from '@entities/games/types';
+import { TGameFinal, TTeamFinal } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
-import { ITeam, TeamsService } from '@entities/teams';
+import { TeamsService } from '@entities/teams';
 import { getLastSaturday, totalWeeksByYear } from '@entities/utils/date';
 import { getState } from '@ngrx/signals';
 import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
@@ -194,16 +194,17 @@ export class GameCreationWidgetComponent implements OnInit {
     const state = getState(this.newGameStore);
     const game = state.game;
 
-    this.gameService
-      .save({
-        status: EnumGameStatus.New,
-        number: raw.number,
-        season: raw.season,
-        playedAt: raw.playedAt,
-        teams: game.teams,
-        statistics: game.statistics,
-      })
-      .subscribe(game => console.log('GAME IS SAVED', game));
+    // TODO
+    // this.gameService
+    //   .save({
+    //     status: EnumGameStatus.New,
+    //     number: raw.number,
+    //     season: raw.season,
+    //     playedAt: raw.playedAt,
+    //     teams: state.teams,
+    //     statistics: game.statistics,
+    //   })
+    //   .subscribe(game => console.log('GAME IS SAVED', game));
 
     this.newGameStore.initGame();
   }
@@ -211,23 +212,25 @@ export class GameCreationWidgetComponent implements OnInit {
   // TODO REPLACE
   update() {
     const state = getState(this.newGameStore);
-    const game = state.game;
+    // const game = state.game;
 
-    this.gameService
-      .resave(game.id!, {
-        status: game.status,
-        number: game.number,
-        season: game.season,
-        playedAt: game.playedAt,
-        teams: game.teams,
-        statistics: game.statistics,
-      })
-      .subscribe(game => console.log('GAME IS UPDATED', game));
+    // TODO
+    // this.gameService
+    //   .resave(game.id!, {
+    //     status: game.status,
+    //     number: game.number,
+    //     season: game.season,
+    //     playedAt: game.playedAt,
+    //     teams: game.teams,
+    //     statistics: game.statistics,
+    //   })
+    //   .subscribe(game => console.log('GAME IS UPDATED', game));
 
     this.newGameStore.initGame();
   }
 
-  drop(event: CdkDragDrop<ITeam[]>) {
+  drop(event: CdkDragDrop<[TTeamFinal, TTeamFinal]>) {
+    // TODO
     const array = this.teams();
 
     if (!array) {
@@ -236,7 +239,7 @@ export class GameCreationWidgetComponent implements OnInit {
 
     moveItemInArray(array, event.previousIndex, event.currentIndex);
 
-    this.newGameStore.updateTeams(array);
+    // this.newGameStore.updateTeams(array);
 
     // TODO not needed fix
     // this.teams.set(array);
@@ -248,7 +251,7 @@ export class GameCreationWidgetComponent implements OnInit {
     status,
     teams,
     playedAt,
-  }: Partial<IGame>) {
+  }: Partial<TGameFinal>) {
     console.log('fillControls', { number, season, status, teams, playedAt });
 
     // TODO not needed

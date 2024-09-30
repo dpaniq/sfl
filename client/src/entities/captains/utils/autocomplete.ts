@@ -6,12 +6,12 @@ export function displayFn(captain: TCaptain): string {
 
 export function hasSuggestedFilter(
   captain: TCaptain,
-  suggestedString: string
+  suggestedString: string,
 ): boolean {
   return (
     captain.number.toString().includes(suggestedString) ||
-    captain.name.toLowerCase().includes(suggestedString) ||
-    captain.surname.toLowerCase().includes(suggestedString) ||
+    // captain.name.toLowerCase().includes(suggestedString) ||
+    // captain.surname.toLowerCase().includes(suggestedString) ||
     captain.nickname.toLowerCase().includes(suggestedString)
   );
 }

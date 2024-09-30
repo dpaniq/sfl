@@ -14,6 +14,20 @@ export enum EnumTeamColor {
 
 @Schema({
   versionKey: false,
+  toObject: {
+    transform: (doc, ret, options) => {
+      ret.id = ret._id;
+      delete ret._id;
+      return ret;
+    },
+  },
+  toJSON: {
+    transform: (doc, ret, options) => {
+      ret.id = ret._id;
+      delete ret._id;
+      return ret;
+    },
+  },
 })
 export class Team {
   @ApiProperty()

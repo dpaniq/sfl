@@ -1,8 +1,6 @@
-import { TPlayer } from '../types/index.js';
+import { PlayerClient } from '../types/index.js';
 
-import { TCaptain } from '../../captains/types/index.js';
-
-// export async function getPlayersList(page?: number): Promise<TPlayer[]> {
+// export async function getPlayersList(page?: number): Promise<PlayerClient[]> {
 //   const data = await api
 //     .post<{ captains: TCaptain[]; page: number }>('captains', {})
 //     .json();
@@ -10,7 +8,7 @@ import { TCaptain } from '../../captains/types/index.js';
 //   return data.ca
 // }
 
-export async function getPlayersListMock(): Promise<TPlayer[]> {
+export async function getPlayersListMock(): Promise<PlayerClient[]> {
   /**
     JG.repeat(5, 10, {
       id: JG.objectId(),

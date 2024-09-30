@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>Create player</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="formGroup">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        formControlName="email"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nickname</mat-label>
+      <input
+        matInput
+        formControlName="nickname"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        formControlName="name"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Surname</mat-label>
+      <input
+        matInput
+        formControlName="surname"
+      />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-flat-button
+    mat-dialog-close
+  >
+    Close
+  </button>
+
+  <button
+    mat-flat-button
+    [disabled]="formGroup.invalid"
+    [mat-dialog-close]="formGroup.getRawValue()"
+    cdkFocusInitial
+  >
+    Submit
+  </button>
+</mat-dialog-actions>

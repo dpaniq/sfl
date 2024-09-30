@@ -20,10 +20,10 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { TPlayer } from '../types/index';
+import { PlayerClient } from '../types/index';
 
 export interface PlayersStoreState {
-  players: TPlayer[];
+  players: PlayerClient[];
 
   // For internal process
   loading: boolean;
@@ -58,7 +58,7 @@ export const PlayersStore = signalStore(
         playersService: inject(PlayersService),
       },
     ) => ({
-      patch: async (player: WithId<TPlayer>): Promise<void> => {
+      patch: async (player: WithId<PlayerClient>): Promise<void> => {
         const patchedPlayer = await firstValueFrom(
           playersService.patch(player.id, { isCaptain: !player.isCaptain }),
         );

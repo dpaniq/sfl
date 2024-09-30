@@ -1,15 +1,17 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, isDevMode } from '@angular/core';
+import { IPlayerDTO } from '@entities/games/types';
 import { HttpService } from '@shared/services/http.service';
-import { Observable, firstValueFrom } from 'rxjs';
-import { TPlayer } from '../types';
+import { Observable, firstValueFrom, of } from 'rxjs';
+import { PlayerClient } from '../types';
+import { playersMock } from './players.mock';
 
 type ResponseCaptains = {
-  players: TPlayer[];
+  players: PlayerClient[];
   page: number;
 };
 
 export type PlayersResponse = {
-  players: TPlayer[];
+  players: PlayerClient[];
   page: number;
 };
 
@@ -19,12 +21,36 @@ export class PlayersService {
 
   #httpService = inject(HttpService);
 
-  find(): Observable<TPlayer[]> {
-    return this.#httpService.get<TPlayer[]>('players');
+  find(): Observable<PlayerClient[]> {
+    if (isDevMode()) {
+      of(playersMock);
+    }
+
+    return this.#httpService.get<PlayerClient[]>('players');
   }
 
-  getCaptainsPlayers(): Observable<TPlayer[]> {
-    return this.#httpService.get<TPlayer[]>('players/captains');
+  create(player: {
+    email: string;
+    nickname: string;
+    name?: string;
+    surname?: string;
+  }): Observable<IPlayerDTO[]> {
+    return this.#httpService.post<
+      SetOptional<IPlayerDTO, 'id' | 'isCaptain'>[],
+      IPlayerDTO[]
+    >('players', [player]);
+  }
+
+  findMock(): Observable<PlayerClient[]> {
+    if (isDevMode()) {
+      console.log('is dev mode');
+    }
+
+    return of(playersMock);
+  }
+
+  getCaptainsPlayers(): Observable<PlayerClient[]> {
+    return this.#httpService.get<PlayerClient[]>('players/captains');
   }
 
   async getList(page: number = 0): Promise<ResponseCaptains> {
@@ -44,9 +70,9 @@ export class PlayersService {
 
   patch(
     id: string,
-    partialPlayer: Partial<TPlayer>,
-  ): Observable<TPlayer | null> {
-    return this.#httpService.patch<Partial<TPlayer>, TPlayer | null>(
+    partialPlayer: Partial<PlayerClient>,
+  ): Observable<PlayerClient | null> {
+    return this.#httpService.patch<Partial<PlayerClient>, PlayerClient | null>(
       `players/${id}`,
       partialPlayer,
     );

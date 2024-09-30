@@ -7,16 +7,14 @@ import {
   Res,
   UsePipes,
 } from '@nestjs/common';
-import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
-import { AuthRequiredValiSchema } from './auth.dto';
-import { ApiTags, ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { Auth } from './auth.schema';
-import { hash } from 'src/shared/utils/string';
-import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { addDays } from 'date-fns';
 import { Request, Response } from 'express';
-import { access } from 'fs';
+import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
+import { AuthRequiredValiSchema } from './auth.dto';
+import { Auth } from './auth.schema';
+import { AuthService } from './auth.service';
 
 @ApiBearerAuth()
 @Controller('auth')
@@ -40,7 +38,7 @@ export class AuthController {
   })
   @UsePipes(new ValibotValidationPipe(AuthRequiredValiSchema))
   async signIn(@Res() res: Response, @Body() auth: Auth) {
-    console.log({ auth });
+    console.log('signIn:controller:', auth);
 
     const { accessToken, refreshToken } = await this.authService.signIn(auth);
 

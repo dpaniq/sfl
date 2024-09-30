@@ -39,12 +39,10 @@ export async function getCaptainsListMock(): Promise<TCaptain[]> {
   return [
     {
       id: '650b2a03c24da82653689fdd',
-      name: 'laborum',
       draws: 23,
       avatar: 129,
       number: 175,
       isCaptain: true,
-      surname: 'laborum',
       nickname: 'fugiat',
       wonGames: 14,
       lostGames: 42,
@@ -54,12 +52,10 @@ export async function getCaptainsListMock(): Promise<TCaptain[]> {
     },
     {
       id: '650b2a03bd06cb524c00d9f1',
-      name: 'anim',
       draws: 13,
       avatar: 351,
       number: 297,
       isCaptain: true,
-      surname: 'sint',
       nickname: 'consectetur',
       wonGames: 41,
       lostGames: 5,
@@ -69,12 +65,10 @@ export async function getCaptainsListMock(): Promise<TCaptain[]> {
     },
     {
       id: '650b2a03a820d2d453281d82',
-      name: 'anim',
       draws: 29,
       avatar: 476,
       number: 267,
       isCaptain: true,
-      surname: 'nostrud',
       nickname: 'aute',
       wonGames: 48,
       lostGames: 37,

@@ -1,9 +1,7 @@
-import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { randomUUID } from 'crypto';
-import { Model } from 'mongoose';
-import { UUID, ObjectId } from 'src/constants';
-import { Collections } from 'src/enums';
+import { ObjectId, UUID } from 'src/constants';
 import { hash } from 'src/shared/utils/string';
 import { Role } from '../roles/roles.schema';
 
@@ -18,11 +16,27 @@ export interface IUser {
   roles: (typeof ObjectId)[];
 }
 
-@Schema({ versionKey: false })
+const transform = (doc, ret, options) => {
+  ret.id = ret._id;
+  delete ret._id;
+  delete ret.password;
+  delete ret.roles;
+  return ret;
+};
+
+@Schema({
+  versionKey: false,
+  toObject: {
+    transform,
+  },
+  toJSON: {
+    transform,
+  },
+})
 export class User implements IUser {
   @ApiProperty()
   @Prop({
-    default: () => randomUUID(),
+    default: randomUUID,
     type: UUID,
     required: true,
     transform: (id: any) => id.toString(),
@@ -60,7 +74,7 @@ export class User implements IUser {
     type: [
       {
         type: ObjectId,
-        ref: Collections.Roles,
+        ref: Role.name,
         required: true,
       },
     ],

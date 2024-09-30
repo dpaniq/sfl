@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { IUser, User } from './users.schema';
 import { Model } from 'mongoose';
+import { IUser, User } from './users.schema';
 
 @Injectable()
 export class UsersService {
@@ -11,18 +11,22 @@ export class UsersService {
     private userModel: Model<IUser>,
   ) {}
 
-  async createUser({ settings, ...createUserDto }: any) {
-    if (settings) {
-      // const newSettings = new this.userSettingsModel(settings);
-      // const savedNewSettings = await newSettings.save();
-      const newUser = new this.userModel({
-        ...createUserDto,
-        // settings: savedNewSettings._id,
-      });
-      return newUser.save();
+  async createUser(user: {
+    email: string;
+    name?: string;
+    surname?: string;
+    roles: string[];
+  }) {
+    if (!user.roles) {
+      return null;
     }
-    const newUser = new this.userModel(createUserDto);
-    return newUser.save();
+
+    try {
+      return await this.userModel.create(user);
+    } catch (error) {
+      console.log('errro?', error);
+      return null;
+    }
   }
 
   getsUsers() {
@@ -30,11 +34,21 @@ export class UsersService {
   }
 
   getUserById(id: string) {
-    return this.userModel.findById(id).populate(['settings', 'posts']);
+    console.log(id, this.userModel.findById(id).exec());
+    return this.userModel.findById(id).populate(['roles']).exec();
   }
 
   updateUser(id: string, updateUserDto: any) {
     return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+  }
+
+  async patch(id: string, body: Partial<IUser>): Promise<IUser | null> {
+    try {
+      await this.userModel.updateOne({ _id: id }, { $set: { ...body } }).exec();
+      return await this.userModel.findById(id).exec();
+    } catch (error) {
+      return null;
+    }
   }
 
   deleteUser(id: string) {

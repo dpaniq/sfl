@@ -1,14 +1,7 @@
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { TCaptain } from '../../types';
-import { CardVariantEnum } from '@shared/constants/card';
 
 @Component({
   standalone: true,
@@ -50,15 +43,11 @@ import { CardVariantEnum } from '@shared/constants/card';
     <mat-card class="captain-card captain-card__stats">
       <mat-card-header>
         <mat-card-title-group>
-          <mat-card-title
-            >{{ captain.nickname }}
-            <span *ngIf="captain?.team"
-              >({{ captain.team }})</span
-            ></mat-card-title
-          >
-          <mat-card-subtitle
-            >{{ captain.name }} {{ captain.surname }}</mat-card-subtitle
-          >
+          <mat-card-title>
+            {{ captain.nickname }}
+            <span *ngIf="captain?.team">({{ captain.team }})</span>
+          </mat-card-title>
+          <mat-card-subtitle>{{ captain.nickname }}</mat-card-subtitle>
           <img
             mat-card-avatar
             src="https://picsum.photos/id/{{ captain.avatar }}/200/300"

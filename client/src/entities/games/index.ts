@@ -6,7 +6,7 @@ import { NewGameStore } from './store/new-game.store';
 import { GameCreatePlayerStatisticsComponent } from './components/game-create-player-statistics/game-create-player-statistics.component';
 import { GameListStatisticsPipe } from './directives/game-list-statistics.pipe';
 import { GAMES_ROUTES } from './routes';
-import { IGame } from './types';
+import { TGameFinal } from './types';
 import { GameCreationWidgetComponent } from './widgets/game-creation-widget/game-creation-widget.component';
 
 export {
@@ -24,7 +24,7 @@ export {
   // Utils
   // Components [@deprecated]
   GameTeamCreateComponent,
-  // Types
-  IGame,
   NewGameStore,
+  // Types
+  TGameFinal,
 };

@@ -4,13 +4,13 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { IUser, User } from '../users';
-import { AuthRequiredValiSchemaOutput } from './auth.dto';
-import { hash } from 'src/shared/utils/string';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { hash } from 'src/shared/utils/string';
+import { IUser, User } from '../users';
+import { AuthRequiredValiSchemaOutput } from './auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +29,7 @@ export class AuthService {
   ) {}
 
   async signIn({ email, password }: AuthRequiredValiSchemaOutput) {
+    console.log('signIn:auth service:', { email, password });
     try {
       const user = await this.userModel.findOne({ email }).exec();
 
@@ -44,6 +45,7 @@ export class AuthService {
         refreshToken: await this.generateRefreshToken(payload),
       };
     } catch (error: any) {
+      console.log(error);
       switch (error.status) {
         case HttpStatus.UNAUTHORIZED:
           throw new UnauthorizedException();
@@ -64,7 +66,9 @@ export class AuthService {
     - Accessing APIs or protected routes.
     - Authorizing a user to perform actions, like creating, updating, or deleting data.
   */
-  public async generateAccessToken(user: Omit<IUser, 'password'>) {
+  public async generateAccessToken(
+    user: Omit<IUser, 'password' | 'roles'> & { roles: string[] },
+  ) {
     return await this.jwtService.signAsync(user, {
       expiresIn: '15m',
       secret: this.accessTokenSecret,
@@ -94,7 +98,9 @@ export class AuthService {
     - Managing access tokens for long-running sessions, such as in mobile or single-page applications.
     - Reducing the need for users to repeatedly log in.
   */
-  public async generateRefreshToken(user: Omit<IUser, 'password'>) {
+  public async generateRefreshToken(
+    user: Omit<IUser, 'password' | 'roles'> & { roles: string[] },
+  ) {
     return this.jwtService.signAsync(user, {
       expiresIn: '1d',
       secret: this.refreshTokenSecret,
@@ -112,7 +118,10 @@ export class AuthService {
   }
 
   public async getUser({ email }: Pick<IUser, 'email'>) {
-    const user = await this.userModel.findOne({ email }).exec();
+    const user = await this.userModel
+      .findOne({ email })
+      .populate(['roles'])
+      .exec();
     return {
       _id: user._id,
       email: user.email,
@@ -120,7 +129,7 @@ export class AuthService {
       surname: user.surname,
       avatar: user.avatar,
       age: user.age,
-      roles: user.roles,
+      roles: user.roles.map((role) => role.name),
     };
   }
 }
