@@ -10,6 +10,8 @@ export interface IGameDTO {
   number: number;
   season: number;
   playedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   teams: ITeamDTO[];
   status: EnumGameStatus;
   statistics: IPlayerStatisticDTO[];
@@ -22,10 +24,11 @@ export type TGameFinalWithoutStatistics = Omit<TGameFinal, 'statistics'>;
 // Team
 export interface ITeamSettings {}
 export interface ITeamDTO {
-  _id: string;
+  id: string;
   name: string;
   color: EnumTeamColor;
   description?: string;
+  logo?: string | null;
 }
 export type TTeamFinal = ITeamDTO & ITeamSettings;
 

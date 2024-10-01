@@ -11,7 +11,13 @@ import {
   Res,
   UsePipes,
 } from '@nestjs/common';
-import { ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
 import { SaveGameDTO } from './game.dto';
@@ -50,7 +56,7 @@ export class GamesController {
     status: HttpStatus.OK,
     description: 'Get all games records',
   })
-  async get(
+  async find(
     @Res() res: Response,
     @Query('id')
     _id?: string | undefined,
@@ -63,6 +69,25 @@ export class GamesController {
         ...(season ? { season } : null),
       }),
     );
+  }
+
+  // Get /games/:id
+  @Get(':id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get all games records',
+  })
+  async findById(
+    @Res() res: Response,
+    @Param('id')
+    id: string,
+  ) {
+    return res.json(await this.gamesService.findById(id));
   }
 
   @Post()

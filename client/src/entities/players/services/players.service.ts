@@ -17,12 +17,10 @@ export type PlayersResponse = {
 
 @Injectable()
 export class PlayersService {
-  private readonly useMock = true;
-
   #httpService = inject(HttpService);
 
   find(): Observable<PlayerClient[]> {
-    if (isDevMode()) {
+    if (false && isDevMode()) {
       of(playersMock);
     }
 
@@ -54,10 +52,6 @@ export class PlayersService {
   }
 
   async getList(page: number = 0): Promise<ResponseCaptains> {
-    // if (this.useMock) {
-    //   return (await getCaptainsListMock()) ?? [];
-    // }
-
     const data = await firstValueFrom(
       this.#httpService.post<ResponseCaptains>('players/list', { page }),
     );

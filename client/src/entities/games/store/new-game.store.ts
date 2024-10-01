@@ -71,6 +71,8 @@ export const INITIAL_GAME_STATE: TGameFinal = {
   season: 0,
   teams: [],
   playedAt: new Date(),
+  createdAt: undefined,
+  updatedAt: undefined,
   statistics: [],
   status: EnumGameStatus.New,
 };
@@ -79,7 +81,7 @@ const INITIAL_NEW_GAME_STATE: NewGameState = {
   game: INITIAL_GAME_STATE,
   players: [],
 
-  // One level game fields;
+  // One level game fields
   teams: [],
   statistics: [],
 
@@ -143,7 +145,7 @@ export const NewGameStore = signalStore(
           switchMap(() =>
             forkJoin({
               paramMap: activatedRoute.paramMap.pipe(first()),
-              teams: teamsService.findMock(),
+              teams: teamsService.find(),
               // .pipe(
               //   map(teams => {
               //     return Object.fromEntries(
@@ -204,7 +206,7 @@ export const NewGameStore = signalStore(
 
             // Edit
             if (gameId) {
-              return gameService.findByIdMock(gameId).pipe(
+              return gameService.findById(gameId).pipe(
                 tap(game => {
                   if (!game) {
                     return;
@@ -230,6 +232,8 @@ export const NewGameStore = signalStore(
                 map(game => game?.statistics ?? []),
               );
             }
+
+            store.initTeamsEntity(teams);
 
             patchState(store, () => ({
               mode: EnumGameMode.Unknown,
@@ -264,6 +268,7 @@ export const NewGameStore = signalStore(
                 );
 
                 // TODO type annotation
+
                 store.setEntityPlayers(players);
                 store.setEntityStatistics(statistics);
               }),

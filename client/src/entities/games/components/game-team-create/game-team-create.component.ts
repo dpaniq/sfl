@@ -29,8 +29,8 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { EnumGameMode } from '@entities/games/constants';
 import { GameTeam, NewGameStore } from '@entities/games/store/new-game.store';
+import { TTeamFinal } from '@entities/games/types';
 import { PlayersAutocompleteComponent } from '@entities/players/components/players-autocomplete/players-autocomplete.component';
-import { ITeam } from '@entities/teams';
 import { distinctUntilChanged, startWith } from 'rxjs';
 import { GameCreatePlayerStatisticsComponent } from '../game-create-player-statistics/game-create-player-statistics.component';
 
@@ -64,9 +64,9 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
   #destroyRef = inject(DestroyRef);
   readonly newGameStore = inject(NewGameStore);
 
-  public team = input.required<ITeam>();
+  public team = input.required<TTeamFinal>();
   public mode = input.required<EnumGameMode>();
-  public readonly teamId = computed(() => this.team()._id);
+  public readonly teamId = computed(() => this.team().id);
 
   public readonly getState = computed(() => [
     this.newGameStore.statistics(),

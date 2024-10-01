@@ -76,7 +76,7 @@ function getOppositeTeamId(
   teamId: string,
   teams: [TTeamFinal, TTeamFinal],
 ): string {
-  return teamId === teams.at(0)?._id ? teams.at(1)!._id : teams.at(0)!._id;
+  return teamId === teams.at(0)?.id ? teams.at(1)!.id : teams.at(0)!.id;
 }
 
 export function generatePlayerStatisticID({
@@ -105,20 +105,21 @@ export function withPlayerStatisticsFeature<_>() {
     withComputed(store => ({
       // TODO: need id
       statisticsBMW: computed(() => {
-        console.log('statisticsBMW:', store.teams().at(0)?._id);
+        console.log('statisticsBMW:', store.teams().at(0)?.id);
         console.log({
           wtf: store.statisticsEntities(),
+          teams: store.teams().at(0),
         });
         return store
           .statisticsEntities()
-          .filter(stat => stat.teamId === store.teams().at(0)?._id);
+          .filter(stat => stat.teamId === store.teams().at(0)?.id);
       }),
       // TODO: need id
       statisticsHONDA: computed(() => {
-        console.log('statisticsHONDA:', store.teams().at(1)?._id);
+        console.log('statisticsHONDA:', store.teams().at(1)?.id);
         return store
           .statisticsEntities()
-          .filter(stat => stat.teamId === store.teams().at(1)?._id);
+          .filter(stat => stat.teamId === store.teams().at(1)?.id);
       }),
     })),
     withMethods(store => ({
