@@ -48,7 +48,6 @@ export class GameCreatePlayerStatisticsComponent {
   protected readonly displayedColumns = this.columns.map(c => c.columnDef);
 
   protected statistics = computed(() => {
-    // TODO update with real one
     return this.teamId() === this.newGameStore.teams().at(0)?.id
       ? this.newGameStore.statisticsBMW()
       : this.newGameStore.statisticsHONDA();

@@ -264,7 +264,25 @@ export function withPlayerStatisticsFeature<_>() {
         console.groupEnd();
       },
       addStatisticPlayer(statistic: TPlayerStatisticFinal): void {
-        patchState(store, addEntity(statistic, STATISTIC_ENTITY_CONFIG));
+        console.log('addStatisticPlayer', statistic, store.teams());
+
+        const teams = store.teams() as [TTeamFinal, TTeamFinal];
+        const oppositeTeamId = getOppositeTeamId(statistic.teamId, teams);
+        const id = generatePlayerStatisticID({
+          teamId: oppositeTeamId,
+          playerId: statistic.playerId,
+        });
+
+        patchState(
+          store,
+          addEntity(
+            {
+              ...statistic,
+              id,
+            },
+            STATISTIC_ENTITY_CONFIG,
+          ),
+        );
       },
       removeStatisticPlayer(id: string) {
         patchState(store, removeEntity(id, STATISTIC_ENTITY_CONFIG));

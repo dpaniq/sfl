@@ -67,7 +67,7 @@ export class PlayersAutocompleteComponent {
 
   protected readonly querySearchSignal = signal('');
   protected readonly playersStatisticsGroupByTeamSignal = computed(() => {
-    if (this.teamId() === 'bmw') {
+    if (this.teamId() === this.newGameStore.teams().at(0)!.id) {
       return {
         alias: this.newGameStore.statisticsBMW() ?? [],
         opponents: this.newGameStore.statisticsHONDA() ?? [],
