@@ -109,7 +109,7 @@ export class CaptainToAddComponent extends BaseUnsubscribeComponent {
         this.loading$.next(false);
 
         if (!suggestedCaptain) {
-          return this.#filteredPlayers.next(players);
+          // return this.#filteredPlayers.next(players);
         }
 
         // Todo [API]: in the future it should use API

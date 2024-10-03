@@ -1,5 +1,6 @@
 import { computed, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TPlayerFinal } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
 import {
   patchState,
@@ -23,7 +24,7 @@ import {
 import { PlayerClient } from '../types/index';
 
 export interface PlayersStoreState {
-  players: PlayerClient[];
+  players: TPlayerFinal[];
 
   // For internal process
   loading: boolean;

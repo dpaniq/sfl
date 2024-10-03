@@ -21,7 +21,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 import { CaptainsService } from '@entities/captains';
-import { PlayerClient, PlayersStore } from '@entities/players';
+import { TPlayerFinal } from '@entities/games/types';
+import { PlayersStore } from '@entities/players';
 import { PlayerEditDialogComponent } from '@entities/players/components/player-edit-dialog/player-edit-dialog.component';
 import { AuthService } from '@shared/services/auth.service';
 
@@ -80,9 +81,9 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  readonly dataSource = new MatTableDataSource<PlayerClient>([]);
+  readonly dataSource = new MatTableDataSource<TPlayerFinal>([]);
   readonly displayedColumns: (
-    | keyof PlayerClient
+    | keyof TPlayerFinal
     | 'actions'
     | 'name'
     | 'surname'
@@ -95,13 +96,13 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     'nickname',
     'isCaptain',
 
-    'totalGames',
-    'wonGames',
-    'lostGames',
-    'draws',
+    // 'totalGames',
+    // 'wonGames',
+    // 'lostGames',
+    // 'draws',
 
-    'maxWinStreak',
-    'maxLostStreak',
+    // 'maxWinStreak',
+    // 'maxLostStreak',
 
     'actions',
 
@@ -114,7 +115,7 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     // season[number]: + / - points
   ];
 
-  editPlayer(player: PlayerClient) {
+  editPlayer(player: TPlayerFinal) {
     this.dialog
       .open(PlayerEditDialogComponent, {
         data: player,

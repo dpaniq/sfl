@@ -1,5 +1,5 @@
 import { Injectable, inject, isDevMode } from '@angular/core';
-import { IPlayerDTO } from '@entities/games/types';
+import { IPlayerDTO, TPlayerFinal } from '@entities/games/types';
 import { HttpService } from '@shared/services/http.service';
 import { Observable, firstValueFrom, of } from 'rxjs';
 import { PlayerClient } from '../types';
@@ -19,12 +19,12 @@ export type PlayersResponse = {
 export class PlayersService {
   #httpService = inject(HttpService);
 
-  find(): Observable<PlayerClient[]> {
+  find(): Observable<TPlayerFinal[]> {
     if (false && isDevMode()) {
       of(playersMock);
     }
 
-    return this.#httpService.get<PlayerClient[]>('players');
+    return this.#httpService.get<TPlayerFinal[]>('players');
   }
 
   create(player: {
@@ -37,14 +37,6 @@ export class PlayersService {
       SetOptional<IPlayerDTO, 'id' | 'isCaptain'>[],
       IPlayerDTO[]
     >('players', [player]);
-  }
-
-  findMock(): Observable<PlayerClient[]> {
-    if (isDevMode()) {
-      console.log('is dev mode');
-    }
-
-    return of(playersMock);
   }
 
   getCaptainsPlayers(): Observable<PlayerClient[]> {

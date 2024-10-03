@@ -287,7 +287,7 @@ export function withPlayerStatisticsFeature<_>() {
       removeStatisticPlayer(id: string) {
         patchState(store, removeEntity(id, STATISTIC_ENTITY_CONFIG));
       },
-      setEntityStatistics(
+      initEntityStatistics(
         statisticsDto: (IPlayerStatisticDTO & IPlayerDTO)[],
       ): void {
         patchState(

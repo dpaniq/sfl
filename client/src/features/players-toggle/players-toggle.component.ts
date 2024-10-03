@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { TPlayerFinal } from '@entities/games/types';
 import { PlayerClient, PlayersStore } from '@entities/players';
 
 @Component({
@@ -44,8 +45,8 @@ export class PlayersToggleComponent implements OnDestroy, AfterViewInit {
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  readonly dataSource = new MatTableDataSource<PlayerClient>([]);
-  readonly displayedColumns: (keyof PlayerClient | 'actions')[] = [
+  readonly dataSource = new MatTableDataSource<TPlayerFinal>([]);
+  readonly displayedColumns: (keyof TPlayerFinal | 'actions')[] = [
     'avatar',
     // 'name',
     // 'surname',

@@ -36,7 +36,7 @@ export function withPlayersFeature<_>() {
       addPlayer(player: IPlayerDTO): void {
         patchState(store, addEntity(player, PLAYERS_ENTITY_CONFIG));
       },
-      setEntityPlayers(players: TPlayerFinal[]): void {
+      initEntityPlayers(players: TPlayerFinal[]): void {
         patchState(
           store,
           setAllEntities(
