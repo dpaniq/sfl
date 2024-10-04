@@ -31,8 +31,6 @@ import {
 import { EnumGameMode, EnumGameStatus } from '../constants';
 import { GameService } from '../services/game.service';
 import {
-  IPlayerDTO,
-  IPlayerStatisticDTO,
   ITeamDTO,
   TGameFinal,
   TPlayerFinal,
@@ -124,29 +122,29 @@ function isNewGameChanged({
   return isStatisticChanged;
 }
 
-function mergeStatisticsAndPlayers({
+function matchStatisticsPlayerData({
   players,
   statistics,
 }: {
-  statistics: IPlayerStatisticDTO[];
+  statistics: TPlayerStatisticFinal[];
   players: TPlayerFinal[];
-}): (IPlayerStatisticDTO & IPlayerDTO)[] {
+}): TPlayerStatisticFinal[] {
   const mappedStatistics = statistics.map(element => {
-    const found = players.find(player => player.id === element.playerId);
-    if (found) {
-      console.log(found);
-      return {
-        ...found,
-        ...element,
-      };
+    const data = players.find(player => player.id === element.playerId);
+    if (!data) {
+      console.log(
+        'Not found player while "mergeStatisticsAndPlayers"',
+        element,
+      );
+      return undefined;
     }
 
-    console.log('Not found player while "mergeStatisticsAndPlayers"', element);
-    return undefined;
+    element.playerData = data;
+
+    return element;
   });
 
-  return mappedStatistics.filter(Boolean) as (IPlayerStatisticDTO &
-    IPlayerDTO)[];
+  return mappedStatistics.filter(Boolean) as TPlayerStatisticFinal[];
 }
 
 function initGameCreation(
@@ -282,9 +280,9 @@ export const NewGameStore = signalStore(
                   initLoading: true,
                 }));
 
-                const stats = mergeStatisticsAndPlayers({
+                const stats = matchStatisticsPlayerData({
                   players,
-                  statistics: game.statistics,
+                  statistics: game.statistics as TPlayerStatisticFinal[],
                 });
 
                 store.initTeamsEntity(teams);

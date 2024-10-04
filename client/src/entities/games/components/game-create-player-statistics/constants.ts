@@ -17,7 +17,7 @@ export const GAME_PLAYER_STATISTICS_COLUMNS: StatisticColumn[] = [
   {
     columnDef: 'nickname',
     header: 'Nickname',
-    cell: (element: GamePlayerStatistic) => `${element.nickname}`,
+    cell: (element: GamePlayerStatistic) => `${element.playerData.nickname}`,
   },
   {
     columnDef: 'pass',

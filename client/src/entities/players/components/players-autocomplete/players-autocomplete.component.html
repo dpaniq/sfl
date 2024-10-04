@@ -12,7 +12,7 @@
         [value]="statistic"
         [title]="statistic | json"
       >
-        {{ statistic.nickname }}
+        {{ statistic.playerData.nickname }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
@@ -42,7 +42,8 @@
           [selected]="!!statistic.teamId"
           [value]="statistic"
         >
-          {{ statistic.nickname }} ({{ statistic.teamId }}) {{ statistic.id }}
+          {{ statistic.playerData.nickname }} ({{ statistic.teamId }})
+          {{ statistic.id }}
         </mat-list-option>
 
         @if (!last) {

@@ -18,7 +18,6 @@ import {
 } from '@ngrx/signals/entities';
 import { GamePlayerStatistic } from '../components/game-create-player-statistics/game-create-player-statistics.component';
 import {
-  IPlayerDTO,
   IPlayerStatisticDTO,
   TPlayerStatisticFinal,
   TPlayerStatisticFinalBoolean,
@@ -87,7 +86,7 @@ export function generatePlayerStatisticID({
 }
 
 function mapStatisticDTOtoFinal(
-  statistic: IPlayerStatisticDTO & IPlayerDTO,
+  statistic: TPlayerStatisticFinal,
 ): TPlayerStatisticFinal {
   return {
     ...statistic,
@@ -287,13 +286,11 @@ export function withPlayerStatisticsFeature<_>() {
       removeStatisticPlayer(id: string) {
         patchState(store, removeEntity(id, STATISTIC_ENTITY_CONFIG));
       },
-      initEntityStatistics(
-        statisticsDto: (IPlayerStatisticDTO & IPlayerDTO)[],
-      ): void {
+      initEntityStatistics(statistics: TPlayerStatisticFinal[]): void {
         patchState(
           store,
           setAllEntities(
-            statisticsDto.map(mapStatisticDTOtoFinal),
+            statistics.map(mapStatisticDTOtoFinal),
             STATISTIC_ENTITY_CONFIG,
           ),
         );

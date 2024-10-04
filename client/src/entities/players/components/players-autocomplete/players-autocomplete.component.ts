@@ -94,9 +94,13 @@ export class PlayersAutocompleteComponent {
       excludingPlayersIds,
     });
 
+    // TODO Temporary: merge statistics data to show it into autocomplete list
     const players: SetOptional<TPlayerStatisticFinal, 'teamId'>[] =
       this.newGameStore
         .playersEntities()
+        // Exclude opponents players
+        .filter(player => !excludingPlayersIds.includes(player.id))
+        // Merge statistics
         .map(player => {
           const foundStatistic = inclusivePlayers.find(
             statistic => statistic.playerId === player.id,
@@ -106,20 +110,18 @@ export class PlayersAutocompleteComponent {
             return foundStatistic;
           }
 
-          return {
-            ...player,
+          return <TPlayerStatisticFinal>{
             ...DEFAULT_STATISTIC_VALUES,
-
-            // TRICKY (players dont have ids yet),
             id: generatePlayerStatisticID({
               teamId: this.teamId(),
               playerId: 'unknown',
             }),
             playerId: player.id,
+            playerData: player,
           };
-          //  as TPlayerStatisticFinal;
-        })
-        .filter(statistic => !excludingPlayersIds.includes(statistic.playerId));
+        });
+
+    // const players = inclusivePlayers;
 
     if (!searchQuery) {
       return players;
@@ -129,8 +131,8 @@ export class PlayersAutocompleteComponent {
       player =>
         // player.name?.toLowerCase().includes(searchQuery) ||
         // player.surname?.toLowerCase().includes(searchQuery) ||
-        player.nickname?.toLowerCase().includes(searchQuery) ||
-        player.number?.toString().includes(searchQuery),
+        player.playerData?.nickname?.toLowerCase().includes(searchQuery) ||
+        player.playerData?.number?.toString().includes(searchQuery),
     );
   });
 

@@ -46,6 +46,7 @@ export type TPlayerFinal = IPlayerDTO & IPlayerSettings;
 // Statistic
 export interface IPlayerStatisticSettings {
   id: string;
+  playerData: TPlayerFinal;
 }
 
 export interface IPlayerStatisticDTO {
@@ -69,8 +70,7 @@ export interface IPlayerStatisticDTO {
 }
 
 export type TPlayerStatisticFinal = IPlayerStatisticDTO &
-  IPlayerStatisticSettings &
-  TPlayerFinal;
+  IPlayerStatisticSettings;
 export type TPlayerStatisticFinalIds = Pick<
   TPlayerStatisticFinal,
   'playerId' | 'teamId'
