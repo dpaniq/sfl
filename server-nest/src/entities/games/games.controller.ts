@@ -116,6 +116,9 @@ export class GamesController {
     @Body(new ValibotValidationPipe(SaveGameDTO)) game: IGame,
   ) {
     // Update logic
+
+    console.log(game);
+
     return res.json(await this.gamesService.replace(id, game));
   }
 }

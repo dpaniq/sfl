@@ -101,9 +101,10 @@ export class GameCreationWidgetComponent implements OnInit {
   public readonly seasons = signal<number[]>(
     range(2010, getYear(new Date()) + 1),
   );
-  public readonly teams = computed(() => {
-    return Object.values(this.newGameStore.game().teams) ?? [];
-  });
+  // public readonly teams = computed(() => {
+  //   return Object.values(this.newGameStore.game().teams) ?? [];
+  // });
+  public readonly teams = this.newGameStore.teamsEntities;
 
   public readonly state = this.newGameStore;
 
@@ -211,34 +212,22 @@ export class GameCreationWidgetComponent implements OnInit {
 
   // TODO REPLACE
   update() {
-    const state = getState(this.newGameStore);
-    // const game = state.game;
-
-    // TODO
-    // this.gameService
-    //   .resave(game.id!, {
-    //     status: game.status,
-    //     number: game.number,
-    //     season: game.season,
-    //     playedAt: game.playedAt,
-    //     teams: game.teams,
-    //     statistics: game.statistics,
-    //   })
-    //   .subscribe(game => console.log('GAME IS UPDATED', game));
-
-    this.newGameStore.initGame();
+    this.newGameStore.updateGame();
   }
 
   drop(event: CdkDragDrop<[TTeamFinal, TTeamFinal]>) {
     // TODO
+
     const array = this.teams();
 
     if (!array) {
       return;
     }
+    console.log('drop!', array, event);
 
     moveItemInArray(array, event.previousIndex, event.currentIndex);
 
+    this.newGameStore.updateTeams(array as [TTeamFinal, TTeamFinal]);
     // this.newGameStore.updateTeams(array);
 
     // TODO not needed fix

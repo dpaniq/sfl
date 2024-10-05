@@ -10,11 +10,10 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { EntityId } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TeamEnum } from '@shared/constants/team';
 import { isDate } from 'date-fns';
-import { cloneDeep, isEqual } from 'lodash-es';
+import { cloneDeep, isEqual, omit } from 'lodash-es';
 import {
   NEVER,
   Observable,
@@ -31,6 +30,9 @@ import {
 import { EnumGameMode, EnumGameStatus } from '../constants';
 import { GameService } from '../services/game.service';
 import {
+  IGameDTO,
+  IPlayerStatisticDTO,
+  IPlayerStatisticSettings,
   ITeamDTO,
   TGameFinal,
   TPlayerFinal,
@@ -38,10 +40,7 @@ import {
   TTeamFinal,
 } from '../types';
 import { withPlayersFeature } from './players.feature';
-import {
-  generatePlayerStatisticID,
-  withPlayerStatisticsFeature,
-} from './statistics.feature';
+import { withPlayerStatisticsFeature } from './statistics.feature';
 import { withTeamsFeature } from './teams.feature';
 
 export type GameTeam = { id: string; name: TeamEnum; disable: boolean };
@@ -100,26 +99,121 @@ const INITIAL_NEW_GAME_STATE: NewGameState = {
 // Read https://offering.solutions/blog/articles/2023/12/03/ngrx-signal-store-getting-started/
 
 function isNewGameChanged({
-  initialStatisticsIds,
-  actualStatisticsIds,
+  initialGame,
+  actualGame,
+  actualTeams,
+  actualStatistics,
 }: {
-  initialStatisticsIds: EntityId[];
-  actualStatisticsIds: EntityId[];
+  initialGame: TGameFinal;
+  actualGame: TGameFinal;
+  actualTeams: TTeamFinal[];
+  actualStatistics: TPlayerStatisticFinal[];
 }): boolean {
-  // TODO: Wrong way
-  // We need compare statistics either
-  const isStatisticChanged = !isEqual(
-    initialStatisticsIds,
-    actualStatisticsIds,
+  const result = false;
+
+  // Game
+  if (!isEqual(initialGame.id, actualGame.id)) {
+    console.log('id changed');
+    return true;
+  }
+
+  if (!isEqual(initialGame.number, actualGame.number)) {
+    console.log('number changed');
+    return true;
+  }
+
+  if (!isEqual(initialGame.season, actualGame.season)) {
+    console.log('season changed');
+    return true;
+  }
+
+  if (!isEqual(initialGame.playedAt, actualGame.playedAt)) {
+    console.log('playedAt changed');
+    return true;
+  }
+
+  if (!isEqual(initialGame.status, actualGame.status)) {
+    console.log('status changed');
+    return true;
+  }
+
+  // Teams
+  const initialTeamId = initialGame.teams.at(0)!.id;
+  const actualTeamId = actualTeams.at(0)!.id;
+  if (initialTeamId !== actualTeamId) {
+    return true;
+  }
+
+  // Statistics
+  const initialStatistics: IPlayerStatisticDTO[] = initialGame.statistics;
+  const actualStatisticsDto: IPlayerStatisticDTO[] = actualStatistics.map(
+    stats => omit(stats, 'id', 'playerData'),
   );
 
-  console.log('isNewGameChanged', {
-    initialStatisticsIds,
-    actualStatisticsIds,
-    result: isStatisticChanged,
-  });
+  if (actualStatisticsDto.length !== initialStatistics.length) {
+    return true;
+  }
 
-  return isStatisticChanged;
+  for (const actual of actualStatisticsDto) {
+    let initial: any;
+    initial = initialStatistics.find(
+      stats =>
+        stats.playerId === actual.playerId && stats.teamId === actual.teamId,
+    );
+
+    // TODO isTransferable
+    initial = { ...initial, isTransferable: false };
+
+    const compareLog = (at: string) => {
+      console.log({
+        at,
+        initial,
+        actual,
+      });
+    };
+
+    if (!initial) {
+      return true;
+    }
+
+    if (initial.goal !== actual.goal) {
+      compareLog('goal');
+      return true;
+    }
+
+    if (initial.goalHead !== actual.goalHead) {
+      compareLog('goalHead');
+      return true;
+    }
+
+    if (initial.penalty !== actual.penalty) {
+      compareLog('penalty');
+      return true;
+    }
+
+    if (initial.pass !== actual.pass) {
+      compareLog('pass');
+      return true;
+    }
+
+    // TODO: FIX backend (db)
+    // if (initial.isMVP !== actual.isMVP) {
+    //   compareLog('isMVP');
+    //   return true;
+    // }
+
+    if (initial.isCaptain !== actual.isCaptain) {
+      compareLog('isCaptain');
+      return true;
+    }
+
+    if (initial.isTransferable !== actual.isTransferable) {
+      compareLog('isTransferable');
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function matchStatisticsPlayerData({
@@ -187,7 +281,16 @@ export const NewGameStore = signalStore(
   withPlayersFeature(),
   withPlayerStatisticsFeature(),
   withComputed(
-    ({ players, initialValue, game, initLoading, mode, statisticsIds }) => {
+    ({
+      players,
+      initialValue,
+      game,
+      initLoading,
+      mode,
+      statisticsEntities,
+      teamsEntities,
+      teams,
+    }) => {
       return {
         storeLoaded: computed(
           () =>
@@ -207,11 +310,16 @@ export const NewGameStore = signalStore(
             return false;
           }
 
+          console.log('isFormChanged', {
+            teamsEntities: teamsEntities(),
+            teams: teams(),
+          });
+
           return isNewGameChanged({
-            initialStatisticsIds: (initialValue()?.statistics ?? []).map(
-              generatePlayerStatisticID,
-            ),
-            actualStatisticsIds: statisticsIds(),
+            initialGame: initialValue() as TGameFinal,
+            actualGame: game(),
+            actualTeams: teamsEntities(),
+            actualStatistics: statisticsEntities(),
           });
 
           return !isEqual(initialValue(), game());
@@ -235,6 +343,40 @@ export const NewGameStore = signalStore(
         patchState(store, state => ({
           game: { ...state.game, status },
         }));
+      },
+      updateGame() {
+        const { id, status, number, season, playedAt } =
+          store.game() as IGameDTO;
+
+        const gameDTO = <IGameDTO>{
+          id,
+          status,
+          number,
+          season,
+          playedAt,
+          teams: store.teamsEntities(),
+          statistics: store.statisticsEntities().map(stats => {
+            return omit<TPlayerStatisticFinal, keyof IPlayerStatisticSettings>(
+              stats,
+              'id',
+              'playerData',
+            );
+          }),
+        };
+
+        console.log(gameDTO);
+
+        // TODO
+        gameService.resave(id, gameDTO).subscribe(game => {
+          console.log('GAME IS UPDATED', game);
+          if (!game) {
+            console.log('GAME IS NOT UPDATED');
+            return;
+          }
+
+          patchState(store, { initialValue: game });
+          this.initGame();
+        });
       },
       initGame: rxMethod<void>(
         pipe(

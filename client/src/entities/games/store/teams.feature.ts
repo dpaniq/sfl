@@ -33,7 +33,7 @@ export function withTeamsFeature<_>() {
     withEntities(NEW_GAME_TEAMS_ENTITY_CONFIG),
     withMethods(store => ({
       updateTeams(teams: [TTeamFinal, TTeamFinal]): void {
-        patchState(store, { teams });
+        patchState(store, setAllEntities(teams, NEW_GAME_TEAMS_ENTITY_CONFIG));
       },
       initTeamsEntity(teams: TTeamFinal[]): void {
         patchState(store, setAllEntities(teams, NEW_GAME_TEAMS_ENTITY_CONFIG));
