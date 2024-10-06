@@ -56,4 +56,8 @@ export class HttpService {
       headers: PATCH_HEADERS,
     });
   }
+
+  delete<TResponse>(url: string) {
+    return this.#httpClient.delete<TResponse>(API_URL + '/' + url);
+  }
 }

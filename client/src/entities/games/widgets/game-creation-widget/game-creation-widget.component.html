@@ -5,6 +5,41 @@
   <sup>/ {{ totalWeeks }}</sup>
   game of year
 </h1>
+<hr />
+
+<div class="actions">
+  @switch (modeSignal()) {
+    @case ('create') {
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="formGroup.invalid || !isFormChangedSignal()"
+        (click)="save()"
+      >
+        Save
+      </button>
+    }
+    @case ('edit') {
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="formGroup.invalid || !isFormChangedSignal()"
+        (click)="update()"
+      >
+        Update
+      </button>
+    }
+  }
+
+  <button
+    mat-raised-button
+    color="warn"
+    [disabled]="!gameId || isFormChangedSignal()"
+    (click)="delete()"
+  >
+    Delete
+  </button>
+</div>
 
 <form [formGroup]="formGroup">
   <mat-form-field>
@@ -114,30 +149,6 @@
   </div>
 } @else {
   <p>No teams found!</p>
-}
-
-@if (modeSignal() === 'create') {
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="formGroup.invalid || !isFormChangedSignal()"
-    (click)="save()"
-  >
-    Save
-  </button>
-} @else {
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="formGroup.invalid || !isFormChangedSignal()"
-    (click)="update()"
-  >
-    Update
-  </button>
-
-  <hr />
-
-  <hr />
 }
 
 <div class="errors">

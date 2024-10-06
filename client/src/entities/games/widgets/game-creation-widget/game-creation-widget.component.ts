@@ -106,6 +106,7 @@ export class GameCreationWidgetComponent implements OnInit {
   public readonly teams = this.newGameStore.teamsEntities;
 
   public readonly state = this.newGameStore;
+  protected readonly gameId = this.newGameStore.game.id;
   protected readonly errors = this.newGameStore.errors;
 
   formGroup = new FormGroup({
@@ -197,6 +198,10 @@ export class GameCreationWidgetComponent implements OnInit {
   // TODO REPLACE
   update() {
     this.newGameStore.updateGame();
+  }
+
+  delete() {
+    this.newGameStore.deleteGame();
   }
 
   drop(event: CdkDragDrop<[TTeamFinal, TTeamFinal]>) {

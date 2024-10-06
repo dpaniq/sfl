@@ -1,5 +1,5 @@
 import { computed, inject } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PlayersService } from '@entities/players/services/players.service';
 import { TeamsService } from '@entities/teams';
 import {
@@ -291,7 +291,6 @@ export const NewGameStore = signalStore(
       mode,
       statisticsEntities,
       teamsEntities,
-      teams,
     }) => {
       return {
         storeLoaded: computed(
@@ -299,12 +298,10 @@ export const NewGameStore = signalStore(
             !initLoading() &&
             [EnumGameMode.Create, EnumGameMode.Edit].includes(mode()),
         ),
-        // Players
         captains: computed(() =>
           players().filter(({ isCaptain }) => Boolean(isCaptain)),
         ),
         playersNew: computed(() => {
-          console.log('PLAYERS WERE CHANGED');
           return players();
         }),
         isFormChanged: computed(() => {
@@ -312,19 +309,12 @@ export const NewGameStore = signalStore(
             return false;
           }
 
-          console.log('isFormChanged', {
-            teamsEntities: teamsEntities(),
-            teams: teams(),
-          });
-
           return isNewGameChanged({
             initialGame: initialValue() as TGameFinal,
             actualGame: game(),
             actualTeams: teamsEntities(),
             actualStatistics: statisticsEntities(),
           });
-
-          return !isEqual(initialValue(), game());
         }),
       };
     },
@@ -333,7 +323,8 @@ export const NewGameStore = signalStore(
   withMethods(
     (
       store,
-      { activatedRoute, gameService, playersService, teamsService } = {
+      { router, activatedRoute, gameService, playersService, teamsService } = {
+        router: inject(Router),
         activatedRoute: inject(ActivatedRoute),
         gameService: inject(GameService),
         playersService: inject(PlayersService),
@@ -372,12 +363,11 @@ export const NewGameStore = signalStore(
         gameService.create(gameDTO).subscribe(game => {
           console.log('GAME IS CREATED', game);
           if (!game) {
-            console.log('GAME IS NOT CREATED');
+            console.error('GAME IS NOT CREATED');
             return;
           }
 
-          patchState(store, { initialValue: game });
-          // this.initGame();
+          router.navigate(['games', 'edit', game.id]);
         });
       },
 
@@ -405,14 +395,19 @@ export const NewGameStore = signalStore(
 
         // TODO
         gameService.resave(id, gameDTO).subscribe(game => {
-          console.log('GAME IS UPDATED', game);
           if (!game) {
-            console.log('GAME IS NOT UPDATED');
+            console.error('GAME IS NOT UPDATED');
             return;
           }
 
           patchState(store, { initialValue: game });
-          // this.initGame();
+          this.initGame();
+        });
+      },
+      deleteGame() {
+        const { id } = store.game() as IGameDTO;
+        gameService.delete(id).subscribe(() => {
+          router.navigate(['games']);
         });
       },
       initGame: rxMethod<void>(
@@ -421,7 +416,8 @@ export const NewGameStore = signalStore(
           delay(500),
           switchMap(() =>
             forkJoin({
-              paramMap: activatedRoute.queryParamMap.pipe(first()),
+              paramMap: activatedRoute.paramMap.pipe(first()),
+              queryParamMap: activatedRoute.queryParamMap.pipe(first()),
               teams: teamsService.find(),
               players: playersService.find(),
             }),
@@ -429,18 +425,19 @@ export const NewGameStore = signalStore(
           switchMap<
             {
               paramMap: ParamMap;
+              queryParamMap: ParamMap;
               teams: [ITeamDTO, ITeamDTO];
               players: TPlayerFinal[];
             },
             Observable<TGameFinal>
-          >(({ paramMap, teams, players }) => {
+          >(({ paramMap, queryParamMap, teams, players }) => {
             const gameId = paramMap.get('id');
             const mode = gameId ? EnumGameMode.Edit : EnumGameMode.Create;
 
             // Switch mode + cases
             const gameObservable: Observable<TGameFinal> = !gameId
               ? // Inititialize and prepared data for creation mode
-                initGameCreation(paramMap, { teams })
+                initGameCreation(queryParamMap, { teams })
               : // Load & prepared data for editing game
                 gameService
                   .findById(gameId)

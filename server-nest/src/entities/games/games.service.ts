@@ -49,4 +49,16 @@ export class GamesService {
 
     return replacedGame;
   }
+
+  async delete(_id: string) {
+    const game = await this.gameModel.findOneAndDelete({ _id }).exec();
+
+    console.log('delete game', game);
+
+    if (!game) {
+      throw BadRequestException;
+    }
+
+    return !!game;
+  }
 }

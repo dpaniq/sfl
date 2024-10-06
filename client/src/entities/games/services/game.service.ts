@@ -154,4 +154,8 @@ export class GameService {
   public resave(id: string, game: IGameDTO) {
     return this.httpService.put<IGameDTO>(`games/${id}`, game);
   }
+
+  public delete(id: string) {
+    return this.httpService.delete(`games/${id}`);
+  }
 }

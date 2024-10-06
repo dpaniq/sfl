@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -97,10 +98,10 @@ export class GamesController {
     description: 'The record has been successfully created.',
   })
   @UsePipes(new ValibotValidationPipe(SaveGameDTO))
-  async save(@Body() game: IGame) {
+  async save(@Res() res: Response, @Body() game: IGame) {
     console.log(game);
 
-    return await this.gamesService.save(game);
+    return res.json(await this.gamesService.save(game));
   }
 
   // PUT /games/:id
@@ -120,5 +121,14 @@ export class GamesController {
     console.log(game);
 
     return res.json(await this.gamesService.replace(id, game));
+  }
+
+  @Delete(':id')
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully deleted',
+  })
+  async delete(@Res() res: Response, @Param('id') id: string) {
+    return res.json(await this.gamesService.delete(id));
   }
 }
