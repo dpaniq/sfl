@@ -65,7 +65,7 @@ export interface NewGameState {
   initLoading: boolean;
   initialValue: null | TGameFinal;
   mode: EnumGameMode;
-  errors: [];
+  errors: Record<string, string>[];
 }
 
 export const INITIAL_GAME_STATE: TGameFinal = {
@@ -248,6 +248,8 @@ function initGameCreation(
   const game = cloneDeep(INITIAL_GAME_STATE);
   game.teams = teams;
 
+  console.log({ queryParam });
+
   if (queryParam.has('number')) {
     game.number = Number(queryParam.get('number'));
   }
@@ -344,6 +346,41 @@ export const NewGameStore = signalStore(
           game: { ...state.game, status },
         }));
       },
+      saveGame() {
+        const { id, status, number, season, playedAt } =
+          store.game() as IGameDTO;
+
+        const gameDTO = <IGameDTO>{
+          id,
+          status,
+          number,
+          season,
+          playedAt,
+          teams: store.teamsEntities(),
+          statistics: store.statisticsEntities().map(stats => {
+            return omit<TPlayerStatisticFinal, keyof IPlayerStatisticSettings>(
+              stats,
+              'id',
+              'playerData',
+            );
+          }),
+        };
+
+        console.log(gameDTO);
+
+        // TODO
+        gameService.create(gameDTO).subscribe(game => {
+          console.log('GAME IS CREATED', game);
+          if (!game) {
+            console.log('GAME IS NOT CREATED');
+            return;
+          }
+
+          patchState(store, { initialValue: game });
+          // this.initGame();
+        });
+      },
+
       updateGame() {
         const { id, status, number, season, playedAt } =
           store.game() as IGameDTO;
@@ -375,7 +412,7 @@ export const NewGameStore = signalStore(
           }
 
           patchState(store, { initialValue: game });
-          this.initGame();
+          // this.initGame();
         });
       },
       initGame: rxMethod<void>(
@@ -384,7 +421,7 @@ export const NewGameStore = signalStore(
           delay(500),
           switchMap(() =>
             forkJoin({
-              paramMap: activatedRoute.paramMap.pipe(first()),
+              paramMap: activatedRoute.queryParamMap.pipe(first()),
               teams: teamsService.find(),
               players: playersService.find(),
             }),
@@ -412,6 +449,7 @@ export const NewGameStore = signalStore(
             // Update state
             return gameObservable.pipe(
               tap((game: TGameFinal) => {
+                console.log({ mode, game });
                 patchState(store, () => ({
                   mode,
                   game,

@@ -140,6 +140,19 @@
   <hr />
 }
 
+<div class="errors">
+  <ol>
+    Validations errors:
+    @for (error of errors() | keyvalue; track error.key) {
+      <li>
+        {{ error.key }}
+        {{ error.value }}
+        {{ error | json }}
+      </li>
+    }
+  </ol>
+</div>
+
 <hr />
 <h1>DEBUG COMPARE</h1>
 <table style="border: 1px solid black; border-collapse: collapse">

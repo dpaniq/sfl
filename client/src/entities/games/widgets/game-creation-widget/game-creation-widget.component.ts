@@ -39,11 +39,10 @@ import {
   NewGameStore,
 } from '@entities/games';
 import { EnumGameMode, EnumGameStatus } from '@entities/games/constants';
-import { TGameFinal, TTeamFinal } from '@entities/games/types';
+import { TTeamFinal } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
 import { TeamsService } from '@entities/teams';
 import { getLastSaturday, totalWeeksByYear } from '@entities/utils/date';
-import { getState } from '@ngrx/signals';
 import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
 import { getYear, isDate, isSaturday, previousSaturday } from 'date-fns';
 import { range } from 'lodash-es';
@@ -107,6 +106,7 @@ export class GameCreationWidgetComponent implements OnInit {
   public readonly teams = this.newGameStore.teamsEntities;
 
   public readonly state = this.newGameStore;
+  protected readonly errors = this.newGameStore.errors;
 
   formGroup = new FormGroup({
     number: new FormControl<number>(
@@ -158,10 +158,10 @@ export class GameCreationWidgetComponent implements OnInit {
   );
 
   ngOnInit() {
-    toObservable(this.newGameStore.initLoading, { injector: this.injector })
+    toObservable(this.newGameStore.storeLoaded, { injector: this.injector })
       .pipe(
         distinctUntilChanged(),
-        filter(loading => !loading),
+        filter(Boolean),
         map(() => this.newGameStore.mode()),
         takeUntilDestroyed(this.destroyRef),
       )
@@ -174,7 +174,7 @@ export class GameCreationWidgetComponent implements OnInit {
           return;
         }
 
-        this.fillControls(this.newGameStore.game());
+        this.fillControls();
       });
 
     this.playedAtFC.valueChanges
@@ -191,23 +191,7 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   save() {
-    const raw = this.formGroup.getRawValue();
-    const state = getState(this.newGameStore);
-    const game = state.game;
-
-    // TODO
-    // this.gameService
-    //   .save({
-    //     status: EnumGameStatus.New,
-    //     number: raw.number,
-    //     season: raw.season,
-    //     playedAt: raw.playedAt,
-    //     teams: state.teams,
-    //     statistics: game.statistics,
-    //   })
-    //   .subscribe(game => console.log('GAME IS SAVED', game));
-
-    this.newGameStore.initGame();
+    this.newGameStore.saveGame();
   }
 
   // TODO REPLACE
@@ -234,19 +218,9 @@ export class GameCreationWidgetComponent implements OnInit {
     // this.teams.set(array);
   }
 
-  private fillControls({
-    number,
-    season,
-    status,
-    teams,
-    playedAt,
-  }: Partial<TGameFinal>) {
-    console.log('fillControls', { number, season, status, teams, playedAt });
-
-    // TODO not needed
-    if (teams) {
-      // this.teams.set(Object.values(teams));
-    }
+  private fillControls() {
+    console.log('fillControls');
+    const { number, season, status, playedAt } = this.newGameStore.game();
 
     if (number) {
       this.formGroup.controls.number.setValue(Number(number));

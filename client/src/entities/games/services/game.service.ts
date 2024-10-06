@@ -147,7 +147,7 @@ export class GameService {
     return this.httpService.get<IGameDTO>(`games/${id}`);
   }
 
-  public save(game: IGameDTO) {
+  public create(game: IGameDTO) {
     return this.httpService.post<IGameDTO>(`games`, game);
   }
 
