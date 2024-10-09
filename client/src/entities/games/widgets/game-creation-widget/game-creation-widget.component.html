@@ -97,7 +97,7 @@
   </mat-form-field>
 </form>
 
-@if (loadingSignal()) {
+@if (!storeLoaded()) {
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
@@ -151,18 +151,17 @@
   <p>No teams found!</p>
 }
 
-<div class="errors">
-  <ol>
-    Validations errors:
-    @for (error of errors() | keyvalue; track error.key) {
-      <li>
-        {{ error.key }}
-        {{ error.value }}
-        {{ error | json }}
-      </li>
-    }
-  </ol>
-</div>
+@if (storeLoaded() && errors().size) {
+  <div class="validation-errors">
+    <label for="list">Validations errors:</label>
+    <sub>Please fix the following errors</sub>
+    <mat-list role="list">
+      @for (error of errors() | keyvalue; track error.key) {
+        <mat-list-item role="listitem">- {{ error.value }}</mat-list-item>
+      }
+    </mat-list>
+  </div>
+}
 
 <hr />
 <h1>DEBUG COMPARE</h1>

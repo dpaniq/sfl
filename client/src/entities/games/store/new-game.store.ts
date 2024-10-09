@@ -1,10 +1,11 @@
-import { computed, inject } from '@angular/core';
+import { computed, effect, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PlayersService } from '@entities/players/services/players.service';
 import { TeamsService } from '@entities/teams';
 import {
   patchState,
   signalStore,
+  watchState,
   withComputed,
   withHooks,
   withMethods,
@@ -65,7 +66,7 @@ export interface NewGameState {
   initLoading: boolean;
   initialValue: null | TGameFinal;
   mode: EnumGameMode;
-  errors: Record<string, string>[];
+  errors: Map<string, string>;
 }
 
 export const INITIAL_GAME_STATE: TGameFinal = {
@@ -93,7 +94,7 @@ const INITIAL_NEW_GAME_STATE: NewGameState = {
   initLoading: true,
   initialValue: null,
   mode: EnumGameMode.Init,
-  errors: [],
+  errors: new Map(),
 };
 
 // Read https://offering.solutions/blog/articles/2023/12/03/ngrx-signal-store-getting-started/
@@ -109,8 +110,6 @@ function isNewGameChanged({
   actualTeams: TTeamFinal[];
   actualStatistics: TPlayerStatisticFinal[];
 }): boolean {
-  const result = false;
-
   // Game
   if (!isEqual(initialGame.id, actualGame.id)) {
     console.log('id changed');
@@ -277,6 +276,69 @@ function initGameEdition(game?: TGameFinal): Observable<TGameFinal> {
   return of(cloneDeep(INITIAL_GAME_STATE));
 }
 
+function validateTeamsAndStatistics({
+  teams,
+  statistics,
+}: {
+  teams: TTeamFinal[];
+  statistics: TPlayerStatisticFinal[];
+}): Map<string, string> {
+  const errorsMap: Map<string, string> = new Map();
+
+  const teamA = teams.at(0);
+  const teamB = teams.at(1);
+
+  if (!teamA) {
+    errorsMap.set('teams:teamA:required', 'Team A is required');
+  }
+
+  if (!teamB) {
+    errorsMap.set('teams:teamB:required', 'Team B is required');
+  }
+
+  if (!teamA || !teamB) {
+    return errorsMap;
+  }
+
+  // Statistics
+  const teamNameA = teamA.name;
+  const teamNameB = teamB.name;
+  const statisticsA = statistics.filter(stat => stat.teamId === teamA?.id);
+  const statisticsB = statistics.filter(stat => stat.teamId === teamB?.id);
+
+  if (!statisticsA.length) {
+    errorsMap.set(
+      'statistics:teamA:atleastOne',
+      `Team ${teamNameA} must have at least one player`,
+    );
+  }
+
+  if (statisticsA.length && !statisticsA.some(stat => stat.isCaptain)) {
+    errorsMap.set(
+      'statistics:teamA:captainRequired',
+      `Team ${teamNameA} captain is required`,
+    );
+  }
+
+  if (!statisticsB.length) {
+    errorsMap.set(
+      'statistics:teamB:atleastOne',
+      `Team ${teamNameB} must have at least one player`,
+    );
+  }
+
+  if (statisticsB.length && !statisticsB.some(stat => stat.isCaptain)) {
+    errorsMap.set(
+      'statistics:teamB:captainRequired',
+      `Team ${teamNameB} captain is required`,
+    );
+  }
+
+  console.log({ errorsMap });
+
+  return errorsMap;
+}
+
 export const NewGameStore = signalStore(
   withState(INITIAL_NEW_GAME_STATE),
   withTeamsFeature(),
@@ -287,14 +349,17 @@ export const NewGameStore = signalStore(
       players,
       initialValue,
       game,
+      loading,
       initLoading,
       mode,
       statisticsEntities,
       teamsEntities,
+      errors,
     }) => {
       return {
         storeLoaded: computed(
           () =>
+            !loading() &&
             !initLoading() &&
             [EnumGameMode.Create, EnumGameMode.Edit].includes(mode()),
         ),
@@ -305,7 +370,7 @@ export const NewGameStore = signalStore(
           return players();
         }),
         isFormChanged: computed(() => {
-          if (!initialValue() || initLoading()) {
+          if (!initialValue() || initLoading() || errors().size) {
             return false;
           }
 
@@ -491,9 +556,34 @@ export const NewGameStore = signalStore(
   ),
   // Should be latest to read methods
   withHooks({
-    onInit({ initGame }) {
+    onInit(store) {
       console.log(FEATURE_INITIALIZED);
-      initGame();
+      store.initGame();
+
+      watchState(store, state => {
+        console.log('[new game store][watchState] iteration state', state);
+      });
+
+      effect(
+        () => {
+          if (!store.storeLoaded()) {
+            return;
+          }
+
+          const errors = new Map([
+            ...validateTeamsAndStatistics({
+              teams: store.teamsEntities(),
+              statistics: store.statisticsEntities(),
+            }),
+          ]);
+
+          patchState(store, { errors });
+          console.log('[new game store][effect][validation-errors]', errors);
+        },
+        {
+          allowSignalWrites: true,
+        },
+      );
     },
     onDestroy() {
       console.log(FEATURE_DESTROYED);

@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   DestroyRef,
   inject,
   Injector,
@@ -29,6 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -66,6 +66,7 @@ import { distinctUntilChanged, filter, map } from 'rxjs';
     MatOptionModule,
     ReactiveFormsModule,
     MatProgressBarModule,
+    MatListModule,
 
     // CDK
     CdkDropList,
@@ -106,7 +107,7 @@ export class GameCreationWidgetComponent implements OnInit {
   public readonly teams = this.newGameStore.teamsEntities;
 
   public readonly state = this.newGameStore;
-  protected readonly gameId = this.newGameStore.game.id;
+  protected readonly gameId = this.newGameStore.game()?.id;
   protected readonly errors = this.newGameStore.errors;
 
   formGroup = new FormGroup({
@@ -154,9 +155,7 @@ export class GameCreationWidgetComponent implements OnInit {
   // Store signals
   public readonly modeSignal = this.newGameStore.mode;
   readonly isFormChangedSignal = this.newGameStore.isFormChanged;
-  readonly loadingSignal = computed(
-    () => this.newGameStore.loading() || this.newGameStore.initLoading(),
-  );
+  readonly storeLoaded = this.newGameStore.storeLoaded;
 
   ngOnInit() {
     toObservable(this.newGameStore.storeLoaded, { injector: this.injector })

@@ -59,3 +59,11 @@ form {
   gap: 10px;
   justify-content: end;
 }
+
+.validation-errors {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: lightcoral;
+  color: color(tomato);
+  border: 1px solid color(rgba tomato 0.3);
+}
