@@ -166,7 +166,8 @@ export class PlayersAutocompleteComponent {
     const statistic = event.options.at(0)?.value as TPlayerStatisticFinal;
     const isSelected = event.options.at(0)?.selected;
 
-    console.log({ statistic, isSelected });
+    const isCaptain =
+      this.playersStatisticsGroupByTeamSignal().alias.length === 0;
 
     this.querySearchSignal.update(() => '');
 
@@ -174,6 +175,7 @@ export class PlayersAutocompleteComponent {
     if (isSelected) {
       this.newGameStore.addStatisticPlayer({
         ...statistic,
+        isCaptain,
         teamId: this.teamId(),
       });
       return;

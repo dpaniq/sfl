@@ -1,4 +1,4 @@
-import { computed } from '@angular/core';
+import { computed, untracked } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
@@ -271,6 +271,13 @@ export function withPlayerStatisticsFeature<_>() {
           teamId: oppositeTeamId,
           playerId: statistic.playerId,
         });
+
+        // const statisticSize = untracked(
+        //   () =>
+        //     store
+        //       .statisticsEntities()
+        //       .filter(stats => stats.teamId === statistic.teamId).length,
+        // );
 
         patchState(
           store,
