@@ -40,6 +40,14 @@ export interface IPlayerDTO {
   avatar?: string;
   isCaptain: boolean;
   nickname: string;
+
+  user: {
+    id: string;
+    email: string;
+    name?: string;
+    surname?: string;
+    avatar?: string;
+  };
 }
 export type TPlayerFinal = IPlayerDTO & IPlayerSettings;
 

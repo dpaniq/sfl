@@ -3,7 +3,6 @@ import {
   Component,
   DestroyRef,
   inject,
-  Inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -24,8 +23,8 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { IPlayerDTO } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
-import { PlayerClient } from '@entities/players/types';
 
 @Component({
   selector: 'sfl-player-edit-dialog',
@@ -49,30 +48,42 @@ import { PlayerClient } from '@entities/players/types';
 export class PlayerEditDialogComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly playersService = inject(PlayersService);
+  private readonly dialogRef: MatDialogRef<PlayerEditDialogComponent> =
+    inject(MatDialogRef);
 
-  constructor(
-    public dialogRef: MatDialogRef<PlayerEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: PlayerClient,
-  ) {}
+  protected readonly data: IPlayerDTO = inject(MAT_DIALOG_DATA);
 
   formGroup = new FormGroup<
-    FormControls<Pick<PlayerClient, 'nickname' | 'number'>>
+    FormControls<Pick<IPlayerDTO, 'nickname' | 'number'>> & {
+      user: FormGroup<
+        FormControls<SetRequired<Partial<IPlayerDTO['user']>, 'id' | 'email'>>
+      >;
+    }
   >({
-    // name: new FormControl(this.data.name ?? 'name', {
-    //   nonNullable: true,
-    //   validators: [Validators.required],
-    // }),
-    // surname: new FormControl(this.data.surname ?? 'surname', {
-    //   nonNullable: true,
-    //   validators: [Validators.required],
-    // }),
-    nickname: new FormControl(this.data.nickname ?? 'nickname', {
+    nickname: new FormControl(this.data.nickname ?? '', {
       nonNullable: true,
       validators: [Validators.required],
     }),
-    number: new FormControl(this.data.number ?? 4, {
+    number: new FormControl(this.data.number ?? 999, {
       nonNullable: true,
-      validators: [Validators.min(1), Validators.max(9999)],
+      validators: [Validators.min(1), Validators.max(999)],
+    }),
+    // TODO: problem with type
+    user: new FormGroup<any>({
+      id: new FormControl(this.data.user.id, {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      email: new FormControl(this.data.user.email, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
+      name: new FormControl(this.data.user.name ?? '', {
+        nonNullable: true,
+      }),
+      surname: new FormControl(this.data.user.surname ?? '', {
+        nonNullable: true,
+      }),
     }),
   });
 
@@ -85,7 +96,6 @@ export class PlayerEditDialogComponent {
       .patch(this.data.id, this.formGroup.getRawValue())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(patchedPlayer => {
-        console.log('patched player', patchedPlayer);
         this.dialogRef.close(patchedPlayer);
       });
   }

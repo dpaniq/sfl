@@ -62,7 +62,7 @@ export class PlayersToggleComponent implements OnDestroy, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  toggleCaptain(player: PlayerClient) {
+  toggleCaptain(player: TPlayerFinal) {
     this.playersStore.patch(player);
   }
 }

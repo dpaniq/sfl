@@ -1,11 +1,5 @@
 import { Body, Controller, Get, Patch, Post, Req, Res } from '@nestjs/common';
-import {
-  ApiBody,
-  ApiProperty,
-  ApiPropertyOptional,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { ClientPlayer } from '.';
 import { UsersService } from '../users/users.service';
@@ -13,14 +7,16 @@ import { Player } from './players.schema';
 import { PlayersService } from './players.service';
 
 export class PlayerCreationDTO {
-  @ApiProperty({ required: true, type: String, uniqueItems: true })
-  email: string;
   @ApiProperty({ required: true, type: String })
   nickname: string;
-  @ApiPropertyOptional()
-  name?: string;
-  @ApiPropertyOptional()
-  surname?: string;
+  number: number;
+
+  @ApiProperty({ required: true })
+  user: {
+    email: string;
+    name?: string;
+    surname?: string;
+  };
 }
 
 @ApiTags('player')
@@ -50,8 +46,17 @@ export class PlayersController {
     @Res() res: Response,
     @Body() body: ClientPlayer,
   ) {
-    // const player = await this.playersService.updateInfo(req.params.id, body);
-    // return res.json(player);
+    const { user: userBody, ...playerBody } = body;
+
+    const updatedUser = await this.usersService.patch(userBody.id, userBody);
+    const updatedPlayer = await this.playersService.patch(
+      req.params.id,
+      playerBody,
+    );
+
+    console.log('PATCH', { updatedUser, updatedPlayer });
+
+    return res.json(updatedPlayer);
   }
 
   @Post()
@@ -72,16 +77,17 @@ export class PlayersController {
     // TODO all settled
     const createdPlayers = await Promise.all(
       players.map(async (player) => {
+        const { user: userBody, ...playerBody } = player;
+
         const user = await this.usersService.createUser({
-          name: player.name ?? 'test',
-          surname: player.surname ?? 'test',
-          email:
-            player.email ?? 'test' + Math.random().toString() + '@test.com',
-          roles: ['658ddee2f71a72e6d8ea95f8'],
+          name: userBody.name,
+          surname: userBody.surname,
+          email: userBody.email,
+          roles: ['658ddee2f71a72e6d8ea95f8'], // TODO, check is USER ROLE,
         });
 
         return await this.playersService.create({
-          nickname: player.nickname,
+          ...playerBody,
           userId: user.id,
         });
       }),

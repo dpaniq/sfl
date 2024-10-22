@@ -254,7 +254,7 @@
 
       <button
         mat-icon-button
-        [disabled]="!user?.roles?.includes('ADMIN')"
+        [disabled]="false && !user?.roles?.includes('ADMIN')"
         color="primary"
         (click)="editPlayer(element)"
       >

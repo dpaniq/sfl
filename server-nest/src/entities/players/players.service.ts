@@ -35,19 +35,24 @@ export class PlayersService {
   ): Promise<ServerPlayer | null> {
     try {
       await this.playerModel
-        .updateOne({ _id: id }, { $set: { ...player } })
+        .findByIdAndUpdate({ _id: id }, { $set: { ...player } })
         .exec();
-      return await this.playerModel.findById(id).exec();
+      return await this.playerModel.findById(id).populate('user').exec();
     } catch (error) {
       return null;
     }
   }
 
-  async create(player: { nickname: string; userId: string }): Promise<any> {
+  async create(player: {
+    nickname: string;
+    userId: string;
+    number: number;
+  }): Promise<any> {
     try {
       return await this.playerModel.create({
         nickname: player.nickname,
         user: player.userId,
+        number: player.number,
       });
     } catch (error) {
       return null;

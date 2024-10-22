@@ -1,5 +1,4 @@
 import { computed, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { TPlayerFinal } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
 import {
@@ -21,7 +20,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { PlayerClient } from '../types/index';
 
 export interface PlayersStoreState {
   players: TPlayerFinal[];
@@ -54,12 +52,11 @@ export const PlayersStore = signalStore(
   withMethods(
     (
       store,
-      { activatedRoute, playersService } = {
-        activatedRoute: inject(ActivatedRoute),
+      { playersService } = {
         playersService: inject(PlayersService),
       },
     ) => ({
-      patch: async (player: WithId<PlayerClient>): Promise<void> => {
+      patch: async (player: WithId<TPlayerFinal>): Promise<void> => {
         const patchedPlayer = await firstValueFrom(
           playersService.patch(player.id, { isCaptain: !player.isCaptain }),
         );

@@ -18,3 +18,7 @@ td.mat-column-avatar {
   display: flex;
   justify-content: center;
 }
+.mat-column-actions {
+  display: flex;
+  align-items: center;
+}

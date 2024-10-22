@@ -1,5 +1,14 @@
 :host {
   form {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+
+    > .user-fieldset {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+
+      padding: 8px 0;
+    }
   }
 }

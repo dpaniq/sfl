@@ -24,9 +24,7 @@ import {
   DEFAULT_STATISTIC_VALUES,
   generatePlayerStatisticID,
 } from '@entities/games/store/statistics.feature';
-import { TPlayerStatisticFinal } from '@entities/games/types';
-import { switchMap } from 'rxjs';
-import { PlayersService } from '../../services/players.service';
+import { IPlayerDTO, TPlayerStatisticFinal } from '@entities/games/types';
 import { CreatePlayerDialogComponent } from '../create-player-dialog/create-player-dialog.component';
 
 /**
@@ -57,7 +55,6 @@ import { CreatePlayerDialogComponent } from '../create-player-dialog/create-play
 export class PlayersAutocompleteComponent {
   readonly dialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly playersService = inject(PlayersService);
   private readonly newGameStore = inject(NewGameStore);
 
   public readonly mode = input.required<EnumGameMode>();
@@ -148,13 +145,7 @@ export class PlayersAutocompleteComponent {
         width: '600px',
       })
       .afterClosed()
-      .pipe(
-        switchMap((player: any) => {
-          return this.playersService.create(player);
-        }),
-      )
-      .subscribe(data => {
-        const player = data.at(0);
+      .subscribe((player: IPlayerDTO) => {
         console.log('new player', player);
         if (player) {
           this.newGameStore.addPlayer(player);

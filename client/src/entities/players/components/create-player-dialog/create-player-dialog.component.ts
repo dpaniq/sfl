@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -7,9 +14,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IPlayerDTO } from '@entities/games/types';
+import { PlayersService } from '@entities/players/services/players.service';
+import { catchError, delay, map, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'sfl-create-player-dialog',
@@ -21,32 +32,82 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
+    MatProgressBarModule,
   ],
   templateUrl: './create-player-dialog.component.html',
   styleUrl: './create-player-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [PlayersService],
 })
 export class CreatePlayerDialogComponent {
-  formGroup = new FormGroup({
-    email: new FormControl('', {
-      nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.email,
-      ],
-    }),
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly playersService = inject(PlayersService);
+  private readonly dialogRef: MatDialogRef<CreatePlayerDialogComponent> =
+    inject(MatDialogRef);
+
+  protected readonly loadingSignal = signal(false);
+
+  formGroup = new FormGroup<
+    FormControls<Pick<IPlayerDTO, 'nickname' | 'number'>> & {
+      user: FormGroup<
+        FormControls<SetRequired<Partial<IPlayerDTO['user']>, 'id' | 'email'>>
+      >;
+    }
+  >({
     nickname: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(3)],
+      validators: [Validators.required],
     }),
-    name: new FormControl('', {
+    number: new FormControl(0, {
       nonNullable: true,
-      validators: [],
+      validators: [
+        Validators.min(1),
+        Validators.max(999),
+        Validators.pattern(/^[0-9]*$/),
+      ],
     }),
-    surname: new FormControl('', {
-      nonNullable: true,
-      validators: [],
+    // TODO: problem with type
+    user: new FormGroup<any>({
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
+      name: new FormControl('', {
+        nonNullable: true,
+      }),
+      surname: new FormControl('', {
+        nonNullable: true,
+      }),
     }),
   });
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSubmit() {
+    // TODO - exclude type casting
+    const player = this.formGroup.getRawValue() as IPlayerDTO;
+
+    of(player)
+      .pipe(
+        tap(() => {
+          this.loadingSignal.update(() => true);
+        }),
+        delay(3_000),
+        switchMap(() => {
+          return this.playersService
+            .create(player)
+            .pipe(map(players => players.at(0)!));
+        }),
+        catchError(error => {
+          console.error(error);
+          return of();
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((player: IPlayerDTO) => {
+        this.dialogRef.close(player);
+      });
+  }
 }

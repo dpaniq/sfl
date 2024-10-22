@@ -29,6 +29,14 @@ export interface ClientPlayer {
   wonGames: number;
   maxWinStreak: number;
   maxLostStreak: number;
+
+  user: {
+    id: string;
+    email: string;
+    name?: string;
+    surname?: string;
+    avatar?: string;
+  };
 }
 
 export enum EnumPlayerStatus {

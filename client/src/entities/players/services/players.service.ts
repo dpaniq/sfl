@@ -2,16 +2,15 @@ import { Injectable, inject, isDevMode } from '@angular/core';
 import { IPlayerDTO, TPlayerFinal } from '@entities/games/types';
 import { HttpService } from '@shared/services/http.service';
 import { Observable, firstValueFrom, of } from 'rxjs';
-import { PlayerClient } from '../types';
 import { playersMock } from './players.mock';
 
 type ResponseCaptains = {
-  players: PlayerClient[];
+  players: IPlayerDTO[];
   page: number;
 };
 
 export type PlayersResponse = {
-  players: PlayerClient[];
+  players: IPlayerDTO[];
   page: number;
 };
 
@@ -27,20 +26,15 @@ export class PlayersService {
     return this.#httpService.get<TPlayerFinal[]>('players');
   }
 
-  create(player: {
-    email: string;
-    nickname: string;
-    name?: string;
-    surname?: string;
-  }): Observable<IPlayerDTO[]> {
+  create(player: IPlayerDTO): Observable<IPlayerDTO[]> {
     return this.#httpService.post<
       SetOptional<IPlayerDTO, 'id' | 'isCaptain'>[],
       IPlayerDTO[]
     >('players', [player]);
   }
 
-  getCaptainsPlayers(): Observable<PlayerClient[]> {
-    return this.#httpService.get<PlayerClient[]>('players/captains');
+  getCaptainsPlayers(): Observable<IPlayerDTO[]> {
+    return this.#httpService.get<IPlayerDTO[]>('players/captains');
   }
 
   async getList(page: number = 0): Promise<ResponseCaptains> {
@@ -56,9 +50,9 @@ export class PlayersService {
 
   patch(
     id: string,
-    partialPlayer: Partial<PlayerClient>,
-  ): Observable<PlayerClient | null> {
-    return this.#httpService.patch<Partial<PlayerClient>, PlayerClient | null>(
+    partialPlayer: Partial<IPlayerDTO>,
+  ): Observable<IPlayerDTO | null> {
+    return this.#httpService.patch<Partial<IPlayerDTO>, IPlayerDTO | null>(
       `players/${id}`,
       partialPlayer,
     );
