@@ -1,5 +1,22 @@
-import { Body, Controller, Get, Patch, Post, Req, Res } from '@nestjs/common';
-import { ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiOkResponse,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { ClientPlayer } from '.';
 import { UsersService } from '../users/users.service';
@@ -44,9 +61,12 @@ export class PlayersController {
   async update(
     @Req() req: Request,
     @Res() res: Response,
+    @Param('id') id: string,
     @Body() body: ClientPlayer,
   ) {
     const { user: userBody, ...playerBody } = body;
+
+    console.log('PATCH', id, { userBody, playerBody });
 
     const updatedUser = await this.usersService.patch(userBody.id, userBody);
     const updatedPlayer = await this.playersService.patch(
@@ -97,5 +117,19 @@ export class PlayersController {
     });
 
     return res.json(createdPlayers);
+  }
+
+  @Delete(':id')
+  @ApiOkResponse({ type: Player, status: 200 })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request response with no content',
+  })
+  async delete(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Param('id') id: string,
+  ) {
+    return res.json(await this.playersService.delete(id));
   }
 }

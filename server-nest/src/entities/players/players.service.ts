@@ -39,6 +39,7 @@ export class PlayersService {
         .exec();
       return await this.playerModel.findById(id).populate('user').exec();
     } catch (error) {
+      console.log(error);
       return null;
     }
   }
@@ -55,26 +56,17 @@ export class PlayersService {
         number: player.number,
       });
     } catch (error) {
+      console.log(error);
       return null;
     }
   }
-  // updateInfo(
-  //   id: string,
-  //   body: Partial<ClientPlayer>,
-  // ): Promise<ServerPlayer | null> {
-  //   const bodyPlayer: Partial<ServerPlayer> = { ...body };
-  //   delete bodyPlayer.name;
-  //   delete bodyPlayer.surname;
 
-  //   const userBody: Partial<IUser> = {
-  //     name: req.body.name,
-  //     surname: req?.body.surname,
-  //   };
-
-  //   console.log(bodyPlayer, userBody);
-
-  //   const player = await this.playersService.patch(req.params.id, bodyPlayer);
-
-  //   return await usePlayerInfoTransaction();
-  // }
+  async delete(id: string): Promise<ServerPlayer | null> {
+    try {
+      return await this.playerModel.findByIdAndDelete({ _id: id }).exec();
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
 }

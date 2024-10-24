@@ -33,6 +33,10 @@ export class PlayersService {
     >('players', [player]);
   }
 
+  public delete(id: string): Observable<IPlayerDTO | null> {
+    return this.#httpService.delete<IPlayerDTO | null>(`players/${id}`);
+  }
+
   getCaptainsPlayers(): Observable<IPlayerDTO[]> {
     return this.#httpService.get<IPlayerDTO[]>('players/captains');
   }

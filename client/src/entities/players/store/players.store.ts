@@ -12,6 +12,7 @@ import {
 } from '@ngrx/signals';
 import {
   entityConfig,
+  removeEntity,
   setAllEntities,
   updateEntity,
   withEntities,
@@ -109,6 +110,16 @@ export const PlayersStore = signalStore(
               ),
             );
             patchState(store, { loading: false });
+          });
+      },
+      deleteOne(id: string): void {
+        patchState(store, { loading: true });
+        of(id)
+          .pipe(delay(1000))
+          .subscribe(() => {
+            patchState(store, removeEntity(id, PLAYERS_ENTITY_CONFIG), {
+              loading: false,
+            });
           });
       },
       init: rxMethod<void>(

@@ -24,6 +24,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CaptainsService } from '@entities/captains';
 import { TPlayerFinal } from '@entities/games/types';
 import { PlayersStore } from '@entities/players';
+import { PlayerDeleteDialogComponent } from '@entities/players/components/player-delete-dialog/player-delete-dialog.component';
 import { PlayerEditDialogComponent } from '@entities/players/components/player-edit-dialog/player-edit-dialog.component';
 import { AuthService } from '@shared/services/auth.service';
 
@@ -131,6 +132,19 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (player) {
           console.log(player);
           this.playersStore.updateOne(player);
+        }
+      });
+  }
+
+  deletePlayer(player: TPlayerFinal) {
+    this.dialog
+      .open(PlayerDeleteDialogComponent, {
+        data: { player },
+      })
+      .afterClosed()
+      .subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.playersStore.deleteOne(player.id);
         }
       });
   }
