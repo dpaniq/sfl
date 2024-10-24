@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
@@ -43,6 +44,7 @@ import { AuthService } from '@shared/services/auth.service';
     MatInputModule,
     FormsModule,
     MatButtonModule,
+    MatProgressBarModule,
   ],
   providers: [
     // Fixme: CaptainsStore uses CaptainsService, idk how to fix this
@@ -61,8 +63,10 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public user = this.authService.user();
 
+  protected readonly loading = this.playersStore.loading;
+
   playersEffectRef = effect(() => {
-    this.dataSource.data = this.playersStore.players();
+    this.dataSource.data = this.playersStore.playersEntities();
   });
 
   constructor(private _destroyRef: DestroyRef) {}
@@ -121,8 +125,13 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
         data: player,
       })
       .afterClosed()
-      .subscribe(result => {
-        console.log('The dialog was closed', result);
+      .subscribe(player => {
+        console.log('The dialog (player edit dialog) was closed with', player);
+
+        if (player) {
+          console.log(player);
+          this.playersStore.updateOne(player);
+        }
       });
   }
 }
