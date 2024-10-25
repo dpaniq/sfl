@@ -26,6 +26,7 @@ import { TPlayerFinal } from '@entities/games/types';
 import { PlayersStore } from '@entities/players';
 import { PlayerDeleteDialogComponent } from '@entities/players/components/player-delete-dialog/player-delete-dialog.component';
 import { PlayerEditDialogComponent } from '@entities/players/components/player-edit-dialog/player-edit-dialog.component';
+import { NilToDashPipe } from '@shared/pipes/nil-to-dash.pipe';
 import { AuthService } from '@shared/services/auth.service';
 
 @Component({
@@ -46,6 +47,7 @@ import { AuthService } from '@shared/services/auth.service';
     FormsModule,
     MatButtonModule,
     MatProgressBarModule,
+    NilToDashPipe,
   ],
   providers: [
     // Fixme: CaptainsStore uses CaptainsService, idk how to fix this

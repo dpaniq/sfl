@@ -5,7 +5,15 @@
       List of players
     </ng-template>
 
-    <sfl-players-table></sfl-players-table>
+    <div class="tab-container">
+      <div class="tab-header">
+        <sfl-player-create-button />
+      </div>
+
+      <div class="tab-content">
+        <sfl-players-table></sfl-players-table>
+      </div>
+    </div>
   </mat-tab>
 
   <mat-tab *ngIf="user.isAdmin">

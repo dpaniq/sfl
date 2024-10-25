@@ -50,11 +50,13 @@ export class PlayersService {
     number: number;
   }): Promise<any> {
     try {
-      return await this.playerModel.create({
+      const { id } = await this.playerModel.create({
         nickname: player.nickname,
         user: player.userId,
         number: player.number,
       });
+
+      return await this.playerModel.findById(id).populate('user').exec();
     } catch (error) {
       console.log(error);
       return null;

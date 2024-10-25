@@ -11,6 +11,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import {
+  addEntity,
   entityConfig,
   removeEntity,
   setAllEntities,
@@ -78,6 +79,9 @@ export const PlayersStore = signalStore(
         playersService: inject(PlayersService),
       },
     ) => ({
+      add(player: TPlayerFinal): void {
+        patchState(store, addEntity(player, PLAYERS_ENTITY_CONFIG));
+      },
       patch: async (player: WithId<TPlayerFinal>): Promise<void> => {
         const patchedPlayer = await firstValueFrom(
           playersService.patch(player.id, { isCaptain: !player.isCaptain }),

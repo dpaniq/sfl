@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
@@ -39,7 +40,7 @@ import { catchError, delay, map, of, switchMap, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PlayersService],
 })
-export class CreatePlayerDialogComponent {
+export class CreatePlayerDialogComponent implements AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly playersService = inject(PlayersService);
   private readonly dialogRef: MatDialogRef<CreatePlayerDialogComponent> =
@@ -81,6 +82,10 @@ export class CreatePlayerDialogComponent {
     }),
   });
 
+  ngAfterViewInit() {
+    this.formGroup.markAllAsTouched();
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -94,7 +99,7 @@ export class CreatePlayerDialogComponent {
         tap(() => {
           this.loadingSignal.update(() => true);
         }),
-        delay(3_000),
+        delay(2_000),
         switchMap(() => {
           return this.playersService
             .create(player)

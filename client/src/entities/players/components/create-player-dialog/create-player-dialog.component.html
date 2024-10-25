@@ -12,6 +12,7 @@
         matInput
         type="text"
         formControlName="nickname"
+        cdkFocusInitial
       />
     </mat-form-field>
 
@@ -19,12 +20,30 @@
       <mat-label>Number</mat-label>
       <input
         matInput
-        type="number"
         formControlName="number"
         min="1"
         max="999"
         pattern="[0-9]*"
       />
+
+      @if (formGroup.controls.number?.hasError('min')) {
+        <mat-error>
+          Minimum value is
+          <b>1</b>
+        </mat-error>
+      }
+      @if (formGroup.controls.number?.hasError('max')) {
+        <mat-error>
+          Minimum value is
+          <b>999</b>
+        </mat-error>
+      }
+      @if (formGroup.controls.number?.hasError('pattern')) {
+        <mat-error>
+          Use digits only
+          <b>1-999</b>
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-fieldset
@@ -72,7 +91,6 @@
     color="primary"
     type="submit"
     mat-raised-button
-    cdkFocusInitial
     [disabled]="!formGroup.valid"
     (click)="onSubmit()"
   >

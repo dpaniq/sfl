@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { CaptainsService } from '@entities/captains';
 import { PlayersStore } from '@entities/players';
+import { PlayerCreateButtonComponent } from '@entities/players/components/player-create-button/player-create-button.component';
 import { PlayersService } from '@entities/players/services/players.service';
 import { PlayersTableComponent } from '@features';
 import { PlayersAdminWidgetComponent } from '@widgets';
@@ -16,9 +18,11 @@ import { PlayersAdminWidgetComponent } from '@widgets';
     CommonModule,
     MatIconModule,
     MatTabsModule,
+    MatButtonModule,
 
     // Features
     PlayersTableComponent,
+    PlayerCreateButtonComponent,
 
     // Widgets
     PlayersAdminWidgetComponent,
