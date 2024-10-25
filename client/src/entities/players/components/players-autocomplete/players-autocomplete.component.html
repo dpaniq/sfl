@@ -2,13 +2,17 @@
   <mat-label>Players</mat-label>
 
   <!-- Chips -->
-  <mat-chip-grid
-    #chipGrid
-    [disabled]="playersSearchFC.disabled"
-  >
-    @for (player of ngControl.value; track player.id) {
-      <mat-chip-row (removed)="remove(player)">
-        {{ player.nickname }}
+  <mat-chip-grid #chipGrid>
+    @for (
+      statistic of playersStatisticsGroupByTeamSignal().alias;
+      track statistic.id
+    ) {
+      <mat-chip-row
+        (removed)="removeStatisticPlayer(statistic.id)"
+        [value]="statistic"
+        [title]="statistic | json"
+      >
+        {{ statistic.playerData.nickname }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
@@ -19,33 +23,43 @@
   <!-- Search -->
   <input
     placeholder="Enter a player nickname, surname, name or number"
-    [formControl]="playersSearchFC"
     [matChipInputFor]="chipGrid"
     [matAutocomplete]="auto"
-    [value]="playersSearchFC.value"
+    [value]="querySearchSignal()"
+    (input)="querySearchSignal.set($any($event).target!.value)"
     autocomplete="off"
   />
 
   <!-- Autocomplete (dropdown) -->
   <mat-autocomplete #auto="matAutocomplete">
-    <mat-selection-list
-      (selectionChange)="onSelectOne($event)"
-      [disabled]="playersSearchFC.disabled"
-    >
-      @for (player of playersSignal(); track player.id) {
+    <mat-selection-list (selectionChange)="onSelect($event)">
+      @for (
+        statistic of playersOptionList();
+        track statistic.id;
+        let last = $last
+      ) {
         <mat-list-option
-          [selected]="!!player.teamId"
-          [value]="player.id"
+          [selected]="!!statistic.teamId"
+          [value]="statistic"
         >
-          {{ player.nickname }} ({{ player.teamId }})
+          {{ statistic.playerData.nickname }} ({{ statistic.teamId }})
+          {{ statistic.id }}
         </mat-list-option>
+
+        @if (!last) {
+          <mat-divider></mat-divider>
+        }
       }
       <mat-option [style.display]="'none'"></mat-option>
     </mat-selection-list>
+
+    <div class="mat-autocomplete-footer">
+      <button
+        mat-raised-button
+        (click)="createPlayer()"
+      >
+        Create player
+      </button>
+    </div>
   </mat-autocomplete>
 </mat-form-field>
-
-searchFC: {{ playersSearchFC.disabled | json }}
-<hr />
-ngControl:
-{{ ngControl.disabled | json }}

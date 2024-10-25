@@ -19,6 +19,10 @@ export class GamesService {
     return await this.gameModel.find({ ...game });
   }
 
+  async findById(_id: string) {
+    return await this.gameModel.findById({ _id });
+  }
+
   async save(game: IGame) {
     if (
       await this.gameModel.findOne({
@@ -44,5 +48,17 @@ export class GamesService {
     }
 
     return replacedGame;
+  }
+
+  async delete(_id: string) {
+    const game = await this.gameModel.findOneAndDelete({ _id }).exec();
+
+    console.log('delete game', game);
+
+    if (!game) {
+      throw BadRequestException;
+    }
+
+    return !!game;
   }
 }

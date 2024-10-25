@@ -18,6 +18,7 @@ import {
 import { UsersService } from './entities/users/users.service';
 import { ContextInterceptor } from './shared/interceptors/context/context.interceptor';
 import { JwtMiddleware } from './shared/middlewares/user/jwt.middleware';
+import { RolesModule } from './entities/roles/roles.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { JwtMiddleware } from './shared/middlewares/user/jwt.middleware';
       },
     }),
     AuthModule,
+    RolesModule,
     UsersModule,
     PlayersModule,
     GamesModule,

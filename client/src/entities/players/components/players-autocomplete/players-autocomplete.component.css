@@ -2,4 +2,10 @@
   mat-form-field {
     width: 100%;
   }
+
+  ::ng-deep mat-autocomplete {
+    .mat-autocomplete-footer {
+      padding: 4px 8px;
+    }
+  }
 }

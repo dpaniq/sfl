@@ -1,19 +1,18 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { CaptainsService, CaptainsStore, TCaptain } from '@entities/captains';
-import { provideComponentStore } from '@ngrx/component-store';
+import { CaptainsStore, TCaptain } from '@entities/captains';
 
 @Component({
   selector: 'sfl-captains-table',
@@ -33,7 +32,7 @@ import { provideComponentStore } from '@ngrx/component-store';
 export class CaptainsTableComponent {
   constructor(
     private _destroyRef: DestroyRef,
-    private captainsStore: CaptainsStore
+    private captainsStore: CaptainsStore,
   ) {}
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -43,7 +42,7 @@ export class CaptainsTableComponent {
   ngOnInit() {
     this.captainsStore.captains$
       .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((captains) => {
+      .subscribe(captains => {
         console.log(captains);
         this.dataSource.data = captains;
       });
@@ -56,8 +55,8 @@ export class CaptainsTableComponent {
   readonly dataSource = new MatTableDataSource<TCaptain>([]);
   readonly displayedColumns: (keyof TCaptain)[] = [
     'avatar',
-    'name',
-    'surname',
+    // 'name',
+    // 'surname',
     'nickname',
 
     'totalGames',

@@ -1,38 +1,6 @@
-<div class="column">
-  <div class="row">
-    <mat-form-field>
-      <mat-label>Captain</mat-label>
-      <mat-select
-        [formControl]="captainFC"
-        [compareWith]="captainCompareFn"
-      >
-        <mat-option>-</mat-option>
-        <hr />
-        @for (captain of captainsSignal(); track captain.id) {
-          <mat-option
-            [value]="captain"
-            [disabled]="captain.disableAsCaptain"
-          >
-            {{ captain.nickname }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <hr />
-  </div>
+<sfl-players-autocomplete
+  [mode]="mode()"
+  [teamId]="teamId()"
+/>
 
-  <!-- Playrs store autocomeplete -->
-  <sfl-players-autocomplete
-    [ngControl]="playersFC"
-    [teamId]="teamId()"
-  />
-  <hr />
-
-  <!-- Stats table -->
-  @if (playersOfCurrentTeamSignal().length) {
-    <sfl-game-create-player-statistics
-      [team]="team()"
-      [dataSource]="playersOfCurrentTeamSignal()"
-    />
-  }
-</div>
+<sfl-game-create-player-statistics [teamId]="teamId()" />

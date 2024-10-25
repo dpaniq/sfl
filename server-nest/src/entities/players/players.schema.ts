@@ -1,14 +1,42 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { ObjectId, UUID } from 'src/constants';
+import { UUID } from 'src/constants';
 import { User } from '../users';
 
-export interface IPlayer {
+export interface ServerPlayer {
   nickname: string;
   isCaptain?: boolean;
   position?: EnumPlayerPosition;
   status?: EnumPlayerStatus;
-  userId: typeof UUID;
+  number?: number;
+  user: typeof UUID;
+}
+
+export interface ClientPlayer {
+  id: string;
+
+  number: number;
+  avatar: number;
+  isCaptain: boolean;
+
+  nickname: string;
+  name: string;
+  surname: string;
+
+  totalGames: number;
+  draws: number;
+  lostGames: number;
+  wonGames: number;
+  maxWinStreak: number;
+  maxLostStreak: number;
+
+  user: {
+    id: string;
+    email: string;
+    name?: string;
+    surname?: string;
+    avatar?: string;
+  };
 }
 
 export enum EnumPlayerStatus {
@@ -35,28 +63,25 @@ export enum EnumPlayerCollection {
   Test = '_players_tests',
 }
 
+const transform = (doc, ret, options) => {
+  ret.id = ret._id;
+  delete ret._id;
+  delete ret._gen;
+  delete ret.user?.password;
+  return ret;
+};
+
 @Schema({
-  versionKey: false,
+  versionKey: '_gen',
+
   toObject: {
-    transform: (doc, ret, options) => {
-      ret.id = ret._id;
-      delete ret._id;
-      delete ret.userId;
-      delete ret.__v;
-      return ret;
-    },
+    transform,
   },
   toJSON: {
-    transform: (doc, ret, options) => {
-      ret.id = ret._id;
-      delete ret._id;
-      delete ret.userId;
-      delete ret.__v;
-      return ret;
-    },
+    transform,
   },
 })
-export class Player implements IPlayer {
+export class Player implements ServerPlayer {
   @ApiProperty()
   @Prop({
     type: String,
@@ -65,11 +90,11 @@ export class Player implements IPlayer {
   })
   nickname: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Prop({ type: Boolean, default: false })
   isCaptain?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Prop({
     type: String,
     enum: EnumPlayerStatus,
@@ -77,10 +102,15 @@ export class Player implements IPlayer {
   })
   status?: EnumPlayerStatus;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Prop({ type: String, enum: EnumPlayerPosition })
   position?: EnumPlayerPosition;
 
+  @ApiProperty({ required: false })
+  @Prop({ type: Number, isInteger: true, index: true })
+  number?: number;
+
+  // TODO PROBLEM does not resolve user by ref
   @ApiProperty()
   @Prop({
     type: [
@@ -88,14 +118,29 @@ export class Player implements IPlayer {
         type: UUID,
         ref: User.name,
         required: true,
-        // TODO
-        // validate: {
-        //   validator: {},
-        // },
+        unique: true,
       },
     ],
+    transform: (docs) => docs.at(0),
   })
-  userId: typeof UUID;
+  user: typeof UUID;
+
+  // Problem
+  // @ApiProperty()
+  // @Prop({
+  //   type: {
+  //     type: UUID,
+  //     ref: User.name,
+  //     required: true,
+  //     unique: true,
+  //   },
+  // })
+  // user: typeof UUID;
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);
+
+// user bogdan: b21439b9-87ff-4646-b9e1-780797c887e8
+// apply / use
+// db.players.updateMany({}, {$rename: {userId: "user"}})
+// db.players.updateMany({}, {$unset: {__v: 1}})

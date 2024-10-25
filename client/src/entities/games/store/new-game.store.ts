@@ -1,10 +1,11 @@
-import { computed, inject } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { computed, effect, inject } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PlayersService } from '@entities/players/services/players.service';
-import { ITeam, TeamsService } from '@entities/teams';
+import { TeamsService } from '@entities/teams';
 import {
   patchState,
   signalStore,
+  watchState,
   withComputed,
   withHooks,
   withMethods,
@@ -13,124 +14,382 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TeamEnum } from '@shared/constants/team';
 import { isDate } from 'date-fns';
-import { cloneDeep, isEqual } from 'lodash-es';
+import { cloneDeep, isEqual, omit } from 'lodash-es';
 import {
-  EMPTY,
+  NEVER,
   Observable,
   catchError,
   delay,
   finalize,
   first,
   forkJoin,
-  map,
+  of,
   pipe,
   switchMap,
   tap,
 } from 'rxjs';
-import { TPlayer } from '../../players/types/index';
 import { EnumGameMode, EnumGameStatus } from '../constants';
 import { GameService } from '../services/game.service';
-import { IGame, IPlayerStatistic } from '../types';
+import {
+  IGameDTO,
+  IPlayerStatisticDTO,
+  IPlayerStatisticSettings,
+  ITeamDTO,
+  TGameFinal,
+  TPlayerFinal,
+  TPlayerStatisticFinal,
+  TTeamFinal,
+} from '../types';
+import { withPlayersFeature } from './players.feature';
+import { withPlayerStatisticsFeature } from './statistics.feature';
+import { withTeamsFeature } from './teams.feature';
 
 export type GameTeam = { id: string; name: TeamEnum; disable: boolean };
 
-/**
- * TODO:
- * isCaptain needed only for Tplayer... Must be imporved with types
- *
- * TODO:
- * GamePlayer has bad naming, Must be improved
- *
- * Omit teamId from IPlayerStatistic to allow other players to be not selected
- */
-export type GamePlayer = TPlayer & {
-  transferable: boolean;
-  disableAsPlayer: boolean;
-  disableAsCaptain: boolean;
+const FEATURE_NAME = 'NEW GAME';
 
-  // Rewrite types
-  teamId: string | null;
-};
+const FEATURE_INITIALIZED = `[${FEATURE_NAME} STORE FEATURE] has been initialized 🚀`;
 
-export type PlayerStatisticNumberKeys = keyof Pick<
-  IPlayerStatistic,
-  'pass' | 'goal' | 'goalHead' | 'autoGoal' | 'penalty'
->;
+const FEATURE_DESTROYED = `[${FEATURE_NAME} STORE FEATURE] destroyed 💥`;
 
 export interface NewGameState {
-  game: IGame;
+  game: TGameFinal;
+  // One level game fields;
+  teams: [TTeamFinal, TTeamFinal] | [];
+  statistics: TPlayerStatisticFinal[];
 
   // Needed to keep all players with specific state
-  players: GamePlayer[]; // TODO Cut
+  players: TPlayerFinal[]; // TODO Cut
 
   // For internal process
   loading: boolean;
   initLoading: boolean;
-  initialValue: null | IGame;
+  initialValue: null | TGameFinal;
   mode: EnumGameMode;
-  errors: [];
+  errors: Map<string, string>;
 }
 
-const INITIAL_GAME_STATE: IGame = {
+export const INITIAL_GAME_STATE: TGameFinal = {
   id: undefined,
   number: 0,
   season: 0,
-  teams: {},
+  teams: [],
   playedAt: new Date(),
+  createdAt: undefined,
+  updatedAt: undefined,
   statistics: [],
   status: EnumGameStatus.New,
-};
-
-const DEFAULT_STATISTIC_VALUES: Pick<
-  IPlayerStatistic,
-  PlayerStatisticNumberKeys | 'mvp'
-> = {
-  autoGoal: 0,
-  goal: 0,
-  goalHead: 0,
-  pass: 0,
-  penalty: 0,
-  mvp: false,
 };
 
 const INITIAL_NEW_GAME_STATE: NewGameState = {
   game: INITIAL_GAME_STATE,
   players: [],
 
+  // One level game fields
+  teams: [],
+  statistics: [],
+
   // For internal process
   loading: false,
   initLoading: true,
   initialValue: null,
   mode: EnumGameMode.Init,
-  errors: [],
+  errors: new Map(),
 };
 
 // Read https://offering.solutions/blog/articles/2023/12/03/ngrx-signal-store-getting-started/
 
+function isNewGameChanged({
+  initialGame,
+  actualGame,
+  actualTeams,
+  actualStatistics,
+}: {
+  initialGame: TGameFinal;
+  actualGame: TGameFinal;
+  actualTeams: TTeamFinal[];
+  actualStatistics: TPlayerStatisticFinal[];
+}): boolean {
+  // Game
+  if (!isEqual(initialGame.id, actualGame.id)) {
+    console.log('id changed');
+    return true;
+  }
+
+  if (!isEqual(initialGame.number, actualGame.number)) {
+    console.log('number changed');
+    return true;
+  }
+
+  if (!isEqual(initialGame.season, actualGame.season)) {
+    console.log('season changed');
+    return true;
+  }
+
+  if (!isEqual(initialGame.playedAt, actualGame.playedAt)) {
+    console.log('playedAt changed');
+    return true;
+  }
+
+  if (!isEqual(initialGame.status, actualGame.status)) {
+    console.log('status changed');
+    return true;
+  }
+
+  // Teams
+  const initialTeamId = initialGame.teams.at(0)!.id;
+  const actualTeamId = actualTeams.at(0)!.id;
+  if (initialTeamId !== actualTeamId) {
+    return true;
+  }
+
+  // Statistics
+  const initialStatistics: IPlayerStatisticDTO[] = initialGame.statistics;
+  const actualStatisticsDto: IPlayerStatisticDTO[] = actualStatistics.map(
+    stats => omit(stats, 'id', 'playerData'),
+  );
+
+  if (actualStatisticsDto.length !== initialStatistics.length) {
+    return true;
+  }
+
+  for (const actual of actualStatisticsDto) {
+    let initial: any;
+    initial = initialStatistics.find(
+      stats =>
+        stats.playerId === actual.playerId && stats.teamId === actual.teamId,
+    );
+
+    // TODO isTransferable
+    initial = { ...initial, isTransferable: false };
+
+    const compareLog = (at: string) => {
+      console.log({
+        at,
+        initial,
+        actual,
+      });
+    };
+
+    if (!initial) {
+      return true;
+    }
+
+    if (initial.goal !== actual.goal) {
+      compareLog('goal');
+      return true;
+    }
+
+    if (initial.goalHead !== actual.goalHead) {
+      compareLog('goalHead');
+      return true;
+    }
+
+    if (initial.penalty !== actual.penalty) {
+      compareLog('penalty');
+      return true;
+    }
+
+    if (initial.pass !== actual.pass) {
+      compareLog('pass');
+      return true;
+    }
+
+    // TODO: FIX backend (db)
+    // if (initial.isMVP !== actual.isMVP) {
+    //   compareLog('isMVP');
+    //   return true;
+    // }
+
+    if (initial.isCaptain !== actual.isCaptain) {
+      compareLog('isCaptain');
+      return true;
+    }
+
+    if (initial.isTransferable !== actual.isTransferable) {
+      compareLog('isTransferable');
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function matchStatisticsPlayerData({
+  players,
+  statistics,
+}: {
+  statistics: TPlayerStatisticFinal[];
+  players: TPlayerFinal[];
+}): TPlayerStatisticFinal[] {
+  const mappedStatistics = statistics.map(element => {
+    const data = players.find(player => player.id === element.playerId);
+    if (!data) {
+      console.log(
+        'Not found player while "mergeStatisticsAndPlayers"',
+        element,
+      );
+      return undefined;
+    }
+
+    element.playerData = data;
+
+    return element;
+  });
+
+  return mappedStatistics.filter(Boolean) as TPlayerStatisticFinal[];
+}
+
+function initGameCreation(
+  queryParam: ParamMap,
+  { teams }: { teams: [ITeamDTO, ITeamDTO] },
+): Observable<TGameFinal> {
+  const game = cloneDeep(INITIAL_GAME_STATE);
+  game.teams = teams;
+
+  console.log({ queryParam });
+
+  if (queryParam.has('number')) {
+    game.number = Number(queryParam.get('number'));
+  }
+
+  if (queryParam.has('season')) {
+    game.season = Number(queryParam.get('season'));
+  }
+
+  if (
+    queryParam.has('playedAt') &&
+    queryParam.get('playedAt') &&
+    isDate(new Date(queryParam.get('playedAt')!))
+  ) {
+    game.playedAt = new Date(queryParam.get('playedAt')!);
+  }
+
+  return of(game);
+}
+
+function initGameEdition(game?: TGameFinal): Observable<TGameFinal> {
+  if (game) {
+    return of({ ...game, playedAt: new Date(game.playedAt) });
+  }
+
+  return of(cloneDeep(INITIAL_GAME_STATE));
+}
+
+function validateTeamsAndStatistics({
+  teams,
+  statistics,
+}: {
+  teams: TTeamFinal[];
+  statistics: TPlayerStatisticFinal[];
+}): Map<string, string> {
+  const errorsMap: Map<string, string> = new Map();
+
+  const teamA = teams.at(0);
+  const teamB = teams.at(1);
+
+  if (!teamA) {
+    errorsMap.set('teams:teamA:required', 'Team A is required');
+  }
+
+  if (!teamB) {
+    errorsMap.set('teams:teamB:required', 'Team B is required');
+  }
+
+  if (!teamA || !teamB) {
+    return errorsMap;
+  }
+
+  // Statistics
+  const teamNameA = teamA.name;
+  const teamNameB = teamB.name;
+  const statisticsA = statistics.filter(stat => stat.teamId === teamA?.id);
+  const statisticsB = statistics.filter(stat => stat.teamId === teamB?.id);
+
+  if (!statisticsA.length) {
+    errorsMap.set(
+      'statistics:teamA:atleastOne',
+      `Team ${teamNameA} must have at least one player`,
+    );
+  }
+
+  if (statisticsA.length && !statisticsA.some(stat => stat.isCaptain)) {
+    errorsMap.set(
+      'statistics:teamA:captainRequired',
+      `Team ${teamNameA} captain is required`,
+    );
+  }
+
+  if (!statisticsB.length) {
+    errorsMap.set(
+      'statistics:teamB:atleastOne',
+      `Team ${teamNameB} must have at least one player`,
+    );
+  }
+
+  if (statisticsB.length && !statisticsB.some(stat => stat.isCaptain)) {
+    errorsMap.set(
+      'statistics:teamB:captainRequired',
+      `Team ${teamNameB} captain is required`,
+    );
+  }
+
+  console.log({ errorsMap });
+
+  return errorsMap;
+}
+
 export const NewGameStore = signalStore(
   withState(INITIAL_NEW_GAME_STATE),
+  withTeamsFeature(),
+  withPlayersFeature(),
+  withPlayerStatisticsFeature(),
+  withComputed(
+    ({
+      players,
+      initialValue,
+      game,
+      loading,
+      initLoading,
+      mode,
+      statisticsEntities,
+      teamsEntities,
+      errors,
+    }) => {
+      return {
+        storeLoaded: computed(
+          () =>
+            !loading() &&
+            !initLoading() &&
+            [EnumGameMode.Create, EnumGameMode.Edit].includes(mode()),
+        ),
+        captains: computed(() =>
+          players().filter(({ isCaptain }) => Boolean(isCaptain)),
+        ),
+        playersNew: computed(() => {
+          return players();
+        }),
+        isFormChanged: computed(() => {
+          if (!initialValue() || initLoading() || errors().size) {
+            return false;
+          }
 
-  withComputed(({ players, initialValue, game, initLoading, mode }) => ({
-    storeLoaded: computed(
-      () =>
-        !initLoading() &&
-        [EnumGameMode.Create, EnumGameMode.Edit].includes(mode()),
-    ),
-    // Players
-    captains: computed(() =>
-      players().filter(({ isCaptain }) => Boolean(isCaptain)),
-    ),
-    isFormChanged: computed(() => {
-      if (!initialValue()) {
-        return false;
-      }
-      return !isEqual(initialValue(), game());
-    }),
-  })),
+          return isNewGameChanged({
+            initialGame: initialValue() as TGameFinal,
+            actualGame: game(),
+            actualTeams: teamsEntities(),
+            actualStatistics: statisticsEntities(),
+          });
+        }),
+      };
+    },
+  ),
+
   withMethods(
     (
       store,
-      { activatedRoute, gameService, playersService, teamsService } = {
+      { router, activatedRoute, gameService, playersService, teamsService } = {
+        router: inject(Router),
         activatedRoute: inject(ActivatedRoute),
         gameService: inject(GameService),
         playersService: inject(PlayersService),
@@ -143,150 +402,134 @@ export const NewGameStore = signalStore(
           game: { ...state.game, status },
         }));
       },
+      saveGame() {
+        const { id, status, number, season, playedAt } =
+          store.game() as IGameDTO;
+
+        const gameDTO = <IGameDTO>{
+          id,
+          status,
+          number,
+          season,
+          playedAt,
+          teams: store.teamsEntities(),
+          statistics: store.statisticsEntities().map(stats => {
+            return omit<TPlayerStatisticFinal, keyof IPlayerStatisticSettings>(
+              stats,
+              'id',
+              'playerData',
+            );
+          }),
+        };
+
+        console.log(gameDTO);
+
+        // TODO
+        gameService.create(gameDTO).subscribe(game => {
+          console.log('GAME IS CREATED', game);
+          if (!game) {
+            console.error('GAME IS NOT CREATED');
+            return;
+          }
+
+          router.navigate(['games', 'edit', game.id]);
+        });
+      },
+
+      updateGame() {
+        const { id, status, number, season, playedAt } =
+          store.game() as IGameDTO;
+
+        const gameDTO = <IGameDTO>{
+          id,
+          status,
+          number,
+          season,
+          playedAt,
+          teams: store.teamsEntities(),
+          statistics: store.statisticsEntities().map(stats => {
+            return omit<TPlayerStatisticFinal, keyof IPlayerStatisticSettings>(
+              stats,
+              'id',
+              'playerData',
+            );
+          }),
+        };
+
+        console.log(gameDTO);
+
+        // TODO
+        gameService.resave(id, gameDTO).subscribe(game => {
+          if (!game) {
+            console.error('GAME IS NOT UPDATED');
+            return;
+          }
+
+          patchState(store, { initialValue: game });
+          this.initGame();
+        });
+      },
+      deleteGame() {
+        const { id } = store.game() as IGameDTO;
+        gameService.delete(id).subscribe(() => {
+          router.navigate(['games']);
+        });
+      },
       initGame: rxMethod<void>(
         pipe(
           tap(() => patchState(store, { loading: true, initLoading: true })),
-          delay(2500),
+          delay(500),
           switchMap(() =>
             forkJoin({
               paramMap: activatedRoute.paramMap.pipe(first()),
-              teams: teamsService.find().pipe(
-                map(teams => {
-                  return Object.fromEntries(
-                    teams.map((team, index) => {
-                      return [index, team];
-                    }),
-                  );
-                }),
-              ),
+              queryParamMap: activatedRoute.queryParamMap.pipe(first()),
+              teams: teamsService.find(),
+              players: playersService.find(),
             }),
           ),
           switchMap<
-            { paramMap: ParamMap; teams: Record<string, ITeam> },
-            Observable<IPlayerStatistic[]>
-          >(({ paramMap, teams }) => {
+            {
+              paramMap: ParamMap;
+              queryParamMap: ParamMap;
+              teams: [ITeamDTO, ITeamDTO];
+              players: TPlayerFinal[];
+            },
+            Observable<TGameFinal>
+          >(({ paramMap, queryParamMap, teams, players }) => {
             const gameId = paramMap.get('id');
+            const mode = gameId ? EnumGameMode.Edit : EnumGameMode.Create;
 
-            // Create
-            if (!gameId) {
-              return activatedRoute.queryParamMap.pipe(
-                map(queryParam => {
-                  const game = cloneDeep(INITIAL_GAME_STATE);
-                  game.teams = teams;
+            // Switch mode + cases
+            const gameObservable: Observable<TGameFinal> = !gameId
+              ? // Inititialize and prepared data for creation mode
+                initGameCreation(queryParamMap, { teams })
+              : // Load & prepared data for editing game
+                gameService
+                  .findById(gameId)
+                  .pipe(switchMap(game => initGameEdition(game)));
 
-                  if (queryParam.has('number')) {
-                    game.number = Number(queryParam.get('number'));
-                  }
+            // Update state
+            return gameObservable.pipe(
+              tap((game: TGameFinal) => {
+                console.log({ mode, game });
+                patchState(store, () => ({
+                  mode,
+                  game,
+                  players: cloneDeep(players),
+                  teams: cloneDeep(teams),
+                  initialValue: cloneDeep(game),
+                  loading: false,
+                  initLoading: true,
+                }));
 
-                  if (queryParam.has('season')) {
-                    game.season = Number(queryParam.get('season'));
-                  }
-
-                  if (
-                    queryParam.has('playedAt') &&
-                    queryParam.get('playedAt') &&
-                    isDate(new Date(queryParam.get('playedAt')!))
-                  ) {
-                    game.playedAt = new Date(queryParam.get('playedAt')!);
-                  }
-
-                  // Should be last
-                  patchState(
-                    store,
-                    () => ({
-                      mode: EnumGameMode.Create,
-                      game,
-                    }),
-                    state => ({ initialValue: cloneDeep(state.game) }),
-                  );
-
-                  // TODO
-                  // Return statistics
-                  // Would be nice, if we use that statistics inside
-                  return [];
-                }),
-              );
-            }
-
-            // Edit
-            if (gameId) {
-              return gameService.find({ id: gameId }).pipe(
-                map(games => games.at(0)),
-                tap(game => {
-                  if (!game) {
-                    return;
-                  }
-
-                  console.log('EDIT', game);
-
-                  // Fill in Game store
-                  patchState(
-                    store,
-                    () => ({
-                      mode: EnumGameMode.Edit,
-                      game: { ...game, playedAt: new Date(game.playedAt) },
-                    }),
-                    state => ({ initialValue: cloneDeep(state.game) }),
-                  );
-                }),
-                map(game => game?.statistics ?? []),
-              );
-            }
-
-            patchState(store, () => ({
-              mode: EnumGameMode.Unknown,
-            }));
-
-            throw Error('Store has invalid settings');
-          }),
-          switchMap(playerStatistics => {
-            console.log('playerStatistics', playerStatistics);
-            return playersService.find().pipe(
-              tap(players => {
-                console.log(
-                  'players',
+                const stats = matchStatisticsPlayerData({
                   players,
-                  typeof players,
-                  Array.isArray(players),
-                );
-
-                // Merge game players statistics and players
-                const mergedPlayers: GamePlayer[] = players.map(player => {
-                  const found = playerStatistics.find(
-                    ({ playerId }) => playerId === player.id,
-                  );
-
-                  if (!found) {
-                    return {
-                      ...player,
-                      // additional
-                      teamId: null,
-                      disableAsPlayer: false,
-                      disableAsCaptain: false,
-                      transferable: false,
-                    };
-                  }
-
-                  return {
-                    ...player,
-                    teamId: found.teamId ?? null,
-                    disableAsPlayer: !!found.teamId,
-                    disableAsCaptain: !!found.isCaptain,
-                    transferable: false,
-                  };
+                  statistics: game.statistics as TPlayerStatisticFinal[],
                 });
 
-                patchState(store, state => {
-                  console.log('reset PLAYERS', state.players);
-                  return {
-                    players: mergedPlayers,
-                  };
-                });
-              }),
-
-              catchError(error => {
-                console.error('GameStore Crashed with error:', error);
-                return EMPTY;
+                store.initTeamsEntity(teams);
+                store.initEntityPlayers(players);
+                store.initEntityStatistics(stats);
               }),
               finalize(() => {
                 console.log('FINALIZE: INIT GAME', {
@@ -297,264 +540,53 @@ export const NewGameStore = signalStore(
               }),
             );
           }),
+          catchError((error: any, caught) => {
+            console.error('GameStore Crashed with error:', error, caught);
+
+            patchState(store, {
+              loading: false,
+              mode: EnumGameMode.Unknown,
+            });
+
+            return NEVER;
+          }),
         ),
       ),
-      // Teams
-      updateTeams: (teams: ITeam[]): void => {
-        patchState(store, state => ({
-          game: {
-            ...state.game,
-            teams: Object.fromEntries(
-              teams.map((team, index) => {
-                return [index, team];
-              }),
-            ),
-          },
-        }));
-      },
-
-      // Captains
-      updateCaptain(captainToUpdate: GamePlayer): void {
-        console.log({ captainToUpdate });
-        patchState(
-          store,
-
-          state => {
-            // Update captain player
-            const players: GamePlayer[] = state.players.map(player => {
-              if (player.id === captainToUpdate.id) {
-                return captainToUpdate;
-              }
-              return player;
-            });
-
-            /**
-             * Fill in statistics
-             *
-             * If captainToUpdate (updated player) has team
-             *
-             * + (has team) -> remove player from statistics
-             * - (has not team) -> add player to statistics
-             */
-            const game = state.game;
-            game.statistics = !captainToUpdate.teamId
-              ? state.game.statistics.filter(
-                  stat => stat.playerId !== captainToUpdate.id,
-                )
-              : [
-                  ...state.game.statistics,
-                  {
-                    playerId: captainToUpdate.id!,
-                    teamId: captainToUpdate.teamId!,
-                    isCaptain: captainToUpdate.disableAsCaptain,
-                    ...DEFAULT_STATISTIC_VALUES,
-                  },
-                ];
-
-            return {
-              players,
-              game,
-            };
-          },
-        );
-      },
-
-      // Players
-      setPlayers(teamId: string | null, addedPlayers: GamePlayer[]): void {
-        console.log({ addedPlayers });
-        // Set added players
-        patchState(store, state => {
-          /**
-           * Update players
-           *
-           * Check player exists in added players
-           *
-           * Player exist in added players set:
-           *  + update player with team and set disable (selected) true
-           *  - skip player
-           *
-           * TODO: make it readable
-           */
-          const players = state.players.map(player => {
-            // An
-            if (player.teamId && player.teamId !== teamId) {
-              // Player already belongs to another team
-              return player;
-            }
-
-            if (player.transferable) {
-              // Transferable player, skip it
-              return player;
-            }
-
-            // Player exists in added players set, update it
-            const addedPlayer = addedPlayers.find(
-              added => added.id === player.id,
-            );
-            if (addedPlayer) {
-              return { ...player, disableAsPlayer: true, teamId };
-            }
-
-            // Player not exists in added players set, reset it
-            return {
-              ...player,
-              disableAsPlayer: false,
-              teamId: null,
-            };
-          });
-
-          const game = { ...state.game };
-          const statisticIds = game.statistics.map(stat => stat.playerId);
-
-          // Add comment to block below
-
-          /**
-           *  Add new players to game.statistics
-           *
-           * Filter players with teamId (has team) and statisticIds does not includes player.id (not exists in statistics)
-           */
-          const newPlayersToAdd: IPlayerStatistic[] = players
-            .filter(({ id, teamId }) => !!teamId && !statisticIds.includes(id))
-            .map(player => {
-              return {
-                playerId: player.id,
-                teamId: player.teamId!,
-                isCaptain: player.disableAsCaptain,
-                ...DEFAULT_STATISTIC_VALUES,
-              };
-            });
-
-          game.statistics = [...game.statistics, ...newPlayersToAdd];
-
-          return {
-            // Reset all player belonging to current team
-            game,
-            players,
-          };
-        });
-      },
-      togglePlayerMVP: ({
-        player: { playerId, teamId },
-        mvp,
-      }: {
-        player: IPlayerStatistic;
-        mvp: boolean;
-      }): void => {
-        patchState(store, state => {
-          const game = { ...state.game };
-          game.statistics = state.game.statistics.map(stat => {
-            if (stat.playerId === playerId && stat.teamId === teamId) {
-              stat.mvp = mvp;
-              return stat;
-            }
-            return stat;
-          });
-
-          return {
-            game,
-          };
-        });
-      },
-      patchPlayerStats: ({
-        player: { playerId, teamId },
-        action,
-        key,
-      }: {
-        player: IPlayerStatistic;
-        action: 'decrement' | 'increment';
-        key: PlayerStatisticNumberKeys;
-      }): void => {
-        patchState(store, state => {
-          const game = { ...state.game };
-          game.statistics = state.game.statistics.map(stat => {
-            if (stat.playerId === playerId && stat.teamId === teamId) {
-              if (action === 'decrement') {
-                key;
-                stat[key] -= 1;
-              } else {
-                stat[key] += 1;
-              }
-              return stat;
-            }
-            return stat;
-          });
-
-          return {
-            game,
-          };
-        });
-      },
-      playerToggleTransferable: (
-        player: GamePlayer,
-        transferable: boolean,
-      ): void => {
-        console.group('playerToggleTransferable');
-        console.log(player, transferable);
-        /**
-         * If transferable turn:on:
-         *
-         * + replace player with transferable but set team as null
-         * + add new empty player
-         */
-        if (transferable) {
-          patchState(store, state => {
-            return {
-              players: [
-                // TODO: make map instead filter
-                ...state.players.filter(pl => pl.id !== player.id),
-                // Same player but + transferable
-                {
-                  ...player,
-                  transferable,
-                },
-                // Similar player + transferable
-                {
-                  ...player,
-                  transferable,
-                  pass: 0,
-                  goal: 0,
-                  goalHead: 0,
-
-                  autoGoal: 0,
-                },
-              ],
-            };
-          });
-
-          return;
-        }
-
-        /**
-         * If transferable turn:off
-         *
-         * + remove player
-         */
-        patchState(store, state => {
-          return {
-            players: [
-              ...state.players.filter(pl => pl.id !== player.id),
-              {
-                ...player,
-                transferable,
-              },
-            ],
-          };
-        });
-
-        console.groupEnd();
-      },
-
-      // Games
     }),
   ),
   // Should be latest to read methods
   withHooks({
-    onInit({ initGame }) {
-      console.info('new game store 2 initialization...');
-      initGame();
+    onInit(store) {
+      console.log(FEATURE_INITIALIZED);
+      store.initGame();
+
+      watchState(store, state => {
+        console.log('[new game store][watchState] iteration state', state);
+      });
+
+      effect(
+        () => {
+          if (!store.storeLoaded()) {
+            return;
+          }
+
+          const errors = new Map([
+            ...validateTeamsAndStatistics({
+              teams: store.teamsEntities(),
+              statistics: store.statisticsEntities(),
+            }),
+          ]);
+
+          patchState(store, { errors });
+          console.log('[new game store][effect][validation-errors]', errors);
+        },
+        {
+          allowSignalWrites: true,
+        },
+      );
     },
-    onDestroy({ players }) {
-      console.info('players on destroy', players());
+    onDestroy() {
+      console.log(FEATURE_DESTROYED);
     },
   }),
 );

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -11,7 +12,13 @@ import {
   Res,
   UsePipes,
 } from '@nestjs/common';
-import { ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
 import { SaveGameDTO } from './game.dto';
@@ -50,7 +57,7 @@ export class GamesController {
     status: HttpStatus.OK,
     description: 'Get all games records',
   })
-  async get(
+  async find(
     @Res() res: Response,
     @Query('id')
     _id?: string | undefined,
@@ -65,6 +72,25 @@ export class GamesController {
     );
   }
 
+  // Get /games/:id
+  @Get(':id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: false,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get all games records',
+  })
+  async findById(
+    @Res() res: Response,
+    @Param('id')
+    id: string,
+  ) {
+    return res.json(await this.gamesService.findById(id));
+  }
+
   @Post()
   @ApiBody({ type: Game })
   @ApiResponse({
@@ -72,10 +98,10 @@ export class GamesController {
     description: 'The record has been successfully created.',
   })
   @UsePipes(new ValibotValidationPipe(SaveGameDTO))
-  async save(@Body() game: IGame) {
+  async save(@Res() res: Response, @Body() game: IGame) {
     console.log(game);
 
-    return await this.gamesService.save(game);
+    return res.json(await this.gamesService.save(game));
   }
 
   // PUT /games/:id
@@ -91,6 +117,18 @@ export class GamesController {
     @Body(new ValibotValidationPipe(SaveGameDTO)) game: IGame,
   ) {
     // Update logic
+
+    console.log(game);
+
     return res.json(await this.gamesService.replace(id, game));
+  }
+
+  @Delete(':id')
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully deleted',
+  })
+  async delete(@Res() res: Response, @Param('id') id: string) {
+    return res.json(await this.gamesService.delete(id));
   }
 }

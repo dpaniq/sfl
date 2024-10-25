@@ -1,25 +1,31 @@
 import { TeamEnum } from '@shared/constants/team';
 
-export type TPlayer = {
+export interface PlayerBaseClient {
   id: string;
-
   number: number;
-  avatar: number;
+  avatar: string;
   isCaptain: boolean;
-
   nickname: string;
-  name: string;
-  surname: string;
+}
 
+export interface PlayerStatsClient {
   totalGames: number;
   draws: number;
   lostGames: number;
   wonGames: number;
   maxWinStreak: number;
   maxLostStreak: number;
+}
+
+export type PlayerClient = PlayerBaseClient & PlayerStatsClient;
+export type PlayerWithUserClient = PlayerClient & {
+  user: {
+    id: string;
+    name: string;
+    surname: string;
+    email: string;
+  };
 };
 
-export type TChosenPlayer = Required<TPlayer> & { team: TeamEnum | null };
-
-type MakeOptional<T, Keys extends keyof T> = Omit<T, Keys> &
-  Partial<Pick<T, Keys>>;
+// @deprecated
+export type TChosenPlayer = Required<PlayerClient> & { team: TeamEnum | null };

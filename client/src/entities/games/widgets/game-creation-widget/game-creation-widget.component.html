@@ -1,32 +1,3 @@
-<!-- <pre>
-  initial / current
-  {{ formGroup.getRawValue() | json }}
-  {{ isFormChangedSignal() | json }}
-
-  id: {{ newGameStore.initialValue()?.id | json }} / {{
-    newGameStore.game?.id() | json
-  }}
-  status: {{ newGameStore.initialValue()?.status | json }} / {{
-    newGameStore.game.status() | json
-  }}
-  number: {{ newGameStore.initialValue()?.number | json }} / {{
-    newGameStore.game.number() | json
-  }}
-  season: {{ newGameStore.initialValue()?.season | json }} / {{
-    newGameStore.game.season() | json
-  }}
-  playedAt: {{ newGameStore.initialValue()?.playedAt | json }} / {{
-    newGameStore.game.playedAt() | json
-  }}
-  teams: {{ newGameStore.initialValue()?.teams | json }} / {{
-    newGameStore.game.teams() | json
-  }}
-  statistics: {{ newGameStore.initialValue()?.statistics | json }} / {{
-    newGameStore.game.statistics() | json
-  }}
-
-</pre> -->
-
 <p>{{ playedAtFC.value | date }}</p>
 <h1>
   {{ modeSignal() === 'create' ? 'Create' : 'Edit' }}
@@ -34,6 +5,41 @@
   <sup>/ {{ totalWeeks }}</sup>
   game of year
 </h1>
+<hr />
+
+<div class="actions">
+  @switch (modeSignal()) {
+    @case ('create') {
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="formGroup.invalid || !isFormChangedSignal()"
+        (click)="save()"
+      >
+        Save
+      </button>
+    }
+    @case ('edit') {
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="formGroup.invalid || !isFormChangedSignal()"
+        (click)="update()"
+      >
+        Update
+      </button>
+    }
+  }
+
+  <button
+    mat-raised-button
+    color="warn"
+    [disabled]="!gameId || isFormChangedSignal()"
+    (click)="delete()"
+  >
+    Delete
+  </button>
+</div>
 
 <form [formGroup]="formGroup">
   <mat-form-field>
@@ -91,7 +97,7 @@
   </mat-form-field>
 </form>
 
-@if (loadingSignal()) {
+@if (!storeLoaded()) {
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
@@ -102,7 +108,7 @@
     class="drag-wrapper row"
     (cdkDropListDropped)="drop($event)"
   >
-    @for (team of teams(); let idx = $index; track team._id) {
+    @for (team of teams(); let idx = $index; track team.id) {
       <div
         class="drag-box"
         cdkDrag
@@ -145,22 +151,116 @@
   <p>No teams found!</p>
 }
 
-@if (modeSignal() === 'create') {
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="formGroup.invalid || !isFormChangedSignal()"
-    (click)="save()"
-  >
-    Save
-  </button>
-} @else {
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="formGroup.invalid || !isFormChangedSignal()"
-    (click)="update()"
-  >
-    Update
-  </button>
+@if (storeLoaded() && errors().size) {
+  <div class="validation-errors">
+    <label for="list">Validations errors:</label>
+    <sub>Please fix the following errors</sub>
+    <mat-list role="list">
+      @for (error of errors() | keyvalue; track error.key) {
+        <mat-list-item role="listitem">- {{ error.value }}</mat-list-item>
+      }
+    </mat-list>
+  </div>
 }
+
+<hr />
+<h1>DEBUG COMPARE</h1>
+<table style="border: 1px solid black; border-collapse: collapse">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Initial</th>
+      <th>Current</th>
+      <th>On first level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>id</th>
+      <td>{{ newGameStore.initialValue()?.id | json }}</td>
+      <td>{{ newGameStore.game?.id() | json }}</td>
+    </tr>
+    <tr>
+      <th>status</th>
+      <td>{{ newGameStore.initialValue()?.status | json }}</td>
+      <td>{{ newGameStore.game.status() | json }}</td>
+    </tr>
+    <tr>
+      <th>number</th>
+      <td>{{ newGameStore.initialValue()?.number | json }}</td>
+      <td>{{ newGameStore.game.number() | json }}</td>
+    </tr>
+    <tr>
+      <th>season</th>
+      <td>{{ newGameStore.initialValue()?.season | json }}</td>
+      <td>{{ newGameStore.game.season() | json }}</td>
+    </tr>
+    <tr>
+      <th>playedAt</th>
+      <td>{{ newGameStore.initialValue()?.playedAt | json }}</td>
+      <td>{{ newGameStore.game.playedAt() | json }}</td>
+    </tr>
+    <tr>
+      <th>createdAt</th>
+      <td>{{ newGameStore.initialValue()?.createdAt | json }}</td>
+      <td>{{ newGameStore.game?.createdAt() | json }}</td>
+    </tr>
+    <tr>
+      <th>updatedAt</th>
+      <td>{{ newGameStore.initialValue()?.updatedAt | json }}</td>
+      <td>{{ newGameStore.game?.updatedAt() | json }}</td>
+    </tr>
+    <tr>
+      <th>teams</th>
+      <td>
+        <details>
+          <summary>
+            Teams:
+            <span class="icon">👇</span>
+          </summary>
+          <pre>{{ newGameStore.initialValue()?.teams | json }}</pre>
+        </details>
+      </td>
+      <td>
+        <details>
+          <summary>
+            Teams:
+            <span class="icon">👇</span>
+          </summary>
+          <pre>{{ newGameStore.game?.teams() | json }}</pre>
+        </details>
+      </td>
+    </tr>
+    <tr>
+      <th>Statistics</th>
+      <td>
+        <details>
+          <summary>
+            Statistics:
+            <span class="icon">👇</span>
+          </summary>
+          <pre>{{ newGameStore.initialValue()?.statistics | json }}</pre>
+        </details>
+      </td>
+      <td>
+        <details>
+          <summary>
+            Statistics:
+            <span class="icon">👇</span>
+          </summary>
+          <pre>{{ newGameStore.game?.statistics() | json }}</pre>
+        </details>
+      </td>
+      <td>
+        <details>
+          <summary>
+            Statistics:
+            <span class="icon">👇</span>
+          </summary>
+          <pre>{{ newGameStore.statisticsEntities() | json }}</pre>
+        </details>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr />

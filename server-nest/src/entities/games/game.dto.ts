@@ -1,6 +1,5 @@
 import * as v from 'valibot';
-import { EnumGameStatus, IPlayerStatistic } from './game.schema';
-import { Schema } from 'mongoose';
+import { EnumGameStatus } from './game.schema';
 
 export const SavePlayerStatisticDTO = v.object({
   playerId: v.string([v.toTrimmed()]), //mongoose.Schema.ObjectId
@@ -24,7 +23,7 @@ export const SaveGameDTO = v.transform(
     season: v.number([v.integer(), v.minValue(2010)]),
     playedAt: v.string([v.isoTimestamp()]),
     status: v.enum_(EnumGameStatus),
-    teams: v.record(v.any()),
+    teams: v.array(v.any()),
     statistics: v.array(SavePlayerStatisticDTO),
   }),
   (input) => ({

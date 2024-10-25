@@ -15,7 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { PlayersStore, TPlayer } from '@entities/players';
+import { TPlayerFinal } from '@entities/games/types';
+import { PlayerClient, PlayersStore } from '@entities/players';
 
 @Component({
   selector: 'sfl-players-toggle',
@@ -44,11 +45,11 @@ export class PlayersToggleComponent implements OnDestroy, AfterViewInit {
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  readonly dataSource = new MatTableDataSource<TPlayer>([]);
-  readonly displayedColumns: (keyof TPlayer | 'actions')[] = [
+  readonly dataSource = new MatTableDataSource<TPlayerFinal>([]);
+  readonly displayedColumns: (keyof TPlayerFinal | 'actions')[] = [
     'avatar',
-    'name',
-    'surname',
+    // 'name',
+    // 'surname',
     'nickname',
     'actions',
   ];
@@ -61,7 +62,7 @@ export class PlayersToggleComponent implements OnDestroy, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  toggleCaptain(player: TPlayer) {
+  toggleCaptain(player: TPlayerFinal) {
     this.playersStore.patch(player);
   }
 }

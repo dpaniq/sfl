@@ -81,7 +81,7 @@ export class PlayersSelectionComponent {
   //         return new Date(item.nickname);
   //       }
   //       default: {
-  //         return item[property as keyof TPlayer] as any;
+  //         return item[property as keyof PlayerClient] as any;
   //       }
   //     }
   //   };
@@ -89,8 +89,8 @@ export class PlayersSelectionComponent {
   // ngAfterViewInit() {
   //   this.dataSource.sort = this.sort;
   // }
-  // readonly dataSource = new MatTableDataSource<TPlayer | TChosenPlayer>([]);
-  // readonly displayedColumns: (keyof TPlayer | '<' | '>')[] = [
+  // readonly dataSource = new MatTableDataSource<PlayerClient | TChosenPlayer>([]);
+  // readonly displayedColumns: (keyof PlayerClient | '<' | '>')[] = [
   //   '<',
   //   'avatar',
   //   'name',
@@ -111,7 +111,7 @@ export class PlayersSelectionComponent {
   //     this._liveAnnouncer.announce('Sorting cleared');
   //   }
   // }
-  // addIntoTeam(player: TPlayer, team: TeamEnum) {
+  // addIntoTeam(player: PlayerClient, team: TeamEnum) {
   //   console.log(player, team);
   //   // this.playersStore.addSelected({ id: player.id, team });
   //   this.currentTeam$.update(team => {

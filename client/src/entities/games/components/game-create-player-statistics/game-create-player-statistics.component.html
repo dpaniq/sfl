@@ -1,9 +1,3 @@
-<h2>List of participants</h2>
-<!-- 
-<code>
-  {{ dataSource | json }}
-</code> -->
-
 <table
   mat-table
   [dataSource]="dataSource()"
@@ -43,12 +37,27 @@
           <mat-slide-toggle
             #mvpToggle
             [checked]="row.mvp"
-            (click)="
-              newGameStore.togglePlayerMVP({
-                player: row,
-                mvp: mvpToggle.checked
-              })
-            "
+            (change)="toggleIsMVP(row)"
+          ></mat-slide-toggle>
+        </td>
+      </ng-container>
+    } @else if (column.columnDef === 'isCaptain') {
+      <ng-container [matColumnDef]="column.columnDef">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+        >
+          {{ column.header }}
+        </th>
+
+        <td
+          mat-cell
+          *matCellDef="let row"
+        >
+          <mat-slide-toggle
+            #isCaptainToggleRef
+            [checked]="row.isCaptain"
+            (change)="toggleIsCaptain(row)"
           ></mat-slide-toggle>
         </td>
       </ng-container>
@@ -73,13 +82,8 @@
           } @else {
             <mat-slide-toggle
               #playedForToggle
-              [checked]="row.transferable"
-              (click)="
-                newGameStore.playerToggleTransferable(
-                  row,
-                  playedForToggle.checked
-                )
-              "
+              [checked]="row.isTransferable"
+              (change)="toggleIsTransferable(row, $event.checked)"
             ></mat-slide-toggle>
           }
         </td>
@@ -98,32 +102,17 @@
           *matCellDef="let row"
         >
           <span class="row">
+            <!-- TODO: make component -->
             <button
-              [title]="column.key"
               [disabled]="!row[column.key!]"
-              (click)="
-                newGameStore.patchPlayerStats({
-                  player: row,
-                  action: 'decrement',
-                  key: column.key!
-                })
-              "
+              (click)="patchStatistic(row, column.key!, 'decrement')"
             >
               -
             </button>
 
             <b>{{ column.cell(row) }}</b>
 
-            <button
-              [title]="column.key"
-              (click)="
-                newGameStore.patchPlayerStats({
-                  player: row,
-                  action: 'increment',
-                  key: column.key!
-                })
-              "
-            >
+            <button (click)="patchStatistic(row, column.key!, 'increment')">
               +
             </button>
           </span>

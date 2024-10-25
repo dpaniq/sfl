@@ -1,23 +1,22 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import {
   MatSlideToggleChange,
   MatSlideToggleModule,
 } from '@angular/material/slide-toggle';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { CaptainsService, CaptainsStore, TCaptain } from '@entities/captains';
-import { provideComponentStore } from '@ngrx/component-store';
+import { CaptainsStore, TCaptain } from '@entities/captains';
 
 @Component({
   selector: 'sfl-captains-toggle',
@@ -38,7 +37,7 @@ import { provideComponentStore } from '@ngrx/component-store';
 export class CaptainsToggleComponent {
   constructor(
     private _destroyRef: DestroyRef,
-    private captainsStore: CaptainsStore
+    private captainsStore: CaptainsStore,
   ) {}
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -48,7 +47,7 @@ export class CaptainsToggleComponent {
   ngOnInit() {
     this.captainsStore.captains$
       .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe((captains) => {
+      .subscribe(captains => {
         this.dataSource.data = captains;
       });
   }
@@ -60,8 +59,8 @@ export class CaptainsToggleComponent {
   readonly dataSource = new MatTableDataSource<TCaptain>([]);
   readonly displayedColumns: (keyof TCaptain | 'actions')[] = [
     'avatar',
-    'name',
-    'surname',
+    // 'name',
+    // 'surname',
     'nickname',
     'actions',
   ];

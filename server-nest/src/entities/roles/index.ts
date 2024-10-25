@@ -1,3 +1,3 @@
-import { RoleSchema } from './roles.schema';
+import { Role, RoleSchema } from './roles.schema';
 
-export { RoleSchema };
+export { Role, RoleSchema };

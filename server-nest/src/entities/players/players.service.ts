@@ -1,30 +1,76 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IPlayer, Player } from './players.schema';
+import { Player, ServerPlayer } from './players.schema';
 
 @Injectable()
 export class PlayersService {
   constructor(
     @InjectModel(Player.name)
-    private playerModel: Model<IPlayer>,
+    private playerModel: Model<ServerPlayer>,
   ) {}
 
-  async find(): Promise<IPlayer[]> {
-    return await this.playerModel.find().exec();
+  async findById(id: string): Promise<ServerPlayer> {
+    return (
+      await this.playerModel.findById(id).populate('user').exec()
+    ).toJSON();
   }
 
-  async findCaptains(): Promise<IPlayer[]> {
-    return this.playerModel.find({ isCaptain: true }).exec();
+  async find(): Promise<ServerPlayer[]> {
+    return await this.playerModel
+      .find({
+        // _id: '658ddee2f71a72e6d8ea9698',
+      })
+      .populate('user')
+      .exec();
   }
 
-  async patch(id: string, player: Partial<IPlayer>): Promise<IPlayer | null> {
+  async findCaptains(): Promise<ServerPlayer[]> {
+    return await this.playerModel
+      .find({ isCaptain: true })
+      .populate('user')
+      .exec();
+  }
+
+  async patch(
+    id: string,
+    player: Partial<ServerPlayer>,
+  ): Promise<ServerPlayer | null> {
     try {
       await this.playerModel
-        .updateOne({ _id: id }, { $set: { ...player } })
+        .findByIdAndUpdate({ _id: id }, { $set: { ...player } })
         .exec();
-      return await this.playerModel.findById(id).exec();
+      return await this.playerModel.findById(id).populate('user').exec();
     } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  async create(player: {
+    nickname: string;
+    userId: string;
+    number: number;
+  }): Promise<any> {
+    try {
+      const { id } = await this.playerModel.create({
+        nickname: player.nickname,
+        user: player.userId,
+        number: player.number,
+      });
+
+      return await this.playerModel.findById(id).populate('user').exec();
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  async delete(id: string): Promise<ServerPlayer | null> {
+    try {
+      return await this.playerModel.findByIdAndDelete({ _id: id }).exec();
+    } catch (error) {
+      console.error(error);
       return null;
     }
   }

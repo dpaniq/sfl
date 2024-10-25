@@ -1,14 +1,7 @@
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { TChosenPlayer, TPlayer } from '../types';
-import { PlayerCardComponent } from '../../../shared/ui/players/card/player-card.component';
+import { TChosenPlayer } from '../types';
 
 @Component({
   standalone: true,
@@ -54,7 +47,7 @@ import { PlayerCardComponent } from '../../../shared/ui/players/card/player-card
             <span *ngIf="player?.team">({{ player.team }})</span>
           </mat-card-title>
           <mat-card-subtitle>
-            {{ player.name }} {{ player.surname }}
+            {{ player.nickname }}
           </mat-card-subtitle>
           <img
             mat-card-avatar

@@ -5,10 +5,6 @@
       "rewrite": "/index.html"
     },
     {
-      "route": "dist/assets/*",
-      "rewrite": "dist/assets/*"
-    },
-    {
       "route": "/.*",
       "rewrite": "/index.html"
     }

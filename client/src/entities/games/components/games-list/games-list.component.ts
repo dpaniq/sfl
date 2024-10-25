@@ -13,7 +13,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { EnumGameStatus } from '@entities/games/constants';
 import { GameService } from '@entities/games/services/game.service';
-import { TGameCard } from '@entities/games/types';
+import { TGameFinalWithoutStatistics } from '@entities/games/types';
 import { totalWeeksByYear } from '@entities/utils/date';
 import { addWeeks, getDate, getYear, nextSaturday, setDay } from 'date-fns';
 import { range } from 'lodash-es';
@@ -52,7 +52,7 @@ export class GamesListComponent implements OnInit {
   private readonly loading = signal<boolean>(false);
   readonly season = signal(2023);
 
-  readonly gameCards = signal<TGameCard[]>([]);
+  readonly gameCards = signal<TGameFinalWithoutStatistics[]>([]);
 
   // TODO need year/gameOfYear resolver
 
@@ -73,7 +73,7 @@ export class GamesListComponent implements OnInit {
         this.loading.set(false);
 
         let date = new Date(`${this.season() - 1}-11-01`);
-        const newGames: TGameCard[] = [];
+        const newGames: TGameFinalWithoutStatistics[] = [];
         for (const number of range(1, weeks + 1)) {
           const numberSaturdayDate = nextSaturday(date);
 
@@ -85,7 +85,7 @@ export class GamesListComponent implements OnInit {
             newGames.push({
               number,
               season: this.season(),
-              teams: {},
+              teams: [],
               playedAt: numberSaturdayDate,
               status: EnumGameStatus.Furture,
             });

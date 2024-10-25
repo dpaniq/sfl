@@ -16,7 +16,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { GameListStatisticsPipe, GameStore, IGame } from '@entities/games';
+import { GameListStatisticsPipe, GameStore, TGameFinal } from '@entities/games';
 
 @Component({
   selector: 'sfl-games-table',
@@ -57,8 +57,8 @@ export class GamesTableComponent implements OnDestroy, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  readonly dataSource = new MatTableDataSource<IGame>([]);
-  readonly displayedColumns: (keyof IGame | 'result')[] = [
+  readonly dataSource = new MatTableDataSource<TGameFinal>([]);
+  readonly displayedColumns: (keyof TGameFinal | 'result')[] = [
     'season',
     'number',
     'status',

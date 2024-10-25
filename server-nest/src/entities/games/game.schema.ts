@@ -1,10 +1,6 @@
-import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { randomUUID } from 'crypto';
-import { Model } from 'mongoose';
-import { UUID, ObjectId } from 'src/constants';
-import { Collections } from 'src/enums';
-import { hash } from 'src/shared/utils/string';
+import { ObjectId } from 'src/constants';
 import { Player } from '../players/players.schema';
 import { ITeam, Team } from '../teams/team.schema';
 

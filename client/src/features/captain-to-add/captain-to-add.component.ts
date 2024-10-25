@@ -36,12 +36,9 @@ import {
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CardVariantEnum } from '@shared/constants/card';
 import { PlayersStore } from 'src/entities/players';
-import { TPlayer } from 'src/entities/players/types';
+import { PlayerClient } from 'src/entities/players/types';
 import { BaseUnsubscribeComponent } from 'src/shared/classes/base-unsubscribe-component';
-import {
-  displayFn,
-  hasSuggestedFilter,
-} from '../../entities/captains/utils/autocomplete';
+import { displayFn } from '../../entities/captains/utils/autocomplete';
 
 @Component({
   standalone: true,
@@ -82,7 +79,7 @@ export class CaptainToAddComponent extends BaseUnsubscribeComponent {
   readonly captains$ = this.captainsStore.captains$;
   readonly captainFormControl = new FormControl<TCaptain | string | null>('');
 
-  readonly #filteredPlayers = new BehaviorSubject<TPlayer[]>([]);
+  readonly #filteredPlayers = new BehaviorSubject<PlayerClient[]>([]);
   readonly filteredPlayers$ = this.#filteredPlayers.asObservable();
 
   readonly loading$ = new Subject();
@@ -112,27 +109,28 @@ export class CaptainToAddComponent extends BaseUnsubscribeComponent {
         this.loading$.next(false);
 
         if (!suggestedCaptain) {
-          return this.#filteredPlayers.next(players);
+          // return this.#filteredPlayers.next(players);
         }
 
         // Todo [API]: in the future it should use API
         if (typeof suggestedCaptain === 'string') {
+          // TODO
           const captainsIds = captains.map(({ id }) => id);
-          return this.#filteredPlayers.next(
-            players.filter(
-              player =>
-                !captainsIds.includes(player.id) &&
-                hasSuggestedFilter(player, suggestedCaptain),
-            ),
-          );
+          // return this.#filteredPlayers.next(
+          //   players.filter(
+          //     player =>
+          //       !captainsIds.includes(player.id) &&
+          //       hasSuggestedFilter(player, suggestedCaptain),
+          //   ),
+          // );
         }
 
         // Todo [API]: in the future it should use API
         this.captainFormControl.reset();
-        this.captainsStore.add({
-          ...suggestedCaptain,
-          isCaptain: true,
-        });
+        // this.captainsStore.add({
+        //   ...suggestedCaptain,
+        //   isCaptain: true,
+        // });
       });
   }
 }

@@ -39,8 +39,8 @@ export class HttpService {
     });
   }
 
-  post<T>(url: string, data: Partial<T> = {}): Observable<T> {
-    return this.#httpClient.post<T>(API_URL + '/' + url, data, {
+  post<T, V = T>(url: string, data: Partial<T> = {}): Observable<V> {
+    return this.#httpClient.post<V>(API_URL + '/' + url, data, {
       headers: POST_HEADERS,
     });
   }
@@ -55,5 +55,9 @@ export class HttpService {
     return this.#httpClient.patch<TResponse>(API_URL + '/' + url, data, {
       headers: PATCH_HEADERS,
     });
+  }
+
+  delete<TResponse>(url: string) {
+    return this.#httpClient.delete<TResponse>(API_URL + '/' + url);
   }
 }

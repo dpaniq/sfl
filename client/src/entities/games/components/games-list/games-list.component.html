@@ -5,11 +5,12 @@
   <mat-select [(ngModel)]="season">
     <mat-option [value]="2023">2023</mat-option>
     <mat-option [value]="2024">2024</mat-option>
+    <mat-option [value]="2025">2025</mat-option>
   </mat-select>
 </mat-form-field>
 
 <section>
-  @for (gameCard of gameCards(); track gameCard) {
+  @for (gameCard of gameCards(); track gameCard.id) {
     @defer {
       <sfl-game-card [gameCard]="gameCard"></sfl-game-card>
     } @placeholder {

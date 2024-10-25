@@ -6,15 +6,15 @@ import {
   input,
 } from '@angular/core';
 
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { TOTAL_GAMES_OF_YEAR } from '@entities/games/constants';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { isAfter, isBefore } from 'date-fns';
-import { IGame, TGameCard } from '@entities/games/types';
-import { EnumGameStatus } from '../../constants';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TOTAL_GAMES_OF_YEAR } from '@entities/games/constants';
+import { TGameFinalWithoutStatistics } from '@entities/games/types';
+import { isBefore } from 'date-fns';
+import { EnumGameStatus } from '../../constants';
 
 @Component({
   selector: 'sfl-game-card',
@@ -28,7 +28,7 @@ export class GameCardComponent {
   readonly router = inject(Router);
   readonly activatedRouter = inject(ActivatedRoute);
 
-  public gameCard = input.required<TGameCard>();
+  public gameCard = input.required<TGameFinalWithoutStatistics>();
   public readonly enumGameStatus = EnumGameStatus;
 
   public readonly TOTAL_GAMES_OF_YEAR = TOTAL_GAMES_OF_YEAR;

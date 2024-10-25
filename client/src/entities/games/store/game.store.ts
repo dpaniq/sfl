@@ -9,10 +9,10 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { NEVER, catchError, delay, pipe, switchMap, tap } from 'rxjs';
 import { GameService } from '../services/game.service';
-import { IGame } from '../types';
+import { TGameFinal } from '../types';
 
 export interface GameState {
-  games: IGame[];
+  games: TGameFinal[];
 
   // For internal process
   loading: boolean;

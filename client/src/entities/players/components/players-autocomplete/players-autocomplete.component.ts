@@ -6,26 +6,26 @@ import {
   computed,
   DestroyRef,
   inject,
-  Input,
   input,
-  OnChanges,
-  SimpleChanges,
+  signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import {
-  FormControl,
-  FormControlStatus,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule, MatSelectionListChange } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { GamePlayer, NewGameStore } from '@entities/games/store/new-game.store';
-import { distinctUntilChanged, map } from 'rxjs';
+import { EnumGameMode } from '@entities/games/constants';
+import { NewGameStore } from '@entities/games/store/new-game.store';
+import {
+  DEFAULT_STATISTIC_VALUES,
+  generatePlayerStatisticID,
+} from '@entities/games/store/statistics.feature';
+import { IPlayerDTO, TPlayerStatisticFinal } from '@entities/games/types';
+import { CreatePlayerDialogComponent } from '../create-player-dialog/create-player-dialog.component';
 
 /**
  * https://stackblitz.com/edit/angular-xgtey4?file=app%2Fchips-autocomplete-example.html
@@ -46,124 +46,132 @@ import { distinctUntilChanged, map } from 'rxjs';
     CommonModule,
     MatSelectModule,
     MatListModule,
+    MatButtonModule,
   ],
   templateUrl: './players-autocomplete.component.html',
   styleUrl: './players-autocomplete.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayersAutocompleteComponent implements OnChanges {
+export class PlayersAutocompleteComponent {
+  readonly dialog = inject(MatDialog);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly newGameStore = inject(NewGameStore);
 
-  @Input()
-  ngControl!: FormControl<GamePlayer[]>;
+  public readonly mode = input.required<EnumGameMode>();
+  public readonly teamId = input.required<string>();
 
-  readonly teamId = input.required<string>();
+  protected readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  playersSignal = computed(() => {
-    return this.newGameStore
-      .players()
-      .filter(player => {
-        const searchQuery = this.playersSearchFCSignal();
-
-        if (!searchQuery) {
-          return true;
-        }
-
-        return (
-          player.name?.toLowerCase().includes(searchQuery) ||
-          player.surname?.toLowerCase().includes(searchQuery) ||
-          player.nickname.toLowerCase().includes(searchQuery) ||
-          player.number?.toString().includes(searchQuery)
-        );
-      })
-      .filter(
-        player =>
-          !player.teamId ||
-          player.teamId === this.teamId() ||
-          (player.teamId && player.transferable),
-      );
-  });
-
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-
-  private readonly destroyRef = inject(DestroyRef);
-
-  readonly playersSearchFC = new FormControl<string>({
-    value: '',
-    disabled: true,
-  });
-
-  readonly playersSearchFCSignal = toSignal(
-    this.playersSearchFC.valueChanges.pipe(
-      distinctUntilChanged(),
-      map(value => value?.trim().toLocaleLowerCase() ?? ''),
-    ),
-    {
-      initialValue: '',
-    },
-  );
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const ngControlChanges = changes['ngControl'];
-    if (ngControlChanges?.isFirstChange()) {
-      ngControlChanges.currentValue.statusChanges
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((status: FormControlStatus) => {
-          if (status === 'DISABLED') {
-            this.playersSearchFC.disable();
-          } else {
-            this.playersSearchFC.enable();
-          }
-        });
+  protected readonly querySearchSignal = signal('');
+  protected readonly playersStatisticsGroupByTeamSignal = computed(() => {
+    if (this.teamId() === this.newGameStore.teams().at(0)!.id) {
+      return {
+        alias: this.newGameStore.statisticsBMW() ?? [],
+        opponents: this.newGameStore.statisticsHONDA() ?? [],
+      };
+    } else {
+      return {
+        alias: this.newGameStore.statisticsHONDA() ?? [],
+        opponents: this.newGameStore.statisticsBMW() ?? [],
+      };
     }
-  }
+  });
 
-  remove(player: GamePlayer): void {
-    const raw = this.ngControl.getRawValue();
-    this.ngControl.patchValue(raw.filter(({ id }) => id !== player.id));
-  }
+  protected readonly playersOptionList = computed(() => {
+    const searchQuery = this.querySearchSignal();
 
-  isSelected(player: GamePlayer) {
-    const raw = this.ngControl.getRawValue();
-    return raw.some(({ id }) => id === player.id);
-  }
-
-  onSelectOne(event: MatSelectionListChange) {
-    const selectedId = event.options.at(0)?.value;
-
-    const allPlayers = this.playersSignal();
-    const currentPlayer = allPlayers.find(player => player.id === selectedId)!;
-    const selectedPlayers = this.ngControl.getRawValue();
-
-    // Remove player
-    if (currentPlayer.teamId) {
-      this.ngControl.patchValue(
-        selectedPlayers.filter(({ id }) => id !== currentPlayer.id),
+    const inclusivePlayers = this.playersStatisticsGroupByTeamSignal().alias;
+    const excludingPlayersIds =
+      this.playersStatisticsGroupByTeamSignal().opponents.map(
+        ({ playerId }) => playerId,
       );
-      this.playersSearchFC.patchValue('');
+
+    console.log({
+      inclusivePlayers,
+      excludingPlayersIds,
+    });
+
+    // TODO Temporary: merge statistics data to show it into autocomplete list
+    const players: SetOptional<TPlayerStatisticFinal, 'teamId'>[] =
+      this.newGameStore
+        .playersEntities()
+        // Exclude opponents players
+        .filter(player => !excludingPlayersIds.includes(player.id))
+        // Merge statistics
+        .map(player => {
+          const foundStatistic = inclusivePlayers.find(
+            statistic => statistic.playerId === player.id,
+          );
+
+          if (foundStatistic) {
+            return foundStatistic;
+          }
+
+          return <TPlayerStatisticFinal>{
+            ...DEFAULT_STATISTIC_VALUES,
+            id: generatePlayerStatisticID({
+              teamId: this.teamId(),
+              playerId: 'unknown',
+            }),
+            playerId: player.id,
+            playerData: player,
+          };
+        });
+
+    // const players = inclusivePlayers;
+
+    if (!searchQuery) {
+      return players;
+    }
+
+    return players.filter(
+      player =>
+        // player.name?.toLowerCase().includes(searchQuery) ||
+        // player.surname?.toLowerCase().includes(searchQuery) ||
+        player.playerData?.nickname?.toLowerCase().includes(searchQuery) ||
+        player.playerData?.number?.toString().includes(searchQuery),
+    );
+  });
+
+  // TODO
+  protected removeStatisticPlayer(id: string): void {
+    this.querySearchSignal.set('');
+    this.newGameStore.removeStatisticPlayer(id);
+  }
+
+  protected createPlayer() {
+    this.dialog
+      .open(CreatePlayerDialogComponent, {
+        width: '600px',
+      })
+      .afterClosed()
+      .subscribe((player: IPlayerDTO) => {
+        console.log('new player', player);
+        if (player) {
+          this.newGameStore.addPlayer(player);
+        }
+      });
+  }
+
+  protected onSelect(event: MatSelectionListChange) {
+    const statistic = event.options.at(0)?.value as TPlayerStatisticFinal;
+    const isSelected = event.options.at(0)?.selected;
+
+    const isCaptain =
+      this.playersStatisticsGroupByTeamSignal().alias.length === 0;
+
+    this.querySearchSignal.update(() => '');
+
+    // Add new player
+    if (isSelected) {
+      this.newGameStore.addStatisticPlayer({
+        ...statistic,
+        isCaptain,
+        teamId: this.teamId(),
+      });
       return;
     }
 
-    // Add player
-    this.ngControl.patchValue([...selectedPlayers, currentPlayer]);
-    this.playersSearchFC.patchValue('');
-  }
-
-  // Define compare function
-  compareFn(option: any, selected: any) {
-    return option && selected ? option.id === selected.id : option === selected;
-  }
-
-  onSelect(event: MatSelectionListChange) {
-    const ids = event.source.options
-      .filter(option => option.selected)
-      .map(option => option.value);
-
-    const selectedPlayers: GamePlayer[] = this.newGameStore
-      .players()
-      .filter(({ id }) => ids.includes(id));
-
-    this.ngControl.patchValue(selectedPlayers);
-    this.playersSearchFC.patchValue('');
+    this.newGameStore.removeStatisticPlayer(statistic.id);
   }
 }

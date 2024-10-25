@@ -6,21 +6,17 @@ import { CaptainsTableComponent } from './captains-table/captains-table.componen
 import { CaptainsToggleComponent } from './captains-toggle/captains-toggle.component';
 
 import { PlayersSelectionComponent } from './players-selection/players-selection.component';
-import { PlayersTableComponent } from './players-table/players-table.component';
 import { PlayersToggleComponent } from './players-toggle/players-toggle.component';
 
 export {
-  // Auth
-  SignInComponent,
-
-  // Captains
-  CaptainToAddComponent,
   CaptainsSelectionComponent,
   CaptainsTableComponent,
   CaptainsToggleComponent,
-
+  // Captains
+  CaptainToAddComponent,
   // Players
   PlayersSelectionComponent,
-  PlayersTableComponent,
   PlayersToggleComponent,
+  // Auth
+  SignInComponent,
 };

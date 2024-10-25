@@ -6,8 +6,8 @@ export type TCaptain = {
 
   number: number;
   nickname: string;
-  name: string;
-  surname: string;
+  // name: string;
+  // surname: string;
 
   isCaptain: boolean;
   totalGames: number;

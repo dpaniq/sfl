@@ -2,27 +2,28 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   input,
+  Signal,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NewGameStore } from '@entities/games/store/new-game.store';
 import {
-  GamePlayer,
-  NewGameStore,
-  PlayerStatisticNumberKeys,
-} from '@entities/games/store/new-game.store';
-import { IPlayerStatistic } from '@entities/games/types';
-import { TPlayer } from '@entities/players';
-import { ITeam } from '@entities/teams';
+  TPlayerStatisticFinal,
+  TPlayerStatisticFinalNumberKeys,
+} from '@entities/games/types';
+import { PlayerClient } from '@entities/players';
+import { GAME_PLAYER_STATISTICS_COLUMNS } from './constants';
 
-type GamePlayerStatistic = GamePlayer &
-  IPlayerStatistic & {
-    key?: PlayerStatisticNumberKeys;
-  };
+// There was GamePlayer
+export type GamePlayerStatistic = TPlayerStatisticFinal & {
+  key?: TPlayerStatisticFinalNumberKeys;
+};
 
 @Component({
   selector: 'sfl-game-create-player-statistics',
@@ -39,63 +40,71 @@ type GamePlayerStatistic = GamePlayer &
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCreatePlayerStatisticsComponent {
-  readonly newGameStore = inject(NewGameStore);
+  private readonly newGameStore = inject(NewGameStore);
 
-  public team = input.required<ITeam>();
-  public dataSource =
-    input.required<(Pick<TPlayer, 'nickname'> & IPlayerStatistic)[]>();
+  public teamId = input.required<string>();
 
-  columns: {
-    columnDef: string;
-    header: string;
-    cell: (element: GamePlayerStatistic) => string;
-    key?: PlayerStatisticNumberKeys;
-  }[] = [
-    {
-      columnDef: 'nickname',
-      header: 'Nickname',
-      cell: (element: GamePlayerStatistic) => `${element.nickname}`,
-    },
-    {
-      columnDef: 'pass',
-      key: 'pass',
-      header: 'Passes',
-      cell: (element: GamePlayerStatistic) => `${element.pass}`,
-    },
-    {
-      columnDef: 'goal',
-      key: 'goal',
-      header: 'Goal',
-      cell: (element: GamePlayerStatistic) => `${element.goal}`,
-    },
-    {
-      columnDef: 'goalHead',
-      key: 'goalHead',
-      header: 'Goal head',
-      cell: (element: GamePlayerStatistic) => `${element.goalHead}`,
-    },
-    // {
-    //   columnDef: 'autoGoal',
-    //   key: 'autoGoal',
-    //   header: 'Autogoal',
-    //   cell: (element: GamePlayerStatistic) => `${element.autoGoal}`,
-    // },
-    {
-      columnDef: 'penalty',
-      key: 'penalty',
-      header: 'Penalty',
-      cell: (element: GamePlayerStatistic) => `${element.penalty}`,
-    },
-    {
-      columnDef: 'mvp',
-      header: 'MVP',
-      cell: (element: GamePlayerStatistic) => `${element.mvp}`,
-    },
-    {
-      columnDef: 'transferable',
-      header: '<->',
-      cell: (element: GamePlayerStatistic) => `${element.transferable}`,
-    },
-  ];
-  displayedColumns = this.columns.map(c => c.columnDef);
+  protected readonly columns = GAME_PLAYER_STATISTICS_COLUMNS;
+  protected readonly displayedColumns = this.columns.map(c => c.columnDef);
+
+  protected statistics = computed(() => {
+    return this.teamId() === this.newGameStore.teams().at(0)?.id
+      ? this.newGameStore.statisticsBMW()
+      : this.newGameStore.statisticsHONDA();
+  });
+
+  protected readonly dataSource: Signal<
+    (Pick<PlayerClient, 'nickname'> & TPlayerStatisticFinal)[]
+  > = computed(() => {
+    // TODO: make it litgher
+
+    const players = this.newGameStore.players();
+
+    if (!players.length) {
+      return [];
+    }
+
+    const statisticPlayers = this.statistics().map(stat => {
+      const found = players.find(player => {
+        return player.id === stat.playerId;
+      })!;
+
+      // TODO START HERE
+
+      return {
+        ...stat,
+        nickname: found.nickname,
+      };
+    });
+
+    return statisticPlayers;
+  });
+
+  public toggleIsCaptain(playerStatistic: GamePlayerStatistic) {
+    this.newGameStore.toggleIsCaptain(playerStatistic);
+  }
+
+  public toggleIsMVP(playerStatistic: GamePlayerStatistic) {
+    this.newGameStore.toggleIsMVP(playerStatistic);
+  }
+
+  public toggleIsTransferable(
+    playerStatistic: GamePlayerStatistic,
+    isTransferable: boolean,
+  ) {
+    this.newGameStore.toggleTransferable({
+      ...playerStatistic,
+      isTransferable,
+    });
+  }
+
+  public patchStatistic(
+    statistic: GamePlayerStatistic,
+    key: TPlayerStatisticFinalNumberKeys,
+    action: 'decrement' | 'increment',
+  ) {
+    const number = action === 'decrement' ? -1 : 1;
+
+    this.newGameStore.patchNumberKeysStatistics({ statistic, key, number });
+  }
 }

@@ -1,0 +1,99 @@
+@if (loadingSignal()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+<h2 mat-dialog-title>Create player</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formGroup">
+    <mat-form-field>
+      <mat-label>Nickname</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="nickname"
+        cdkFocusInitial
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Number</mat-label>
+      <input
+        matInput
+        formControlName="number"
+        min="1"
+        max="999"
+        pattern="[0-9]*"
+      />
+
+      @if (formGroup.controls.number?.hasError('min')) {
+        <mat-error>
+          Minimum value is
+          <b>1</b>
+        </mat-error>
+      }
+      @if (formGroup.controls.number?.hasError('max')) {
+        <mat-error>
+          Minimum value is
+          <b>999</b>
+        </mat-error>
+      }
+      @if (formGroup.controls.number?.hasError('pattern')) {
+        <mat-error>
+          Use digits only
+          <b>1-999</b>
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-fieldset
+      formGroupName="user"
+      class="user-fieldset"
+    >
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="email"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="name"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Surname</mat-label>
+        <input
+          matInput
+          formControlName="surname"
+        />
+      </mat-form-field>
+    </mat-fieldset>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    (click)="onNoClick()"
+  >
+    Close
+  </button>
+
+  <button
+    color="primary"
+    type="submit"
+    mat-raised-button
+    [disabled]="!formGroup.valid"
+    (click)="onSubmit()"
+  >
+    Ok
+  </button>
+</mat-dialog-actions>

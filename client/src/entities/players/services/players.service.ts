@@ -1,37 +1,51 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, isDevMode } from '@angular/core';
+import { IPlayerDTO, TPlayerFinal } from '@entities/games/types';
 import { HttpService } from '@shared/services/http.service';
-import { Observable, firstValueFrom } from 'rxjs';
-import { TPlayer } from '../types';
+import { Observable, firstValueFrom, of } from 'rxjs';
+import { playersMock } from './players.mock';
 
 type ResponseCaptains = {
-  players: TPlayer[];
+  players: IPlayerDTO[];
   page: number;
 };
 
 export type PlayersResponse = {
-  players: TPlayer[];
+  players: IPlayerDTO[];
   page: number;
 };
 
 @Injectable()
 export class PlayersService {
-  private readonly useMock = true;
-
   #httpService = inject(HttpService);
 
-  find(): Observable<TPlayer[]> {
-    return this.#httpService.get<TPlayer[]>('players');
+  findOne(id: string): Observable<IPlayerDTO> {
+    return this.#httpService.get<TPlayerFinal>(`players/${id}`);
   }
 
-  getCaptainsPlayers(): Observable<TPlayer[]> {
-    return this.#httpService.get<TPlayer[]>('players/captains');
+  find(): Observable<TPlayerFinal[]> {
+    if (false && isDevMode()) {
+      of(playersMock);
+    }
+
+    return this.#httpService.get<TPlayerFinal[]>('players');
+  }
+
+  create(player: IPlayerDTO): Observable<IPlayerDTO[]> {
+    return this.#httpService.post<
+      SetOptional<IPlayerDTO, 'id' | 'isCaptain'>[],
+      IPlayerDTO[]
+    >('players', [player]);
+  }
+
+  public delete(id: string): Observable<IPlayerDTO | null> {
+    return this.#httpService.delete<IPlayerDTO | null>(`players/${id}`);
+  }
+
+  getCaptainsPlayers(): Observable<IPlayerDTO[]> {
+    return this.#httpService.get<IPlayerDTO[]>('players/captains');
   }
 
   async getList(page: number = 0): Promise<ResponseCaptains> {
-    // if (this.useMock) {
-    //   return (await getCaptainsListMock()) ?? [];
-    // }
-
     const data = await firstValueFrom(
       this.#httpService.post<ResponseCaptains>('players/list', { page }),
     );
@@ -44,91 +58,11 @@ export class PlayersService {
 
   patch(
     id: string,
-    partialPlayer: Partial<TPlayer>,
-  ): Observable<TPlayer | null> {
-    return this.#httpService.patch<Partial<TPlayer>, TPlayer | null>(
+    partialPlayer: Partial<IPlayerDTO>,
+  ): Observable<IPlayerDTO | null> {
+    return this.#httpService.patch<Partial<IPlayerDTO>, IPlayerDTO | null>(
       `players/${id}`,
       partialPlayer,
     );
   }
-
-  // players$ = signal<TCaptain[]>([]);
-  // // players = new BehaviorSubject<TCaptain[]>([]);
-  // // players$ = new Subject<TCaptain[]>([]);
-
-  // choosenCaptains_s$ = signal<TCaptainSelected[]>([]);
-  // availableTeams$ = computed(() => {
-  //   console.log(TEAMS, this.choosenCaptains_s$());
-  //   return TEAMS.filter(
-  //     (team) =>
-  //       !this.choosenCaptains_s$()
-  //         .map(({ team }) => team)
-  //         .includes(team)
-  //   );
-  // });
-
-  // captains$ = computed(() => {
-  //   return this.players$().filter(({ captain }) => captain);
-  // });
-
-  // captainsToAdd$ = computed(() => {
-  //   return this.players$().filter(
-  //     ({ id }) => !this.captains$().find((captain) => captain.id === id)
-  //   );
-  // });
-
-  // constructor() {
-  //   this.init();
-  // }
-
-  // init() {
-  //   this.getCaptains();
-  // }
-
-  // async getCaptains___() {
-  //   const captains = await getCaptainsListMock();
-  //   console.log(captains);
-  //   if (captains?.length) {
-  //     this.players$.update((prev) => [...prev, ...captains]);
-  //     console.log('mutated');
-  //   }
-  //   console.log(this.players$());
-  // }
-
-  // toggleChoosenCaptains(id: string, team: string) {
-  //   const hasCaptain = this.choosenCaptains_s$().find(
-  //     (captain) => captain.id === id
-  //   );
-
-  //   if (hasCaptain) {
-  //     this.choosenCaptains_s$.mutate((prev) =>
-  //       prev.filter((captain) => captain.id !== id)
-  //     );
-  //   } else {
-  //     const find = this.players$().find((captain) => captain.id === id);
-
-  //     find &&
-  //       this.choosenCaptains_s$.update((prev) => [...prev, { ...find, team }]);
-  //   }
-  // }
-
-  // removeCaptain(id: string) {
-  //   this.choosenCaptains_s$.update((prev) =>
-  //     prev.filter((captain) => captain.id !== id)
-  //   );
-  // }
-
-  // addCaptain(id: string) {
-  //   this.players$.update((prev) =>
-  //     prev.map((captain) => {
-  //       if (captain.id === id) {
-  //         return {
-  //           ...captain,
-  //           captain: true,
-  //         };
-  //       }
-  //       return captain;
-  //     })
-  //   );
-  // }
 }

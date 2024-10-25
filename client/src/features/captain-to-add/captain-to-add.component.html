@@ -15,8 +15,11 @@
       [matAutocomplete]="auto"
     />
 
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-      <mat-option
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      [displayWith]="displayFn"
+    >
+      <!-- <mat-option
         *ngFor="
           let captainToAdd of (filteredPlayers$ | async) || (players$ | async)
         "
@@ -24,8 +27,7 @@
       >
         #{{ captainToAdd.number }} /
         {{ captainToAdd.nickname }}
-        ({{ captainToAdd.name }} - {{ captainToAdd.surname }})
-      </mat-option>
+      </mat-option> -->
     </mat-autocomplete>
   </mat-form-field>
 </form>

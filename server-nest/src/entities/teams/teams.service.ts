@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ITeam, Team } from './team.schema';
 import { Model } from 'mongoose';
+import { ITeam, Team } from './team.schema';
 
 @Injectable()
 export class TeamsService {
@@ -11,7 +11,7 @@ export class TeamsService {
   ) {}
 
   async find() {
-    return await this.teamModel.find();
+    return await this.teamModel.find().exec();
   }
 
   async save(team: ITeam) {

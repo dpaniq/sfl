@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   DestroyRef,
   inject,
   Injector,
@@ -29,6 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -39,11 +39,10 @@ import {
   NewGameStore,
 } from '@entities/games';
 import { EnumGameMode, EnumGameStatus } from '@entities/games/constants';
-import { IGame } from '@entities/games/types';
+import { TTeamFinal } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
-import { ITeam, TeamsService } from '@entities/teams';
+import { TeamsService } from '@entities/teams';
 import { getLastSaturday, totalWeeksByYear } from '@entities/utils/date';
-import { getState } from '@ngrx/signals';
 import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
 import { getYear, isDate, isSaturday, previousSaturday } from 'date-fns';
 import { range } from 'lodash-es';
@@ -67,6 +66,7 @@ import { distinctUntilChanged, filter, map } from 'rxjs';
     MatOptionModule,
     ReactiveFormsModule,
     MatProgressBarModule,
+    MatListModule,
 
     // CDK
     CdkDropList,
@@ -101,11 +101,14 @@ export class GameCreationWidgetComponent implements OnInit {
   public readonly seasons = signal<number[]>(
     range(2010, getYear(new Date()) + 1),
   );
-  public readonly teams = computed(() => {
-    return Object.values(this.newGameStore.game().teams) ?? [];
-  });
+  // public readonly teams = computed(() => {
+  //   return Object.values(this.newGameStore.game().teams) ?? [];
+  // });
+  public readonly teams = this.newGameStore.teamsEntities;
 
   public readonly state = this.newGameStore;
+  protected readonly gameId = this.newGameStore.game()?.id;
+  protected readonly errors = this.newGameStore.errors;
 
   formGroup = new FormGroup({
     number: new FormControl<number>(
@@ -152,15 +155,13 @@ export class GameCreationWidgetComponent implements OnInit {
   // Store signals
   public readonly modeSignal = this.newGameStore.mode;
   readonly isFormChangedSignal = this.newGameStore.isFormChanged;
-  readonly loadingSignal = computed(
-    () => this.newGameStore.loading() || this.newGameStore.initLoading(),
-  );
+  readonly storeLoaded = this.newGameStore.storeLoaded;
 
   ngOnInit() {
-    toObservable(this.newGameStore.initLoading, { injector: this.injector })
+    toObservable(this.newGameStore.storeLoaded, { injector: this.injector })
       .pipe(
         distinctUntilChanged(),
-        filter(loading => !loading),
+        filter(Boolean),
         map(() => this.newGameStore.mode()),
         takeUntilDestroyed(this.destroyRef),
       )
@@ -173,7 +174,7 @@ export class GameCreationWidgetComponent implements OnInit {
           return;
         }
 
-        this.fillControls(this.newGameStore.game());
+        this.fillControls();
       });
 
     this.playedAtFC.valueChanges
@@ -190,71 +191,40 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   save() {
-    const raw = this.formGroup.getRawValue();
-    const state = getState(this.newGameStore);
-    const game = state.game;
-
-    this.gameService
-      .save({
-        status: EnumGameStatus.New,
-        number: raw.number,
-        season: raw.season,
-        playedAt: raw.playedAt,
-        teams: game.teams,
-        statistics: game.statistics,
-      })
-      .subscribe(game => console.log('GAME IS SAVED', game));
-
-    this.newGameStore.initGame();
+    this.newGameStore.saveGame();
   }
 
   // TODO REPLACE
   update() {
-    const state = getState(this.newGameStore);
-    const game = state.game;
-
-    this.gameService
-      .resave(game.id!, {
-        status: game.status,
-        number: game.number,
-        season: game.season,
-        playedAt: game.playedAt,
-        teams: game.teams,
-        statistics: game.statistics,
-      })
-      .subscribe(game => console.log('GAME IS UPDATED', game));
-
-    this.newGameStore.initGame();
+    this.newGameStore.updateGame();
   }
 
-  drop(event: CdkDragDrop<ITeam[]>) {
+  delete() {
+    this.newGameStore.deleteGame();
+  }
+
+  drop(event: CdkDragDrop<[TTeamFinal, TTeamFinal]>) {
+    // TODO
+
     const array = this.teams();
 
     if (!array) {
       return;
     }
+    console.log('drop!', array, event);
 
     moveItemInArray(array, event.previousIndex, event.currentIndex);
 
-    this.newGameStore.updateTeams(array);
+    this.newGameStore.updateTeams(array as [TTeamFinal, TTeamFinal]);
+    // this.newGameStore.updateTeams(array);
 
     // TODO not needed fix
     // this.teams.set(array);
   }
 
-  private fillControls({
-    number,
-    season,
-    status,
-    teams,
-    playedAt,
-  }: Partial<IGame>) {
-    console.log('fillControls', { number, season, status, teams, playedAt });
-
-    // TODO not needed
-    if (teams) {
-      // this.teams.set(Object.values(teams));
-    }
+  private fillControls() {
+    console.log('fillControls');
+    const { number, season, status, playedAt } = this.newGameStore.game();
 
     if (number) {
       this.formGroup.controls.number.setValue(Number(number));
