@@ -4,10 +4,6 @@ export const GAMES_ROUTES: Routes = [
   {
     path: 'games',
     title: 'Games',
-    // loadComponent: () =>
-    //   import('../pages/games-page/games-page.component').then(
-    //     c => c.GamesPageComponent,
-    //   ),
     children: [
       {
         path: '',

@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
 
 import { CaptainsService } from '@entities/captains';
 import { TPlayerFinal } from '@entities/games/types';
@@ -60,9 +61,9 @@ import { AuthService } from '@shared/services/auth.service';
 })
 export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   private dialog = inject(MatDialog);
-
-  private playersStore = inject(PlayersStore);
-  private authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly playersStore = inject(PlayersStore);
+  private readonly authService = inject(AuthService);
 
   public user = this.authService.user();
 
@@ -121,6 +122,10 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
     // season[number]: + / - points
     // season[number]: + / - points
   ];
+
+  openPlayerDetailsPage(id: string) {
+    this.router.navigate(['players', id]);
+  }
 
   editPlayer(player: TPlayerFinal) {
     this.dialog

@@ -10,10 +10,13 @@ export class PlayersService {
     private playerModel: Model<ServerPlayer>,
   ) {}
 
-  async find(): Promise<ServerPlayer[]> {
-    // const x = await this.playerModel.find({ nickname: 'Богдан' });
-    // const xx = await x.populate('user');
+  async findById(id: string): Promise<ServerPlayer> {
+    return (
+      await this.playerModel.findById(id).populate('user').exec()
+    ).toJSON();
+  }
 
+  async find(): Promise<ServerPlayer[]> {
     return await this.playerModel
       .find({
         // _id: '658ddee2f71a72e6d8ea9698',

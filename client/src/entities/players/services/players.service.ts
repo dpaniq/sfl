@@ -18,6 +18,10 @@ export type PlayersResponse = {
 export class PlayersService {
   #httpService = inject(HttpService);
 
+  findOne(id: string): Observable<IPlayerDTO> {
+    return this.#httpService.get<TPlayerFinal>(`players/${id}`);
+  }
+
   find(): Observable<TPlayerFinal[]> {
     if (false && isDevMode()) {
       of(playersMock);

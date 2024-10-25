@@ -7,12 +7,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CaptainsService } from '@entities/captains';
 import { PlayersStore } from '@entities/players';
 import { PlayerCreateButtonComponent } from '@entities/players/components/player-create-button/player-create-button.component';
+import { PlayersTableComponent } from '@entities/players/components/players-table/players-table.component';
 import { PlayersService } from '@entities/players/services/players.service';
-import { PlayersTableComponent } from '@features';
 import { PlayersAdminWidgetComponent } from '@widgets';
 
 @Component({
-  selector: 'sfl-players-page',
   standalone: true,
   imports: [
     CommonModule,
@@ -27,8 +26,54 @@ import { PlayersAdminWidgetComponent } from '@widgets';
     // Widgets
     PlayersAdminWidgetComponent,
   ],
-  templateUrl: './players-page.component.html',
-  styleUrls: ['./players-page.component.css'],
+  styles: `
+    :host {
+      .tab-container {
+        margin: 12px 24px;
+
+        > .tab-header {
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        > .tab-content {
+          margin: 12px 0;
+
+          height: 800px;
+          overflow-y: auto;
+        }
+      }
+    }
+  `,
+  template: `
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon fontIcon="list"></mat-icon>
+          List of players
+        </ng-template>
+
+        <div class="tab-container">
+          <div class="tab-header">
+            <sfl-player-create-button />
+          </div>
+
+          <div class="tab-content">
+            <sfl-players-table></sfl-players-table>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab *ngIf="user.isAdmin">
+        <ng-template mat-tab-label>
+          <mat-icon fontIcon="manage_accounts"></mat-icon>
+          Admin panel
+        </ng-template>
+
+        <sfl-players-admin-widget></sfl-players-admin-widget>
+      </mat-tab>
+    </mat-tab-group>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     // Fixme: CaptainsStore uses CaptainsService, idk how to fix this
@@ -41,7 +86,7 @@ import { PlayersAdminWidgetComponent } from '@widgets';
     PlayersStore,
   ],
 })
-export class PlayersPageComponent {
+export class PlayersMainPageComponent {
   // @temporary
   // TODO JWT
   user: { isAdmin: boolean } = { isAdmin: true };

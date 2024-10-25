@@ -238,6 +238,8 @@
       <button
         mat-icon-button
         color="primary"
+        [disabled]="!element.id"
+        (click)="openPlayerDetailsPage(element.id)"
       >
         <mat-icon fontIcon="read_more"></mat-icon>
       </button>

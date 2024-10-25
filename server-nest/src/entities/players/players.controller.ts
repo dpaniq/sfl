@@ -1,8 +1,11 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  InternalServerErrorException,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -12,6 +15,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiProperty,
   ApiResponse,
@@ -43,6 +47,31 @@ export class PlayersController {
     private readonly usersService: UsersService,
     private readonly playersService: PlayersService,
   ) {}
+
+  @ApiOkResponse({ status: 200, type: Player })
+  @ApiBadRequestResponse({ status: 400, description: 'Bad Request' })
+  @ApiInternalServerErrorResponse({
+    status: 500,
+    description: 'Internal Server Error',
+  })
+  @Get(':id')
+  async findById(@Param('id') id: string) {
+    if (!id.trim()) {
+      throw new BadRequestException('Id is empty');
+    }
+
+    try {
+      const player = await this.playersService.findById(id);
+      if (!player) {
+        throw new NotFoundException('Player is not found');
+      }
+      return player;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        error.message || 'Unexpected error occurred',
+      );
+    }
+  }
 
   @Get()
   async find(@Res() res: Response) {

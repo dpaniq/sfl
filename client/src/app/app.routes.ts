@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from 'src/pages/home/home.component';
 import { GAMES_ROUTES } from '@entities/games';
+import { PLAYERS_ROUTES } from '@entities/players';
+import { HomeComponent } from 'src/pages/home/home.component';
 
 export const routes: Routes = [
   { path: '', title: 'Home', component: HomeComponent },
@@ -29,13 +30,6 @@ export const routes: Routes = [
         c => c.CaptainsPageComponent,
       ),
   },
-  {
-    path: 'players',
-    title: 'Players',
-    loadComponent: () =>
-      import('../pages/players-page/players-page.component').then(
-        c => c.PlayersPageComponent,
-      ),
-  },
+  ...PLAYERS_ROUTES,
   ...GAMES_ROUTES,
 ];
