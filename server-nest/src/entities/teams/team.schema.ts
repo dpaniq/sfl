@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 
 export interface ITeam {
+  id: string;
   name: string;
   color: EnumTeamColor;
   description?: string;
