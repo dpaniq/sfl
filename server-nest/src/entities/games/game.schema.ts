@@ -9,13 +9,14 @@ export interface IPlayerStatistic {
   teamId: string;
   isCaptain: boolean;
 
-  // TODO! update optionals to required
-  // Optional
   goal: number;
   goalHead: number;
   pass: number;
   penalty: number;
   mvp: boolean;
+
+  // TODO! update optionals to required
+  // Optional
   autoGoal?: number;
   position?: EnumPlayerPosition;
 
