@@ -134,11 +134,11 @@ export class GamesService {
 
     // Captains
     const captainFirstDraft: string = game.statistics.find(
-      (captain) => captain.teamId === teamFirstIdHelper,
+      (stat) => stat.isCaptain && stat.teamId === teamFirstIdHelper,
     )!.playerId;
 
     const captainSecondDraft: string = game.statistics.find(
-      (captain) => captain.teamId === teamSecondIdHelper,
+      (stat) => stat.isCaptain && stat.teamId === teamSecondIdHelper,
     )!.playerId;
 
     const captainWon: string | null =
