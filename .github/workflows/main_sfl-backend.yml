@@ -79,7 +79,11 @@ jobs:
           client-id: ${{ secrets.SFL_BACKEND_REG_APP_AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.SFL_BACKEND_REG_APP_AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.SFL_BACKEND_REG_APP_AZURE_SUBSCRIPTION_ID }}
-
+      - name: 'Run az commands'
+        run: |
+          az account show
+          az group list
+      
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
