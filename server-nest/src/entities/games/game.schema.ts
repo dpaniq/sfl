@@ -1,25 +1,74 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { ObjectId } from 'src/constants';
-import { Player } from '../players/players.schema';
+import { EnumPlayerPosition, Player } from '../players/players.schema';
 import { ITeam, Team } from '../teams/team.schema';
 
 export interface IPlayerStatistic {
   playerId: string;
   teamId: string;
-  goal?: number;
-  goalHead?: number;
+  isCaptain: boolean;
+
+  // TODO! update optionals to required
+  // Optional
+  goal: number;
+  goalHead: number;
+  pass: number;
+  penalty: number;
+  mvp: boolean;
   autoGoal?: number;
-  pass?: number;
-  penalty?: number;
-  mvp?: boolean;
+  position?: EnumPlayerPosition;
 
   // More details
   // distance?: number;
   // position?: IPlayerPosition;
   // injure?: boolean;
   // pulse?: number;
-  isCaptain: boolean;
+}
+
+export interface IGameMetadata {
+  // Common
+  totalPlayers: number;
+  totalGoals: number;
+  totalGoalsByLeg: number;
+  totalGoalsByHead: number;
+  totalGoalsByPenalty: number;
+  totalGoalsByAuto: number;
+  totalPasses: number;
+  totalPoints: number;
+
+  // Team
+  teamWon: string | null; // null if scoreIsDraw
+  teamLost: string | null; // null if scoreIsDraw
+
+  // Score
+  score: [number, number];
+  scoreIsDraw: boolean;
+  scoreFirstDraft: number;
+  scoreSecondDraft: number;
+
+  // Captains
+  captainFirstDraft: string;
+  captainSecondDraft: string;
+  captainWon: string | null; // null if scoreIsDraw
+  captainLost: string | null; // null if scoreIsDraw
+  isCaptainFirstDraftWon: boolean;
+  isCaptainFirstDraftDraw: boolean;
+  isCaptainFirstDraftLost: boolean;
+  isCaptainSecondDraftWon: boolean;
+  isCaptainSecondDraftDraw: boolean;
+  isCaptainSecondDraftLost: boolean;
+
+  // Players
+  playersByPosition?: {
+    [key in EnumPlayerPosition]: number;
+  };
+
+  // Mpv
+  mvpByGoalsIds: string[];
+  mvpByGoalsHeadIds: string[];
+  mvpByPassesIds: string[];
+  mvpListIds: string[];
 }
 
 export interface IGame {
@@ -27,8 +76,9 @@ export interface IGame {
   season: number;
   playedAt: Date;
   status: EnumGameStatus;
-  teams: Record<string, ITeam>;
+  teams: [ITeam, ITeam];
   statistics: PlayerStatistic[];
+  metadata: IGameMetadata;
 }
 
 export enum EnumGameStatus {
@@ -54,28 +104,28 @@ export class PlayerStatistic implements IPlayerStatistic {
   teamId: string;
 
   @ApiProperty()
-  @Prop({ type: Number })
-  goal?: number;
+  @Prop({ type: Number, required: true, default: 0 })
+  goal: number;
 
   @ApiProperty()
-  @Prop({ type: Number })
-  goalHead?: number;
+  @Prop({ type: Number, required: true, default: 0 })
+  goalHead: number;
 
   @ApiProperty()
-  @Prop({ type: Number })
+  @Prop({ type: Number, required: false, default: 0 })
   autoGoal?: number;
 
   @ApiProperty()
-  @Prop({ type: Number })
-  penalty?: number;
+  @Prop({ type: Number, required: true, default: 0 })
+  penalty: number;
 
   @ApiProperty()
-  @Prop({ type: Number })
-  pass?: number;
+  @Prop({ type: Number, required: true, default: 0 })
+  pass: number;
 
-  @ApiProperty({ default: false })
+  @ApiProperty({ default: false, required: true })
   @Prop({ type: Boolean })
-  mvp?: boolean;
+  mvp: boolean;
 
   @ApiProperty({ type: Boolean, default: false })
   @Prop({ type: Boolean })
@@ -124,18 +174,21 @@ export class Game implements IGame {
   })
   status: EnumGameStatus;
 
-  @ApiProperty({ type: Object })
+  @ApiProperty({ type: Object, isArray: true })
   @Prop({
     type: Object,
     required: true,
   })
-  teams: Record<string, ITeam>;
+  teams: [ITeam, ITeam];
 
   @ApiProperty({ type: [PlayerStatistic] })
   @Prop({
     type: [PlayerStatisticSchema],
   })
   statistics: PlayerStatistic[];
+
+  @Prop({ type: Object, required: false, default: {} })
+  metadata: IGameMetadata;
 }
 
 // If you want to create a DTO for updating the game, you can use PartialType
