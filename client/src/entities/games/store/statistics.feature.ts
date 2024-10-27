@@ -1,4 +1,4 @@
-import { computed, untracked } from '@angular/core';
+import { computed } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
@@ -103,12 +103,10 @@ export function withPlayerStatisticsFeature<_>() {
     withEntities(STATISTIC_ENTITY_CONFIG),
     withComputed(store => ({
       // TODO: need id
+      statisticsWithoutTeamId: computed(() =>
+        store.statisticsEntities().filter(stat => !stat.teamId),
+      ),
       statisticsBMW: computed(() => {
-        console.log('statisticsBMW:', store.teams().at(0)?.id);
-        console.log({
-          wtf: store.statisticsEntities(),
-          teams: store.teams().at(0),
-        });
         return store
           .statisticsEntities()
           .filter(stat => stat.teamId === store.teams().at(0)?.id);
@@ -271,13 +269,6 @@ export function withPlayerStatisticsFeature<_>() {
           teamId: oppositeTeamId,
           playerId: statistic.playerId,
         });
-
-        // const statisticSize = untracked(
-        //   () =>
-        //     store
-        //       .statisticsEntities()
-        //       .filter(stats => stats.teamId === statistic.teamId).length,
-        // );
 
         patchState(
           store,

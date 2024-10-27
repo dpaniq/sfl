@@ -78,7 +78,7 @@ export class PlayersAutocompleteComponent {
   });
 
   protected readonly playersOptionList = computed(() => {
-    const searchQuery = this.querySearchSignal();
+    const searchQuery = this.querySearchSignal().toLowerCase().trim();
 
     const inclusivePlayers = this.playersStatisticsGroupByTeamSignal().alias;
     const excludingPlayersIds =
@@ -89,6 +89,7 @@ export class PlayersAutocompleteComponent {
     console.log({
       inclusivePlayers,
       excludingPlayersIds,
+      statisticsWithoutTeamId: this.newGameStore.statisticsWithoutTeamId(),
     });
 
     // TODO Temporary: merge statistics data to show it into autocomplete list
@@ -124,12 +125,19 @@ export class PlayersAutocompleteComponent {
       return players;
     }
 
-    return players.filter(
-      player =>
-        // player.name?.toLowerCase().includes(searchQuery) ||
-        // player.surname?.toLowerCase().includes(searchQuery) ||
-        player.playerData?.nickname?.toLowerCase().includes(searchQuery) ||
-        player.playerData?.number?.toString().includes(searchQuery),
+    return players.filter(player =>
+      // player.name?.toLowerCase().includes(searchQuery) ||
+      // player.surname?.toLowerCase().includes(searchQuery) ||
+      {
+        if (player.id === '658ddee4f71a72e6d8ea98f0') {
+          console.log(player);
+        }
+
+        return (
+          player.playerData?.nickname?.toLowerCase().includes(searchQuery) ||
+          player.playerData?.number?.toString().includes(searchQuery)
+        );
+      },
     );
   });
 
