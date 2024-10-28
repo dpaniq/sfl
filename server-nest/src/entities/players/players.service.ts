@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Player, ServerPlayer } from './players.schema';
+import { IGame } from '../games/game.schema';
+import { Player, ServerPlayer, TPlayerMetadata } from './players.schema';
 
 @Injectable()
 export class PlayersService {
@@ -68,5 +69,11 @@ export class PlayersService {
       console.error(error);
       return null;
     }
+  }
+
+  public async calculateMetadata(game: IGame): Promise<{}> {
+    const metadata: TPlayerMetadata | any = {};
+
+    return metadata;
   }
 }

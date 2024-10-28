@@ -12,6 +12,138 @@ export interface ServerPlayer {
   user: typeof UUID;
 }
 
+export interface IRatingSystem {
+  /**
+   * +/- Statistics
+   *
+   * +1 points if you goal scored by your team while you were on the field
+   * -1 point if you goal scored by the opponent while you were on the field
+   *
+   * Represents players impact.
+   */
+  plusMinus: number;
+
+  /**
+   * LR: Last Result Statistics
+   *
+   * +1 point if your team won the match
+   * -1 point if your team lost the match
+   *
+   * Represents the outcome (common result) of the games.
+   */
+  lastResult: number;
+
+  /**
+   * Total Points Statistics
+   *
+   * Represents the total points accumulated by the player.
+   *
+   * This value is calculated individually for different rating systems,
+   * reflecting the player's performance across various metrics.
+   */
+  totalPoints: number;
+}
+
+export interface IAncientRatingSystem extends IRatingSystem {
+  /**
+   * Total Points Statistics
+   *
+   * Represents the total points accumulated by the player.
+   *
+   * This value is calculated individually for different rating systems,
+   * reflecting the player's performance across various metrics.
+   *
+   * +1 points for pass
+   * +1 points for regular goal or penalty
+   * +2 points for goal by head
+   */
+  totalPoints: number;
+}
+
+export interface IPositionalRatingSystem extends IRatingSystem {
+  /**
+   * Total Points Statistics
+   *
+   * Represents the total points accumulated by the player.
+   *
+   * This value is calculated individually for different rating systems,
+   * reflecting the player's performance across various metrics.
+   *
+   * GL: Goalkeeper
+   * +4 if game is won
+   * -4 if game is lost
+   *
+   * D: Defender
+   * +3 if game is won
+   * -3 if game is lost
+   *
+   * M: Midfielder | Winger
+   * +2 if game is won
+   * -2 if game is lost
+   *
+   * F: Forward
+   * +1 if game is won
+   * -1 if game is lost
+   *
+   * +1 points for pass
+   * +1 points for regular goal or penalty
+   * +2 points for goal by head
+   */
+  totalPoints: number;
+}
+
+export interface IPlayerMetadata {
+  totalGoalsByLeg: number;
+  totalGoalsByHead: number;
+  totalGoalsByPenalty: number;
+  totalGoalsByAuto: number;
+  totalGoals: number;
+  totalPasses: number;
+
+  totalGames: number;
+  totalWonGames: number;
+  totalDraws: number;
+  totalLostGames: number;
+
+  totalPlayedAsTransfer: number;
+  totalPlayedAsCaptain: number;
+  totalPlayedAsFirstDraft: number;
+  totalPlayedAsSecondDraft: number;
+
+  gamesIds: string[];
+  gameResults: [boolean];
+  gameMaxWinGameStreak: number;
+  gameMaxLostGameStreak: number;
+
+  /**
+   * List of games where the player served as captain.
+   *
+   * Example:
+   * [
+   *   gameId-1, // Game ID 1 where the player was captain
+   *   gameId-n  // Game ID n where the player was captain
+   * ]
+   */
+  captained: string[];
+
+  /**
+   * Captained by statistics: Count of how many times each player was under the captaincy.
+   *
+   * Example:
+   * [
+   *   playerId-1,
+   *   playerId-n,
+   * ]
+   */
+  captainedBy: string[];
+
+  ancientRatingSystem: IAncientRatingSystem;
+  positionalRatingSystem: IPositionalRatingSystem;
+}
+
+export type TPlayerMetadata = IPlayerMetadata &
+  Record<number, IPlayerMetadata & Record<number, IPlayerMetadata>>;
+
 export interface ClientPlayer {
   id: string;
 
@@ -30,13 +162,9 @@ export interface ClientPlayer {
   maxWinStreak: number;
   maxLostStreak: number;
 
-  user: {
-    id: string;
-    email: string;
-    name?: string;
-    surname?: string;
-    avatar?: string;
-  };
+  user: User;
+
+  metadata: TPlayerMetadata;
 }
 
 export enum EnumPlayerStatus {
@@ -136,6 +264,9 @@ export class Player implements ServerPlayer {
   //   },
   // })
   // user: typeof UUID;
+
+  @Prop({ type: Object, required: false, default: {} })
+  metadata: TPlayerMetadata;
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

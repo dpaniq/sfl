@@ -6,13 +6,16 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PlayersService } from '../players';
 import { Game, IGame, IGameMetadata } from './game.schema';
 
 @Injectable()
 export class GamesService {
   constructor(
     @InjectModel(Game.name)
-    private gameModel: Model<IGame>,
+    private readonly gameModel: Model<IGame>,
+
+    private readonly playersService: PlayersService,
   ) {}
 
   async find(game: Partial<IGame>) {
@@ -34,6 +37,8 @@ export class GamesService {
       throw ConflictException;
     }
 
+    // TODO MongoDB transaction to avoid race conditions
+
     const metadata = this.calculateGameMetadata(game);
 
     return await this.gameModel.create({ ...game, metadata });
@@ -41,6 +46,8 @@ export class GamesService {
 
   async replace(_id: string, game: IGame) {
     const metadata = this.calculateGameMetadata(game);
+
+    // TODO MongoDB transaction to avoid race conditions
 
     const replacedGame = await this.gameModel
       .findOneAndReplace({ _id }, { ...game, metadata })
@@ -65,7 +72,7 @@ export class GamesService {
     return !!game;
   }
 
-  calculateGameMetadata(game: IGame) {
+  public calculateGameMetadata(game: IGame): IGameMetadata {
     // Helpers
     const teamFirstIdHelper = game.teams.at(0).id;
     const teamSecondIdHelper = game.teams.at(1).id;
