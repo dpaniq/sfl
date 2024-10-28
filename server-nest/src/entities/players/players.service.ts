@@ -71,8 +71,103 @@ export class PlayersService {
     }
   }
 
-  public async calculateMetadata(game: IGame): Promise<{}> {
-    const metadata: TPlayerMetadata | any = {};
+  public async calculatePlayersMetadata(game: IGame): Promise<any> {
+    // Helpers
+    const playersIds = game.statistics.map((stat) => stat.playerId);
+
+    // Previous metadata to recalculate
+    const players = (
+      await this.playerModel.find({ _id: { $in: playersIds } }).exec()
+    ).map((player) => player.toJSON());
+
+    // Todo: this might be slow, probably need to optimize
+    game.statistics.forEach(async (stat) => {
+      const player = players.find((p) => p.id === stat.playerId);
+
+      const { metadata } = player;
+
+      const totalPasses = stat.pass;
+      const totalGoalsByLeg = stat.goal;
+      const totalGoalsByHead = stat.goalHead;
+      const totalGoalsByPenalty = stat.penalty;
+      const totalGoalsByAuto = 0;
+
+      const currentGameMetada = {
+        totalPasses,
+        totalGoalsByLeg,
+        totalGoalsByHead,
+        totalGoalsByPenalty,
+        totalGoalsByAuto,
+      };
+
+      // TODO: need structure like
+      // metadata[games][season][#]
+      const allGamesMetadata = Object.values(metadata.games).reduce(
+        (curr, next) => {
+          const totalPasses = stat.pass;
+          const totalGoalsByLeg = stat.goal;
+          const totalGoalsByHead = stat.goalHead;
+          const totalGoalsByPenalty = stat.penalty;
+          const totalGoalsByAuto = 0;
+
+          curr.totalPasses += totalPasses;
+          curr.totalGoalsByLeg += totalGoalsByLeg;
+          curr.totalGoalsByHead += totalGoalsByHead;
+          curr.totalGoalsByPenalty += totalGoalsByPenalty;
+          curr.totalGoalsByAuto += totalGoalsByAuto;
+
+          return curr;
+        },
+        {
+          totalPasses: 0,
+          totalGoalsByLeg: 0,
+          totalGoalsByHead: 0,
+          totalGoalsByPenalty: 0,
+          totalGoalsByAuto: 0,
+        },
+      );
+    });
+
+    // Common
+
+    const metadata: TPlayerMetadata | any = {
+      [game.season]: {},
+      // totalGames: number;
+      // totalWonGames: number;
+      // totalDraws: number;
+      // totalLostGames: number;
+      // totalPlayedAsTransfer: number;
+      // totalPlayedAsCaptain: number;
+      // totalPlayedAsFirstDraft: number;
+      // totalPlayedAsSecondDraft: number;
+
+      // gamesIds: string[];
+      // gameResults: [boolean];
+      // gameMaxWinGameStreak: number;
+      // gameMaxLostGameStreak: number;
+      // /**
+      //  * List of games where the player served as captain.
+      //  *
+      //  * Example:
+      //  * [
+      //  *   gameId-1, // Game ID 1 where the player was captain
+      //  *   gameId-n  // Game ID n where the player was captain
+      //  * ]
+      //  */
+      // captained: string[];
+      // /**
+      //  * Captained by statistics: Count of how many times each player was under the captaincy.
+      //  *
+      //  * Example:
+      //  * [
+      //  *   playerId-1,
+      //  *   playerId-n,
+      //  * ]
+      //  */
+      // captainedBy: string[];
+      // ancientRatingSystem: IAncientRatingSystem;
+      // positionalRatingSystem: IPositionalRatingSystem;
+    };
 
     return metadata;
   }

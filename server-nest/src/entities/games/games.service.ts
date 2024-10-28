@@ -41,11 +41,15 @@ export class GamesService {
 
     const metadata = this.calculateGameMetadata(game);
 
+    this.playersService.calculatePlayersMetadata({ ...game, metadata });
+
     return await this.gameModel.create({ ...game, metadata });
   }
 
   async replace(_id: string, game: IGame) {
     const metadata = this.calculateGameMetadata(game);
+
+    this.playersService.calculatePlayersMetadata({ ...game, metadata });
 
     // TODO MongoDB transaction to avoid race conditions
 

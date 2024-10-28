@@ -4,12 +4,15 @@ import { UUID } from 'src/constants';
 import { User } from '../users';
 
 export interface ServerPlayer {
+  id: string;
   nickname: string;
   isCaptain?: boolean;
   position?: EnumPlayerPosition;
   status?: EnumPlayerStatus;
   number?: number;
   user: typeof UUID;
+
+  metadata: TPlayerMetadata;
 }
 
 export interface IRatingSystem {
@@ -141,8 +144,9 @@ export interface IPlayerMetadata {
   positionalRatingSystem: IPositionalRatingSystem;
 }
 
-export type TPlayerMetadata = IPlayerMetadata &
-  Record<number, IPlayerMetadata & Record<number, IPlayerMetadata>>;
+export type TPlayerMetadata = IPlayerMetadata & {
+  games: Record<number, IPlayerMetadata & Record<number, IPlayerMetadata>>;
+};
 
 export interface ClientPlayer {
   id: string;
