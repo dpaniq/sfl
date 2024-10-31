@@ -109,8 +109,6 @@ export class PlayersService {
           continue;
         }
 
-        // merge({}, {METADATA_DEFAULT}, player.metadata)
-
         if (!player.metadata) {
           player.metadata = {} as any;
         }
@@ -172,7 +170,10 @@ export class PlayersService {
           totalGoalsByAuto,
           totalGoals,
           totalPoints:
-            totalGoalsByLeg + totalGoalsByHead * 2 + totalGoalsByPenalty,
+            totalGoalsByLeg +
+            totalGoalsByHead +
+            totalGoalsByPenalty +
+            totalPasses,
         };
 
         // 1. Calculate game metadata | metadata[byGame][season:#]

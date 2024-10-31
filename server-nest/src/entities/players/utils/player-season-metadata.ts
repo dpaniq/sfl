@@ -24,7 +24,8 @@ export function accumulatePlayerSeasonMetadata(
   const lr = input.hasDraw ? 0 : input.hasWon ? 1 : -1;
   const gamesResults: (1 | 0 | -1)[] = [...original.gamesResults, lr];
 
-  const inputTotalPoints =
+  const inputAncientTotalPoints =
+    input.totalPasses +
     input.totalGoalsByLeg +
     input.totalGoalsByPenalty +
     input.totalGoalsByHead * 2;
@@ -83,7 +84,8 @@ export function accumulatePlayerSeasonMetadata(
     ancientRatingSystem: {
       plusMinus: original.ancientRatingSystem.plusMinus + plusMinus,
       lastResult: original.ancientRatingSystem.lastResult + lr,
-      totalPoints: original.ancientRatingSystem.totalPoints + inputTotalPoints,
+      totalPoints:
+        original.ancientRatingSystem.totalPoints + inputAncientTotalPoints,
     },
     // Todo: position needs to be updated
     positionalRatingSystem: {
