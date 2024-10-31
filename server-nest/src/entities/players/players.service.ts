@@ -79,8 +79,10 @@ export class PlayersService {
     }
   }
 
-  public async calculatePlayersMetadata(game: WithId<IGame>): Promise<any> {
+  public async calculatePlayersMetadata(game: WithId<IGame>): Promise<void> {
     // Helpers
+    const dateError = new Date();
+
     const gameSeason: number = game.season;
     const gameNumber: number = game.number;
     const gameMetadata: IGameMetadata = game.metadata;
@@ -93,8 +95,6 @@ export class PlayersService {
       .find({ _id: { $in: playersIds } })
       .exec();
 
-    console.log({ players });
-
     // Todo: this might be slow, probably need to optimize
     for (const stat of game.statistics) {
       const player = players.find((p) => {
@@ -102,104 +102,126 @@ export class PlayersService {
         return p.id.toString() === stat.playerId.toString();
       });
 
-      const playerId = player.id.toString();
+      try {
+        const playerId = player.id.toString();
 
-      if (!player) {
-        console.error('Player not found for resolving metadata');
-        continue;
-      }
+        if (!player) {
+          console.error('Player not found for resolving metadata');
+          continue;
+        }
 
-      // merge({}, {METADATA_DEFAULT}, player.metadata)
+        // merge({}, {METADATA_DEFAULT}, player.metadata)
 
-      if (!player.metadata) {
+        if (!player.metadata) {
+          player.metadata = {
+            byGame: {},
+            bySeason: {},
+            byCareer: { ...METADATA_DEFAULT },
+          };
+        }
+
+        if (!player.metadata.bySeason) {
+          player.metadata.bySeason = {} as any;
+        }
+
+        if (!player.metadata.byCareer) {
+          player.metadata.byCareer = { ...METADATA_DEFAULT };
+        }
+
+        // TODO move to helpers
+        const isTeamFromFirstDraftWon =
+          gameMetadata.scoreFirstDraft > gameMetadata.scoreSecondDraft;
+        const isTeamFromSecondDraftWon =
+          gameMetadata.scoreFirstDraft < gameMetadata.scoreSecondDraft;
+
+        const asFirstDraft =
+          gameMetadata.playerIdsOfFirstDraft.includes(playerId);
+        const asSecondDraft =
+          gameMetadata.playerIdsOfSecondDraft.includes(playerId);
+
+        const playerMetadataByGame: IPlayerMetadataByGame = {
+          ...METADATA_BY_GAME_DEFAULT,
+
+          isMvp: gameMetadata.mvpListIds.includes(playerId),
+          isMvpByPasses: gameMetadata.mvpByPassesIds.includes(playerId),
+          isMvpByGoals:
+            gameMetadata.mvpByGoalsIds.includes(playerId) ||
+            gameMetadata.mvpByGoalsHeadIds.includes(playerId),
+
+          asCaptain: stat.isCaptain,
+          asFirstDraft,
+          asSecondDraft,
+
+          hasWon: asFirstDraft && isTeamFromFirstDraftWon,
+          hasLose: asFirstDraft && isTeamFromSecondDraftWon,
+          hasDraw: gameMetadata.scoreIsDraw,
+        };
+
+        throw new Error('asdasdasd');
+
+        const totalPasses = stat.pass;
+        const totalGoalsByLeg = stat.goal;
+        const totalGoalsByHead = stat.goalHead;
+        const totalGoalsByPenalty = stat.penalty;
+        const totalGoalsByAuto = 0;
+        const totalGoals =
+          totalGoalsByLeg + totalGoalsByHead + totalGoalsByPenalty;
+
+        const playerCommonTotalsMetadata: IPlayerCommonTotalsMetadata = {
+          totalPasses,
+          totalGoalsByLeg,
+          totalGoalsByHead,
+          totalGoalsByPenalty,
+          totalGoalsByAuto,
+          totalGoals,
+          totalPoints:
+            totalGoalsByLeg + totalGoalsByHead * 2 + totalGoalsByPenalty,
+        };
+
+        // 1. Calculate game metadata | metadata[byGame][season:#]
+        player.metadata.byGame = {
+          ...player.metadata.byGame,
+          [seasonGameNumberKey]: {
+            ...playerMetadataByGame,
+            ...playerCommonTotalsMetadata,
+          },
+        };
+
+        // 2. Recalculate season metadata | metadata[games][season]
+        player.metadata.bySeason[gameSeason] = Object.keys(
+          player.metadata.byGame,
+        )
+          .filter((game) => game.startsWith(gameSeason.toString()))
+          .reduce((curr, gameKey) => {
+            const gameMetadata = player.metadata.byGame[gameKey];
+
+            return accumulatePlayerSeasonMetadata(curr, gameMetadata, game);
+          }, METADATA_DEFAULT);
+
+        // 3. Recalculate career metadata | metadata[games] => {...metadata, #1, #2}
+        player.metadata.byCareer = Object.values(
+          player.metadata.bySeason,
+        ).reduce((curr, seasonMetdata) => {
+          return accumulatePlayerCareerMetadata(curr, seasonMetdata);
+        }, METADATA_DEFAULT);
+      } catch (error) {
+        console.error(error);
+
+        const accumulateMetadataError = {
+          dateError,
+          message: error.message,
+        } as any;
+
         player.metadata = {
-          byGame: {},
-          bySeason: {},
-          byCareer: { ...METADATA_DEFAULT },
+          ...player.metadata,
+          byGame: {
+            ...player.metadata.byGame,
+            [seasonGameNumberKey]: {
+              ...accumulateMetadataError,
+            },
+          },
         };
       }
-
-      if (!player.metadata.bySeason) {
-        player.metadata.bySeason = {} as any;
-      }
-
-      if (!player.metadata.byCareer) {
-        player.metadata.byCareer = { ...METADATA_DEFAULT };
-      }
-
-      // TODO move to helpers
-      const isTeamFromFirstDraftWon =
-        gameMetadata.scoreFirstDraft > gameMetadata.scoreSecondDraft;
-      const isTeamFromSecondDraftWon =
-        gameMetadata.scoreFirstDraft < gameMetadata.scoreSecondDraft;
-
-      const asFirstDraft =
-        gameMetadata.playerIdsOfFirstDraft.includes(playerId);
-      const asSecondDraft =
-        gameMetadata.playerIdsOfSecondDraft.includes(playerId);
-
-      const playerMetadataByGame: IPlayerMetadataByGame = {
-        ...METADATA_BY_GAME_DEFAULT,
-
-        isMvp: gameMetadata.mvpListIds.includes(playerId),
-        isMvpByPasses: gameMetadata.mvpByPassesIds.includes(playerId),
-        isMvpByGoals:
-          gameMetadata.mvpByGoalsIds.includes(playerId) ||
-          gameMetadata.mvpByGoalsHeadIds.includes(playerId),
-
-        asCaptain: stat.isCaptain,
-        asFirstDraft,
-        asSecondDraft,
-
-        hasWon: asFirstDraft && isTeamFromFirstDraftWon,
-        hasLose: asFirstDraft && isTeamFromSecondDraftWon,
-        hasDraw: gameMetadata.scoreIsDraw,
-      };
-
-      const totalPasses = stat.pass;
-      const totalGoalsByLeg = stat.goal;
-      const totalGoalsByHead = stat.goalHead;
-      const totalGoalsByPenalty = stat.penalty;
-      const totalGoalsByAuto = 0;
-      const totalGoals =
-        totalGoalsByLeg + totalGoalsByHead + totalGoalsByPenalty;
-
-      const playerCommonTotalsMetadata: IPlayerCommonTotalsMetadata = {
-        totalPasses,
-        totalGoalsByLeg,
-        totalGoalsByHead,
-        totalGoalsByPenalty,
-        totalGoalsByAuto,
-        totalGoals,
-        totalPoints:
-          totalGoalsByLeg + totalGoalsByHead * 2 + totalGoalsByPenalty,
-      };
-
-      // 1. Calculate game metadata | metadata[byGame][season:#]
-      player.metadata.byGame = {
-        ...player.metadata.byGame,
-        [seasonGameNumberKey]: {
-          ...playerMetadataByGame,
-          ...playerCommonTotalsMetadata,
-        },
-      };
-
-      // 2. Recalculate season metadata | metadata[games][season]
-      player.metadata.bySeason[gameSeason] = Object.keys(player.metadata.byGame)
-        .filter((game) => game.startsWith(gameSeason.toString()))
-        .reduce((curr, gameKey) => {
-          const gameMetadata = player.metadata.byGame[gameKey];
-
-          return accumulatePlayerSeasonMetadata(curr, gameMetadata, game);
-        }, METADATA_DEFAULT);
-
-      // 3. Recalculate career metadata | metadata[games] => {...metadata, #1, #2}
-      player.metadata.byCareer = Object.values(player.metadata.bySeason).reduce(
-        (curr, seasonMetdata) => {
-          return accumulatePlayerCareerMetadata(curr, seasonMetdata);
-        },
-        METADATA_DEFAULT,
-      );
 
       // TODO mongo transaction?
       // Add player metadata for current game

@@ -1,18 +1,14 @@
 import { IPlayerMetadata } from '../constants/player-career-metadata';
-import {
-  concatArraysByKey,
-  getMaxRepeatedCountHelper,
-  sumByKey,
-} from './player-common-metadata';
+import { getMaxRepeatedCountHelper, sum } from './player-common-metadata';
 
 export function calculateCareerAncientRatingSystem(
   original: IPlayerMetadata['ancientRatingSystem'],
   input: IPlayerMetadata['ancientRatingSystem'],
 ): IPlayerMetadata['ancientRatingSystem'] {
   return {
-    plusMinus: original.plusMinus + input.plusMinus,
-    lastResult: original.lastResult + input.lastResult,
-    totalPoints: original.totalPoints + input.totalPoints,
+    plusMinus: sum(original.plusMinus, input.plusMinus),
+    lastResult: sum(original.lastResult, input.lastResult),
+    totalPoints: sum(original.totalPoints, input.totalPoints),
   };
 }
 
@@ -31,52 +27,57 @@ export function accumulatePlayerCareerMetadata(
   original: IPlayerMetadata,
   input: IPlayerMetadata,
 ): IPlayerMetadata {
-  const gamesResults = concatArraysByKey('gamesResults', {
-    original,
-    input,
-  }) as (1 | 0 | -1)[];
+  const gamesResults = original.gamesResults.concat(input.gamesResults) as (
+    | 1
+    | 0
+    | -1
+  )[];
 
   return {
-    totalPasses: sumByKey('totalPasses', { original, input }),
-    totalGoalsByLeg: sumByKey('totalGoalsByLeg', { original, input }),
-    totalGoalsByHead: sumByKey('totalGoalsByHead', { original, input }),
-    totalGoalsByPenalty: sumByKey('totalGoalsByPenalty', { original, input }),
-    totalGoalsByAuto: sumByKey('totalGoalsByAuto', { original, input }),
-    totalGoals: sumByKey('totalGoals', { original, input }),
+    totalPasses: sum(original.totalPasses, input.totalPasses),
+    totalGoalsByLeg: sum(original.totalGoalsByLeg, input.totalGoalsByLeg),
+    totalGoalsByHead: sum(original.totalGoalsByHead, input.totalGoalsByHead),
+    totalGoalsByPenalty: sum(
+      original.totalGoalsByPenalty,
+      input.totalGoalsByPenalty,
+    ),
+    totalGoalsByAuto: sum(original.totalGoalsByAuto, input.totalGoalsByAuto),
+    totalGoals: sum(original.totalGoals, input.totalGoals),
 
-    totalGames: sumByKey('totalGames', { original, input }),
-    totalWonGames: sumByKey('totalWonGames', { original, input }),
-    totalDraws: sumByKey('totalDraws', { original, input }),
-    totalLostGames: sumByKey('totalLostGames', { original, input }),
+    totalGames: sum(original.totalGames, input.totalGames),
+    totalWonGames: sum(original.totalWonGames, input.totalWonGames),
+    totalDraws: sum(original.totalDraws, input.totalDraws),
+    totalLostGames: sum(original.totalLostGames, input.totalLostGames),
 
-    totalMvp: sumByKey('totalMvp', { original, input }),
-    totalMvpByGoals: sumByKey('totalMvpByGoals', { original, input }),
-    totalMvpByPasses: sumByKey('totalMvpByPasses', { original, input }),
+    totalMvp: sum(original.totalMvp, input.totalMvp),
+    totalMvpByGoals: sum(original.totalMvpByGoals, input.totalMvpByGoals),
+    totalMvpByPasses: sum(original.totalMvpByPasses, input.totalMvpByPasses),
 
-    totalPlayedAsCaptain: sumByKey('totalPlayedAsCaptain', { original, input }),
-    totalPlayedAsTransfer: sumByKey('totalPlayedAsTransfer', {
-      original,
-      input,
-    }),
-    totalPlayedAsFirstDraft: sumByKey('totalPlayedAsFirstDraft', {
-      original,
-      input,
-    }),
-    totalPlayedAsSecondDraft: sumByKey('totalPlayedAsSecondDraft', {
-      original,
-      input,
-    }),
+    totalPlayedAsTransfer: sum(
+      original.totalPlayedAsTransfer,
+      input.totalPlayedAsTransfer,
+    ),
+    totalPlayedAsCaptain: sum(
+      original.totalPlayedAsCaptain,
+      input.totalPlayedAsCaptain,
+    ),
+    totalPlayedAsFirstDraft: sum(
+      original.totalPlayedAsFirstDraft,
+      input.totalPlayedAsFirstDraft,
+    ),
+    totalPlayedAsSecondDraft: sum(
+      original.totalPlayedAsSecondDraft,
+      input.totalPlayedAsSecondDraft,
+    ),
 
     gamesResults,
-    gamesIds: concatArraysByKey('gamesIds', { original, input }) as string[],
-    captainedGamesIds: concatArraysByKey('captainedGamesIds', {
-      original,
-      input,
-    }) as string[],
-    captainedByPlayersIds: concatArraysByKey('captainedByPlayersIds', {
-      original,
-      input,
-    }) as string[],
+    gamesIds: original.gamesIds.concat(input.gamesIds) as string[],
+    captainedGamesIds: original.captainedGamesIds.concat(
+      input.captainedGamesIds,
+    ) as string[],
+    captainedByPlayersIds: original.captainedByPlayersIds.concat(
+      input.captainedByPlayersIds,
+    ) as string[],
 
     gamesMaxWinStreak: getMaxRepeatedCountHelper(gamesResults, 1),
     gamesMaxDraftStreak: getMaxRepeatedCountHelper(gamesResults, 0),
