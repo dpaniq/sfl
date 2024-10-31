@@ -41,6 +41,10 @@ export interface IGameMetadata {
   // Team
   teamWon: string | null; // null if scoreIsDraw
   teamLost: string | null; // null if scoreIsDraw
+  isTeamFromFirstDraftWon: boolean;
+  isTeamFromFirstDraftLost: boolean;
+  isTeamFromSecondDraftWon: boolean;
+  isTeamFromSecondDraftLost: boolean;
 
   // Score
   score: [number, number];
@@ -61,6 +65,8 @@ export interface IGameMetadata {
   isCaptainSecondDraftLost: boolean;
 
   // Players
+  playerIdsOfFirstDraft: string[];
+  playerIdsOfSecondDraft: string[];
   playersByPosition?: {
     [key in EnumPlayerPosition]: number;
   };
@@ -73,6 +79,7 @@ export interface IGameMetadata {
 }
 
 export interface IGame {
+  id: string;
   number: number;
   season: number;
   playedAt: Date;
@@ -137,6 +144,7 @@ export const PlayerStatisticSchema =
   SchemaFactory.createForClass(PlayerStatistic);
 
 @Schema({
+  id: true,
   timestamps: true,
   versionKey: '_gen',
   toObject: {
@@ -155,6 +163,9 @@ export const PlayerStatisticSchema =
   },
 })
 export class Game implements IGame {
+  @ApiProperty()
+  id: string;
+
   @ApiProperty({ default: 1 })
   @Prop({ type: Number, reuqired: true, index: true, unique: true })
   number: number;

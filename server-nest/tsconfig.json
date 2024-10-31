@@ -18,7 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "moduleResolution": "node",
-    "lib": ["ESNext", "dom"]
+    "lib": ["ESNext", "dom"],
+    "types": ["vitest/globals", "node"]
   },
   "include": ["src/**/*.ts", "types.d.ts"]
 }

@@ -38,10 +38,10 @@ export class GamesService {
     }
 
     // TODO MongoDB transaction to avoid race conditions
-
+    // TODO need save first then update metadata based on the game
     const metadata = this.calculateGameMetadata(game);
 
-    this.playersService.calculatePlayersMetadata({ ...game, metadata });
+    await this.playersService.calculatePlayersMetadata({ ...game, metadata });
 
     return await this.gameModel.create({ ...game, metadata });
   }
@@ -49,13 +49,17 @@ export class GamesService {
   async replace(_id: string, game: IGame) {
     const metadata = this.calculateGameMetadata(game);
 
-    this.playersService.calculatePlayersMetadata({ ...game, metadata });
-
     // TODO MongoDB transaction to avoid race conditions
 
-    const replacedGame = await this.gameModel
-      .findOneAndReplace({ _id }, { ...game, metadata })
-      .exec();
+    const replacedGame = (
+      await this.gameModel
+        .findOneAndReplace({ _id }, { ...game, metadata })
+        .exec()
+    ).toJSON();
+
+    console.log(JSON.stringify({ replacedGame }, null, 2));
+
+    this.playersService.calculatePlayersMetadata({ ...replacedGame, metadata });
 
     if (!replacedGame) {
       throw BadRequestException;
@@ -75,6 +79,19 @@ export class GamesService {
 
     return !!game;
   }
+
+  /*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Calculates and returns the metadata for a given game.
+   *
+   * This function processes the statistics of a game to derive various
+   * metadata attributes such as total goals, passes, scores, team and
+   * captain achievements, and MVPs.
+   *
+   * @param game - The game object containing teams, statistics, and other relevant data.
+   * @returns An object containing the calculated game metadata.
+   */
+  /******  8defbac6-b99b-4dc7-9e64-59b2d59338a2  *******/
 
   public calculateGameMetadata(game: IGame): IGameMetadata {
     // Helpers
@@ -143,6 +160,11 @@ export class GamesService {
         ? teamFirstIdHelper
         : teamSecondIdHelper;
 
+    const isTeamFromFirstDraftWon = scoreFirstDraft > scoreSecondDraft;
+    const isTeamFromFirstDraftLost = scoreFirstDraft < scoreSecondDraft;
+    const isTeamFromSecondDraftWon = scoreFirstDraft < scoreSecondDraft;
+    const isTeamFromSecondDraftLost = scoreFirstDraft > scoreSecondDraft;
+
     // Captains
     const captainFirstDraft: string = game.statistics.find(
       (stat) => stat.isCaptain && stat.teamId === teamFirstIdHelper,
@@ -173,8 +195,15 @@ export class GamesService {
     const isCaptainSecondDraftLost: boolean =
       !scoreIsDraw && captainLost === captainSecondDraft;
 
-    // MVPs
+    // Players
+    const playerIdsOfFirstDraft = game.statistics
+      .filter((stat) => stat.teamId === teamFirstIdHelper)
+      .map((stat) => stat.playerId);
+    const playerIdsOfSecondDraft = game.statistics
+      .filter((stat) => stat.teamId === teamSecondIdHelper)
+      .map((stat) => stat.playerId);
 
+    // MVPs
     // mvpByPassesIds
     const maxPassesNumberHelper = [
       ...new Set(
@@ -246,6 +275,10 @@ export class GamesService {
       // Team
       teamWon,
       teamLost,
+      isTeamFromFirstDraftWon,
+      isTeamFromFirstDraftLost,
+      isTeamFromSecondDraftWon,
+      isTeamFromSecondDraftLost,
 
       // Captains
       captainFirstDraft,
@@ -258,6 +291,9 @@ export class GamesService {
       isCaptainSecondDraftWon,
       isCaptainSecondDraftDraw,
       isCaptainSecondDraftLost,
+
+      playerIdsOfFirstDraft,
+      playerIdsOfSecondDraft,
 
       // MVP
       mvpByGoalsIds,
