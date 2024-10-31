@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { ObjectId } from 'src/constants';
-import { EnumPlayerPosition, Player } from '../players/players.schema';
+import { Player } from '../players';
+import { EnumPlayerPosition } from '../players/constants/player-career-metadata';
 import { ITeam, Team } from '../teams/team.schema';
 
 export interface IPlayerStatistic {

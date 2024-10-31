@@ -98,7 +98,6 @@ export class PlayersService {
     // Todo: this might be slow, probably need to optimize
     for (const stat of game.statistics) {
       const player = players.find((p) => {
-        console.log({ p, stat });
         return p.id.toString() === stat.playerId.toString();
       });
 
@@ -113,11 +112,11 @@ export class PlayersService {
         // merge({}, {METADATA_DEFAULT}, player.metadata)
 
         if (!player.metadata) {
-          player.metadata = {
-            byGame: {},
-            bySeason: {},
-            byCareer: { ...METADATA_DEFAULT },
-          };
+          player.metadata = {} as any;
+        }
+
+        if (!player.metadata.byGame) {
+          player.metadata.byGame = {} as any;
         }
 
         if (!player.metadata.bySeason) {
@@ -156,8 +155,6 @@ export class PlayersService {
           hasLose: asFirstDraft && isTeamFromSecondDraftWon,
           hasDraw: gameMetadata.scoreIsDraw,
         };
-
-        throw new Error('asdasdasd');
 
         const totalPasses = stat.pass;
         const totalGoalsByLeg = stat.goal;
@@ -212,13 +209,10 @@ export class PlayersService {
           message: error.message,
         } as any;
 
-        player.metadata = {
-          ...player.metadata,
-          byGame: {
-            ...player.metadata.byGame,
-            [seasonGameNumberKey]: {
-              ...accumulateMetadataError,
-            },
+        player.metadata.byGame = {
+          ...player.metadata.byGame,
+          [seasonGameNumberKey]: {
+            ...accumulateMetadataError,
           },
         };
       }

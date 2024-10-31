@@ -19,12 +19,11 @@ export class GamesService {
   ) {}
 
   async find(game: Partial<IGame>) {
-    console.log('find', game);
-    return await this.gameModel.find({ ...game });
+    return await this.gameModel.find({ ...game }).exec();
   }
 
   async findById(_id: string) {
-    return await this.gameModel.findById({ _id });
+    return await this.gameModel.findById({ _id }).exec();
   }
 
   async save(game: IGame) {
@@ -57,8 +56,6 @@ export class GamesService {
         .exec()
     ).toJSON();
 
-    console.log(JSON.stringify({ replacedGame }, null, 2));
-
     this.playersService.calculatePlayersMetadata({ ...replacedGame, metadata });
 
     if (!replacedGame) {
@@ -71,27 +68,12 @@ export class GamesService {
   async delete(_id: string) {
     const game = await this.gameModel.findOneAndDelete({ _id }).exec();
 
-    console.log('delete game', game);
-
     if (!game) {
       throw BadRequestException;
     }
 
     return !!game;
   }
-
-  /*************  ✨ Codeium Command ⭐  *************/
-  /**
-   * Calculates and returns the metadata for a given game.
-   *
-   * This function processes the statistics of a game to derive various
-   * metadata attributes such as total goals, passes, scores, team and
-   * captain achievements, and MVPs.
-   *
-   * @param game - The game object containing teams, statistics, and other relevant data.
-   * @returns An object containing the calculated game metadata.
-   */
-  /******  8defbac6-b99b-4dc7-9e64-59b2d59338a2  *******/
 
   public calculateGameMetadata(game: IGame): IGameMetadata {
     // Helpers
