@@ -6,22 +6,24 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PlayersService } from '../players';
 import { Game, IGame, IGameMetadata } from './game.schema';
 
 @Injectable()
 export class GamesService {
   constructor(
     @InjectModel(Game.name)
-    private gameModel: Model<IGame>,
+    private readonly gameModel: Model<IGame>,
+
+    private readonly playersService: PlayersService,
   ) {}
 
   async find(game: Partial<IGame>) {
-    console.log('find', game);
-    return await this.gameModel.find({ ...game });
+    return await this.gameModel.find({ ...game }).exec();
   }
 
   async findById(_id: string) {
-    return await this.gameModel.findById({ _id });
+    return await this.gameModel.findById({ _id }).exec();
   }
 
   async save(game: IGame) {
@@ -34,7 +36,11 @@ export class GamesService {
       throw ConflictException;
     }
 
+    // TODO MongoDB transaction to avoid race conditions
+    // TODO need save first then update metadata based on the game
     const metadata = this.calculateGameMetadata(game);
+
+    await this.playersService.calculatePlayersMetadata({ ...game, metadata });
 
     return await this.gameModel.create({ ...game, metadata });
   }
@@ -42,9 +48,15 @@ export class GamesService {
   async replace(_id: string, game: IGame) {
     const metadata = this.calculateGameMetadata(game);
 
-    const replacedGame = await this.gameModel
-      .findOneAndReplace({ _id }, { ...game, metadata })
-      .exec();
+    // TODO MongoDB transaction to avoid race conditions
+
+    const replacedGame = (
+      await this.gameModel
+        .findOneAndReplace({ _id }, { ...game, metadata })
+        .exec()
+    ).toJSON();
+
+    this.playersService.calculatePlayersMetadata({ ...replacedGame, metadata });
 
     if (!replacedGame) {
       throw BadRequestException;
@@ -56,8 +68,6 @@ export class GamesService {
   async delete(_id: string) {
     const game = await this.gameModel.findOneAndDelete({ _id }).exec();
 
-    console.log('delete game', game);
-
     if (!game) {
       throw BadRequestException;
     }
@@ -65,7 +75,7 @@ export class GamesService {
     return !!game;
   }
 
-  calculateGameMetadata(game: IGame) {
+  public calculateGameMetadata(game: IGame): IGameMetadata {
     // Helpers
     const teamFirstIdHelper = game.teams.at(0).id;
     const teamSecondIdHelper = game.teams.at(1).id;
@@ -132,6 +142,11 @@ export class GamesService {
         ? teamFirstIdHelper
         : teamSecondIdHelper;
 
+    const isTeamFromFirstDraftWon = scoreFirstDraft > scoreSecondDraft;
+    const isTeamFromFirstDraftLost = scoreFirstDraft < scoreSecondDraft;
+    const isTeamFromSecondDraftWon = scoreFirstDraft < scoreSecondDraft;
+    const isTeamFromSecondDraftLost = scoreFirstDraft > scoreSecondDraft;
+
     // Captains
     const captainFirstDraft: string = game.statistics.find(
       (stat) => stat.isCaptain && stat.teamId === teamFirstIdHelper,
@@ -162,8 +177,15 @@ export class GamesService {
     const isCaptainSecondDraftLost: boolean =
       !scoreIsDraw && captainLost === captainSecondDraft;
 
-    // MVPs
+    // Players
+    const playerIdsOfFirstDraft = game.statistics
+      .filter((stat) => stat.teamId === teamFirstIdHelper)
+      .map((stat) => stat.playerId);
+    const playerIdsOfSecondDraft = game.statistics
+      .filter((stat) => stat.teamId === teamSecondIdHelper)
+      .map((stat) => stat.playerId);
 
+    // MVPs
     // mvpByPassesIds
     const maxPassesNumberHelper = [
       ...new Set(
@@ -235,6 +257,10 @@ export class GamesService {
       // Team
       teamWon,
       teamLost,
+      isTeamFromFirstDraftWon,
+      isTeamFromFirstDraftLost,
+      isTeamFromSecondDraftWon,
+      isTeamFromSecondDraftLost,
 
       // Captains
       captainFirstDraft,
@@ -247,6 +273,9 @@ export class GamesService {
       isCaptainSecondDraftWon,
       isCaptainSecondDraftDraw,
       isCaptainSecondDraftLost,
+
+      playerIdsOfFirstDraft,
+      playerIdsOfSecondDraft,
 
       // MVP
       mvpByGoalsIds,

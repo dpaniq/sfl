@@ -2,14 +2,21 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { UUID } from 'src/constants';
 import { User } from '../users';
+import {
+  EnumPlayerPosition,
+  TPlayerMetadata,
+} from './constants/player-career-metadata';
 
 export interface ServerPlayer {
+  id: string;
   nickname: string;
   isCaptain?: boolean;
   position?: EnumPlayerPosition;
   status?: EnumPlayerStatus;
   number?: number;
   user: typeof UUID;
+
+  metadata: TPlayerMetadata;
 }
 
 export interface ClientPlayer {
@@ -30,13 +37,9 @@ export interface ClientPlayer {
   maxWinStreak: number;
   maxLostStreak: number;
 
-  user: {
-    id: string;
-    email: string;
-    name?: string;
-    surname?: string;
-    avatar?: string;
-  };
+  user: User;
+
+  metadata: TPlayerMetadata;
 }
 
 export enum EnumPlayerStatus {
@@ -45,17 +48,6 @@ export enum EnumPlayerStatus {
   Inactive = 'INACTIVE',
   Injured = 'INJURED',
   Active = 'ACTIVE',
-}
-
-export enum EnumPlayerPosition {
-  Goalkeeper = 'GK',
-  DefenderCenter = 'DEF-C',
-  DefenderLeft = 'DEF-L',
-  DefenderRight = 'DEF-R',
-  MidfielderCenter = 'MID-C',
-  MidfielderWingerLeft = 'MID-W-L',
-  MidfielderWingerRight = 'MID-W-R',
-  ForwardStriker = 'FOR-ST',
 }
 
 export enum EnumPlayerCollection {
@@ -73,7 +65,7 @@ const transform = (doc, ret, options) => {
 
 @Schema({
   versionKey: '_gen',
-
+  id: true,
   toObject: {
     transform,
   },
@@ -82,6 +74,9 @@ const transform = (doc, ret, options) => {
   },
 })
 export class Player implements ServerPlayer {
+  @ApiProperty()
+  id: string;
+
   @ApiProperty()
   @Prop({
     type: String,
@@ -136,6 +131,9 @@ export class Player implements ServerPlayer {
   //   },
   // })
   // user: typeof UUID;
+
+  @Prop({ type: Object, required: false, default: {} })
+  metadata: TPlayerMetadata;
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

@@ -6,7 +6,7 @@ import { hash } from 'src/shared/utils/string';
 import { Role } from '../roles/roles.schema';
 
 export interface IUser {
-  _id: string;
+  id?: string;
   name: string;
   surname: string;
   avatar: string;
@@ -34,7 +34,6 @@ const transform = (doc, ret, options) => {
   },
 })
 export class User implements IUser {
-  @ApiProperty()
   @Prop({
     default: randomUUID,
     type: UUID,
@@ -42,6 +41,9 @@ export class User implements IUser {
     transform: (id: any) => id.toString(),
   })
   _id: string;
+
+  @ApiProperty()
+  id: string;
 
   @ApiProperty()
   @Prop({ type: String })
