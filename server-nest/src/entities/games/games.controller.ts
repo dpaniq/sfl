@@ -28,23 +28,11 @@ import { GamesService } from './games.service';
 @ApiTags('games')
 @Controller('games')
 export class GamesController {
-  constructor(private gamesService: GamesService) {}
-
-  // @Get()
-  // async find(@Res() res: Response) {
-  //   const players = await this.gamesService.find();
-  //   return res.json(players);
-  // }
-
-  // @Get('captains')
-  // async findCaptains(@Res() res: Response) {
-  //   const captains = await this.gamesService.findCaptains();
-  //   return res.json(captains);
-  // }
+  constructor(private readonly gamesService: GamesService) {}
 
   @Get()
   @ApiQuery({
-    name: 'id',
+    name: 'number',
     type: String,
     required: false,
   })
@@ -59,14 +47,14 @@ export class GamesController {
   })
   async find(
     @Res() res: Response,
-    @Query('id')
-    _id?: string | undefined,
+    @Query('number', new ParseIntPipe({ optional: true }))
+    number?: number | undefined,
     @Query('season', new ParseIntPipe({ optional: true }))
     season?: number | undefined,
   ) {
     return res.json(
       await this.gamesService.find({
-        ...(_id ? { _id } : null),
+        ...(number ? { number } : null),
         ...(season ? { season } : null),
       }),
     );

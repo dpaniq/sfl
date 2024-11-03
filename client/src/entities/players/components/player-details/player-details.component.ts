@@ -9,7 +9,6 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -31,7 +30,6 @@ import { PlayersService } from '../../services/players.service';
     MatInputModule,
     MatIconModule,
     NilToDashPipe,
-    ReactiveFormsModule,
   ],
   templateUrl: './player-details.component.html',
   styleUrl: './player-details.component.css',

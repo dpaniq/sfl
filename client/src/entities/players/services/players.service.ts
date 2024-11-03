@@ -1,8 +1,7 @@
-import { Injectable, inject, isDevMode } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { IPlayerDTO, TPlayerFinal } from '@entities/games/types';
 import { HttpService } from '@shared/services/http.service';
-import { Observable, firstValueFrom, of } from 'rxjs';
-import { playersMock } from './players.mock';
+import { Observable, firstValueFrom } from 'rxjs';
 
 type ResponseCaptains = {
   players: IPlayerDTO[];
@@ -22,12 +21,10 @@ export class PlayersService {
     return this.#httpService.get<TPlayerFinal>(`players/${id}`);
   }
 
-  find(): Observable<TPlayerFinal[]> {
-    if (false && isDevMode()) {
-      of(playersMock);
-    }
-
-    return this.#httpService.get<TPlayerFinal[]>('players');
+  find(ids?: string): Observable<TPlayerFinal[]> {
+    return this.#httpService.get<TPlayerFinal[], { ids?: string }>('players', {
+      ...(ids ? { ids } : {}),
+    });
   }
 
   create(player: IPlayerDTO): Observable<IPlayerDTO[]> {

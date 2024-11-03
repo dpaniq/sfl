@@ -1,0 +1,90 @@
+:host {
+  padding: 12px 24px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    > fieldset {
+      border: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0 12px;
+
+      padding: 8px 0px;
+
+      &.col-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      &.col-3 {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+    }
+  }
+
+  .bmw {
+    background-color: #f0f0f0;
+  }
+
+  .honda {
+    background-color: rgb(255, 99, 71, 0.7);
+  }
+
+  .mat-mdc-cell {
+    text-align: center;
+  }
+
+  .metadata-score {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 180px;
+    font-weight: 900;
+    flex-basis: 1;
+  }
+
+  .skeletons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    > div.skeleton {
+      width: 100%; /* Width of the skeleton, can be set to a fixed value */
+      height: 200px; /* Height of the skeleton */
+      background-color: #f0f0f0;
+      border-radius: 8px; /* Rounded corners */
+      position: relative;
+      overflow: hidden;
+
+      /* Animation effect */
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -150px; /* Start off-screen */
+        height: 100%;
+        width: 150px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.5),
+          rgba(255, 255, 255, 0)
+        );
+        animation: loading 1.5s infinite;
+      }
+    }
+  }
+}
+
+@keyframes loading {
+  0% {
+    left: -150px;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
