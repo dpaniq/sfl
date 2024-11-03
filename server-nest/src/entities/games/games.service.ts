@@ -38,15 +38,18 @@ export class GamesService {
 
     // TODO MongoDB transaction to avoid race conditions
     // TODO need save first then update metadata based on the game
-    const metadata = this.calculateGameMetadata(game);
-
-    await this.playersService.calculatePlayersMetadata({ ...game, metadata });
+    const metadata = await this.calculateGameMetadata(game);
 
     return await this.gameModel.create({ ...game, metadata });
   }
 
   async replace(_id: string, game: IGame) {
-    const metadata = this.calculateGameMetadata(game);
+    const metadata = await this.calculateGameMetadata(game);
+    // TODO
+    // await this.playersService.recalculateSeasonMetadata(
+    //   stat.playerId.toString(),
+    //   game.season,
+    // );
 
     // TODO MongoDB transaction to avoid race conditions
 
@@ -55,8 +58,6 @@ export class GamesService {
         .findOneAndReplace({ _id }, { ...game, metadata })
         .exec()
     ).toJSON();
-
-    this.playersService.calculatePlayersMetadata({ ...replacedGame, metadata });
 
     if (!replacedGame) {
       throw BadRequestException;
@@ -75,7 +76,7 @@ export class GamesService {
     return !!game;
   }
 
-  public calculateGameMetadata(game: IGame): IGameMetadata {
+  public async calculateGameMetadata(game: IGame): Promise<IGameMetadata> {
     // Helpers
     const teamFirstIdHelper = game.teams.at(0).id;
     const teamSecondIdHelper = game.teams.at(1).id;
@@ -282,7 +283,22 @@ export class GamesService {
       mvpByGoalsHeadIds,
       mvpByPassesIds,
       mvpListIds,
+
+      players: {},
     };
+
+    // players
+    const players = {};
+    // Todo: this might be slow, probably need to optimize
+    for (const stat of game.statistics) {
+      players[stat.playerId.toString()] =
+        await this.playersService.calculatePlayerGameResultMetadata(stat, {
+          ...game,
+          metadata,
+        });
+    }
+
+    metadata.players = players;
 
     return metadata;
   }

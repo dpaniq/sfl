@@ -137,8 +137,3 @@ export class Player implements ServerPlayer {
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);
-
-// user bogdan: b21439b9-87ff-4646-b9e1-780797c887e8
-// apply / use
-// db.players.updateMany({}, {$rename: {userId: "user"}})
-// db.players.updateMany({}, {$unset: {__v: 1}})

@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { ObjectId } from 'src/constants';
-import { Player } from '../players';
 import { EnumPlayerPosition } from '../players/constants/player-career-metadata';
 import { ITeam, Team } from '../teams/team.schema';
 
@@ -26,6 +25,32 @@ export interface IPlayerStatistic {
   // position?: IPlayerPosition;
   // injure?: boolean;
   // pulse?: number;
+}
+
+export interface IPlayerGameResultMetadata {
+  isMvp: boolean;
+  isMvpByGoals: boolean;
+  isMvpByPasses: boolean;
+
+  asCaptain: boolean;
+  asTransfer: boolean;
+  asFirstDraft: boolean;
+  asSecondDraft: boolean;
+
+  hasWon: boolean;
+  hasDraw: boolean;
+  hasLose: boolean;
+  hasPosition?: EnumPlayerPosition;
+
+  totalGoalsByLeg: number;
+  totalGoalsByHead: number;
+  totalGoalsByPenalty: number;
+  totalGoalsByAuto: number;
+  totalGoals: number;
+  totalPasses: number;
+  totalPoints: number;
+
+  errors: { name: string; message: string; date: Date }[];
 }
 
 export interface IGameMetadata {
@@ -71,6 +96,7 @@ export interface IGameMetadata {
   playersByPosition?: {
     [key in EnumPlayerPosition]: number;
   };
+  players: Record<string, IPlayerGameResultMetadata>;
 
   // Mpv
   mvpByGoalsIds: string[];
@@ -101,7 +127,7 @@ export enum EnumGameStatus {
 })
 export class PlayerStatistic implements IPlayerStatistic {
   @ApiProperty({ type: String })
-  @Prop({ type: ObjectId, ref: Player.name, required: true })
+  @Prop({ type: ObjectId, ref: 'Player', required: true })
   playerId: string;
 
   @ApiProperty({ type: String })

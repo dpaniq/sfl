@@ -8,6 +8,7 @@ import { AuthModule } from './entities/auth';
 import { AuthController } from './entities/auth/auth.controller';
 import { GamesModule } from './entities/games/games.module';
 import { PlayersModule } from './entities/players/players.module';
+import { RolesModule } from './entities/roles/roles.module';
 import { TeamsModule } from './entities/teams/teams.module';
 import {
   User,
@@ -18,7 +19,6 @@ import {
 import { UsersService } from './entities/users/users.service';
 import { ContextInterceptor } from './shared/interceptors/context/context.interceptor';
 import { JwtMiddleware } from './shared/middlewares/user/jwt.middleware';
-import { RolesModule } from './entities/roles/roles.module';
 
 @Module({
   imports: [
