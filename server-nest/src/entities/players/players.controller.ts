@@ -7,8 +7,10 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   Res,
 } from '@nestjs/common';
@@ -160,5 +162,21 @@ export class PlayersController {
     @Param('id') id: string,
   ) {
     return res.json(await this.playersService.delete(id));
+  }
+
+  @Get('recalculate/season')
+  @ApiOkResponse({ type: Player, status: 200 })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request response with no content',
+  })
+  async recalculateSeason(
+    @Query('seasonId', ParseIntPipe) seasonId: number,
+    @Query('playerId') playerId: string,
+  ) {
+    return await this.playersService.recalculateSeasonMetadata(
+      playerId,
+      seasonId,
+    );
   }
 }
