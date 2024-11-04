@@ -20,10 +20,12 @@ import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiProperty,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { Request, Response } from 'express';
+import { Types } from 'mongoose';
 import { ClientPlayer } from '.';
 import { UsersService } from '../users/users.service';
 import { Player } from './players.schema';
@@ -76,9 +78,21 @@ export class PlayersController {
   }
 
   @Get()
-  async find(@Res() res: Response) {
-    const players = await this.playersService.find();
-    return res.json(players);
+  @ApiQuery({ name: 'ids', required: false, type: String, isArray: true })
+  @ApiOkResponse({ status: 200, type: () => [Player] })
+  async find(@Res() res, @Query('ids') ids?: string) {
+    // If `ids` is provided as a comma-separated string, split it into an array
+    const idsArray = Array.isArray(ids)
+      ? ids
+      : ids?.split(',').map((id) => new Types.ObjectId(id.trim()));
+
+    return res.json(
+      Array.from(
+        await this.playersService.find({
+          ids: idsArray,
+        }),
+      ),
+    );
   }
 
   @Get('captains')

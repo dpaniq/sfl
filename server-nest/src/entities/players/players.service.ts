@@ -36,8 +36,13 @@ export class PlayersService {
     ).toJSON();
   }
 
-  async find(): Promise<ServerPlayer[]> {
-    return await this.playerModel.find({}).populate('user').exec();
+  async find({ ids }: { ids?: Types.ObjectId[] }): Promise<ServerPlayer[]> {
+    return await this.playerModel
+      .find({
+        ...(ids ? { _id: { $in: ids } } : {}),
+      })
+      .populate('user')
+      .exec();
   }
 
   async findCaptains(): Promise<ServerPlayer[]> {

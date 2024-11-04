@@ -1,0 +1,151 @@
+:host {
+  padding: 12px 24px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    > fieldset {
+      border: none;
+      display: grid;
+      gap: 0 12px;
+      padding: 8px 0px;
+
+      &.table-score-table {
+        grid-auto-flow: row;
+        grid-template-rows: 1fr 0.5fr 1fr;
+      }
+
+      &.col-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      &.col-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+  }
+
+  .mat-mdc-table {
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      text-align: center;
+    }
+
+    & .bmw {
+      /* background-color: gold !important; */
+      background-color: color-mix(in srgb, gold 20%, transparent 90%);
+    }
+
+    & .honda {
+      /* background-color: tomato !important; */
+      background-color: color-mix(in srgb, tomato 20%, transparent 90%);
+    }
+  }
+
+  .metadata-score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 120px;
+    font-weight: 900;
+    flex-basis: 1;
+
+    & em {
+      font-size: 80px;
+      font-weight: 900;
+    }
+
+    & span {
+      font-size: 180px;
+      font-weight: 900;
+    }
+
+    /*
+      1. Angle for diagonal lines
+      2. Line color
+      3. Line thickness
+      4. Gap start
+      5. Gap end
+
+    background: repeating-linear-gradient(
+      45deg,
+      rgb(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.1) 4px,
+      transparent 15px,
+      transparent 7px
+    );
+    */
+
+    background: rgb(249, 255, 3);
+    background: linear-gradient(
+        45deg,
+        color-mix(in srgb, gold 50%, transparent 60%) 0%,
+        color-mix(in srgb, tomato 50%, transparent 60%) 100%
+      ),
+      repeating-linear-gradient(
+        45deg,
+        rgb(0, 0, 0, 0.5) 8px,
+        rgba(0, 0, 0, 1) 1px,
+        transparent 10px,
+        transparent 50px
+      );
+
+    & span.bmw {
+      background-color: unset;
+      color: gold !important;
+      -webkit-text-stroke: 3px black;
+    }
+
+    & span.honda {
+      background-color: unset;
+      color: tomato !important;
+      -webkit-text-stroke: 3px black;
+    }
+  }
+
+  .skeletons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    > div.skeleton {
+      width: 100%; /* Width of the skeleton, can be set to a fixed value */
+      height: 200px; /* Height of the skeleton */
+      background-color: #f0f0f0;
+      border-radius: 8px; /* Rounded corners */
+      position: relative;
+      overflow: hidden;
+
+      /* Animation effect */
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -150px; /* Start off-screen */
+        height: 100%;
+        width: 150px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.5),
+          rgba(255, 255, 255, 0)
+        );
+        animation: loading 1.5s infinite;
+      }
+    }
+  }
+}
+
+@keyframes loading {
+  0% {
+    left: -150px;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}

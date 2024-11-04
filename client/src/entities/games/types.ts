@@ -15,6 +15,7 @@ export interface IGameDTO {
   teams: ITeamDTO[];
   status: EnumGameStatus;
   statistics: IPlayerStatisticDTO[];
+  metadata?: any;
 }
 
 export type TGameFinal = SetOptional<IGameDTO, 'id'> & IGameSettings;

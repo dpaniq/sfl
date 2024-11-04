@@ -30,7 +30,7 @@ export const GAMES_ROUTES: Routes = [
           ).then(c => c.GameCreationWidgetComponent),
       },
       {
-        path: ':season/:id',
+        path: ':season/:number',
         title: 'Game details',
         loadComponent: () =>
           import('./pages/game-page-details/game-page-details.component').then(
