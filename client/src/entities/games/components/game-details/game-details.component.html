@@ -41,7 +41,7 @@
     </fieldset>
 
     <!-- Common -->
-    <fieldset>
+    <fieldset class="col-3">
       <mat-form-field>
         <mat-label>Season</mat-label>
         <input
@@ -73,21 +73,32 @@
       </mat-form-field>
     </fieldset>
 
-    <fieldset>
+    <fieldset class="table-score-table">
       <div [class]="game.teams[0].name | lowercase">
         <ng-container
           [ngTemplateOutlet]="tableStatisticsTemplate"
           [ngTemplateOutletContext]="{
             team: game.teams[0],
-            dataSource: dataSourceFirstDraft()
+            dataSource: dataSourceFirstDraft(),
+            isFirstDraft: true
           }"
         ></ng-container>
       </div>
 
       <div class="metadata-score">
-        <span>{{ game.metadata?.scoreFirstDraft }}</span>
+        <em [class]="game.teams[0].name | lowercase">
+          {{ game.teams[0].name | uppercase }}
+        </em>
+        <span [class]="game.teams[0].name | lowercase">
+          {{ game.metadata?.scoreFirstDraft }}
+        </span>
         :
-        <span>{{ game.metadata?.scoreSecondDraft }}</span>
+        <span [class]="game.teams[1].name | lowercase">
+          {{ game.metadata?.scoreSecondDraft }}
+        </span>
+        <em [class]="game.teams[1].name | lowercase">
+          {{ game.teams[1].name | uppercase }}
+        </em>
       </div>
 
       <div [class]="game.teams[1].name | lowercase">
@@ -95,7 +106,8 @@
           [ngTemplateOutlet]="tableStatisticsTemplate"
           [ngTemplateOutletContext]="{
             team: game.teams[1],
-            dataSource: dataSourceSecondDraft()
+            dataSource: dataSourceSecondDraft(),
+            isFirstDraft: false
           }"
         ></ng-container>
       </div>
@@ -123,6 +135,7 @@
   #tableStatisticsTemplate
   let-dataSource="dataSource"
   let-team="team"
+  let-isFirstDraft="isFirstDraft"
 >
   <table
     mat-table
@@ -130,14 +143,27 @@
     class="mat-elevation-z1"
   >
     <ng-container matColumnDef="team">
+      <!-- Footer cell if isFirstDraft is true -->
       <th
+        mat-footer-cell
+        *matFooterCellDef
+        colspan="8"
+        style="text-align: center"
+        [ngClass]="team.name?.toLowerCase()"
+      >
+        {{ team.name }}
+      </th>
+
+      <!-- Header cell if isFirstDraft is false -->
+      <td
         mat-header-cell
         *matHeaderCellDef
         colspan="8"
-        [style]="{ 'text-align': 'center' }"
+        style="text-align: center"
+        [ngClass]="team.name?.toLowerCase()"
       >
-        <u [innerText]="team.name"></u>
-      </th>
+        {{ team.name }}
+      </td>
     </ng-container>
 
     <!-- Passess Head Column -->
@@ -296,6 +322,11 @@
       mat-header-row
       *matHeaderRowDef="['team']"
       class="example-second-header-row"
+    ></tr>
+
+    <tr
+      mat-footer-row
+      *matFooterRowDef="['team']"
     ></tr>
 
     <tr

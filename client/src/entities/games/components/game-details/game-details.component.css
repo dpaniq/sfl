@@ -8,40 +8,101 @@
     > fieldset {
       border: none;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
       gap: 0 12px;
-
       padding: 8px 0px;
+
+      &.table-score-table {
+        grid-auto-flow: row;
+        grid-template-rows: 1fr 0.5fr 1fr;
+      }
 
       &.col-2 {
         grid-template-columns: 1fr 1fr;
       }
 
       &.col-3 {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
       }
     }
   }
 
-  .bmw {
-    background-color: #f0f0f0;
-  }
+  .mat-mdc-table {
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      text-align: center;
+    }
 
-  .honda {
-    background-color: rgb(255, 99, 71, 0.7);
-  }
+    & .bmw {
+      /* background-color: gold !important; */
+      background-color: color-mix(in srgb, gold 20%, transparent 90%);
+    }
 
-  .mat-mdc-cell {
-    text-align: center;
+    & .honda {
+      /* background-color: tomato !important; */
+      background-color: color-mix(in srgb, tomato 20%, transparent 90%);
+    }
   }
 
   .metadata-score {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    font-size: 180px;
+    justify-content: center;
+    gap: 10px;
+    font-size: 120px;
     font-weight: 900;
     flex-basis: 1;
+
+    & em {
+      font-size: 80px;
+      font-weight: 900;
+    }
+
+    & span {
+      font-size: 180px;
+      font-weight: 900;
+    }
+
+    /*
+      1. Angle for diagonal lines
+      2. Line color
+      3. Line thickness
+      4. Gap start
+      5. Gap end
+
+    background: repeating-linear-gradient(
+      45deg,
+      rgb(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.1) 4px,
+      transparent 15px,
+      transparent 7px
+    );
+    */
+
+    background: rgb(249, 255, 3);
+    background: linear-gradient(
+        45deg,
+        color-mix(in srgb, gold 50%, transparent 60%) 0%,
+        color-mix(in srgb, tomato 50%, transparent 60%) 100%
+      ),
+      repeating-linear-gradient(
+        45deg,
+        rgb(0, 0, 0, 0.5) 8px,
+        rgba(0, 0, 0, 1) 1px,
+        transparent 10px,
+        transparent 50px
+      );
+
+    & span.bmw {
+      background-color: unset;
+      color: gold !important;
+      -webkit-text-stroke: 3px black;
+    }
+
+    & span.honda {
+      background-color: unset;
+      color: tomato !important;
+      -webkit-text-stroke: 3px black;
+    }
   }
 
   .skeletons {
