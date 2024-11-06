@@ -2,9 +2,11 @@ Based on the criteria and interfaces you provided, several types of charts can b
 
 1. Bar Charts
 
-   Total Points by Player: A bar chart displaying the totalPoints for each player. This can help compare overall performance across players.
-   Goals Scored by Type: A stacked bar chart showing totalGoalsByLeg, totalGoalsByHead, totalGoalsByPenalty, and totalGoalsByAuto for each player, which provides insights into scoring methods.
-   Games Won/Lost: A grouped bar chart showing totalWonGames, totalLostGames, and totalDraws for each player.
+   - [ ] Total Points by Player: A bar chart displaying the totalPoints for each player. This can help compare overall performance across players.
+
+   - [ ] Goals Scored by Type: A stacked bar chart showing totalGoalsByLeg, totalGoalsByHead, totalGoalsByPenalty, and totalGoalsByAuto for each player, which provides insights into scoring methods.
+
+   - [ ] Games Won/Lost: A grouped bar chart showing totalWonGames, totalLostGames, and totalDraws for each player.
 
 2. Line Charts
 
