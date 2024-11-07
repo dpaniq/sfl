@@ -1,13 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
-import { TotalPointsByPlayerChartComponent } from '@entities/players/components/charts/total-points-by-player-chart/total-points-by-player-chart.component';
+import { Top10AncientRatingSystemBySeasonComponent } from '@entities/players/components/charts/top-10-ancient-rating-system-by-season/top-10-ancient-rating-system-by-season.component';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'sfl-home',
   standalone: true,
-  imports: [CommonModule, MatDividerModule, TotalPointsByPlayerChartComponent],
+  imports: [
+    CommonModule,
+    MatDividerModule,
+    Top10AncientRatingSystemBySeasonComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   providers: [AuthService],

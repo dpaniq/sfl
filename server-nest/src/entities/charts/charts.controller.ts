@@ -15,7 +15,7 @@ import {
 import { UsersService } from '../users/users.service';
 import { ChartsService } from './charts.service';
 
-export class PlayerCreationDTO {
+export class DTO {
   @ApiProperty({ required: true, type: String })
   nickname: string;
   number: number;
@@ -31,10 +31,7 @@ export class PlayerCreationDTO {
 @ApiTags('charts')
 @Controller('charts')
 export class ChartsController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly chartsService: ChartsService,
-  ) {}
+  constructor(private readonly chartsService: ChartsService) {}
 
   @ApiOkResponse({ status: 200, type: Array })
   @ApiBadRequestResponse({ status: 400, description: 'Bad Request' })
@@ -42,15 +39,13 @@ export class ChartsController {
     status: 500,
     description: 'Internal Server Error',
   })
-  @Get('players-ancient-rating-system-by-season/:season')
-  async getPlayersSeasonsTotalPoints(
+  @Get('top-10-ancient-rating-system-by-season/:season')
+  async top10AncientRatingSystemBySeason(
     @Param('season', new ParseIntPipe({ optional: true })) season: number,
   ): Promise<TResponse<any>> {
     try {
       return {
-        data: await this.chartsService.getPlayersAncientRatingSystemBySeason(
-          season,
-        ),
+        data: await this.chartsService.top10AncientRatingSystemBySeason(season),
       };
     } catch (error) {
       throw new InternalServerErrorException(

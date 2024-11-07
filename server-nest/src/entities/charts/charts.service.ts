@@ -14,7 +14,7 @@ export class ChartsService {
     private gameModel: Model<IGame>,
   ) {}
 
-  async getPlayersAncientRatingSystemBySeason(season: number): Promise<
+  async top10AncientRatingSystemBySeason(season: number): Promise<
     {
       id: string;
       nickname: string;
@@ -50,7 +50,11 @@ export class ChartsService {
               ancientRatingSystem: `$metadata.bySeason.${season}.ancientRatingSystem`,
             },
           },
-          { $sort: { 'ancientRatingSystem.totalPoints': -1 } },
+          {
+            $sort: {
+              'ancientRatingSystem.totalPoints': -1,
+            },
+          },
           { $limit: 10 },
           {
             $lookup: {
