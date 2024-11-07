@@ -6,7 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import configuration from './config/configuration';
 import { AuthModule } from './entities/auth';
 import { AuthController } from './entities/auth/auth.controller';
+import { ChartsModule } from './entities/charts/charts.module';
 import { GamesModule } from './entities/games/games.module';
+import { MigrationsModule } from './entities/migrations/migrations.module';
 import { PlayersModule } from './entities/players/players.module';
 import { RolesModule } from './entities/roles/roles.module';
 import { TeamsModule } from './entities/teams/teams.module';
@@ -58,6 +60,8 @@ import { JwtMiddleware } from './shared/middlewares/user/jwt.middleware';
     PlayersModule,
     GamesModule,
     TeamsModule,
+    ChartsModule,
+    MigrationsModule,
   ],
   providers: [
     {

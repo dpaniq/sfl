@@ -7,7 +7,7 @@ Plan:
 
 - [ ] - Create user table and seed it with all players for all years
     https://orkhan-gitbook-io.translate.goog/typeorm/docs/migrations?_x_tr_sl=en&_x_tr_tl=ru&_x_tr_hl=ru&_x_tr_pto=wapp
-  - [x] - 2011
+  - [ ] - 2011
   - [ ] - 2012
   - [ ] - 2013
   - [ ] - 2014

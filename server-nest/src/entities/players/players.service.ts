@@ -99,6 +99,8 @@ export class PlayersService {
     statistic: PlayerStatistic,
     game: WithId<IGame>,
   ): Promise<IPlayerGameResultMetadata> {
+    console.log('calculatePlayerGameResultMetadata');
+
     let playerGameResultMetadata: IPlayerGameResultMetadata = {
       ...METADATA_BY_GAME_DEFAULT,
       ...METADATA_COMMON_TOTALS_GAME_DEFAULT,
@@ -198,6 +200,8 @@ export class PlayersService {
         ],
       };
     }
+
+    this.recalculateSeasonMetadata(statistic.playerId.toString(), gameSeason);
 
     return playerGameResultMetadata;
   }

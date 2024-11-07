@@ -41,6 +41,9 @@ importers:
       '@ngrx/component-store':
         specifier: ~18.1.0
         version: 18.1.0(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
+      '@ngrx/operators':
+        specifier: ^18.0.0
+        version: 18.1.1(rxjs@7.8.1)
       '@ngrx/signals':
         specifier: ^18.1.0
         version: 18.1.0(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
@@ -53,6 +56,12 @@ importers:
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
+      highcharts:
+        specifier: ^11.4.8
+        version: 11.4.8
+      highcharts-angular:
+        specifier: ^4.0.1
+        version: 4.0.1(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(highcharts@11.4.8)
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1519,6 +1528,11 @@ packages:
       '@angular/core': ^18.0.0
       rxjs: ^6.5.3 || ^7.5.0
 
+  '@ngrx/operators@18.1.1':
+    resolution: {integrity: sha512-RB156PouKI/E79jxvJLaDFYMHz9JVFR8f4ogfAeT7sh2dDGoK4A+B0n1Cl0iYW9fpcJCdfB/mu7TkH6auFv1aQ==}
+    peerDependencies:
+      rxjs: ^6.5.3 || ^7.4.0
+
   '@ngrx/signals@18.1.0':
     resolution: {integrity: sha512-ivuOyCPXoysUxvCRotRAMtwo+ObfWN06kHz/Nnlp8GyCB6wgZaUUGe6luOQyWhrZkbu3K+oCu7HB6YCSY6zT+A==}
     peerDependencies:
@@ -2963,6 +2977,16 @@ packages:
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
+
+  highcharts-angular@4.0.1:
+    resolution: {integrity: sha512-KAy+RRJyrDDKFYLFr3p2O+ups3ZyDP3CoakHuO3u+ZUCm85ziJ29WT1qPjzp2NBupYt+MGZV/DAyPMi5iyAIHw==}
+    peerDependencies:
+      '@angular/common': '>=16.0.0'
+      '@angular/core': '>=16.0.0'
+      highcharts: '>=9.0.0'
+
+  highcharts@11.4.8:
+    resolution: {integrity: sha512-5Tke9LuzZszC4osaFisxLIcw7xgNGz4Sy3Jc9pRMV+ydm6sYqsPYdU8ELOgpzGNrbrRNDRBtveoR5xS3SzneEA==}
 
   hosted-git-info@7.0.2:
     resolution: {integrity: sha512-puUZAUKT5m8Zzvs72XWy3HtvVbTWljRE66cP60bxJzAqf2DgICo7lYTY2IHUmLnNpjYvw5bvmoHvPc0QO2a62w==}
@@ -6378,6 +6402,11 @@ snapshots:
       rxjs: 7.8.1
       tslib: 2.6.3
 
+  '@ngrx/operators@18.1.1(rxjs@7.8.1)':
+    dependencies:
+      rxjs: 7.8.1
+      tslib: 2.6.3
+
   '@ngrx/signals@18.1.0(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)':
     dependencies:
       '@angular/core': 18.2.9(rxjs@7.8.1)(zone.js@0.14.10)
@@ -8001,6 +8030,15 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  highcharts-angular@4.0.1(@angular/common@18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(highcharts@11.4.8):
+    dependencies:
+      '@angular/common': 18.2.9(@angular/core@18.2.9(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
+      '@angular/core': 18.2.9(rxjs@7.8.1)(zone.js@0.14.10)
+      highcharts: 11.4.8
+      tslib: 2.6.3
+
+  highcharts@11.4.8: {}
 
   hosted-git-info@7.0.2:
     dependencies:

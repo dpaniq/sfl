@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { UUID } from 'src/constants';
 import { User } from '../users';
+
+import mongoose from 'mongoose';
 import {
   EnumPlayerPosition,
   TPlayerMetadata,
@@ -11,12 +12,12 @@ export interface ServerPlayer {
   id: string;
   nickname: string;
   isCaptain?: boolean;
-  position?: EnumPlayerPosition;
   status?: EnumPlayerStatus;
   number?: number;
-  user: typeof UUID;
-
+  user: mongoose.Types.UUID;
   metadata: TPlayerMetadata;
+
+  position?: EnumPlayerPosition;
 }
 
 export interface ClientPlayer {
@@ -106,19 +107,28 @@ export class Player implements ServerPlayer {
   number?: number;
 
   // TODO PROBLEM does not resolve user by ref
+  // @ApiProperty()
+  // @Prop({
+  //   type: [
+  //     {
+  //       type: mongoose.Schema.Types.UUID,
+  //       ref: User.name,
+  //       required: true,
+  //       unique: true,
+  //     },
+  //   ],
+  //   transform: (docs) => docs.at(0),
+  // })
+  // user: mongoose.Schema.Types.UUID;
+
   @ApiProperty()
   @Prop({
-    type: [
-      {
-        type: UUID,
-        ref: User.name,
-        required: true,
-        unique: true,
-      },
-    ],
-    transform: (docs) => docs.at(0),
+    type: mongoose.Types.UUID,
+    ref: User.name,
+    required: true,
+    unique: true,
   })
-  user: typeof UUID;
+  user: mongoose.Types.UUID;
 
   // Problem
   // @ApiProperty()
