@@ -22,7 +22,9 @@ export class UsersService {
     }
 
     try {
-      return await this.userModel.create(user);
+      await this.userModel.create(user);
+
+      return await this.userModel.findOne({ email: user.email }).exec();
     } catch (error) {
       console.log('errro?', error);
       return null;
