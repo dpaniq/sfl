@@ -69,7 +69,7 @@ export class PlayersService {
 
   async create(player: {
     nickname: string;
-    userId: string;
+    userId: Types.UUID;
     number: number;
   }): Promise<any> {
     try {

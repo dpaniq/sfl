@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { randomUUID } from 'crypto';
-import { ObjectId, UUID } from 'src/constants';
+import { Types } from 'mongoose';
+import { ObjectId } from 'src/constants';
 import { hash } from 'src/shared/utils/string';
 import { Role } from '../roles/roles.schema';
 
@@ -35,10 +36,9 @@ const transform = (doc, ret, options) => {
 })
 export class User implements IUser {
   @Prop({
-    default: randomUUID,
-    type: UUID,
+    default: new Types.UUID(),
+    type: Types.UUID,
     required: true,
-    transform: (id: any) => id.toString(),
   })
   _id: string;
 
