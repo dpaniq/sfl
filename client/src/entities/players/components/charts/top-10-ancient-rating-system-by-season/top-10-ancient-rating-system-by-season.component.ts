@@ -17,8 +17,8 @@ import {
   TTop10AncientRatingSystemBySeason,
 } from '@entities/charts/charts.service';
 
-import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
+import Highcharts from 'highcharts/es-modules/masters/highcharts.src';
 import { switchMap, take } from 'rxjs';
 
 const CHART_OPTIONS_DEFAULT = {
