@@ -21,9 +21,14 @@ import {
 import { UsersService } from './entities/users/users.service';
 import { ContextInterceptor } from './shared/interceptors/context/context.interceptor';
 import { JwtMiddleware } from './shared/middlewares/user/jwt.middleware';
+import { join } from 'node:path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
     ConfigModule.forRoot({
       load: [configuration],
     }),

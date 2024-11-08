@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TOTAL_GAMES_OF_YEAR } from '@entities/games/constants';
 import { TGameFinalWithoutStatistics } from '@entities/games/types';
@@ -19,7 +20,13 @@ import { EnumGameStatus } from '../../constants';
 @Component({
   selector: 'sfl-game-card',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatCardModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTooltipModule,
+  ],
   templateUrl: './game-card.component.html',
   styleUrl: './game-card.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,9 +41,24 @@ export class GameCardComponent {
   public readonly TOTAL_GAMES_OF_YEAR = TOTAL_GAMES_OF_YEAR;
 
   public readonly hasGamePlayed = computed(() => {
+    console.log({ gamlet: this.gameCard() });
+
     return this.gameCard
       ? isBefore(this.gameCard().playedAt, new Date())
       : false;
+  });
+
+  protected readonly wonTeamClass = computed(() => {
+    return this.gameCard().metadata?.isTeamFromFirstDraftWon === true
+      ? this.gameCard().teams[0].name
+      : this.gameCard().teams[1].name;
+  });
+
+  protected readonly teamNamesByDraft = computed(() => {
+    return {
+      firstDraft: this.gameCard().teams[0].name,
+      secondDraft: this.gameCard().teams[1].name,
+    };
   });
 
   openDetails() {

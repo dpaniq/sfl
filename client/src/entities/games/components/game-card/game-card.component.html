@@ -1,10 +1,13 @@
 @if ([enumGameStatus.New, enumGameStatus.Draft].includes(gameCard().status)) {
-  <mat-card class="example-card">
+  <mat-card
+    class="example-card mat-elevation-z8"
+    class=""
+  >
     <mat-card-header>
-      <div
+      <!-- <div
         mat-card-avatar
         class="example-header-image"
-      ></div>
+      ></div> -->
       <mat-card-title>
         Game {{ gameCard().number }}
         <sub>/ {{ TOTAL_GAMES_OF_YEAR }}</sub>
@@ -12,19 +15,33 @@
       <mat-card-subtitle>{{ gameCard().playedAt | date }}</mat-card-subtitle>
     </mat-card-header>
 
-    <img
-      mat-card-image
-      src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-      alt="Photo of a Shiba Inu"
-    />
-
     <mat-card-content>
-      <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz
-        breeds of dog from Japan. A small, agile dog that copes very well with
-        mountainous terrain, the Shiba Inu was originally bred for hunting.
-      </p>
+      <div
+        class="score-cover"
+        [class]="wonTeamClass() | lowercase"
+      >
+        <img
+          [src]="
+            '/assets/images/logo/' + (wonTeamClass() | lowercase) + '.webp'
+          "
+          [alt]="wonTeamClass()"
+        />
+        <div class="score-wrapper">
+          <p
+            class="score"
+            [textContent]="gameCard().metadata?.scoreFirstDraft"
+            [matTooltip]="gameCard().teams[0].name"
+          ></p>
+          <p class="colomn">:</p>
+          <p
+            class="score"
+            [textContent]="gameCard().metadata?.scoreSecondDraft"
+            [matTooltip]="gameCard().teams[1].name"
+          ></p>
+        </div>
+      </div>
     </mat-card-content>
+
     <mat-card-actions>
       <!-- <button mat-button>LIKE</button>
       <button mat-button>SHARE</button> -->

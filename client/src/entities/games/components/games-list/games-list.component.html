@@ -13,10 +13,11 @@
   @for (gameCard of gameCards(); track gameCard.id) {
     @defer {
       <sfl-game-card [gameCard]="gameCard"></sfl-game-card>
-    } @placeholder {
-      <mat-progress-bar></mat-progress-bar>
-    } @loading {
-      ...loading
+    } @loading (minimum 2s) {
+      <mat-progress-bar
+        mode="indeterminate"
+        style="height: 400px"
+      ></mat-progress-bar>
     }
   }
 </section>
