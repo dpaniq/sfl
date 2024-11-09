@@ -1,16 +1,6 @@
-img {
-  max-width: 100%;
-}
-
-.further-game {
-  background: lightgray;
-
-  &:hover {
-    cursor: not-allowed;
-  }
-}
-
 :host {
+  height: 100%;
+
   .score-cover {
     aspect-ratio: 1; /* Maintains a 3:1 aspect ratio */
     background-color: #333;
@@ -18,40 +8,25 @@ img {
     color: #fff;
     font-weight: bold;
     border-radius: 10px;
-    font-size: clamp(40px, 10vw, 140px);
-    -webkit-text-stroke: 1px #000000;
-    padding: 20px;
+
     display: flex;
     position: relative;
 
     &.bmw {
       background-color: gold;
-      /* background-image: url('/assets/images/logo/bmw.webp');
-      background-size: contain;
-      background-position: top;
-      background-blend-mode: darken;
-      background-repeat: no-repeat;
-      background-origin: content-box;
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px); */
     }
 
     &.honda {
       background-color: tomato;
-      /* background-image: url('/assets/images/logo/honda.webp');
-      background-size: contain;
-      background-position: top;
-      background-blend-mode: darken;
-      background-repeat: no-repeat;
-      background-origin: content-box; */
     }
   }
 
-  img {
+  img.team-logo {
     filter: blur(4px);
     mix-blend-mode: soft-light;
     object-fit: contain;
     object-position: center;
+    max-width: 100%;
   }
 
   .score-wrapper {
@@ -62,12 +37,14 @@ img {
     right: 0;
     display: flex;
     justify-content: space-evenly;
+    font-size: clamp(40px, 10vw, 140px);
     align-items: center;
     flex-basis: 1;
     width: 100%;
     height: 100%;
     /* backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px); */
+    -webkit-text-stroke: 1px #000000;
   }
 
   .score {
@@ -77,9 +54,101 @@ img {
     /* padding: 20px 10px; */
     /* filter: none; */
   }
+
+  .played-game {
+    --borderWidth: 9px;
+    position: relative;
+    border-radius: var(--borderWidth);
+  }
+
+  .played-game::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: linear-gradient(
+      60deg,
+      #f79533,
+      #f37055,
+      #ef4e7b,
+      #a166ab,
+      #5073b8,
+      #1098ad,
+      #07b39b,
+      #6fba82
+    );
+    border-radius: calc(1 * var(--borderWidth));
+    z-index: -1;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+  }
+
+  .game-was-played,
+  .game-was-not-played {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-shadow: 1px 1px 2px #fff;
+
+    border-radius: 10px;
+    background: linear-gradient(
+      60deg,
+      #f79533,
+      #f37055,
+      #ef4e7b,
+      #a166ab,
+      #5073b8,
+      #1098ad,
+      #07b39b,
+      #6fba82
+    );
+
+    container-name: game-was;
+    container-type: size;
+
+    background-size: 300% 300%;
+    animation: animatedgradient 3s ease alternate infinite;
+  }
+
+  .game-was-not-played {
+    animation: 0;
+    border: 0;
+  }
 }
 
 .mat-mdc-card-actions {
   gap: 6px;
   justify-content: end;
+}
+
+@container game-was (width < 1500px) {
+  p {
+    display: block;
+    position: relative;
+    text-align: center;
+    font-size: clamp(15px, 1rem + 4vw, 67px);
+    padding: 5px;
+    border-radius: 8px;
+    line-height: 70px;
+    letter-spacing: -4px;
+    text-wrap: balance;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes animatedgradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

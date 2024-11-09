@@ -8,6 +8,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
@@ -40,6 +42,8 @@ function findSaturdayAfterDate(date: number, saturdayIdx: number) {
     MatSelectModule,
     GameCardComponent,
     MatProgressBarModule,
+    MatDividerModule,
+    MatCardModule,
   ],
   templateUrl: './games-list.component.html',
   styleUrl: './games-list.component.css',
@@ -50,7 +54,7 @@ export class GamesListComponent implements OnInit {
   private readonly gameService = inject(GameService);
 
   private readonly loading = signal<boolean>(false);
-  readonly season = signal(2023);
+  readonly season = signal(new Date().getFullYear());
 
   readonly gameCards = signal<TGameFinalWithoutStatistics[]>([]);
 
@@ -72,7 +76,7 @@ export class GamesListComponent implements OnInit {
       .subscribe(games => {
         this.loading.set(false);
 
-        let date = new Date(`${this.season() - 1}-11-01`);
+        let date = new Date(`${this.season() - 1}-12-01`);
         const newGames: TGameFinalWithoutStatistics[] = [];
         for (const number of range(1, weeks + 1)) {
           const numberSaturdayDate = nextSaturday(date);

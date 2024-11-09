@@ -14,7 +14,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TOTAL_GAMES_OF_YEAR } from '@entities/games/constants';
 import { TGameFinalWithoutStatistics } from '@entities/games/types';
-import { isBefore } from 'date-fns';
+import { AuthService } from '@shared/services/auth.service';
+import { differenceInCalendarDays, isBefore } from 'date-fns';
 import { EnumGameStatus } from '../../constants';
 
 @Component({
@@ -34,6 +35,7 @@ import { EnumGameStatus } from '../../constants';
 export class GameCardComponent {
   readonly router = inject(Router);
   readonly activatedRouter = inject(ActivatedRoute);
+  protected readonly authService = inject(AuthService);
 
   public gameCard = input.required<TGameFinalWithoutStatistics>();
   public readonly enumGameStatus = EnumGameStatus;
@@ -48,10 +50,23 @@ export class GameCardComponent {
       : false;
   });
 
+  protected readonly daysLeft = computed(() => {
+    const today = new Date();
+
+    // Calculate the difference in days
+    return differenceInCalendarDays(new Date(), today);
+  });
+
   protected readonly wonTeamClass = computed(() => {
-    return this.gameCard().metadata?.isTeamFromFirstDraftWon === true
-      ? this.gameCard().teams[0].name
-      : this.gameCard().teams[1].name;
+    console.log(this.gameCard().metadata);
+    if (this.gameCard().metadata?.isTeamFromFirstDraftWon === true) {
+      return this.gameCard().teams.at(0)?.name;
+    }
+    if (this.gameCard().metadata?.isTeamFromSecondDraftWon === true) {
+      return this.gameCard().teams.at(1)?.name;
+    }
+
+    return '';
   });
 
   protected readonly teamNamesByDraft = computed(() => {
@@ -75,9 +90,11 @@ export class GameCardComponent {
   }
 
   edit() {
-    const { id, number, season, status, playedAt } = this.gameCard();
-    console.log(id);
+    this.router.navigate(['games', 'edit', this.gameCard().id]);
+  }
 
-    this.router.navigate(['games', 'edit', id]);
+  delete() {
+    // TODO
+    console.log('delete');
   }
 }

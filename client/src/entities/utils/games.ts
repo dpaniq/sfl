@@ -13,6 +13,9 @@ const SATURDAY = 6;
 export const getGameCards = (year: number): TGameFinalWithoutStatistics[] => {
   const gameCards: TGameFinalWithoutStatistics[] = [];
   const startOfSeason = startOfMonth(new Date(`${year}-12-01`));
+
+  console.log({ startOfSeason });
+
   const endOfSeason = addYears(startOfSeason, 1);
 
   const weeks = eachWeekOfInterval({
