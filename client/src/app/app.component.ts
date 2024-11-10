@@ -1,18 +1,18 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AsideComponent } from 'src/shared/ui/core/aside';
 
-import { MatIconModule } from '@angular/material/icon';
+import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { CookieService } from '@shared/services/cookie.service';
+import { HttpService } from '@shared/services/http.service';
 import { JwtService } from '@shared/services/jwt.service';
 import { LocalStorageService } from '@shared/services/local-storage.service';
-import { HttpClient } from '@angular/common/http';
-import { NEVER, catchError, delay } from 'rxjs';
-import { HttpService } from '@shared/services/http.service';
+import packageJSON from 'package.json';
 import { AuthService } from '../shared/services/auth.service';
 
 @Component({
@@ -46,6 +46,8 @@ export class AppComponent {
 
   private readonly authService = inject(AuthService);
   readonly userSignal = this.authService.user;
+
+  protected readonly version = packageJSON.version;
 
   onSignOut() {
     this.authService.signOut().subscribe(response => {

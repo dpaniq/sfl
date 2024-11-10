@@ -48,20 +48,6 @@
           ></mat-icon>
         </a>
       }
-
-      <button
-        [disabled]="true"
-        mat-icon-button
-      >
-        <mat-icon>favorite</mat-icon>
-      </button>
-
-      <button
-        [disabled]="true"
-        mat-icon-button
-      >
-        <mat-icon>share</mat-icon>
-      </button>
     </div>
   </mat-toolbar>
 </header>
@@ -87,4 +73,20 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<footer>footer</footer>
+<footer>
+  <div class="footer-logo">SFL</div>
+  <div class="footer-content">
+    <b>Saturday Football League</b>
+
+    <span>
+      Copyright &copy; 2022 |
+      <a
+        href="https://github.com/dpaniq/sfl"
+        class="http"
+      >
+        dpaniq
+      </a>
+    </span>
+    <span>Version: {{ version }}</span>
+  </div>
+</footer>
