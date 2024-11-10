@@ -21,6 +21,7 @@
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "paths": {
       // Feature slice design
       "@environment/*": ["src/environments/*"],
