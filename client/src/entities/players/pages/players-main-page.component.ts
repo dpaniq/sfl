@@ -40,9 +40,6 @@ import { PlayersAdminWidgetComponent } from '@widgets';
 
         > .tab-content {
           margin: 12px 0;
-
-          height: 800px;
-          overflow-y: auto;
         }
       }
     }

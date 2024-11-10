@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +18,7 @@ import { TGameFinalWithoutStatistics } from '@entities/games/types';
 import { AuthService } from '@shared/services/auth.service';
 import { differenceInCalendarDays, isBefore } from 'date-fns';
 import { EnumGameStatus } from '../../constants';
+import { GameDeleteDialogComponent } from '../game-delete-dialog/game-delete-dialog.component';
 
 @Component({
   selector: 'sfl-game-card',
@@ -33,8 +35,9 @@ import { EnumGameStatus } from '../../constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCardComponent {
-  readonly router = inject(Router);
-  readonly activatedRouter = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private activatedRouter = inject(ActivatedRoute);
+  private readonly dialog = inject(MatDialog);
   protected readonly authService = inject(AuthService);
 
   public gameCard = input.required<TGameFinalWithoutStatistics>();
@@ -43,8 +46,6 @@ export class GameCardComponent {
   public readonly TOTAL_GAMES_OF_YEAR = TOTAL_GAMES_OF_YEAR;
 
   public readonly hasGamePlayed = computed(() => {
-    console.log({ gamlet: this.gameCard() });
-
     return this.gameCard
       ? isBefore(this.gameCard().playedAt, new Date())
       : false;
@@ -94,7 +95,13 @@ export class GameCardComponent {
   }
 
   delete() {
-    // TODO
-    console.log('delete');
+    this.dialog
+      .open(GameDeleteDialogComponent, {
+        data: { game: this.gameCard() },
+      })
+      .afterClosed()
+      .subscribe((confirmed: boolean) => {
+        confirmed && this.router.navigate(['games']);
+      });
   }
 }

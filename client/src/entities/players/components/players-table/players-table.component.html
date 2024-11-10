@@ -58,7 +58,7 @@
     <td
       mat-cell
       *matCellDef="let element"
-      [innerHtml]="element.name | nilToDash"
+      [innerHtml]="element.user?.name | nilToDash"
     ></td>
   </ng-container>
 
@@ -75,7 +75,7 @@
     <td
       mat-cell
       *matCellDef="let element"
-      [innerHtml]="element.surname | nilToDash"
+      [innerHtml]="element.user?.surname | nilToDash"
     ></td>
   </ng-container>
 
@@ -234,6 +234,7 @@
     <td
       mat-cell
       *matCellDef="let element"
+      align="right"
     >
       <button
         mat-icon-button
