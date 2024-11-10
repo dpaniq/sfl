@@ -21,10 +21,10 @@
       mat-cell
       *matCellDef="let element"
     >
-      <img
+      <!-- <img
         class="avatar"
         src="https://picsum.photos/id/{{ element.avatar }}/50/50"
-      />
+      /> -->
     </td>
   </ng-container>
 
@@ -244,26 +244,28 @@
         <mat-icon fontIcon="read_more"></mat-icon>
       </button>
 
-      <button
-        mat-icon-button
-        [disabled]="false && !user?.roles?.includes('ADMIN')"
-        color="primary"
-        (click)="editPlayer(element)"
-      >
-        <mat-icon fontIcon="edit"></mat-icon>
-      </button>
+      @if (isAdminSignal()) {
+        <button
+          mat-icon-button
+          [disabled]="false && !user?.roles?.includes('ADMIN')"
+          color="primary"
+          (click)="editPlayer(element)"
+        >
+          <mat-icon fontIcon="edit"></mat-icon>
+        </button>
 
-      <button
-        mat-icon-button
-        [disabled]="false && !user?.roles?.includes('ADMIN')"
-        color="primary"
-        (click)="deletePlayer(element)"
-      >
-        <mat-icon
-          color="warn"
-          fontIcon="delete"
-        ></mat-icon>
-      </button>
+        <button
+          mat-icon-button
+          [disabled]="false && !user?.roles?.includes('ADMIN')"
+          color="primary"
+          (click)="deletePlayer(element)"
+        >
+          <mat-icon
+            color="warn"
+            fontIcon="delete"
+          ></mat-icon>
+        </button>
+      }
     </td>
   </ng-container>
 

@@ -66,6 +66,7 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly authService = inject(AuthService);
 
   public user = this.authService.user();
+  public isAdminSignal = this.authService.isAdmin;
 
   protected readonly loading = this.playersStore.loading;
 
