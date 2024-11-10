@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
@@ -18,6 +19,7 @@ import { PlayersAdminWidgetComponent } from '@widgets';
     MatIconModule,
     MatTabsModule,
     MatButtonModule,
+    MatDividerModule,
 
     // Features
     PlayersTableComponent,
@@ -38,15 +40,26 @@ import { PlayersAdminWidgetComponent } from '@widgets';
 
         > .tab-content {
           margin: 12px 0;
-
-          height: 800px;
-          overflow-y: auto;
         }
       }
     }
   `,
   template: `
-    <mat-tab-group>
+    <h1>Players</h1>
+    <mat-divider></mat-divider>
+    <br />
+
+    <div class="tab-container">
+      <div class="tab-header">
+        <sfl-player-create-button />
+      </div>
+
+      <div class="tab-content">
+        <sfl-players-table></sfl-players-table>
+      </div>
+    </div>
+
+    <!-- <mat-tab-group>
       <mat-tab>
         <ng-template mat-tab-label>
           <mat-icon fontIcon="list"></mat-icon>
@@ -72,7 +85,7 @@ import { PlayersAdminWidgetComponent } from '@widgets';
 
         <sfl-players-admin-widget></sfl-players-admin-widget>
       </mat-tab>
-    </mat-tab-group>
+    </mat-tab-group> -->
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

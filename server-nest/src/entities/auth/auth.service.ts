@@ -33,6 +33,8 @@ export class AuthService {
     try {
       const user = await this.userModel.findOne({ email }).exec();
 
+      console.log();
+
       if (!user || user.password !== hash(password)) {
         throw new UnauthorizedException();
       }

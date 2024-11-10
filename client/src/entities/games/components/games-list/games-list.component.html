@@ -1,22 +1,23 @@
-<h1>Games</h1>
-
-<mat-form-field>
-  <mat-label>Season</mat-label>
-  <mat-select [(ngModel)]="season">
-    <mat-option [value]="2023">2023</mat-option>
-    <mat-option [value]="2024">2024</mat-option>
-    <mat-option [value]="2025">2025</mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="actions">
+  <mat-form-field appearance="outline">
+    <mat-label>Season</mat-label>
+    <mat-select [(ngModel)]="season">
+      <mat-option [value]="2023">2023</mat-option>
+      <mat-option [value]="2024">2024</mat-option>
+      <mat-option [value]="2025">2025</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 
 <section>
   @for (gameCard of gameCards(); track gameCard.id) {
     @defer {
       <sfl-game-card [gameCard]="gameCard"></sfl-game-card>
-    } @placeholder {
-      <mat-progress-bar></mat-progress-bar>
-    } @loading {
-      ...loading
+    } @loading (minimum 2s) {
+      <mat-progress-bar
+        mode="indeterminate"
+        style="height: 400px"
+      ></mat-progress-bar>
     }
   }
 </section>

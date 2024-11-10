@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { delay, tap } from 'rxjs';
 import { HttpService } from './http.service';
 
@@ -17,6 +17,10 @@ export class AuthService {
 
   private readonly _user = signal<User | null>(null);
   readonly user = this._user.asReadonly();
+
+  public readonly isAdmin = computed(() => {
+    return this.user()?.roles.some(role => role === 'ADMIN') ?? false;
+  });
 
   setUser(user: User | null) {
     this._user.set(user);

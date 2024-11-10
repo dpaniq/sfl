@@ -1,26 +1,17 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
 import {
-  FormGroup,
   FormControl,
+  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { NEVER, catchError, delay } from 'rxjs';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { HttpService } from '../../../shared/services/http.service';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '@shared/services/auth.service';
 
 @Component({
@@ -47,11 +38,11 @@ export class SignInComponent {
   loading = signal(false);
 
   signInFG = new FormGroup({
-    email: new FormControl<string>('admin@admin.lv', {
+    email: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.email, Validators.required],
     }),
-    password: new FormControl<string>('password', {
+    password: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.min(5), Validators.required],
     }),

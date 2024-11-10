@@ -1,11 +1,197 @@
-img {
-  max-width: 100%;
+:host {
+  --borderWidth: 1px;
+
+  height: 100%;
+
+  .score-cover {
+    aspect-ratio: 1; /* Maintains a 3:1 aspect ratio */
+
+    max-width: 100%;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 1px solid #333;
+    display: flex;
+    position: relative;
+
+    &.bmw {
+      background-color: gold;
+    }
+
+    &.honda {
+      background-color: tomato;
+    }
+
+    &.game-was-not-played {
+      border: 1px solid #ccc;
+    }
+  }
+
+  .card-border {
+    border: 3px solid #333;
+    border-radius: calc(1 * var(--borderWidth));
+    border-width: var(--borderWidth);
+
+    &.bmw {
+      border: var(--borderWidth) solid gold;
+    }
+
+    &.honda {
+      border: var(--borderWidth) solid tomato;
+    }
+  }
+
+  img.team-logo {
+    filter: blur(4px);
+    mix-blend-mode: soft-light;
+    object-fit: contain;
+    object-position: center;
+    max-width: 100%;
+  }
+
+  .score-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    font-size: clamp(40px, 10vw, 110px);
+    gap: 1.5vw;
+    align-items: center;
+    flex-basis: 1;
+    width: 100%;
+    height: 100%;
+    /* backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); */
+    -webkit-text-stroke: 1px #000000;
+  }
+
+  .score {
+    text-align: center;
+    letter-spacing: -20px;
+    transform: translateX(-10px);
+    /* padding: 20px 10px; */
+    /* filter: none; */
+  }
+
+  .played-game {
+    position: relative;
+    border-radius: var(--borderWidth);
+  }
+
+  .played-game::before {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: linear-gradient(
+      60deg,
+      #f79533,
+      #f37055,
+      #ef4e7b,
+      #a166ab,
+      #5073b8,
+      #1098ad,
+      #07b39b,
+      #6fba82
+    );
+    border-radius: calc(1 * var(--borderWidth));
+    z-index: -1;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+  }
+
+  .game-was-played,
+  .game-was-not-played {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-shadow: 1px 1px 2px #fff;
+
+    border-radius: 10px;
+    background: linear-gradient(
+      60deg,
+      #f79533,
+      #f37055,
+      #ef4e7b,
+      #a166ab,
+      #5073b8,
+      #1098ad,
+      #07b39b,
+      #6fba82
+    );
+
+    container-name: game-was;
+    container-type: size;
+
+    background-size: 300% 300%;
+    animation: animatedgradient 3s ease alternate infinite;
+  }
+
+  .game-was-not-played {
+    container-name: game-was-not-played;
+    animation: 0;
+    border: 0;
+    background: none;
+    text-shadow: 1px 1px 2px #0da682;
+  }
 }
 
-.further-game {
-  background: lightgray;
+.mat-mdc-card-actions {
+  gap: 6px;
+  justify-content: end;
+}
 
-  &:hover {
-    cursor: not-allowed;
+@container game-was (width < 1500px) {
+  p {
+    display: block;
+    position: relative;
+    text-align: center;
+    font-size: clamp(15px, 1rem + 4vw, 67px);
+    padding: 5px;
+    border-radius: 8px;
+    line-height: 70px;
+    letter-spacing: -4px;
+    text-wrap: balance;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@container game-was-not-played (width < 1500px) {
+  p {
+    display: block;
+    position: relative;
+    text-align: center;
+    font-size: clamp(17px, 15px + 4vw, 40px);
+    padding: 12px;
+    border-radius: 8px;
+    line-height: 60px;
+    text-wrap: balance;
+    background-clip: text;
+    color: transparent;
+  }
+
+  p.days-left {
+    font-size: clamp(70px, -20px + 4vw, 30%);
+  }
+}
+
+@keyframes animatedgradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

@@ -156,6 +156,6 @@ export class GameService {
   }
 
   public delete(id: string) {
-    return this.httpService.delete(`games/${id}`);
+    return this.httpService.delete<IGameDTO>(`games/${id}`);
   }
 }

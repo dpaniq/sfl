@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 
@@ -21,6 +22,7 @@ import { GamesTableComponent } from 'src/features/games-table/games-table.compon
     GamesTableComponent,
     GameCreationWidgetComponent,
     GamesListComponent,
+    MatDividerModule,
   ],
   templateUrl: './games-page.component.html',
   styleUrl: './games-page.component.css',
