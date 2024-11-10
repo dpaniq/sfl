@@ -1,5 +1,8 @@
 @if ([enumGameStatus.New, enumGameStatus.Draft].includes(gameCard().status)) {
-  <mat-card class="mat-elevation-z8">
+  <mat-card
+    class="card-border"
+    [class]="wonTeamClass() | lowercase"
+  >
     <mat-card-header>
       <mat-card-title>
         Game {{ gameCard().number }}
@@ -112,7 +115,7 @@
 
 <!-- Game was not played  -->
 @if (!hasGamePlayed() && gameCard().status === enumGameStatus.Furture) {
-  <mat-card class="further-game">
+  <mat-card class="card-border further-game">
     <mat-card-header>
       <mat-card-title>
         Game {{ gameCard().number }}
@@ -126,7 +129,8 @@
     <mat-card-content>
       <div class="score-cover">
         <div class="game-was-not-played">
-          <p>Days left until match: {{ daysLeft() }}</p>
+          <p>Days remaining until the match</p>
+          <p class="days-left">{{ daysLeft() }}</p>
         </div>
       </div>
     </mat-card-content>

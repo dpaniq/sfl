@@ -51,10 +51,10 @@ export class GameCardComponent {
   });
 
   protected readonly daysLeft = computed(() => {
-    const today = new Date();
+    const gameDate = new Date(this.gameCard().playedAt);
 
     // Calculate the difference in days
-    return differenceInCalendarDays(new Date(), today);
+    return differenceInCalendarDays(gameDate, new Date());
   });
 
   protected readonly wonTeamClass = computed(() => {

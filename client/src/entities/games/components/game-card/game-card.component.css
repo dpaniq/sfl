@@ -1,14 +1,16 @@
 :host {
+  --borderWidth: 1px;
+
   height: 100%;
 
   .score-cover {
     aspect-ratio: 1; /* Maintains a 3:1 aspect ratio */
-    background-color: #333;
+
     max-width: 100%;
     color: #fff;
     font-weight: bold;
     border-radius: 10px;
-
+    border: 1px solid #333;
     display: flex;
     position: relative;
 
@@ -18,6 +20,24 @@
 
     &.honda {
       background-color: tomato;
+    }
+
+    &.game-was-not-played {
+      border: 1px solid #ccc;
+    }
+  }
+
+  .card-border {
+    border: 3px solid #333;
+    border-radius: calc(1 * var(--borderWidth));
+    border-width: var(--borderWidth);
+
+    &.bmw {
+      border: var(--borderWidth) solid gold;
+    }
+
+    &.honda {
+      border: var(--borderWidth) solid tomato;
     }
   }
 
@@ -36,8 +56,9 @@
     left: 0;
     right: 0;
     display: flex;
-    justify-content: space-evenly;
-    font-size: clamp(40px, 10vw, 140px);
+    justify-content: center;
+    font-size: clamp(40px, 10vw, 110px);
+    gap: 1.5vw;
     align-items: center;
     flex-basis: 1;
     width: 100%;
@@ -56,7 +77,6 @@
   }
 
   .played-game {
-    --borderWidth: 9px;
     position: relative;
     border-radius: var(--borderWidth);
   }
@@ -89,6 +109,7 @@
   .game-was-not-played {
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     align-content: center;
@@ -115,8 +136,11 @@
   }
 
   .game-was-not-played {
+    container-name: game-was-not-played;
     animation: 0;
     border: 0;
+    background: none;
+    text-shadow: 1px 1px 2px #0da682;
   }
 }
 
@@ -138,6 +162,25 @@
     text-wrap: balance;
     background-clip: text;
     color: transparent;
+  }
+}
+
+@container game-was-not-played (width < 1500px) {
+  p {
+    display: block;
+    position: relative;
+    text-align: center;
+    font-size: clamp(17px, 15px + 4vw, 40px);
+    padding: 12px;
+    border-radius: 8px;
+    line-height: 60px;
+    text-wrap: balance;
+    background-clip: text;
+    color: transparent;
+  }
+
+  p.days-left {
+    font-size: clamp(70px, -20px + 4vw, 30%);
   }
 }
 
