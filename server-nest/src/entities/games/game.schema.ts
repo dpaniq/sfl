@@ -7,17 +7,19 @@ import { ITeam, Team } from '../teams/team.schema';
 export interface IPlayerStatistic {
   playerId: string;
   teamId: string;
-  isCaptain: boolean;
 
-  goal: number;
-  goalHead: number;
-  pass: number;
-  penalty: number;
-  mvp: boolean;
+  passes: number;
+  goalsByLeg: number;
+  goalsByHead: number;
+  goalsByPenalty: number;
+  goalsByAuto?: number;
+
+  isMVP: boolean;
+  isTransfer: boolean;
+  isCaptain: boolean;
 
   // TODO! update optionals to required
   // Optional
-  autoGoal?: number;
   position?: EnumPlayerPosition;
 
   // More details
@@ -140,27 +142,31 @@ export class PlayerStatistic implements IPlayerStatistic {
 
   @ApiProperty()
   @Prop({ type: Number, required: true, default: 0 })
-  goal: number;
+  goalsByLeg: number;
 
   @ApiProperty()
   @Prop({ type: Number, required: true, default: 0 })
-  goalHead: number;
+  goalsByHead: number;
+
+  @ApiProperty()
+  @Prop({ type: Number, required: true, default: 0 })
+  goalsByPenalty: number;
 
   @ApiProperty()
   @Prop({ type: Number, required: false, default: 0 })
-  autoGoal?: number;
+  goalsByAuto?: number;
 
   @ApiProperty()
   @Prop({ type: Number, required: true, default: 0 })
-  penalty: number;
+  passes: number;
 
-  @ApiProperty()
-  @Prop({ type: Number, required: true, default: 0 })
-  pass: number;
-
-  @ApiProperty({ default: false, required: true })
+  @ApiProperty({ type: Boolean, required: true, default: false })
   @Prop({ type: Boolean })
-  mvp: boolean;
+  isMVP: boolean;
+
+  @ApiProperty({ type: Boolean, required: true, default: false })
+  @Prop({ type: Boolean })
+  isTransfer: boolean;
 
   @ApiProperty({ type: Boolean, default: false })
   @Prop({ type: Boolean })

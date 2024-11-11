@@ -4,17 +4,15 @@ import { EnumGameStatus } from './game.schema';
 export const SavePlayerStatisticDTO = v.object({
   playerId: v.string([v.toTrimmed()]), //mongoose.Schema.ObjectId
   teamId: v.string([v.toTrimmed()]), //  mongoose.Schema.ObjectId
-  goal: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
-  goalHead: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
-  autoGoal: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
-  penalty: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
-  pass: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
+  goalsByLeg: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
+  goalsByHead: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
+  goalsByAuto: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
+  goalsByPenalty: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
+  passes: v.optional(v.number([v.integer(), v.minValue(0)]), 0),
   mvp: v.optional(v.boolean(), false),
-
-  // transferable: boolean;
-  // disableAsPlayer: boolean;
-  // disableAsCaptain: boolean;
-  isCaptain: v.boolean(),
+  isMVP: v.optional(v.boolean(), false),
+  isTransfer: v.optional(v.boolean(), false),
+  isCaptain: v.optional(v.boolean(), false),
 });
 
 export const SaveGameDTO = v.transform(

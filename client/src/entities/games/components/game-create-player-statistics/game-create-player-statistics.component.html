@@ -21,7 +21,7 @@
           {{ column.cell(row) }}
         </td>
       </ng-container>
-    } @else if (column.columnDef === 'mvp') {
+    } @else if (column.columnDef === 'isMVP') {
       <ng-container [matColumnDef]="column.columnDef">
         <th
           mat-header-cell
@@ -36,7 +36,7 @@
         >
           <mat-slide-toggle
             #mvpToggle
-            [checked]="row.mvp"
+            [checked]="row.isMVP"
             (change)="toggleIsMVP(row)"
           ></mat-slide-toggle>
         </td>
@@ -61,7 +61,7 @@
           ></mat-slide-toggle>
         </td>
       </ng-container>
-    } @else if (column.columnDef === 'transferable') {
+    } @else if (column.columnDef === 'isTransfer') {
       <ng-container [matColumnDef]="column.columnDef">
         <th
           mat-header-cell
@@ -82,8 +82,9 @@
           } @else {
             <mat-slide-toggle
               #playedForToggle
-              [checked]="row.isTransferable"
-              (change)="toggleIsTransferable(row, $event.checked)"
+              [checked]="row.isTransfer"
+              (change)="toggleIsTransfer(row, $event.checked)"
+              [disabled]="row.isCaptain"
             ></mat-slide-toggle>
           }
         </td>

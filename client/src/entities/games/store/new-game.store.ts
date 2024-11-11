@@ -33,7 +33,6 @@ import { GameService } from '../services/game.service';
 import {
   IGameDTO,
   IPlayerStatisticDTO,
-  IPlayerStatisticSettings,
   ITeamDTO,
   TGameFinal,
   TPlayerFinal,
@@ -160,8 +159,8 @@ function isNewGameChanged({
         stats.playerId === actual.playerId && stats.teamId === actual.teamId,
     );
 
-    // TODO isTransferable
-    initial = { ...initial, isTransferable: false };
+    // TODO isTransfer
+    initial = { ...initial, isTransfer: false };
 
     const compareLog = (at: string) => {
       console.log({
@@ -175,39 +174,38 @@ function isNewGameChanged({
       return true;
     }
 
-    if (initial.goal !== actual.goal) {
-      compareLog('goal');
+    if (initial.goalsByLeg !== actual.goalsByLeg) {
+      compareLog('goalsByLeg');
       return true;
     }
 
-    if (initial.goalHead !== actual.goalHead) {
-      compareLog('goalHead');
+    if (initial.goalsByHead !== actual.goalsByHead) {
+      compareLog('goalsByHead');
       return true;
     }
 
-    if (initial.penalty !== actual.penalty) {
-      compareLog('penalty');
+    if (initial.goalsByPenalty !== actual.goalsByPenalty) {
+      compareLog('goalsByPenalty');
       return true;
     }
 
-    if (initial.pass !== actual.pass) {
-      compareLog('pass');
+    if (initial.passes !== actual.passes) {
+      compareLog('passes');
       return true;
     }
 
-    // TODO: FIX backend (db)
-    // if (initial.isMVP !== actual.isMVP) {
-    //   compareLog('isMVP');
-    //   return true;
-    // }
+    if (initial.isMVP !== actual.isMVP) {
+      compareLog('isMVP');
+      return true;
+    }
 
     if (initial.isCaptain !== actual.isCaptain) {
       compareLog('isCaptain');
       return true;
     }
 
-    if (initial.isTransferable !== actual.isTransferable) {
-      compareLog('isTransferable');
+    if (initial.isTransfer !== actual.isTransfer) {
+      compareLog('isTransfer');
       return true;
     }
   }
@@ -413,13 +411,7 @@ export const NewGameStore = signalStore(
           season,
           playedAt,
           teams: store.teamsEntities(),
-          statistics: store.statisticsEntities().map(stats => {
-            return omit<TPlayerStatisticFinal, keyof IPlayerStatisticSettings>(
-              stats,
-              'id',
-              'playerData',
-            );
-          }),
+          statistics: store.getStatististicsDTOs(),
         };
 
         console.log(gameDTO);
@@ -447,13 +439,7 @@ export const NewGameStore = signalStore(
           season,
           playedAt,
           teams: store.teamsEntities(),
-          statistics: store.statisticsEntities().map(stats => {
-            return omit<TPlayerStatisticFinal, keyof IPlayerStatisticSettings>(
-              stats,
-              'id',
-              'playerData',
-            );
-          }),
+          statistics: store.getStatististicsDTOs(),
         };
 
         console.log(gameDTO);

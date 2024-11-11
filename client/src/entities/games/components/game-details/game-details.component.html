@@ -167,7 +167,7 @@
     </ng-container>
 
     <!-- Passess Head Column -->
-    <ng-container matColumnDef="pass">
+    <ng-container matColumnDef="passes">
       <th
         mat-header-cell
         *matHeaderCellDef
@@ -179,7 +179,7 @@
         mat-cell
         *matCellDef="let element"
       >
-        {{ element.pass }}
+        {{ element.passes }}
       </td>
     </ng-container>
 
@@ -229,7 +229,7 @@
     </ng-container>
 
     <!-- Goal Column -->
-    <ng-container matColumnDef="goal">
+    <ng-container matColumnDef="goalsByLeg">
       <th
         mat-header-cell
         *matHeaderCellDef
@@ -241,12 +241,12 @@
         mat-cell
         *matCellDef="let element"
       >
-        {{ element.goal }}
+        {{ element.goalsByLeg }}
       </td>
     </ng-container>
 
     <!-- Gaol Head Column -->
-    <ng-container matColumnDef="goalHead">
+    <ng-container matColumnDef="goalsByHead">
       <th
         mat-header-cell
         *matHeaderCellDef
@@ -258,12 +258,12 @@
         mat-cell
         *matCellDef="let element"
       >
-        {{ element.goalHead }}
+        {{ element.goalsByHead }}
       </td>
     </ng-container>
 
     <!-- Penalty Column -->
-    <ng-container matColumnDef="penalty">
+    <ng-container matColumnDef="goalsByPenalty">
       <th
         mat-header-cell
         *matHeaderCellDef
@@ -275,7 +275,7 @@
         mat-cell
         *matCellDef="let element"
       >
-        {{ element.penalty }}
+        {{ element.goalsByPenalty }}
       </td>
     </ng-container>
 
@@ -292,14 +292,14 @@
         mat-cell
         *matCellDef="let element"
       >
-        @if (element.mvp) {
+        @if (element.isMVP) {
           <mat-icon fontIcon="check"></mat-icon>
         }
       </td>
     </ng-container>
 
     <!-- Transfered Column -->
-    <ng-container matColumnDef="isTransfered">
+    <ng-container matColumnDef="isTransfer">
       <th
         mat-header-cell
         *matHeaderCellDef
@@ -311,7 +311,7 @@
         mat-cell
         *matCellDef="let element"
       >
-        @if (element.isTransfered) {
+        @if (element.isTransfer) {
           <mat-icon fontIcon="check"></mat-icon>
         }
       </td>

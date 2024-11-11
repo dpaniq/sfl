@@ -82,17 +82,18 @@ export class GamesService {
     const teamSecondIdHelper = game.teams.at(1).id;
 
     // Common
-    const totalPlayers: number = game.statistics.length;
+    const totalPlayers: number = new Set(game.statistics.map((s) => s.playerId))
+      .size;
     const totalGoalsByLeg: number = game.statistics.reduce(
-      (curr, next) => curr + next.goal,
+      (curr, next) => curr + next.goalsByLeg,
       0,
     );
     const totalGoalsByHead: number = game.statistics.reduce(
-      (curr, next) => curr + next.goalHead,
+      (curr, next) => curr + next.goalsByHead,
       0,
     );
     const totalGoalsByPenalty: number = game.statistics.reduce(
-      (curr, next) => curr + next.penalty,
+      (curr, next) => curr + next.goalsByPenalty,
       0,
     );
     const totalGoalsByAuto: number = game.statistics.reduce(
@@ -100,7 +101,7 @@ export class GamesService {
       0,
     );
     const totalPasses: number = game.statistics.reduce(
-      (curr, next) => curr + next.pass,
+      (curr, next) => curr + next.passes,
       0,
     );
 
@@ -112,7 +113,9 @@ export class GamesService {
     const score: [number, number] = game.statistics.reduce(
       (curr, next) => {
         const currentScore =
-          (next.goal ?? 0) + (next.goalHead ?? 0) * 2 + (next.penalty ?? 0);
+          (next.goalsByLeg ?? 0) +
+          (next.goalsByHead ?? 0) * 2 +
+          (next.goalsByPenalty ?? 0);
 
         if (next.teamId === teamFirstIdHelper) {
           return [curr.at(0) + currentScore, curr.at(1)];
@@ -191,7 +194,7 @@ export class GamesService {
     const maxPassesNumberHelper = [
       ...new Set(
         game.statistics
-          .map((stat) => stat.pass)
+          .map((stat) => stat.passes)
           .sort((pass1, pass2) => pass2 - pass1),
       ),
     ].at(0);
@@ -199,14 +202,14 @@ export class GamesService {
     const mvpByPassesIds: string[] = !maxPassesNumberHelper
       ? []
       : game.statistics
-          .filter((stat) => stat.pass === maxPassesNumberHelper)
+          .filter((stat) => stat.passes === maxPassesNumberHelper)
           .map((stat) => stat.playerId);
 
     // mvpByGoalsIds
     const maxGoalNumberHelper = [
       ...new Set(
         game.statistics
-          .map((stat) => stat.goal)
+          .map((stat) => stat.goalsByHead)
           .sort((goal1, goal2) => goal2 - goal1),
       ),
     ].at(0);
@@ -214,14 +217,14 @@ export class GamesService {
     const mvpByGoalsIds: string[] = !maxGoalNumberHelper
       ? []
       : game.statistics
-          .filter((stat) => stat.goal === maxGoalNumberHelper)
+          .filter((stat) => stat.goalsByHead === maxGoalNumberHelper)
           .map((stat) => stat.playerId);
 
     // mvpByGoalsHeadIds
     const maxGoalsHeadNumberHelper = [
       ...new Set(
         game.statistics
-          .map((stat) => stat.goalHead)
+          .map((stat) => stat.goalsByHead)
           .sort((goalHead1, goalHead2) => goalHead2 - goalHead1),
       ),
     ].at(0);
@@ -229,12 +232,12 @@ export class GamesService {
     const mvpByGoalsHeadIds: string[] = !maxGoalsHeadNumberHelper
       ? []
       : game.statistics
-          .filter((stat) => stat.goalHead === maxGoalsHeadNumberHelper)
+          .filter((stat) => stat.goalsByHead === maxGoalsHeadNumberHelper)
           .map((stat) => stat.playerId);
 
     // mvpListIds
     const mvpListIds: string[] = game.statistics.reduce(
-      (curr, next) => (next.mvp ? [...curr, next.playerId] : curr),
+      (curr, next) => (next.isMVP ? [...curr, next.playerId] : curr),
       [],
     );
 
@@ -292,10 +295,13 @@ export class GamesService {
     // Todo: this might be slow, probably need to optimize
     for (const stat of game.statistics) {
       players[stat.playerId.toString()] =
-        await this.playersService.calculatePlayerGameResultMetadata(stat, {
-          ...game,
-          metadata,
-        });
+        await this.playersService.calculatePlayerGameResultMetadata(
+          stat.playerId.toString(),
+          {
+            ...game,
+            metadata,
+          },
+        );
     }
 
     metadata.players = players;

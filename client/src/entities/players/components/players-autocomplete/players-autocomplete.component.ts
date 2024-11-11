@@ -20,10 +20,7 @@ import { MatListModule, MatSelectionListChange } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { EnumGameMode } from '@entities/games/constants';
 import { NewGameStore } from '@entities/games/store/new-game.store';
-import {
-  DEFAULT_STATISTIC_VALUES,
-  generatePlayerStatisticID,
-} from '@entities/games/store/statistics.feature';
+import { DEFAULT_STATISTIC_VALUES } from '@entities/games/store/statistics.feature';
 import { IPlayerDTO, TPlayerStatisticFinal } from '@entities/games/types';
 import { CreatePlayerDialogComponent } from '../create-player-dialog/create-player-dialog.component';
 
@@ -110,10 +107,7 @@ export class PlayersAutocompleteComponent {
 
           return <TPlayerStatisticFinal>{
             ...DEFAULT_STATISTIC_VALUES,
-            id: generatePlayerStatisticID({
-              teamId: this.teamId(),
-              playerId: 'unknown',
-            }),
+            id: player.id,
             playerId: player.id,
             playerData: player,
           };
