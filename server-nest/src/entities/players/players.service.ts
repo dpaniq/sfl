@@ -96,7 +96,7 @@ export class PlayersService {
   }
 
   public async calculatePlayerGameResultMetadata(
-    statistic: PlayerStatistic,
+    playerId: string,
     game: WithId<IGame>,
   ): Promise<IPlayerGameResultMetadata> {
     console.log('calculatePlayerGameResultMetadata');
@@ -115,15 +115,53 @@ export class PlayersService {
     const gameMetadata: IGameMetadata = game.metadata;
     const seasonGameNumberKey: `${number}:${number}` = `${gameSeason}:${gameNumber}`;
 
+    const statistics: PlayerStatistic[] = game.statistics.filter(
+      (s) => s.playerId === playerId,
+    );
+    const isPlayerInBothTeams = statistics.length === 2;
+
+    // Player can be transfered and play for both team
+    const statistic = isPlayerInBothTeams
+      ? statistics.at(0)
+      : statistics.reduce(
+          (acc, next) => {
+            return {
+              playerId: next.playerId,
+              teamId: next.teamId,
+
+              passes: acc.passes + next.passes,
+              goalsByLeg: acc.goalsByLeg + next.goalsByLeg,
+              goalsByHead: acc.goalsByHead + next.goalsByHead,
+              goalsByAuto: acc.goalsByAuto + next.goalsByAuto,
+              goalsByPenalty: acc.goalsByPenalty + next.goalsByPenalty,
+
+              isMVP: acc.isMVP || next.isMVP,
+              isCaptain: acc.isCaptain || next.isCaptain,
+              isTransfer: acc.isTransfer || next.isTransfer,
+            };
+          },
+          {
+            playerId: '',
+            teamId: '',
+
+            passes: 0,
+            goalsByLeg: 0,
+            goalsByHead: 0,
+            goalsByAuto: 0,
+            goalsByPenalty: 0,
+
+            isMVP: false,
+            isCaptain: false,
+            isTransfer: false,
+          } as PlayerStatistic,
+        );
+
     // Previous metadata to recalculate
-    const player = await this.playerModel
-      .findOne({ _id: statistic.playerId.toString() })
-      .exec();
 
     // Todo: this might be slow, probably need to optimize
 
     try {
-      const playerId = player.id.toString();
+      const player = await this.playerModel.findOne({ _id: playerId }).exec();
 
       if (!player) {
         throw new Error('Player is not found');
@@ -135,10 +173,12 @@ export class PlayersService {
       const isTeamFromSecondDraftWon =
         gameMetadata.scoreFirstDraft < gameMetadata.scoreSecondDraft;
 
-      const asFirstDraft =
-        gameMetadata.playerIdsOfFirstDraft.includes(playerId);
-      const asSecondDraft =
-        gameMetadata.playerIdsOfSecondDraft.includes(playerId);
+      const asFirstDraft = isPlayerInBothTeams
+        ? true
+        : gameMetadata.playerIdsOfFirstDraft.includes(playerId);
+      const asSecondDraft = isPlayerInBothTeams
+        ? true
+        : gameMetadata.playerIdsOfSecondDraft.includes(playerId);
 
       const playerMetadataByGame: IPlayerMetadataByGame = {
         ...METADATA_BY_GAME_DEFAULT,
@@ -152,16 +192,21 @@ export class PlayersService {
         asCaptain: statistic.isCaptain,
         asFirstDraft,
         asSecondDraft,
+        asTransfer: statistic.isTransfer,
 
-        hasWon: asFirstDraft && isTeamFromFirstDraftWon,
-        hasLose: asFirstDraft && isTeamFromSecondDraftWon,
-        hasDraw: gameMetadata.scoreIsDraw,
+        hasWon: isPlayerInBothTeams
+          ? false
+          : asFirstDraft && isTeamFromFirstDraftWon,
+        hasLose: isPlayerInBothTeams
+          ? false
+          : asFirstDraft && isTeamFromSecondDraftWon,
+        hasDraw: isPlayerInBothTeams ? false : gameMetadata.scoreIsDraw,
       };
 
-      const totalPasses = statistic.pass;
-      const totalGoalsByLeg = statistic.goal;
-      const totalGoalsByHead = statistic.goalHead;
-      const totalGoalsByPenalty = statistic.penalty;
+      const totalPasses = statistic.passes;
+      const totalGoalsByLeg = statistic.goalsByLeg;
+      const totalGoalsByHead = statistic.goalsByHead;
+      const totalGoalsByPenalty = statistic.goalsByHead;
       const totalGoalsByAuto = 0;
       const totalGoals =
         totalGoalsByLeg + totalGoalsByHead + totalGoalsByPenalty;

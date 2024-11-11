@@ -62,15 +62,15 @@ export interface IPlayerStatisticDTO {
   playerId: string;
   teamId: string;
 
-  goal: number;
-  goalHead: number;
-  autoGoal: number;
-  penalty: number;
-  pass: number;
+  passes: number;
+  goalsByLeg: number;
+  goalsByHead: number;
+  goalsByAuto: number;
+  goalsByPenalty: number;
 
   isMVP: boolean;
   isCaptain: boolean;
-  isTransferable: boolean;
+  isTransfer: boolean;
   // More details
   // distance?: number;
   // position?: IPlayerPosition;
@@ -86,13 +86,13 @@ export type TPlayerStatisticFinalIds = Pick<
 >;
 export type TPlayerStatisticFinalNumber = Pick<
   TPlayerStatisticFinal,
-  'pass' | 'goal' | 'goalHead' | 'autoGoal' | 'penalty'
+  'passes' | 'goalsByLeg' | 'goalsByHead' | 'goalsByAuto' | 'goalsByPenalty'
 >;
 export type TPlayerStatisticFinalNumberKeys = keyof TPlayerStatisticFinalNumber;
 
 export type TPlayerStatisticFinalBoolean = Pick<
   TPlayerStatisticFinal,
-  'isMVP' | 'isCaptain' | 'isTransferable'
+  'isMVP' | 'isCaptain' | 'isTransfer'
 >;
 export type TPlayerStatisticFinalBooleanKeys =
   keyof TPlayerStatisticFinalBoolean;

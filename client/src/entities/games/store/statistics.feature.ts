@@ -16,9 +16,11 @@ import {
   updateEntity,
   withEntities,
 } from '@ngrx/signals/entities';
+import { omit } from 'lodash-es';
 import { GamePlayerStatistic } from '../components/game-create-player-statistics/game-create-player-statistics.component';
 import {
   IPlayerStatisticDTO,
+  IPlayerStatisticSettings,
   TPlayerStatisticFinal,
   TPlayerStatisticFinalBoolean,
   TPlayerStatisticFinalBooleanKeys,
@@ -49,15 +51,15 @@ export const DEFAULT_STATISTIC_IDS_VALUES: Partial<TPlayerStatisticFinalIds> = {
 export const DEFAULT_STATISTIC_BOOLEAN_VALUES: TPlayerStatisticFinalBoolean = {
   isMVP: false,
   isCaptain: false,
-  isTransferable: false,
+  isTransfer: false,
 };
 
 export const DEFAULT_STATISTIC_NUMBER_VALUES: TPlayerStatisticFinalNumber = {
-  autoGoal: 0,
-  goal: 0,
-  goalHead: 0,
-  pass: 0,
-  penalty: 0,
+  goalsByAuto: 0,
+  goalsByLeg: 0,
+  goalsByHead: 0,
+  passes: 0,
+  goalsByPenalty: 0,
 };
 
 export const DEFAULT_STATISTIC_VALUES: Required<
@@ -91,8 +93,19 @@ function mapStatisticDTOtoFinal(
   return {
     ...statistic,
     id: generatePlayerStatisticID(statistic),
-    isTransferable: false,
   };
+}
+
+function mapStatisticsFinaltoDTO(
+  statistics: TPlayerStatisticFinal[],
+): IPlayerStatisticDTO[] {
+  return statistics.map(stat =>
+    omit<TPlayerStatisticFinal, keyof IPlayerStatisticSettings>(
+      stat,
+      'id',
+      'playerData',
+    ),
+  );
 }
 
 export function withPlayerStatisticsFeature<_>() {
@@ -121,7 +134,7 @@ export function withPlayerStatisticsFeature<_>() {
     })),
     withMethods(store => ({
       toggleIsMVP({ id, teamId }: TPlayerStatisticFinal): void {
-        console.group('toggleIsMVP', id, teamId);
+        console.group('toggleIsMVP', id, teamId, store.statisticsEntities());
         patchState(
           store,
           updateEntity(
@@ -159,9 +172,9 @@ export function withPlayerStatisticsFeature<_>() {
       // Here we get actual transferable state at once
       toggleTransferable(statistic: GamePlayerStatistic): void {
         console.group('toggleTransferable');
-        const { id, teamId, playerId, isTransferable } = statistic;
+        const { id, teamId, playerId, isTransfer } = statistic;
 
-        if (!isTransferable) {
+        if (!isTransfer) {
           const statisticsWithThisPlayerIdLength = store
             .statisticsEntities()
             .filter(stat => stat.playerId === playerId).length;
@@ -178,7 +191,7 @@ export function withPlayerStatisticsFeature<_>() {
                 updateEntity(
                   {
                     id: statistic.id,
-                    changes: { isTransferable },
+                    changes: { isTransfer },
                   },
                   STATISTIC_ENTITY_CONFIG,
                 ),
@@ -192,7 +205,7 @@ export function withPlayerStatisticsFeature<_>() {
                 updateEntities(
                   {
                     predicate: statistic => statistic.playerId === playerId,
-                    changes: { isTransferable: false },
+                    changes: { isTransfer: false },
                   },
                   STATISTIC_ENTITY_CONFIG,
                 ),
@@ -217,7 +230,7 @@ export function withPlayerStatisticsFeature<_>() {
           updateEntity(
             {
               id,
-              changes: { isTransferable },
+              changes: { isTransfer },
             },
             STATISTIC_ENTITY_CONFIG,
           ),
@@ -276,6 +289,7 @@ export function withPlayerStatisticsFeature<_>() {
             {
               ...statistic,
               id,
+              isTransfer: true,
             },
             STATISTIC_ENTITY_CONFIG,
           ),
@@ -283,6 +297,9 @@ export function withPlayerStatisticsFeature<_>() {
       },
       removeStatisticPlayer(id: string) {
         patchState(store, removeEntity(id, STATISTIC_ENTITY_CONFIG));
+      },
+      getStatististicsDTOs(): IPlayerStatisticDTO[] {
+        return mapStatisticsFinaltoDTO(store.statisticsEntities());
       },
       initEntityStatistics(statistics: TPlayerStatisticFinal[]): void {
         patchState(

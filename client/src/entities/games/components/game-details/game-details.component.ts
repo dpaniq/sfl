@@ -54,13 +54,13 @@ export class GameDetailsComponent implements OnInit {
 
   public readonly displayedColumns = [
     'nickname',
-    'pass',
-    'goal',
-    'goalHead',
-    'penalty',
+    'passes',
+    'goalsByLeg',
+    'goalsByHead',
+    'goalsByPenalty',
     'isCaptain',
     'mvp',
-    // 'isTransfered',
+    // 'isTransfer',
   ];
 
   public readonly dataSourceFirstDraft = computed(() => {

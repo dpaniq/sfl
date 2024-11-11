@@ -3,10 +3,10 @@ import { groupBy } from 'lodash-es';
 import { TGameFinal, TPlayerStatisticFinal } from '../types';
 
 // TODO component with
-// head emoji (2) goal emoji (1) penalty emoji (0) pass emoji (1) mvp emoji (1)
+// head emoji (2) goalsByLeg emoji (1) goalsByPenalty emoji (0) passes emoji (1) mvp emoji (1)
 const calculateStats = (stats: TPlayerStatisticFinal[]): number => {
   return stats.reduce((acc, stat) => {
-    return acc + stat.goal + stat.goalHead * 2 + stat.penalty;
+    return acc + stat.goalsByLeg + stat.goalsByHead * 2 + stat.goalsByPenalty;
   }, 0);
 };
 

@@ -85,16 +85,17 @@ export class GameCreatePlayerStatisticsComponent {
   }
 
   public toggleIsMVP(playerStatistic: GamePlayerStatistic) {
+    console.log({ playerStatistic });
     this.newGameStore.toggleIsMVP(playerStatistic);
   }
 
-  public toggleIsTransferable(
+  public toggleIsTransfer(
     playerStatistic: GamePlayerStatistic,
-    isTransferable: boolean,
+    isTransfer: boolean,
   ) {
     this.newGameStore.toggleTransferable({
       ...playerStatistic,
-      isTransferable,
+      isTransfer,
     });
   }
 
