@@ -44,6 +44,7 @@ import { PlayersService } from '@entities/players/services/players.service';
 import { TeamsService } from '@entities/teams';
 import { getLastSaturday, totalWeeksByYear } from '@entities/utils/date';
 import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
+import { AuthService } from '@shared/services/auth.service';
 import { getYear, isDate, isSaturday, previousSaturday } from 'date-fns';
 import { range } from 'lodash-es';
 import { distinctUntilChanged, filter, map } from 'rxjs';
@@ -88,8 +89,11 @@ export class GameCreationWidgetComponent implements OnInit {
   readonly gameService = inject(GameService);
   readonly teamsService = inject(TeamsService);
   readonly activatedRoute = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
   readonly router = inject(Router);
   readonly injector = inject(Injector);
+
+  protected readonly isAdminSignal = this.authService.isAdmin;
 
   lastSaturday = getLastSaturday;
   minDate = '2010-01-01';
