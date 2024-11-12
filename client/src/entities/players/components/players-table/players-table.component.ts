@@ -135,10 +135,7 @@ export class PlayersTableComponent implements OnInit, OnDestroy, AfterViewInit {
       })
       .afterClosed()
       .subscribe(player => {
-        console.log('The dialog (player edit dialog) was closed with', player);
-
         if (player) {
-          console.log(player);
           this.playersStore.updateOne(player);
         }
       });

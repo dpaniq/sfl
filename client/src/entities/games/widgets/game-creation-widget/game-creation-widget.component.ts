@@ -208,26 +208,18 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<[TTeamFinal, TTeamFinal]>) {
-    // TODO
-
     const array = this.teams();
 
     if (!array) {
       return;
     }
-    console.log('drop!', array, event);
 
     moveItemInArray(array, event.previousIndex, event.currentIndex);
 
     this.newGameStore.updateTeams(array as [TTeamFinal, TTeamFinal]);
-    // this.newGameStore.updateTeams(array);
-
-    // TODO not needed fix
-    // this.teams.set(array);
   }
 
   private fillControls() {
-    console.log('fillControls');
     const { number, season, status, playedAt } = this.newGameStore.game();
 
     if (number) {

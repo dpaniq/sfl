@@ -16,7 +16,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TPlayerFinal } from '@entities/games/types';
-import { PlayerClient, PlayersStore } from '@entities/players';
+import { PlayersStore } from '@entities/players';
 
 @Component({
   selector: 'sfl-players-toggle',

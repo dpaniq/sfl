@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostListener,
+  OnInit,
   inject,
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -66,7 +67,10 @@ import { displayFn } from '../../entities/captains/utils/autocomplete';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CaptainToAddComponent extends BaseUnsubscribeComponent {
+export class CaptainToAddComponent
+  extends BaseUnsubscribeComponent
+  implements OnInit
+{
   readonly playersStore = inject(PlayersStore);
 
   constructor(private captainsStore: CaptainsStore) {

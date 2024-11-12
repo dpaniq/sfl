@@ -103,61 +103,9 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
 
   captainsSignal = computed(() => {
     this.newGameStore.captains();
-    // TODO
-    // return this.newGameStore.captains().filter(
-    //   player =>
-    //     // player.teamId === this.teamFC.value?.id ||
-    //     player.teamId === this.teamId() || !player.disableAsCaptain,
-    // );
   });
 
-  // playersSignal = computed(() => {
-  //   return this.newGameStore
-  //     .players()
-  //     .filter(player => {
-  //       if (player.disableAsPlayer) {
-  //         return player;
-  //       }
-  //       const pattern = RegExp(`${this.value()}`);
-  //       console.log({ pattern });
-  //       return pattern.test(player.nickname);
-  //     })
-  //     .filter(
-  //       player =>
-  //         // player.teamId === this.teamFC.value?.id ||
-  //         player.teamId === this.teamId() ||
-  //         !player.disableAsPlayer ||
-  //         (player.disableAsPlayer && player.transferable),
-  //     );
-  // });
-
-  // playersOfCurrentTeamSignal = computed(() => {
-  //   const players = this.newGameStore.players();
-
-  //   if (!players.length) {
-  //     return [];
-  //   }
-
-  //   const statisticPlayers = this.newGameStore.game
-  //     .statistics()
-  //     .filter(stat => stat.teamId && stat.teamId === this.teamId())
-  //     .map(stat => {
-  //       const found = players.find(player => {
-  //         return player.id === stat.playerId;
-  //       })!;
-
-  //       return {
-  //         ...stat,
-  //         nickname: found.nickname,
-  //       };
-  //     });
-
-  //   return statisticPlayers;
-  // });
-
-  ngOnDestroy() {
-    // Comments
-  }
+  ngOnDestroy() {}
 
   readonly storeLoaded$ = toObservable(this.newGameStore.storeLoaded);
 
@@ -166,46 +114,12 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
       .pipe(distinctUntilChanged(), takeUntilDestroyed(this.#destroyRef))
       .subscribe(storeLoaded => {});
 
-    // this.captainFC.valueChanges
-    //   .pipe(
-    //     startWith(this.captainFC.value),
-    //     pairwise(),
-    //     takeUntilDestroyed(this.#destroyRef),
-    //   )
-    //   .subscribe(([prevCaptain, currentCaptain]) => {
-    //     console.log('setCaptain', prevCaptain, currentCaptain);
-
-    //     if (prevCaptain) {
-    //       this.newGameStore.updateCaptain({
-    //         ...prevCaptain,
-    //         teamId: null,
-    //         disableAsCaptain: false,
-    //       });
-    //     }
-
-    //     // Set new player to PlayerFC & disable / enable playersFC
-    //     if (currentCaptain) {
-    //       this.newGameStore.updateCaptain({
-    //         ...currentCaptain,
-    //         teamId: this.teamId() ?? null,
-    //         disableAsCaptain: true,
-    //       });
-    //       this.playersFC.enable();
-    //       this.playersFC.reset([currentCaptain]);
-    //     } else {
-    //       this.playersFC.disable();
-    //       this.playersFC.reset();
-    //     }
-    //   });
-
     this.playersFC.valueChanges
       .pipe(
         startWith(this.playersFC.value),
         takeUntilDestroyed(this.#destroyRef),
       )
-      .subscribe(players => {
-        // this.newGameStore.setPlayers(this.teamId(), players);
-      });
+      .subscribe(players => {});
   }
 
   teamCompareFn(option: GameTeam | null, value: GameTeam | null) {

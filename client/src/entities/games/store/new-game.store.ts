@@ -5,7 +5,6 @@ import { TeamsService } from '@entities/teams';
 import {
   patchState,
   signalStore,
-  watchState,
   withComputed,
   withHooks,
   withMethods,
@@ -23,6 +22,7 @@ import {
   finalize,
   first,
   forkJoin,
+  map,
   of,
   pipe,
   switchMap,
@@ -111,27 +111,22 @@ function isNewGameChanged({
 }): boolean {
   // Game
   if (!isEqual(initialGame.id, actualGame.id)) {
-    console.log('id changed');
     return true;
   }
 
   if (!isEqual(initialGame.number, actualGame.number)) {
-    console.log('number changed');
     return true;
   }
 
   if (!isEqual(initialGame.season, actualGame.season)) {
-    console.log('season changed');
     return true;
   }
 
   if (!isEqual(initialGame.playedAt, actualGame.playedAt)) {
-    console.log('playedAt changed');
     return true;
   }
 
   if (!isEqual(initialGame.status, actualGame.status)) {
-    console.log('status changed');
     return true;
   }
 
@@ -163,7 +158,7 @@ function isNewGameChanged({
     initial = { ...initial, isTransfer: false };
 
     const compareLog = (at: string) => {
-      console.log({
+      console.info({
         at,
         initial,
         actual,
@@ -223,10 +218,6 @@ function matchStatisticsPlayerData({
   const mappedStatistics = statistics.map(element => {
     const data = players.find(player => player.id === element.playerId);
     if (!data) {
-      console.log(
-        'Not found player while "mergeStatisticsAndPlayers"',
-        element,
-      );
       return undefined;
     }
 
@@ -244,8 +235,6 @@ function initGameCreation(
 ): Observable<TGameFinal> {
   const game = cloneDeep(INITIAL_GAME_STATE);
   game.teams = teams;
-
-  console.log({ queryParam });
 
   if (queryParam.has('number')) {
     game.number = Number(queryParam.get('number'));
@@ -332,8 +321,6 @@ function validateTeamsAndStatistics({
     );
   }
 
-  console.log({ errorsMap });
-
   return errorsMap;
 }
 
@@ -414,17 +401,15 @@ export const NewGameStore = signalStore(
           statistics: store.getStatististicsDTOs(),
         };
 
-        console.log(gameDTO);
-
         // TODO
         gameService.create(gameDTO).subscribe(game => {
-          console.log('GAME IS CREATED', game);
+          const { season, number } = game;
           if (!game) {
             console.error('GAME IS NOT CREATED');
             return;
           }
 
-          router.navigate(['games', 'edit', game.id]);
+          router.navigate(['games', 'edit', 'details', season, number]);
         });
       },
 
@@ -441,8 +426,6 @@ export const NewGameStore = signalStore(
           teams: store.teamsEntities(),
           statistics: store.getStatististicsDTOs(),
         };
-
-        console.log(gameDTO);
 
         // TODO
         gameService.resave(id, gameDTO).subscribe(game => {
@@ -483,21 +466,36 @@ export const NewGameStore = signalStore(
             Observable<TGameFinal>
           >(({ paramMap, queryParamMap, teams, players }) => {
             const gameId = paramMap.get('id');
+            const season = paramMap.get('season');
+            const number = paramMap.get('number');
             const mode = gameId ? EnumGameMode.Edit : EnumGameMode.Create;
 
             // Switch mode + cases
-            const gameObservable: Observable<TGameFinal> = !gameId
-              ? // Inititialize and prepared data for creation mode
-                initGameCreation(queryParamMap, { teams })
-              : // Load & prepared data for editing game
-                gameService
-                  .findById(gameId)
-                  .pipe(switchMap(game => initGameEdition(game)));
+            const gameObservable: Observable<TGameFinal> =
+              !season || !number
+                ? // Inititialize and prepared data for creation mode
+                  initGameCreation(queryParamMap, { teams })
+                : // Load & prepared data for editing game
+                  gameService
+                    .find({
+                      season: Number(season),
+                      number: Number(number),
+                    })
+                    .pipe(
+                      map(games => games.at(0)),
+
+                      switchMap(game => {
+                        if (!game) {
+                          throw new Error('Game not found');
+                        }
+
+                        return initGameEdition(game);
+                      }),
+                    );
 
             // Update state
             return gameObservable.pipe(
               tap((game: TGameFinal) => {
-                console.log({ mode, game });
                 patchState(store, () => ({
                   mode,
                   game,
@@ -518,7 +516,7 @@ export const NewGameStore = signalStore(
                 store.initEntityStatistics(stats);
               }),
               finalize(() => {
-                console.log('FINALIZE: INIT GAME', {
+                console.info('FINALIZE: INIT GAME', {
                   loading: false,
                   initLoading: false,
                 });
@@ -543,12 +541,8 @@ export const NewGameStore = signalStore(
   // Should be latest to read methods
   withHooks({
     onInit(store) {
-      console.log(FEATURE_INITIALIZED);
+      console.info(FEATURE_INITIALIZED);
       store.initGame();
-
-      watchState(store, state => {
-        console.log('[new game store][watchState] iteration state', state);
-      });
 
       effect(
         () => {
@@ -564,7 +558,6 @@ export const NewGameStore = signalStore(
           ]);
 
           patchState(store, { errors });
-          console.log('[new game store][effect][validation-errors]', errors);
         },
         {
           allowSignalWrites: true,
@@ -572,7 +565,7 @@ export const NewGameStore = signalStore(
       );
     },
     onDestroy() {
-      console.log(FEATURE_DESTROYED);
+      console.info(FEATURE_DESTROYED);
     },
   }),
 );

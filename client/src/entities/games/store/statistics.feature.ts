@@ -126,7 +126,6 @@ export function withPlayerStatisticsFeature<_>() {
       }),
       // TODO: need id
       statisticsHONDA: computed(() => {
-        console.log('statisticsHONDA:', store.teams().at(1)?.id);
         return store
           .statisticsEntities()
           .filter(stat => stat.teamId === store.teams().at(1)?.id);
@@ -134,7 +133,6 @@ export function withPlayerStatisticsFeature<_>() {
     })),
     withMethods(store => ({
       toggleIsMVP({ id, teamId }: TPlayerStatisticFinal): void {
-        console.group('toggleIsMVP', id, teamId, store.statisticsEntities());
         patchState(
           store,
           updateEntity(
@@ -145,10 +143,8 @@ export function withPlayerStatisticsFeature<_>() {
             STATISTIC_ENTITY_CONFIG,
           ),
         );
-        console.groupEnd();
       },
       toggleIsCaptain({ id, teamId }: GamePlayerStatistic): void {
-        console.group('toggleIsCaptain');
         patchState(
           store,
           updateEntities(
@@ -165,13 +161,10 @@ export function withPlayerStatisticsFeature<_>() {
             STATISTIC_ENTITY_CONFIG,
           ),
         );
-
-        console.groupEnd();
       },
 
       // Here we get actual transferable state at once
       toggleTransferable(statistic: GamePlayerStatistic): void {
-        console.group('toggleTransferable');
         const { id, teamId, playerId, isTransfer } = statistic;
 
         if (!isTransfer) {
@@ -179,13 +172,10 @@ export function withPlayerStatisticsFeature<_>() {
             .statisticsEntities()
             .filter(stat => stat.playerId === playerId).length;
 
-          console.log({ statisticsWithThisPlayerIdLength });
-
           // Transferable false mean:
           switch (statisticsWithThisPlayerIdLength) {
             // If in statistics array only one player - set transferable false
             case 1:
-              console.log('case 1');
               return patchState(
                 store,
                 updateEntity(
@@ -198,7 +188,7 @@ export function withPlayerStatisticsFeature<_>() {
               );
             case 2:
               // If in statistics array only one player - remove current and set second transferable false
-              console.log('case 2');
+
               return patchState(
                 store,
                 removeEntity(id, STATISTIC_ENTITY_CONFIG),
@@ -244,7 +234,6 @@ export function withPlayerStatisticsFeature<_>() {
             STATISTIC_ENTITY_CONFIG,
           ),
         );
-        console.groupEnd();
       },
 
       patchNumberKeysStatistics({
@@ -256,8 +245,6 @@ export function withPlayerStatisticsFeature<_>() {
         number: number;
         key: TPlayerStatisticFinalNumberKeys;
       }): void {
-        console.group('patchPlayerStats');
-
         patchState(
           store,
           updateEntity(
@@ -270,12 +257,8 @@ export function withPlayerStatisticsFeature<_>() {
             STATISTIC_ENTITY_CONFIG,
           ),
         );
-
-        console.groupEnd();
       },
       addStatisticPlayer(statistic: TPlayerStatisticFinal): void {
-        console.log('addStatisticPlayer', statistic, store.teams());
-
         const teams = store.teams() as [TTeamFinal, TTeamFinal];
         const oppositeTeamId = getOppositeTeamId(statistic.teamId, teams);
         const id = generatePlayerStatisticID({
@@ -313,10 +296,10 @@ export function withPlayerStatisticsFeature<_>() {
     })),
     withHooks({
       onInit() {
-        console.log(FEATURE_INITIALIZED);
+        console.info(FEATURE_INITIALIZED);
       },
       onDestroy() {
-        console.log(FEATURE_DESTROYED);
+        console.info(FEATURE_DESTROYED);
       },
     }),
   );

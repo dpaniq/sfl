@@ -1,6 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, InjectionToken, inject } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class LocalStorageService {

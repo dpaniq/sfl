@@ -85,7 +85,6 @@ export class GameCreatePlayerStatisticsComponent {
   }
 
   public toggleIsMVP(playerStatistic: GamePlayerStatistic) {
-    console.log({ playerStatistic });
     this.newGameStore.toggleIsMVP(playerStatistic);
   }
 

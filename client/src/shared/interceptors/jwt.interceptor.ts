@@ -1,5 +1,4 @@
-import { HttpEventType, HttpInterceptorFn } from '@angular/common/http';
-import { tap } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
 
 export const jwtInterceptor: HttpInterceptorFn = (request, next) => {
   const accessToken = localStorage.getItem('accessToken');

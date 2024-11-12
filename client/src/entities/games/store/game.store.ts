@@ -43,7 +43,6 @@ export const GameStore = signalStore(
           delay(2500),
           switchMap(() => gameService.find()),
           tap(games => {
-            console.log('[GameStore]: tap games', games);
             patchState(store, () => ({
               games,
               loading: false,

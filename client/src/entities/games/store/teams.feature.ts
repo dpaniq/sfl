@@ -41,10 +41,10 @@ export function withTeamsFeature<_>() {
     })),
     withHooks({
       onInit() {
-        console.log(FEATURE_INITIALIZED);
+        console.info(FEATURE_INITIALIZED);
       },
       onDestroy() {
-        console.log(FEATURE_DESTROYED);
+        console.info(FEATURE_DESTROYED);
       },
     }),
   );

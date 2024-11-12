@@ -59,7 +59,6 @@ export class GameCardComponent {
   });
 
   protected readonly wonTeamClass = computed(() => {
-    console.log(this.gameCard().metadata);
     if (this.gameCard().metadata?.isTeamFromFirstDraftWon === true) {
       return this.gameCard().teams.at(0)?.name;
     }
@@ -79,7 +78,7 @@ export class GameCardComponent {
 
   openDetails() {
     const { season, number } = this.gameCard();
-    this.router.navigate(['games', season, number]);
+    this.router.navigate(['games', 'details', season, number]);
   }
 
   createGame() {
@@ -91,7 +90,8 @@ export class GameCardComponent {
   }
 
   edit() {
-    this.router.navigate(['games', 'edit', this.gameCard().id]);
+    const { season, number } = this.gameCard();
+    this.router.navigate(['games', 'edit', season, number]);
   }
 
   delete() {
