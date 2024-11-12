@@ -22,7 +22,7 @@ export const GAMES_ROUTES: Routes = [
           ).then(c => c.GameCreationWidgetComponent),
       },
       {
-        path: 'edit/:id',
+        path: 'edit/:season/:number',
         title: 'Edit game',
         loadComponent: () =>
           import(
@@ -30,7 +30,7 @@ export const GAMES_ROUTES: Routes = [
           ).then(c => c.GameCreationWidgetComponent),
       },
       {
-        path: ':season/:number',
+        path: 'details/:season/:number',
         title: 'Game details',
         loadComponent: () =>
           import('./pages/game-page-details/game-page-details.component').then(

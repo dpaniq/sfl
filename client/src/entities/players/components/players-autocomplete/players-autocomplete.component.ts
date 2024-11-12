@@ -83,12 +83,7 @@ export class PlayersAutocompleteComponent {
         ({ playerId }) => playerId,
       );
 
-    console.log({
-      inclusivePlayers,
-      excludingPlayersIds,
-      statisticsWithoutTeamId: this.newGameStore.statisticsWithoutTeamId(),
-    });
-
+    // TODO REWORK
     // TODO Temporary: merge statistics data to show it into autocomplete list
     const players: SetOptional<TPlayerStatisticFinal, 'teamId'>[] =
       this.newGameStore
@@ -113,26 +108,18 @@ export class PlayersAutocompleteComponent {
           };
         });
 
-    // const players = inclusivePlayers;
-
     if (!searchQuery) {
       return players;
     }
 
-    return players.filter(player =>
-      // player.name?.toLowerCase().includes(searchQuery) ||
-      // player.surname?.toLowerCase().includes(searchQuery) ||
-      {
-        if (player.id === '658ddee4f71a72e6d8ea98f0') {
-          console.log(player);
-        }
-
-        return (
-          player.playerData?.nickname?.toLowerCase().includes(searchQuery) ||
-          player.playerData?.number?.toString().includes(searchQuery)
-        );
-      },
-    );
+    return players.filter(player => {
+      return (
+        player.playerData?.user?.name?.toLowerCase().includes(searchQuery) ||
+        player.playerData?.user?.surname?.toLowerCase().includes(searchQuery) ||
+        player.playerData?.nickname?.toLowerCase().includes(searchQuery) ||
+        player.playerData?.number?.toString().includes(searchQuery)
+      );
+    });
   });
 
   // TODO
@@ -148,7 +135,6 @@ export class PlayersAutocompleteComponent {
       })
       .afterClosed()
       .subscribe((player: IPlayerDTO) => {
-        console.log('new player', player);
         if (player) {
           this.newGameStore.addPlayer(player);
         }

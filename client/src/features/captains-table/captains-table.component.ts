@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  ViewChild,
+  ViewChild, OnDestroy, OnInit, AfterViewInit,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +29,7 @@ import { CaptainsStore, TCaptain } from '@entities/captains';
     MatIconModule,
   ],
 })
-export class CaptainsTableComponent {
+export class CaptainsTableComponent implements OnDestroy, OnInit, AfterViewInit {
   constructor(
     private _destroyRef: DestroyRef,
     private captainsStore: CaptainsStore,
@@ -43,7 +43,6 @@ export class CaptainsTableComponent {
     this.captainsStore.captains$
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe(captains => {
-        console.log(captains);
         this.dataSource.data = captains;
       });
   }

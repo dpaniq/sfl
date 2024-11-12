@@ -64,7 +64,6 @@ export class SignInComponent {
       .signIn(payload)
 
       .subscribe(response => {
-        console.log(response);
         if (response) {
           this.router.navigate(['/']);
         }

@@ -140,10 +140,6 @@ export const PlayersStore = signalStore(
             return EMPTY;
           }),
           finalize(() => {
-            console.log('FINALIZE: Players INITED', {
-              loading: false,
-              initLoading: false,
-            });
             patchState(store, { loading: false, initLoading: false });
           }),
         ),
@@ -153,10 +149,10 @@ export const PlayersStore = signalStore(
   withHooks({
     onInit({ init }) {
       init();
-      console.log(FEATURE_INITIALIZED);
+      console.info(FEATURE_INITIALIZED);
     },
     onDestroy() {
-      console.log(FEATURE_DESTROYED);
+      console.info(FEATURE_DESTROYED);
     },
   }),
 );

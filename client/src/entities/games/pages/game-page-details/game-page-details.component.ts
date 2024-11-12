@@ -12,7 +12,7 @@ import { GameDetailsComponent } from '@entities/games/components/game-details/ga
 import { GameService } from '@entities/games/services/game.service';
 import { PlayersService } from '@entities/players/services/players.service';
 import { head } from 'lodash-es';
-import { catchError, map, switchMap, tap } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs';
 import { IGameDTO } from '../../types';
 
 @Component({
@@ -39,7 +39,6 @@ export class GamePageDetailsComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.paramMap
       .pipe(
-        tap(paramMap => console.log(paramMap)),
         map(paramMap => ({
           season: paramMap.get('season'),
           number: paramMap.get('number'),

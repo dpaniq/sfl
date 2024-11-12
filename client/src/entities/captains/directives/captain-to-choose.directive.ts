@@ -22,13 +22,12 @@ export class CaptainToChooseDirective {
     const card = this.el.nativeElement.querySelector('mat-card');
     if (card) {
       const dataCaptain = card.getAttribute('data-captain');
-      console.log(dataCaptain);
     }
   }
 
   constructor(
     private el: ElementRef<HTMLElement>,
-    private captainsService: CaptainsService
+    private captainsService: CaptainsService,
   ) {
     this.el.nativeElement.style.cursor = 'pointer';
   }

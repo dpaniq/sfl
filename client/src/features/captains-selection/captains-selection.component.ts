@@ -52,8 +52,6 @@ export class CaptainsSelectionComponent extends BaseUnsubscribeComponent {
 
     const id = captainEl.getAttribute('data-captain-id');
     id && this.captainsStore.addSelected({ id, team: this.team });
-    console.log(id);
-    // id && this.captainsStore.delete(id);
     this.control.patchValue(true);
   }
 

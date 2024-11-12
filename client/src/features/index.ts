@@ -5,7 +5,6 @@ import { CaptainsSelectionComponent } from './captains-selection/captains-select
 import { CaptainsTableComponent } from './captains-table/captains-table.component';
 import { CaptainsToggleComponent } from './captains-toggle/captains-toggle.component';
 
-import { PlayersSelectionComponent } from './players-selection/players-selection.component';
 import { PlayersToggleComponent } from './players-toggle/players-toggle.component';
 
 export {
@@ -15,7 +14,6 @@ export {
   // Captains
   CaptainToAddComponent,
   // Players
-  PlayersSelectionComponent,
   PlayersToggleComponent,
   // Auth
   SignInComponent,

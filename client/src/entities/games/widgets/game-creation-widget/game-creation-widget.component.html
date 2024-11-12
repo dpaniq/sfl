@@ -179,7 +179,7 @@
       <tr>
         <th>id</th>
         <td>{{ newGameStore.initialValue()?.id | json }}</td>
-        <td>{{ newGameStore.game?.id() | json }}</td>
+        <td>{{ newGameStore.game.id?.() | json }}</td>
       </tr>
       <tr>
         <th>status</th>
@@ -204,12 +204,12 @@
       <tr>
         <th>createdAt</th>
         <td>{{ newGameStore.initialValue()?.createdAt | json }}</td>
-        <td>{{ newGameStore.game?.createdAt() | json }}</td>
+        <td>{{ newGameStore.game.createdAt?.() | json }}</td>
       </tr>
       <tr>
         <th>updatedAt</th>
         <td>{{ newGameStore.initialValue()?.updatedAt | json }}</td>
-        <td>{{ newGameStore.game?.updatedAt() | json }}</td>
+        <td>{{ newGameStore.game.updatedAt?.() | json }}</td>
       </tr>
       <tr>
         <th>teams</th>
