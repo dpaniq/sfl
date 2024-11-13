@@ -13,8 +13,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TOTAL_GAMES_OF_YEAR } from '@entities/games/constants';
 import { TGameFinalWithoutStatistics } from '@entities/games/types';
+import { getTotalWeeksBySeason } from '@entities/utils/date';
 import { AuthService } from '@shared/services/auth.service';
 import { differenceInCalendarDays, isBefore } from 'date-fns';
 import { EnumGameStatus } from '../../constants';
@@ -43,7 +43,10 @@ export class GameCardComponent {
   public gameCard = input.required<TGameFinalWithoutStatistics>();
   public readonly enumGameStatus = EnumGameStatus;
 
-  public readonly TOTAL_GAMES_OF_YEAR = TOTAL_GAMES_OF_YEAR;
+  protected readonly totalWeeks = computed(() => {
+    const { season } = this.gameCard();
+    return getTotalWeeksBySeason(Number(season));
+  });
 
   public readonly hasGamePlayed = computed(() => {
     return this.gameCard

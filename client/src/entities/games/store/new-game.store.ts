@@ -143,9 +143,13 @@ function isNewGameChanged({
     stats => omit(stats, 'id', 'playerData'),
   );
 
+  console.log('here');
+
   if (actualStatisticsDto.length !== initialStatistics.length) {
     return true;
   }
+
+  console.log('here');
 
   for (const actual of actualStatisticsDto) {
     let initial: any;
@@ -204,6 +208,8 @@ function isNewGameChanged({
       return true;
     }
   }
+
+  console.log('here');
 
   return false;
 }
@@ -465,10 +471,10 @@ export const NewGameStore = signalStore(
             },
             Observable<TGameFinal>
           >(({ paramMap, queryParamMap, teams, players }) => {
-            const gameId = paramMap.get('id');
             const season = paramMap.get('season');
             const number = paramMap.get('number');
-            const mode = gameId ? EnumGameMode.Edit : EnumGameMode.Create;
+            const mode =
+              season && number ? EnumGameMode.Edit : EnumGameMode.Create;
 
             // Switch mode + cases
             const gameObservable: Observable<TGameFinal> =

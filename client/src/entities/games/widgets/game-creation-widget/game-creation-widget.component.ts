@@ -23,14 +23,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -42,10 +40,9 @@ import { EnumGameMode, EnumGameStatus } from '@entities/games/constants';
 import { TTeamFinal } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
 import { TeamsService } from '@entities/teams';
-import { getLastSaturday, totalWeeksByYear } from '@entities/utils/date';
-import { ISOWeekPipe } from '@shared/pipes/iso-week.pipe';
+import { getTotalWeeksBySeason } from '@entities/utils/date';
 import { AuthService } from '@shared/services/auth.service';
-import { getYear, isDate, isSaturday, previousSaturday } from 'date-fns';
+import { getYear } from 'date-fns';
 import { range } from 'lodash-es';
 import { distinctUntilChanged, filter, map } from 'rxjs';
 
@@ -57,11 +54,10 @@ import { distinctUntilChanged, filter, map } from 'rxjs';
 
     // Material
     MatButtonModule,
-    MatRadioModule,
+    // MatRadioModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
+    // TODO i dont need selection and options
     MatSelectModule,
     MatIconModule,
     MatOptionModule,
@@ -76,7 +72,6 @@ import { distinctUntilChanged, filter, map } from 'rxjs';
 
     // Custom
     GameTeamCreateComponent,
-    ISOWeekPipe,
   ],
   templateUrl: './game-creation-widget.component.html',
   styleUrl: './game-creation-widget.component.css',
@@ -85,26 +80,28 @@ import { distinctUntilChanged, filter, map } from 'rxjs';
 })
 export class GameCreationWidgetComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
-  readonly newGameStore = inject(NewGameStore);
-  readonly gameService = inject(GameService);
-  readonly teamsService = inject(TeamsService);
-  readonly activatedRoute = inject(ActivatedRoute);
+  protected readonly newGameStore = inject(NewGameStore);
+  private readonly gameService = inject(GameService);
+  private readonly teamsService = inject(TeamsService);
+  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
-  readonly router = inject(Router);
-  readonly injector = inject(Injector);
+  private readonly router = inject(Router);
+  private readonly injector = inject(Injector);
 
   protected readonly isAdminSignal = this.authService.isAdmin;
 
-  lastSaturday = getLastSaturday;
-  minDate = '2010-01-01';
-  maxDate = isSaturday(new Date()) ? new Date() : previousSaturday(new Date());
+  // lastSaturday = getLastSaturday;
+  // minDate = '2010-01-01';
+  // maxDate = isSaturday(new Date()) ? new Date() : previousSaturday(new Date());
 
   readonly enumGameStatus = EnumGameStatus;
 
-  public readonly numbers = signal<number[]>(range(1, 54));
-  public readonly seasons = signal<number[]>(
+  protected readonly numbers = signal<number[]>(range(1, 54));
+  protected readonly seasons = signal<number[]>(
     range(2010, getYear(new Date()) + 1),
   );
+  protected readonly totalWeeks = signal<number>(52);
+  protected readonly saturdayDate = signal<Date>(new Date());
   // public readonly teams = computed(() => {
   //   return Object.values(this.newGameStore.game().teams) ?? [];
   // });
@@ -113,6 +110,7 @@ export class GameCreationWidgetComponent implements OnInit {
   public readonly state = this.newGameStore;
   protected readonly gameId = this.newGameStore.game()?.id;
   protected readonly errors = this.newGameStore.errors;
+  protected readonly playedAt = this.newGameStore.game.playedAt;
 
   formGroup = new FormGroup({
     number: new FormControl<number>(
@@ -133,13 +131,13 @@ export class GameCreationWidgetComponent implements OnInit {
         validators: [Validators.required, Validators.min(2010)],
       },
     ),
-    playedAt: new FormControl<Date>(
-      { value: new Date(), disabled: true },
-      {
-        nonNullable: true,
-        validators: [Validators.required],
-      },
-    ),
+    // playedAt: new FormControl<Date>(
+    //   { value: new Date(), disabled: true },
+    //   {
+    //     nonNullable: true,
+    //     validators: [Validators.required],
+    //   },
+    // ),
     status: new FormControl<EnumGameStatus>(
       { value: EnumGameStatus.New, disabled: true },
       {
@@ -149,12 +147,12 @@ export class GameCreationWidgetComponent implements OnInit {
     ),
   });
 
-  isSaturday = isSaturday;
-  totalWeeks = totalWeeksByYear(getLastSaturday);
+  // isSaturday = isSaturday;
+  // totalWeeks = getTotalWeeksBySeason(getLastSaturday);
 
-  get playedAtFC() {
-    return this.formGroup.controls.playedAt;
-  }
+  // get playedAtFC() {
+  //   return this.formGroup.controls.playedAt;
+  // }
 
   // Store signals
   public readonly modeSignal = this.newGameStore.mode;
@@ -181,11 +179,11 @@ export class GameCreationWidgetComponent implements OnInit {
         this.fillControls();
       });
 
-    this.playedAtFC.valueChanges
-      .pipe(filter(Boolean), takeUntilDestroyed(this.destroyRef))
-      .subscribe(date => {
-        this.totalWeeks = totalWeeksByYear(date);
-      });
+    // this.playedAtFC.valueChanges
+    //   .pipe(filter(Boolean), takeUntilDestroyed(this.destroyRef))
+    //   .subscribe(date => {
+    //     this.totalWeeks = getTotalWeeksBySeason(date);
+    //   });
 
     this.formGroup.controls.status.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -220,7 +218,7 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   private fillControls() {
-    const { number, season, status, playedAt } = this.newGameStore.game();
+    const { number, season, status } = this.newGameStore.game();
 
     if (number) {
       this.formGroup.controls.number.setValue(Number(number));
@@ -228,6 +226,7 @@ export class GameCreationWidgetComponent implements OnInit {
 
     if (season) {
       this.formGroup.controls.season.setValue(Number(season));
+      this.totalWeeks.set(getTotalWeeksBySeason(Number(season)));
     }
 
     if (status) {
@@ -235,9 +234,9 @@ export class GameCreationWidgetComponent implements OnInit {
       this.formGroup.controls.status.enable();
     }
 
-    // TODO [!]
-    if (playedAt && isDate(new Date(playedAt))) {
-      this.formGroup.controls.playedAt.setValue(new Date(playedAt!));
-    }
+    // // TODO [!]
+    // if (playedAt && isDate(new Date(playedAt))) {
+    //   this.formGroup.controls.playedAt.setValue(new Date(playedAt!));
+    // }
   }
 }
