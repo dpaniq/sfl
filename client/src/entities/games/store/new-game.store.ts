@@ -143,23 +143,15 @@ function isNewGameChanged({
     stats => omit(stats, 'id', 'playerData'),
   );
 
-  console.log('here');
-
   if (actualStatisticsDto.length !== initialStatistics.length) {
     return true;
   }
 
-  console.log('here');
-
   for (const actual of actualStatisticsDto) {
-    let initial: any;
-    initial = initialStatistics.find(
+    const initial = initialStatistics.find(
       stats =>
         stats.playerId === actual.playerId && stats.teamId === actual.teamId,
     );
-
-    // TODO isTransfer
-    initial = { ...initial, isTransfer: false };
 
     const compareLog = (at: string) => {
       console.info({
