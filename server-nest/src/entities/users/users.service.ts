@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { IUser, User } from './users.schema';
 
 @Injectable()
@@ -53,7 +53,7 @@ export class UsersService {
     }
   }
 
-  deleteUser(id: string) {
-    return this.userModel.findByIdAndDelete(id);
+  deleteUserById(id: string | mongoose.Types.UUID) {
+    return this.userModel.findByIdAndDelete(new mongoose.Types.UUID(id));
   }
 }
