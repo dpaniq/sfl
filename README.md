@@ -1,24 +1,46 @@
-# node-typescript-starter
+# SFL
 
-This is a very stripped down base project to get started with Node/Express with Typescript
+## Epics
 
-Forked by:
-https://github.com/jmw5598/node-typescript-express-starter/tree/master
+- [ ] - Capitans score
+- [ ] - KPI's player
+- [ ] - Export to pdf
 
+## Features
 
-Paths resolves:
-https://medium.com/@fmoessle/typescript-paths-with-ts-node-ts-node-dev-and-jest-671deacf6428
-https://levelup.gitconnected.com/path-aliases-with-typescript-in-node-js-230803e3f200
-https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
+### Todo FE
 
-Fastify:
-https://github.com/hmake98/fastify-typescript/blob/main/src/index.ts
+- [ ] Pagination DESC
+- [ ] Charts
+  - Dashboard
+  - Game details
+  - Player details
+- Security
+  - ngSrc, ngHref - security directives
+-
 
+### Todo BE
 
-Plan:
+- [ ] RBAC
+- [ ] Logger
+- [ ] 403 POST / PUT / PATCH
+- [ ] Security
+  - XSS
+  - CSP
+  - CSRF
+  - URL Injection и Path Traversal
+  - Insecure Direct Object References (IDOR)
+  - Brute Force
+  - Clickjacking
+  - OWASP + Top Ten
+
+---
+
+## Plan
+
 - [ ] - Create user table and seed it with all players for all years
-  https://orkhan-gitbook-io.translate.goog/typeorm/docs/migrations?_x_tr_sl=en&_x_tr_tl=ru&_x_tr_hl=ru&_x_tr_pto=wapp
-  - [x] - 2011
+    https://orkhan-gitbook-io.translate.goog/typeorm/docs/migrations?_x_tr_sl=en&_x_tr_tl=ru&_x_tr_hl=ru&_x_tr_pto=wapp
+  - [ ] - 2011
   - [ ] - 2012
   - [ ] - 2013
   - [ ] - 2014
@@ -31,19 +53,3 @@ Plan:
   - [ ] - 2021
   - [ ] - 2022
   - [ ] - 2023
-
-
-
-
-
-Features:
-- [ ] - Capitans score
-- [ ] - KPI's player
-- [ ] - Export to pdf
-- [ ] - goal type (head, kick)
-
-
-Todo client:
-- [ ] - Make solidjs
-
-Check access to the repo
