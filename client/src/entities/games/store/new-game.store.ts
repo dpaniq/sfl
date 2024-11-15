@@ -148,14 +148,10 @@ function isNewGameChanged({
   }
 
   for (const actual of actualStatisticsDto) {
-    let initial: any;
-    initial = initialStatistics.find(
+    const initial = initialStatistics.find(
       stats =>
         stats.playerId === actual.playerId && stats.teamId === actual.teamId,
     );
-
-    // TODO isTransfer
-    initial = { ...initial, isTransfer: false };
 
     const compareLog = (at: string) => {
       console.info({
@@ -204,6 +200,8 @@ function isNewGameChanged({
       return true;
     }
   }
+
+  console.log('here');
 
   return false;
 }
@@ -465,10 +463,10 @@ export const NewGameStore = signalStore(
             },
             Observable<TGameFinal>
           >(({ paramMap, queryParamMap, teams, players }) => {
-            const gameId = paramMap.get('id');
             const season = paramMap.get('season');
             const number = paramMap.get('number');
-            const mode = gameId ? EnumGameMode.Edit : EnumGameMode.Create;
+            const mode =
+              season && number ? EnumGameMode.Edit : EnumGameMode.Create;
 
             // Switch mode + cases
             const gameObservable: Observable<TGameFinal> =

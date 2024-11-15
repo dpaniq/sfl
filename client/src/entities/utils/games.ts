@@ -10,6 +10,7 @@ import {
 // const third = 3;
 const SATURDAY = 6;
 
+// TODO ! Rework! Cards have wrong numbers and playedAt
 export const getGameCards = (year: number): TGameFinalWithoutStatistics[] => {
   const gameCards: TGameFinalWithoutStatistics[] = [];
   const startOfSeason = startOfMonth(new Date(`${year}-12-01`));

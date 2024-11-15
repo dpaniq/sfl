@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  OnInit,
   inject,
   signal,
 } from '@angular/core';
@@ -16,13 +15,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { EnumGameStatus } from '@entities/games/constants';
 import { GameService } from '@entities/games/services/game.service';
 import { TGameFinalWithoutStatistics } from '@entities/games/types';
-import { totalWeeksByYear } from '@entities/utils/date';
+import { getTotalWeeksBySeason } from '@entities/utils/date';
 import { addWeeks, getDate, getYear, nextSaturday, setDay } from 'date-fns';
 import { range } from 'lodash-es';
 import { switchMap, tap } from 'rxjs';
 import { GameCardComponent } from '../game-card/game-card.component';
-
-const weeks = totalWeeksByYear(new Date());
 
 function findSaturdayAfterDate(date: number, saturdayIdx: number) {
   // Add 3 weeks to get to the fourth week
@@ -49,7 +46,7 @@ function findSaturdayAfterDate(date: number, saturdayIdx: number) {
   styleUrl: './games-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GamesListComponent implements OnInit {
+export class GamesListComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly gameService = inject(GameService);
 
@@ -74,9 +71,12 @@ export class GamesListComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(games => {
+        // TODO season should be choosen from SEASON select
         this.loading.set(false);
 
+        const weeks = getTotalWeeksBySeason(this.season());
         let date = new Date(`${this.season() - 1}-12-01`);
+
         const newGames: TGameFinalWithoutStatistics[] = [];
         for (const number of range(1, weeks + 1)) {
           const numberSaturdayDate = nextSaturday(date);
@@ -102,6 +102,4 @@ export class GamesListComponent implements OnInit {
         this.gameCards.set(newGames);
       });
   }
-
-  ngOnInit() {}
 }

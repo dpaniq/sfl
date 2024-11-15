@@ -1,11 +1,14 @@
-<p>{{ playedAtFC.value | date }}</p>
+<p></p>
 <h1>
   {{ modeSignal() === 'create' ? 'Create' : 'Edit' }}
+  game
   {{ formGroup.controls.number.value }}
-  <sup>/ {{ totalWeeks }}</sup>
-  game of year
+  <sup>/ {{ totalWeeks() }}</sup>
+  ({{ playedAt() | date: 'dd/MM/yyyy' }})
 </h1>
-<hr />
+<mat-divider></mat-divider>
+
+<br />
 
 <div class="actions">
   @switch (modeSignal()) {
@@ -43,19 +46,19 @@
 
 <form [formGroup]="formGroup">
   <mat-form-field>
-    <mat-label>Number</mat-label>
-    <mat-select formControlName="number">
-      @for (number of numbers(); track number) {
-        <mat-option [value]="number">{{ number }}</mat-option>
+    <mat-label>Season</mat-label>
+    <mat-select formControlName="season">
+      @for (season of seasons(); track season) {
+        <mat-option [value]="season">{{ season }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Season</mat-label>
-    <mat-select formControlName="season">
-      @for (season of seasons(); track season) {
-        <mat-option [value]="season">{{ season }}</mat-option>
+    <mat-label>Number</mat-label>
+    <mat-select formControlName="number">
+      @for (number of numbers(); track number) {
+        <mat-option [value]="number">{{ number }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
@@ -74,7 +77,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-
+  <!-- 
   <mat-form-field>
     <mat-label>Choose a date</mat-label>
     <input
@@ -94,7 +97,7 @@
       <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
     </mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+  </mat-form-field> -->
 </form>
 
 @if (!storeLoaded()) {

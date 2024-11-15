@@ -6,7 +6,7 @@
     <mat-card-header>
       <mat-card-title>
         Game {{ gameCard().number }}
-        <sub>/ {{ TOTAL_GAMES_OF_YEAR }}</sub>
+        <sub>/ {{ totalWeeks() }}</sub>
       </mat-card-title>
       <mat-card-subtitle>
         {{ gameCard().playedAt | date }}
@@ -86,7 +86,7 @@
     <mat-card-header>
       <mat-card-title>
         Game {{ gameCard().number }}
-        <sub>/ {{ TOTAL_GAMES_OF_YEAR }}</sub>
+        <sub>/ {{ totalWeeks() }}</sub>
       </mat-card-title>
       <mat-card-subtitle>{{ gameCard().playedAt | date }}</mat-card-subtitle>
     </mat-card-header>
@@ -119,7 +119,7 @@
     <mat-card-header>
       <mat-card-title>
         Game {{ gameCard().number }}
-        <sub>/ {{ TOTAL_GAMES_OF_YEAR }}</sub>
+        <sub>/ {{ totalWeeks() }}</sub>
       </mat-card-title>
       <mat-card-subtitle>
         {{ gameCard().playedAt | date }}

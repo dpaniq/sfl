@@ -67,3 +67,7 @@ form {
   color: color(tomato);
   border: 1px solid color(rgba tomato 0.3);
 }
+
+.mdc-linear-progress__buffer {
+  height: 440px;
+}
