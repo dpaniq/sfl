@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Optional,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +21,7 @@ import { CreatePlayerDialogComponent } from '../create-player-dialog/create-play
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerCreateButtonComponent {
+  @Optional()
   private playersStore = inject(PlayersStore);
   private dialog = inject(MatDialog);
 
