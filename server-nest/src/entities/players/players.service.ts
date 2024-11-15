@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Optional } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FlattenMaps, Model, Types } from 'mongoose';
 import {
@@ -8,6 +8,7 @@ import {
   IPlayerGameResultMetadata,
   PlayerStatistic,
 } from '../games/game.schema';
+import { UsersService } from '../users/users.service';
 import {
   IPlayerCommonTotalsMetadata,
   IPlayerMetadata,
@@ -28,6 +29,9 @@ export class PlayersService {
 
     @InjectModel(Game.name)
     private gameModel: Model<IGame>,
+
+    @Optional()
+    private usersService: UsersService,
   ) {}
 
   async findById(id: string): Promise<ServerPlayer> {
@@ -87,8 +91,17 @@ export class PlayersService {
   }
 
   async delete(id: string): Promise<ServerPlayer | null> {
+    let deletedPlayer: ServerPlayer | null = null;
     try {
-      return await this.playerModel.findByIdAndDelete({ _id: id }).exec();
+      deletedPlayer = await this.playerModel
+        .findByIdAndDelete({ _id: id })
+        .populate('user')
+        .exec();
+
+      const userId = deletedPlayer.user.id.toString()!;
+      await this.usersService.deleteUserById(userId);
+
+      return deletedPlayer;
     } catch (error) {
       console.error(error);
       return null;

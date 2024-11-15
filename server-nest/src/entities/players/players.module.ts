@@ -1,12 +1,12 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Game, GameSchema } from '../games';
+import { GamesModule } from '../games/games.module';
 import { User, UserSchema } from '../users';
 import { UsersService } from '../users/users.service';
 import { PlayersController } from './players.controller';
 import { Player, PlayerSchema } from './players.schema';
 import { PlayersService } from './players.service';
-import { GamesModule } from '../games/games.module';
 
 @Module({
   imports: [
