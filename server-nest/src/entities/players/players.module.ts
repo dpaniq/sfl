@@ -1,5 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FileLoggerService } from 'src/shared/services/logger.service';
 import { Game, GameSchema } from '../games';
 import { GamesModule } from '../games/games.module';
 import { User, UserSchema } from '../users';
@@ -27,6 +28,6 @@ import { PlayersService } from './players.service';
     ]),
   ],
   controllers: [PlayersController],
-  providers: [UsersService, PlayersService],
+  providers: [UsersService, PlayersService, FileLoggerService],
 })
 export class PlayersModule {}

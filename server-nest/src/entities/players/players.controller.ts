@@ -27,6 +27,7 @@ import {
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 import { ClientPlayer } from '.';
+import { FileLoggerService } from '../../shared/services/logger.service';
 import { UsersService } from '../users/users.service';
 import { Player } from './players.schema';
 import { PlayersService } from './players.service';
@@ -50,6 +51,7 @@ export class PlayersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly playersService: PlayersService,
+    private readonly logger: FileLoggerService,
   ) {}
 
   @ApiOkResponse({ status: 200, type: Player })
@@ -111,15 +113,11 @@ export class PlayersController {
   ) {
     const { user: userBody, ...playerBody } = body;
 
-    console.log('PATCH', id, { userBody, playerBody });
-
     const updatedUser = await this.usersService.patch(userBody.id, userBody);
     const updatedPlayer = await this.playersService.patch(
       req.params.id,
       playerBody,
     );
-
-    console.log('PATCH', { updatedUser, updatedPlayer });
 
     return res.json(updatedPlayer);
   }
@@ -137,8 +135,6 @@ export class PlayersController {
     @Body() players: PlayerCreationDTO[],
     @Res() res: Response,
   ): Promise<any> {
-    // return this.usersService.getsUsers();
-
     // TODO all settled
     const createdPlayers = await Promise.all(
       players.map(async (player) => {
