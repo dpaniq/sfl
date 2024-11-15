@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,7 @@ import { PlayersStore } from '@entities/players';
 import { PlayerCreateButtonComponent } from '@entities/players/components/player-create-button/player-create-button.component';
 import { PlayersTableComponent } from '@entities/players/components/players-table/players-table.component';
 import { PlayersService } from '@entities/players/services/players.service';
+import { AuthService } from '@shared/services/auth.service';
 import { PlayersAdminWidgetComponent } from '@widgets';
 
 @Component({
@@ -51,7 +52,9 @@ import { PlayersAdminWidgetComponent } from '@widgets';
 
     <div class="tab-container">
       <div class="tab-header">
-        <sfl-player-create-button />
+        @if (isAdminSignal()) {
+          <sfl-player-create-button />
+        }
       </div>
 
       <div class="tab-content">
@@ -97,10 +100,11 @@ import { PlayersAdminWidgetComponent } from '@widgets';
     // Move to the widget
     // // To use CaptainsService - useEffects
     PlayersStore,
+    AuthService,
   ],
 })
 export class PlayersMainPageComponent {
-  // @temporary
-  // TODO JWT
-  user: { isAdmin: boolean } = { isAdmin: true };
+  private readonly authService = inject(AuthService);
+
+  protected readonly isAdminSignal = this.authService.isAdmin;
 }
