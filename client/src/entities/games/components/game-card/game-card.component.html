@@ -82,7 +82,7 @@
 
 <!-- Game was played but no update yet -->
 @if (hasGamePlayed() && gameCard().status === enumGameStatus.Furture) {
-  <mat-card class="played-game">
+  <mat-card class="card-border played-game">
     <mat-card-header>
       <mat-card-title>
         Game {{ gameCard().number }}

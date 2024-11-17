@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit, Scope } from '@nestjs/common';
 import * as fs from 'node:fs';
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
@@ -22,7 +22,9 @@ const customLevels = {
   },
 };
 
-@Injectable()
+@Injectable({
+  scope: Scope.DEFAULT,
+})
 export class FileLoggerService implements OnModuleInit {
   private logger: winston.Logger;
   private logDir = 'logs';
@@ -48,7 +50,9 @@ export class FileLoggerService implements OnModuleInit {
             winston.format.timestamp(),
             winston.format.printf(({ timestamp, level, message, ...meta }) => {
               // Format the log output for console with timestamp and level
-              return `[${timestamp}] ${level}: ${message} \n(${JSON.stringify(meta)})\n`;
+              return meta
+                ? `[${timestamp}] ${level}: ${message} \n(${JSON.stringify(meta)})\n`
+                : `[${timestamp}] ${level}: ${message}`;
             }),
           ),
         }),
@@ -65,7 +69,9 @@ export class FileLoggerService implements OnModuleInit {
             winston.format.timestamp(),
             winston.format.prettyPrint(),
             winston.format.printf(({ timestamp, level, message, ...meta }) => {
-              return `[${timestamp}] ${level}: ${message} \n(${JSON.stringify(meta, null, 2)})\n`;
+              return meta
+                ? `[${timestamp}] ${level}: ${message} \n(${JSON.stringify(meta)})\n`
+                : `[${timestamp}] ${level}: ${message}`;
             }),
           ),
         }),
@@ -73,14 +79,18 @@ export class FileLoggerService implements OnModuleInit {
     });
   }
   public info(message: string, data?: Record<string, any>) {
-    return this.logger.info(message);
+    return this.logger.info(message, data);
   }
 
-  public error(message: string, data?: Record<string, any>) {
-    return data ? this.logger.error(message, data) : this.logger.info(message);
+  public error(message: string, data?: Record<string, any> & { error?: any }) {
+    if (data?.error) {
+      console.error(data?.error);
+    }
+
+    return data ? this.logger.error(message, data) : this.logger.error(message);
   }
 
   public debug(message: string, data?: Record<string, any>) {
-    return data ? this.logger.debug(message, data) : this.logger.info(message);
+    return data ? this.logger.debug(message, data) : this.logger.debug(message);
   }
 }

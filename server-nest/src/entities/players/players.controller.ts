@@ -175,6 +175,8 @@ export class PlayersController {
   }
 
   @Get('recalculate/season')
+  @ApiQuery({ name: 'seasonId', required: true, type: Number })
+  @ApiQuery({ name: 'playerIds', required: true, type: Array, isArray: true })
   @ApiOkResponse({ type: Player, status: 200 })
   @ApiBadRequestResponse({
     status: 400,
@@ -182,11 +184,16 @@ export class PlayersController {
   })
   async recalculateSeason(
     @Query('seasonId', ParseIntPipe) seasonId: number,
-    @Query('playerId') playerId: string,
+    @Query('playerIds') playerIds: string[],
   ) {
-    return await this.playersService.recalculateSeasonMetadata(
-      playerId,
+    this.logger.info('Recalculate player season and career', {
       seasonId,
+      playerIds,
+    });
+
+    return await this.playersService.recalculatePlayersSeasonAndCareerMetadata(
+      seasonId,
+      playerIds,
     );
   }
 }

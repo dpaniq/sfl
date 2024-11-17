@@ -3,6 +3,24 @@
 
   height: 100%;
 
+  .card-border {
+    border: 3px solid #333;
+    border-radius: calc(6 * var(--borderWidth));
+    border-width: var(--borderWidth);
+
+    &.bmw {
+      border: var(--borderWidth) solid gold;
+    }
+
+    &.honda {
+      border: var(--borderWidth) solid tomato;
+    }
+
+    &.further-game {
+      border: none;
+    }
+  }
+
   .score-cover {
     aspect-ratio: 1; /* Maintains a 3:1 aspect ratio */
 
@@ -10,7 +28,6 @@
     color: #fff;
     font-weight: bold;
     border-radius: 10px;
-    border: 1px solid #333;
     display: flex;
     position: relative;
 
@@ -24,20 +41,6 @@
 
     &.game-was-not-played {
       border: 1px solid #ccc;
-    }
-  }
-
-  .card-border {
-    border: 3px solid #333;
-    border-radius: calc(1 * var(--borderWidth));
-    border-width: var(--borderWidth);
-
-    &.bmw {
-      border: var(--borderWidth) solid gold;
-    }
-
-    &.honda {
-      border: var(--borderWidth) solid tomato;
     }
   }
 
@@ -78,10 +81,11 @@
 
   .played-game {
     position: relative;
-    border-radius: var(--borderWidth);
+    /* border-radius: var(--borderWidth); */
+    border: none;
   }
 
-  .played-game::before {
+  /* .played-game::before {
     content: '';
     position: absolute;
     top: calc(-1 * var(--borderWidth));
@@ -103,7 +107,7 @@
     z-index: -1;
     animation: animatedgradient 3s ease alternate infinite;
     background-size: 300% 300%;
-  }
+  } */
 
   .game-was-played,
   .game-was-not-played {

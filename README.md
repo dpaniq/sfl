@@ -17,7 +17,7 @@
   - Player details
 - Security
   - ngSrc, ngHref - security directives
--
+- Deleted game should not display
 
 ### Todo BE
 
@@ -36,8 +36,8 @@
 
 ### Tech
 
-return JSON Convention data
-{data: {}}
+- [ ] JSON Convention data (use TResponse) ({data: {}})
+- [ ] JWT guard / access to endpoints through token
 
 ---
 

@@ -6,6 +6,7 @@ import {
   UpdateTestUsersDtoInput,
   UpdateTestUsersDtoOutput,
 } from './users.dto';
+import { IUser } from './users.schema';
 import { UsersService } from './users.service';
 
 @ApiTags('user')
@@ -32,8 +33,8 @@ export class UsersController {
   }
 
   @Get()
-  getUsers() {
-    return this.usersService.getsUsers();
+  async getUsers(): Promise<TResponse<IUser[]>> {
+    return { data: await this.usersService.getsUsers() };
   }
 
   // users/:id

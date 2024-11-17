@@ -1,47 +1,81 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
 
-import { RouterOutlet } from '@angular/router';
-import { GameService, GameStore } from '@entities/games';
+import { GameService } from '@entities/games';
 import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
-import { GameCreationWidgetComponent } from '@entities/games/widgets/game-creation-widget/game-creation-widget.component';
-import { GamesTableComponent } from 'src/features/games-table/games-table.component';
+import { GamesStore } from '@entities/games/store/games.store';
 
 @Component({
   selector: 'sfl-games-page',
   standalone: true,
   imports: [
-    RouterOutlet,
     // Material
-    MatIconModule,
-    MatTabsModule,
+    FormsModule,
+    MatDividerModule,
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatSelectModule,
 
     // Component
-    GamesTableComponent,
-    GameCreationWidgetComponent,
     GamesListComponent,
-    MatDividerModule,
   ],
-  templateUrl: './games-page.component.html',
-  styleUrl: './games-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    // Fixme: CaptainsStore uses CaptainsService, idk how to fix this
-    // https://angular.io/api/core/FactoryProvider
-    // CaptainsService,
-    // PlayersService,
+  styles: `
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      padding: 0;
+    }
+  `,
+  template: `
+    <h1>Games</h1>
+    <mat-divider></mat-divider>
+    <br />
 
-    // To use CaptainsService - useEffects
-    // provideComponentStore(CaptainsStore),
+    <div class="actions">
+      <mat-form-field appearance="outline">
+        <mat-label>Season</mat-label>
+        <mat-select [(ngModel)]="season">
+          <mat-option [value]="2023">2023</mat-option>
+          <mat-option [value]="2024">2024</mat-option>
+          <mat-option [value]="2025">2025</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-    GameService,
-    GameStore,
-  ],
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+    <sfl-games-list />
+  `,
+  providers: [GameService, GamesStore],
 })
-export class GamesPageComponent {
-  user: { isAdmin: boolean } = { isAdmin: true };
+export class GamesPageComponent implements OnInit {
+  private readonly gamesStore = inject(GamesStore);
 
-  // TODO resolved to go in
+  readonly season = signal(new Date().getFullYear());
+  protected readonly loading = this.gamesStore.loading;
+
+  private readonly seasonChangeObseravbale = toObservable(this.season).pipe(
+    takeUntilDestroyed(),
+  );
+
+  ngOnInit(): void {
+    this.seasonChangeObseravbale.subscribe(season => {
+      this.gamesStore.initGamesStore({ season });
+    });
+  }
 }

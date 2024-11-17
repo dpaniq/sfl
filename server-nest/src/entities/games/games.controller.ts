@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -21,7 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
-import { SaveGameDTO } from './game.dto';
+import { SaveGameDTO, UpdateGameDTO } from './game.dto';
 import { Game, IGame, UpdateGame } from './game.schema';
 import { GamesService } from './games.service';
 
@@ -87,9 +88,25 @@ export class GamesController {
   })
   @UsePipes(new ValibotValidationPipe(SaveGameDTO))
   async save(@Res() res: Response, @Body() game: IGame) {
-    console.log(game);
+    return res.json(await this.gamesService.create(game));
+  }
 
-    return res.json(await this.gamesService.save(game));
+  // PUT /games/:id
+  @Patch(':id')
+  @ApiBody({ type: UpdateGame })
+  @ApiResponse({
+    status: 200,
+    description: 'The record has been successfully updated',
+  })
+  async update(
+    @Param('id') id: string,
+    @Body(new ValibotValidationPipe(UpdateGameDTO)) game: IGame,
+  ) {
+    const updatedGame = await this.gamesService.update(id, game);
+
+    return {
+      data: updatedGame,
+    };
   }
 
   // PUT /games/:id
@@ -97,7 +114,7 @@ export class GamesController {
   @ApiBody({ type: UpdateGame })
   @ApiResponse({
     status: 200,
-    description: 'The record has been successfully updated.',
+    description: 'The record has been successfully replaced',
   })
   async replace(
     @Res() res: Response,
