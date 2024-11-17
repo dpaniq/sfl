@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './games.resolver';
 
 export const GAMES_ROUTES: Routes = [
   {
@@ -24,6 +25,7 @@ export const GAMES_ROUTES: Routes = [
       {
         path: 'edit/:season/:number',
         title: 'Edit game',
+        canActivate: [authGuard],
         loadComponent: () =>
           import(
             './widgets/game-creation-widget/game-creation-widget.component'
