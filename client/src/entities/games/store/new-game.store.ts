@@ -287,9 +287,22 @@ function validateTeamsAndStatistics({
 
   // Statistics
   const teamNameA = teamA.name;
-  const teamNameB = teamB.name;
   const statisticsA = statistics.filter(stat => stat.teamId === teamA?.id);
+  const statisticsPassesA = statisticsA.reduce((acc, next) => {
+    return acc + next.passes;
+  }, 0);
+  const statisticsGaolsA = statisticsA.reduce((acc, next) => {
+    return acc + next.goalsByLeg + next.goalsByHead;
+  }, 0);
+
+  const teamNameB = teamB.name;
   const statisticsB = statistics.filter(stat => stat.teamId === teamB?.id);
+  const statisticsPassesB = statisticsB.reduce((acc, next) => {
+    return acc + next.passes;
+  }, 0);
+  const statisticsGaolsB = statisticsB.reduce((acc, next) => {
+    return acc + next.goalsByLeg + next.goalsByHead;
+  }, 0);
 
   if (!statisticsA.length) {
     errorsMap.set(
@@ -305,6 +318,13 @@ function validateTeamsAndStatistics({
     );
   }
 
+  if (statisticsPassesA > statisticsGaolsA) {
+    errorsMap.set(
+      'statistics:teamA:passesLessThanGoals',
+      `Team ${teamNameA} passes is less than goals`,
+    );
+  }
+
   if (!statisticsB.length) {
     errorsMap.set(
       'statistics:teamB:atleastOne',
@@ -316,6 +336,13 @@ function validateTeamsAndStatistics({
     errorsMap.set(
       'statistics:teamB:captainRequired',
       `Team ${teamNameB} captain is required`,
+    );
+  }
+
+  if (statisticsPassesB > statisticsGaolsB) {
+    errorsMap.set(
+      'statistics:teamB:passesLessThanGoals',
+      `Team ${teamNameB} passes is less than goals`,
     );
   }
 
@@ -407,7 +434,7 @@ export const NewGameStore = signalStore(
             return;
           }
 
-          router.navigate(['games', 'edit', 'details', season, number]);
+          router.navigate(['games', 'edit', season, number]);
         });
       },
 
@@ -425,8 +452,7 @@ export const NewGameStore = signalStore(
           statistics: store.getStatististicsDTOs(),
         };
 
-        // TODO
-        gameService.resave(id, gameDTO).subscribe(game => {
+        gameService.update(id, gameDTO).subscribe(game => {
           if (!game) {
             console.error('GAME IS NOT UPDATED');
             return;

@@ -157,7 +157,6 @@
 @if (storeLoaded() && errors().size) {
   <div class="validation-errors">
     <label for="list">Validations errors:</label>
-    <sub>Please fix the following errors</sub>
     <mat-list role="list">
       @for (error of errors() | keyvalue; track error.key) {
         <mat-list-item role="listitem">- {{ error.value }}</mat-list-item>

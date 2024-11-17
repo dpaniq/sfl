@@ -29,5 +29,22 @@ export const SaveGameDTO = v.transform(
   }),
 );
 
+export const UpdateGameDTO = v.transform(
+  v.object({
+    id: v.string([v.toTrimmed()]),
+    number: v.number([v.integer(), v.minValue(1), v.maxValue(53)]),
+    season: v.number([v.integer(), v.minValue(2010)]),
+    playedAt: v.string([v.isoTimestamp()]),
+    status: v.enum_(EnumGameStatus),
+    teams: v.array(v.any()),
+    statistics: v.array(SavePlayerStatisticDTO),
+  }),
+  (input) => ({
+    ...input,
+  }),
+);
+
 export type SaveGameDTOInput = v.Input<typeof SaveGameDTO>;
 export type SaveGameDTOOutput = v.Output<typeof SaveGameDTO>;
+
+export type UpdateGameDTOInput = v.Input<typeof SaveGameDTO>;

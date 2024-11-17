@@ -1,20 +1,15 @@
-import { Injectable, Optional } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Optional,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FlattenMaps, Model, Types } from 'mongoose';
-import {
-  Game,
-  IGame,
-  IGameMetadata,
-  IPlayerGameResultMetadata,
-  PlayerStatistic,
-} from '../games/game.schema';
+import { FileLoggerService } from 'src/shared/services/logger.service';
+import { Game, IGame } from '../games/game.schema';
 import { UsersService } from '../users/users.service';
 import {
-  IPlayerCommonTotalsMetadata,
   IPlayerMetadata,
-  IPlayerMetadataByGame,
-  METADATA_BY_GAME_DEFAULT,
-  METADATA_COMMON_TOTALS_GAME_DEFAULT,
   METADATA_DEFAULT,
 } from './constants/player-career-metadata';
 import { Player, ServerPlayer } from './players.schema';
@@ -32,6 +27,8 @@ export class PlayersService {
 
     @Optional()
     private usersService: UsersService,
+
+    private readonly logger: FileLoggerService,
   ) {}
 
   async findById(id: string): Promise<ServerPlayer> {
@@ -108,166 +105,33 @@ export class PlayersService {
     }
   }
 
-  public async calculatePlayerGameResultMetadata(
-    playerId: string,
-    game: WithId<IGame>,
-  ): Promise<IPlayerGameResultMetadata> {
-    console.log('calculatePlayerGameResultMetadata');
-
-    let playerGameResultMetadata: IPlayerGameResultMetadata = {
-      ...METADATA_BY_GAME_DEFAULT,
-      ...METADATA_COMMON_TOTALS_GAME_DEFAULT,
-      errors: [],
-    };
-
-    // Helpers
-    const dateError = new Date();
-
-    const gameSeason: number = game.season;
-    const gameNumber: number = game.number;
-    const gameMetadata: IGameMetadata = game.metadata;
-    const seasonGameNumberKey: `${number}:${number}` = `${gameSeason}:${gameNumber}`;
-
-    const statistics: PlayerStatistic[] = game.statistics.filter(
-      (s) => s.playerId === playerId,
-    );
-    const isPlayerInBothTeams = statistics.length === 2;
-
-    // Player can be transfered and play for both team
-    const statistic = isPlayerInBothTeams
-      ? statistics.at(0)
-      : statistics.reduce(
-          (acc, next) => {
-            return {
-              playerId: next.playerId,
-              teamId: next.teamId,
-
-              passes: acc.passes + next.passes,
-              goalsByLeg: acc.goalsByLeg + next.goalsByLeg,
-              goalsByHead: acc.goalsByHead + next.goalsByHead,
-              goalsByAuto: acc.goalsByAuto + next.goalsByAuto,
-              goalsByPenalty: acc.goalsByPenalty + next.goalsByPenalty,
-
-              isMVP: acc.isMVP || next.isMVP,
-              isCaptain: acc.isCaptain || next.isCaptain,
-              isTransfer: acc.isTransfer || next.isTransfer,
-            };
-          },
-          {
-            playerId: '',
-            teamId: '',
-
-            passes: 0,
-            goalsByLeg: 0,
-            goalsByHead: 0,
-            goalsByAuto: 0,
-            goalsByPenalty: 0,
-
-            isMVP: false,
-            isCaptain: false,
-            isTransfer: false,
-          } as PlayerStatistic,
-        );
-
-    // Previous metadata to recalculate
-
-    // Todo: this might be slow, probably need to optimize
-
+  public async recalculatePlayersSeasonAndCareerMetadata(
+    season: number,
+    playerIds: string[],
+  ): Promise<void> {
     try {
-      const player = await this.playerModel.findOne({ _id: playerId }).exec();
-
-      if (!player) {
-        throw new Error('Player is not found');
-      }
-
-      // TODO move to helpers
-      const isTeamFromFirstDraftWon =
-        gameMetadata.scoreFirstDraft > gameMetadata.scoreSecondDraft;
-      const isTeamFromSecondDraftWon =
-        gameMetadata.scoreFirstDraft < gameMetadata.scoreSecondDraft;
-
-      const asFirstDraft = isPlayerInBothTeams
-        ? true
-        : gameMetadata.playerIdsOfFirstDraft.includes(playerId);
-      const asSecondDraft = isPlayerInBothTeams
-        ? true
-        : gameMetadata.playerIdsOfSecondDraft.includes(playerId);
-
-      const playerMetadataByGame: IPlayerMetadataByGame = {
-        ...METADATA_BY_GAME_DEFAULT,
-
-        isMvp: gameMetadata.mvpListIds.includes(playerId),
-        isMvpByPasses: gameMetadata.mvpByPassesIds.includes(playerId),
-        isMvpByGoals:
-          gameMetadata.mvpByGoalsIds.includes(playerId) ||
-          gameMetadata.mvpByGoalsHeadIds.includes(playerId),
-
-        asCaptain: statistic.isCaptain,
-        asFirstDraft,
-        asSecondDraft,
-        asTransfer: statistic.isTransfer,
-
-        hasWon: isPlayerInBothTeams
-          ? false
-          : asFirstDraft && isTeamFromFirstDraftWon,
-        hasLose: isPlayerInBothTeams
-          ? false
-          : asFirstDraft && isTeamFromSecondDraftWon,
-        hasDraw: isPlayerInBothTeams ? false : gameMetadata.scoreIsDraw,
-      };
-
-      const totalPasses = statistic.passes;
-      const totalGoalsByLeg = statistic.goalsByLeg;
-      const totalGoalsByHead = statistic.goalsByHead;
-      const totalGoalsByPenalty = statistic.goalsByHead;
-      const totalGoalsByAuto = 0;
-      const totalGoals =
-        totalGoalsByLeg + totalGoalsByHead + totalGoalsByPenalty;
-
-      const playerCommonTotalsMetadata: IPlayerCommonTotalsMetadata = {
-        totalPasses,
-        totalGoalsByLeg,
-        totalGoalsByHead,
-        totalGoalsByPenalty,
-        totalGoalsByAuto,
-        totalGoals,
-        totalPoints:
-          totalGoalsByLeg +
-          totalGoalsByHead +
-          totalGoalsByPenalty +
-          totalPasses,
-      };
-
-      playerGameResultMetadata = {
-        ...playerGameResultMetadata,
-        ...playerMetadataByGame,
-        ...playerCommonTotalsMetadata,
-      };
+      playerIds.forEach(async (playerId) => {
+        await this.recalculateSeasonMetadata(playerId, season);
+      });
     } catch (error) {
-      console.error(error);
-      playerGameResultMetadata = {
-        ...METADATA_BY_GAME_DEFAULT,
-        ...METADATA_COMMON_TOTALS_GAME_DEFAULT,
-        errors: [
-          ...playerGameResultMetadata.errors,
-          {
-            name: 'player game result metadata crashed',
-            message: error.message,
-            date: dateError,
-          },
-        ],
-      };
+      this.logger.error('Failed to recalculate season metadata for players', {
+        season,
+        playerIds,
+        error,
+      });
+
+      throw InternalServerErrorException;
     }
-
-    this.recalculateSeasonMetadata(statistic.playerId.toString(), gameSeason);
-
-    return playerGameResultMetadata;
   }
 
-  public async recalculateSeasonMetadata(
+  private async recalculateSeasonMetadata(
     playerId: string,
     season: number,
   ): Promise<void> {
+    this.logger.info('Recalculate season metadata for player', {
+      _id: playerId,
+      season,
+    });
     const seasonData = (await this.gameModel.aggregate(
       [
         {
@@ -307,6 +171,11 @@ export class PlayersService {
       await this.recalculateCareerMetadata(playerId);
     } catch (error) {
       console.error(error);
+      this.logger.error('Failed to recalculate season metadata for player', {
+        _id: playerId,
+        season,
+        error,
+      });
     }
   }
 
@@ -330,6 +199,10 @@ export class PlayersService {
       );
     } catch (error) {
       console.error(error);
+      this.logger.error('Failed to recalculate career metadata for player', {
+        _id: playerId,
+        error,
+      });
     }
   }
 }

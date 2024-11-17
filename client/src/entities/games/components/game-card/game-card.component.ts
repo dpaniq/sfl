@@ -13,7 +13,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TGameFinalWithoutStatistics } from '@entities/games/types';
+import { GamesStore } from '@entities/games/store/games.store';
+import { IGameDTO } from '@entities/games/types';
 import { getTotalWeeksBySeason } from '@entities/utils/date';
 import { AuthService } from '@shared/services/auth.service';
 import { differenceInCalendarDays, isBefore } from 'date-fns';
@@ -39,8 +40,9 @@ export class GameCardComponent {
   private activatedRouter = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
   protected readonly authService = inject(AuthService);
+  private readonly gamesStore = inject(GamesStore);
 
-  public gameCard = input.required<TGameFinalWithoutStatistics>();
+  public gameCard = input.required<IGameDTO>();
   public readonly enumGameStatus = EnumGameStatus;
 
   protected readonly totalWeeks = computed(() => {
@@ -104,7 +106,7 @@ export class GameCardComponent {
       })
       .afterClosed()
       .subscribe((confirmed: boolean) => {
-        confirmed && this.router.navigate(['games']);
+        confirmed && this.gamesStore.deleteGame(this.gameCard());
       });
   }
 }

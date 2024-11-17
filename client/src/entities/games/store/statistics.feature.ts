@@ -272,7 +272,7 @@ export function withPlayerStatisticsFeature<_>() {
             {
               ...statistic,
               id,
-              isTransfer: true,
+              isTransfer: false,
             },
             STATISTIC_ENTITY_CONFIG,
           ),

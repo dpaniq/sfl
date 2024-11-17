@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Game, GameSchema } from '../games';
-import { Player, PlayerSchema, PlayersService } from '../players';
+import { Player, PlayerSchema } from '../players';
 import { User, UserSchema } from '../users';
-import { UsersService } from '../users/users.service';
 import { ChartsController } from './charts.controller';
 import { ChartsService } from './charts.service';
 
@@ -25,6 +24,6 @@ import { ChartsService } from './charts.service';
     ]),
   ],
   controllers: [ChartsController],
-  providers: [UsersService, PlayersService, ChartsService],
+  providers: [ChartsService],
 })
 export class ChartsModule {}
