@@ -103,7 +103,7 @@ export class Player implements ServerPlayer {
   position?: EnumPlayerPosition;
 
   @ApiProperty({ required: false })
-  @Prop({ type: Number, isInteger: true, index: true })
+  @Prop({ type: Number, isInteger: true })
   number?: number;
 
   // TODO PROBLEM does not resolve user by ref

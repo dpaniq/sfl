@@ -13,7 +13,7 @@ import {
 import { TTeamFinal } from '../types';
 import { NewGameState } from './new-game.store';
 
-const NEW_GAME_TEAMS_ENTITY_CONFIG = entityConfig({
+export const NEW_GAME_TEAMS_ENTITY_CONFIG = entityConfig({
   entity: type<TTeamFinal>(),
   collection: 'teams',
   selectId: team => team.id,

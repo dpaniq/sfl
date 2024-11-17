@@ -1,4 +1,3 @@
-<p></p>
 <h1>
   {{ modeSignal() === 'create' ? 'Create' : 'Edit' }}
   game
@@ -230,7 +229,7 @@
               Teams:
               <span class="icon">👇</span>
             </summary>
-            <pre>{{ newGameStore.game.teams() | json }}</pre>
+            <pre>{{ newGameStore.teamsEntities() | json }}</pre>
           </details>
         </td>
       </tr>

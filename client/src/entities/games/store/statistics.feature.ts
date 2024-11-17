@@ -30,6 +30,7 @@ import {
   TTeamFinal,
 } from '../types';
 import { NewGameState } from './new-game.store';
+import { NEW_GAME_TEAMS_ENTITY_CONFIG } from './teams.feature';
 
 const STATISTIC_ENTITY_CONFIG = entityConfig({
   entity: type<TPlayerStatisticFinal>(),
@@ -114,6 +115,7 @@ export function withPlayerStatisticsFeature<_>() {
       state: type<NewGameState>(),
     },
     withEntities(STATISTIC_ENTITY_CONFIG),
+    withEntities(NEW_GAME_TEAMS_ENTITY_CONFIG),
     withComputed(store => ({
       // TODO: need id
       statisticsWithoutTeamId: computed(() =>
@@ -122,13 +124,13 @@ export function withPlayerStatisticsFeature<_>() {
       statisticsBMW: computed(() => {
         return store
           .statisticsEntities()
-          .filter(stat => stat.teamId === store.teams().at(0)?.id);
+          .filter(stat => stat.teamId === store.teamsEntities().at(0)?.id);
       }),
       // TODO: need id
       statisticsHONDA: computed(() => {
         return store
           .statisticsEntities()
-          .filter(stat => stat.teamId === store.teams().at(1)?.id);
+          .filter(stat => stat.teamId === store.teamsEntities().at(1)?.id);
       }),
     })),
     withMethods(store => ({

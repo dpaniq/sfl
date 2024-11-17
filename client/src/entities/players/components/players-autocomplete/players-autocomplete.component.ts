@@ -18,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule, MatSelectionListChange } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { EnumGameMode } from '@entities/games/constants';
 import { NewGameStore } from '@entities/games/store/new-game.store';
 import { DEFAULT_STATISTIC_VALUES } from '@entities/games/store/statistics.feature';
@@ -44,6 +45,7 @@ import { CreatePlayerDialogComponent } from '../create-player-dialog/create-play
     MatSelectModule,
     MatListModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
   templateUrl: './players-autocomplete.component.html',
   styleUrl: './players-autocomplete.component.css',
@@ -61,7 +63,7 @@ export class PlayersAutocompleteComponent {
 
   protected readonly querySearchSignal = signal('');
   protected readonly playersStatisticsGroupByTeamSignal = computed(() => {
-    if (this.teamId() === this.newGameStore.teams().at(0)!.id) {
+    if (this.teamId() === this.newGameStore.teamsEntities().at(0)!.id) {
       return {
         alias: this.newGameStore.statisticsBMW() ?? [],
         opponents: this.newGameStore.statisticsHONDA() ?? [],

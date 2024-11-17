@@ -5,13 +5,17 @@ import {
   Component,
   DestroyRef,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,7 +25,35 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { IPlayerDTO } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
+import { cyrillicToLatin } from '@shared/utils/string';
 import { catchError, delay, map, of, switchMap, tap } from 'rxjs';
+
+const emailDomen = '@sfl.lv';
+
+const isEmailValid = (email: string): boolean => {
+  return /^[a-zA-Z0-9._%+-]+@sfl\.lv$/.test(email);
+};
+
+export function emailEndsWithSflComValidator(): ValidatorFn {
+  return (control: AbstractControl): null | ValidationErrors => {
+    // If the control value is empty, return null (valid)
+    if (!control.value) {
+      return null;
+    }
+
+    if (control.value.endsWith(emailDomen)) {
+      return null;
+    }
+
+    // Check if the value ends with @sfl.com
+    const isValid = control.value.endsWith(emailDomen)
+      ? isEmailValid(control.value)
+      : isEmailValid(control.value + emailDomen);
+
+    // Return an error object if invalid, otherwise null
+    return isValid ? null : { emailEndsWithSflCom: { value: control.value } };
+  };
+}
 
 @Component({
   selector: 'sfl-create-player-dialog',
@@ -40,7 +72,7 @@ import { catchError, delay, map, of, switchMap, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PlayersService],
 })
-export class CreatePlayerDialogComponent implements AfterViewInit {
+export class CreatePlayerDialogComponent implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly playersService = inject(PlayersService);
   private readonly dialogRef: MatDialogRef<CreatePlayerDialogComponent> =
@@ -59,7 +91,7 @@ export class CreatePlayerDialogComponent implements AfterViewInit {
       nonNullable: true,
       validators: [Validators.required],
     }),
-    number: new FormControl(0, {
+    number: new FormControl(999, {
       nonNullable: true,
       validators: [
         Validators.min(1),
@@ -71,7 +103,7 @@ export class CreatePlayerDialogComponent implements AfterViewInit {
     user: new FormGroup<any>({
       email: new FormControl('', {
         nonNullable: true,
-        validators: [Validators.required, Validators.email],
+        validators: [Validators.required, emailEndsWithSflComValidator()],
       }),
       name: new FormControl('', {
         nonNullable: true,
@@ -81,6 +113,19 @@ export class CreatePlayerDialogComponent implements AfterViewInit {
       }),
     }),
   });
+
+  ngOnInit() {
+    this.formGroup.controls.nickname.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(nickname => {
+        this.formGroup.controls.user.controls.email.patchValue(
+          cyrillicToLatin(nickname),
+        );
+        this.formGroup.controls.user.controls.name!.patchValue(
+          cyrillicToLatin(nickname),
+        );
+      });
+  }
 
   ngAfterViewInit() {
     this.formGroup.markAllAsTouched();
@@ -93,13 +138,16 @@ export class CreatePlayerDialogComponent implements AfterViewInit {
   onSubmit() {
     // TODO - exclude type casting
     const player = this.formGroup.getRawValue() as IPlayerDTO;
+    player.user.email = player.user.email.endsWith(emailDomen)
+      ? player.user.email
+      : player.user.email + emailDomen;
 
     of(player)
       .pipe(
         tap(() => {
           this.loadingSignal.update(() => true);
         }),
-        delay(2_000),
+        delay(1_000),
         switchMap(() => {
           return this.playersService
             .create(player)

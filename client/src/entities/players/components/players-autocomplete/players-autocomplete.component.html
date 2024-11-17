@@ -41,9 +41,16 @@
         <mat-list-option
           [selected]="!!statistic.teamId"
           [value]="statistic"
+          [title]="
+            {
+              id: statistic.id,
+              teamId: statistic.teamId,
+              playerId: statistic.playerId,
+              user: statistic.playerData.user
+            } | json
+          "
         >
-          {{ statistic.playerData.nickname }} ({{ statistic.teamId }})
-          {{ statistic.id }}
+          {{ statistic.playerData.nickname }}
         </mat-list-option>
 
         @if (!last) {
