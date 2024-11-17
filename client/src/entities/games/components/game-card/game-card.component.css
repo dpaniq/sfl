@@ -158,29 +158,31 @@
     display: block;
     position: relative;
     text-align: center;
-    font-size: clamp(15px, 1rem + 4vw, 67px);
     padding: 5px;
     border-radius: 8px;
-    line-height: 70px;
     letter-spacing: -4px;
     text-wrap: balance;
     background-clip: text;
     color: transparent;
+
+    line-height: clamp(20px, 4vw, 50px);
+    font-size: clamp(1.5rem, 4vw, 3rem);
   }
 }
 
-@container game-was-not-played (width < 1500px) {
+@container game-was-not-played (width < 1200px) {
   p {
     display: block;
     position: relative;
     text-align: center;
-    font-size: clamp(17px, 15px + 4vw, 40px);
     padding: 12px;
     border-radius: 8px;
-    line-height: 60px;
     text-wrap: balance;
     background-clip: text;
     color: transparent;
+
+    line-height: clamp(20px, 4vw, 50px);
+    font-size: clamp(1.5rem, 4vw, 3rem);
   }
 
   p.days-left {
