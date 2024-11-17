@@ -89,11 +89,6 @@ export class GameCreationWidgetComponent implements OnInit {
   private readonly injector = inject(Injector);
 
   protected readonly isAdminSignal = this.authService.isAdmin;
-
-  // lastSaturday = getLastSaturday;
-  // minDate = '2010-01-01';
-  // maxDate = isSaturday(new Date()) ? new Date() : previousSaturday(new Date());
-
   readonly enumGameStatus = EnumGameStatus;
 
   protected readonly numbers = signal<number[]>(range(1, 54));
@@ -102,9 +97,6 @@ export class GameCreationWidgetComponent implements OnInit {
   );
   protected readonly totalWeeks = signal<number>(52);
   protected readonly saturdayDate = signal<Date>(new Date());
-  // public readonly teams = computed(() => {
-  //   return Object.values(this.newGameStore.game().teams) ?? [];
-  // });
   public readonly teams = this.newGameStore.teamsEntities;
 
   public readonly state = this.newGameStore;
@@ -131,13 +123,7 @@ export class GameCreationWidgetComponent implements OnInit {
         validators: [Validators.required, Validators.min(2010)],
       },
     ),
-    // playedAt: new FormControl<Date>(
-    //   { value: new Date(), disabled: true },
-    //   {
-    //     nonNullable: true,
-    //     validators: [Validators.required],
-    //   },
-    // ),
+
     status: new FormControl<EnumGameStatus>(
       { value: EnumGameStatus.New, disabled: true },
       {
@@ -146,13 +132,6 @@ export class GameCreationWidgetComponent implements OnInit {
       },
     ),
   });
-
-  // isSaturday = isSaturday;
-  // totalWeeks = getTotalWeeksBySeason(getLastSaturday);
-
-  // get playedAtFC() {
-  //   return this.formGroup.controls.playedAt;
-  // }
 
   // Store signals
   public readonly modeSignal = this.newGameStore.mode;
@@ -179,12 +158,6 @@ export class GameCreationWidgetComponent implements OnInit {
         this.fillControls();
       });
 
-    // this.playedAtFC.valueChanges
-    //   .pipe(filter(Boolean), takeUntilDestroyed(this.destroyRef))
-    //   .subscribe(date => {
-    //     this.totalWeeks = getTotalWeeksBySeason(date);
-    //   });
-
     this.formGroup.controls.status.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(status => {
@@ -206,7 +179,7 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<[TTeamFinal, TTeamFinal]>) {
-    const array = this.teams();
+    const array = this.newGameStore.teamsEntities();
 
     if (!array) {
       return;
@@ -233,10 +206,5 @@ export class GameCreationWidgetComponent implements OnInit {
       this.formGroup.controls.status.setValue(status);
       this.formGroup.controls.status.enable();
     }
-
-    // // TODO [!]
-    // if (playedAt && isDate(new Date(playedAt))) {
-    //   this.formGroup.controls.playedAt.setValue(new Date(playedAt!));
-    // }
   }
 }

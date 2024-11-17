@@ -524,7 +524,6 @@ export const NewGameStore = signalStore(
                   mode,
                   game,
                   players: cloneDeep(players),
-                  teams: cloneDeep(teams),
                   initialValue: cloneDeep(game),
                   loading: false,
                   initLoading: true,
@@ -535,7 +534,7 @@ export const NewGameStore = signalStore(
                   statistics: game.statistics as TPlayerStatisticFinal[],
                 });
 
-                store.initTeamsEntity(teams);
+                store.initTeamsEntity(game.teams ?? teams);
                 store.initEntityPlayers(players);
                 store.initEntityStatistics(stats);
               }),

@@ -153,8 +153,8 @@ export class PlayersController {
         });
       }),
     ).catch((e) => {
-      console.log(e);
-      return 'Upps. Something went wrong';
+      this.logger.error('Failed to create player', { error: e });
+      return new InternalServerErrorException('Unexpected error occurred');
     });
 
     return res.json(createdPlayers);

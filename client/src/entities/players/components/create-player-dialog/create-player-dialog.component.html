@@ -46,18 +46,39 @@
       }
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="text"
+        [formControl]="formGroup.controls.user.controls.email"
+      />
+      <button
+        matSuffix
+        mat-button
+        [disabled]="true"
+        [textContent]="'@sfl.com'"
+      ></button>
+    </mat-form-field>
+
     <mat-fieldset
       formGroupName="user"
       class="user-fieldset"
     >
-      <mat-form-field>
+      <!-- <mat-form-field>
         <mat-label>Email</mat-label>
         <input
           matInput
           type="text"
           formControlName="email"
         />
-      </mat-form-field>
+        <button
+          matSuffix
+          mat-button
+          [disabled]="true"
+          [textContent]="'@sfl.com'"
+        ></button>
+      </mat-form-field> -->
 
       <mat-form-field>
         <mat-label>Name</mat-label>

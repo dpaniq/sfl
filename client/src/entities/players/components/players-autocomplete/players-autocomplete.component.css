@@ -2,10 +2,31 @@
   mat-form-field {
     width: 100%;
   }
+}
+::ng-deep mat-autocomplete {
+}
 
-  ::ng-deep mat-autocomplete {
-    .mat-autocomplete-footer {
-      padding: 4px 8px;
-    }
-  }
+.mat-autocomplete-footer {
+  position: sticky;
+  bottom: -20px;
+  left: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 20px 8px;
+
+  backdrop-filter: blur(1px);
+  background-color: #cccccc1e;
+  display: flex;
+  left: 0;
+  right: 0;
+  align-items: center;
+  justify-content: right;
+}
+
+.mat-mdc-autocomplete-panel {
+  padding: 0;
+}
+
+::ng-deep .mat-mdc-autocomplete-panel {
+  padding: 0;
 }
