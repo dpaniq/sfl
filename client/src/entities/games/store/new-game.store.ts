@@ -286,21 +286,21 @@ function validateTeamsAndStatistics({
   // Statistics
   const teamNameA = teamA.name;
   const statisticsA = statistics.filter(stat => stat.teamId === teamA?.id);
-  const statisticsPassesA = statisticsA.reduce((acc, next) => {
-    return acc + next.passes;
-  }, 0);
-  const statisticsGaolsA = statisticsA.reduce((acc, next) => {
-    return acc + next.goalsByLeg + next.goalsByHead;
-  }, 0);
+  // const statisticsPassesA = statisticsA.reduce((acc, next) => {
+  //   return acc + next.passes;
+  // }, 0);
+  // const statisticsGaolsA = statisticsA.reduce((acc, next) => {
+  //   return acc + next.goalsByLeg + next.goalsByHead;
+  // }, 0);
 
   const teamNameB = teamB.name;
   const statisticsB = statistics.filter(stat => stat.teamId === teamB?.id);
-  const statisticsPassesB = statisticsB.reduce((acc, next) => {
-    return acc + next.passes;
-  }, 0);
-  const statisticsGaolsB = statisticsB.reduce((acc, next) => {
-    return acc + next.goalsByLeg + next.goalsByHead;
-  }, 0);
+  // const statisticsPassesB = statisticsB.reduce((acc, next) => {
+  //   return acc + next.passes;
+  // }, 0);
+  // const statisticsGaolsB = statisticsB.reduce((acc, next) => {
+  //   return acc + next.goalsByLeg + next.goalsByHead;
+  // }, 0);
 
   if (!statisticsA.length) {
     errorsMap.set(
@@ -316,12 +316,12 @@ function validateTeamsAndStatistics({
     );
   }
 
-  if (statisticsPassesA > statisticsGaolsA) {
-    errorsMap.set(
-      'statistics:teamA:passesLessThanGoals',
-      `Team ${teamNameA} passes is less than goals`,
-    );
-  }
+  // if (statisticsPassesA < statisticsGaolsA) {
+  //   errorsMap.set(
+  //     'statistics:teamA:passesLessThanGoals',
+  //     `Team ${teamNameA} passes is less than goals`,
+  //   );
+  // }
 
   if (!statisticsB.length) {
     errorsMap.set(
@@ -337,12 +337,12 @@ function validateTeamsAndStatistics({
     );
   }
 
-  if (statisticsPassesB > statisticsGaolsB) {
-    errorsMap.set(
-      'statistics:teamB:passesLessThanGoals',
-      `Team ${teamNameB} passes is less than goals`,
-    );
-  }
+  // if (statisticsPassesB < statisticsGaolsB) {
+  //   errorsMap.set(
+  //     'statistics:teamB:passesLessThanGoals',
+  //     `Team ${teamNameB} passes is less than goals`,
+  //   );
+  // }
 
   return errorsMap;
 }
