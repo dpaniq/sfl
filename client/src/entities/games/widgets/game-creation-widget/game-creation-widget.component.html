@@ -33,70 +33,82 @@
     }
   }
 
-  <button
-    mat-raised-button
-    color="warn"
-    [disabled]="!gameId || isFormChangedSignal()"
-    (click)="delete()"
-  >
-    Delete
-  </button>
+  @if (!gameId) {
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="delete()"
+    >
+      Delete
+    </button>
+  }
 </div>
 
 <form [formGroup]="formGroup">
-  <mat-form-field>
-    <mat-label>Season</mat-label>
-    <mat-select formControlName="season">
-      @for (season of seasons(); track season) {
-        <mat-option [value]="season">{{ season }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <fieldset class="in-row">
+    <mat-form-field>
+      <mat-label>Season</mat-label>
+      <mat-select formControlName="season">
+        @for (season of seasons(); track season) {
+          <mat-option [value]="season">{{ season }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Number</mat-label>
-    <mat-select formControlName="number">
-      @for (number of numbers(); track number) {
-        <mat-option [value]="number">{{ number }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Number</mat-label>
+      <mat-select formControlName="number">
+        @for (number of numbers(); track number) {
+          <mat-option [value]="number">{{ number }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Status</mat-label>
-    <mat-select
-      formControlName="status"
-      [disabled]="true"
-    >
-      <mat-option [value]="enumGameStatus.New">
-        {{ enumGameStatus.New | uppercase }}
-      </mat-option>
-      <mat-option [value]="enumGameStatus.Published">
-        {{ enumGameStatus.Published | uppercase }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <!-- 
-  <mat-form-field>
-    <mat-label>Choose a date</mat-label>
-    <input
-      matInput
-      placeholder="Choose a date"
-      formControlName="playedAt"
-      [matDatepicker]="picker"
-      [matDatepickerFilter]="isSaturday"
-      [min]="minDate"
-      [max]="maxDate"
-      [value]="lastSaturday"
-    />
-    <mat-datepicker-toggle
-      matIconSuffix
-      [for]="picker"
-    >
-      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-    </mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field> -->
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select
+        formControlName="status"
+        [disabled]="true"
+      >
+        <mat-option [value]="enumGameStatus.New">
+          {{ enumGameStatus.New | uppercase }}
+        </mat-option>
+        <mat-option [value]="enumGameStatus.Published">
+          {{ enumGameStatus.Published | uppercase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </fieldset>
+
+  <mat-accordion
+    class="additional-data"
+    multi
+  >
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Additional data</mat-panel-title>
+        <mat-panel-description>Type link and note</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field>
+        <mat-label>Link</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="link"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Note</mat-label>
+        <textarea
+          matInput
+          type="text"
+          formControlName="note"
+        ></textarea>
+      </mat-form-field>
+    </mat-expansion-panel>
+  </mat-accordion>
 </form>
 
 @if (!storeLoaded()) {

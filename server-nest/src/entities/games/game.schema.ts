@@ -115,6 +115,8 @@ export interface IGame {
   status: EnumGameStatus;
   teams: [ITeam, ITeam];
   statistics: PlayerStatistic[];
+  link?: string;
+  note?: string;
   metadata: IGameMetadata;
 }
 
@@ -231,6 +233,18 @@ export class Game implements IGame {
     type: [PlayerStatisticSchema],
   })
   statistics: PlayerStatistic[];
+
+  @ApiProperty({ type: String })
+  @Prop({
+    type: String,
+  })
+  link?: string;
+
+  @ApiProperty({ type: String })
+  @Prop({
+    type: String,
+  })
+  note?: string;
 
   @Prop({ type: Object, required: false, default: {} })
   metadata: IGameMetadata;

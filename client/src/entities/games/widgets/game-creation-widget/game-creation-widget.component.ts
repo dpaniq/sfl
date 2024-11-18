@@ -24,6 +24,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -64,6 +65,7 @@ import { distinctUntilChanged, filter, map } from 'rxjs';
     ReactiveFormsModule,
     MatProgressBarModule,
     MatListModule,
+    MatExpansionModule,
 
     // CDK
     CdkDropList,
@@ -131,6 +133,14 @@ export class GameCreationWidgetComponent implements OnInit {
         validators: [Validators.required],
       },
     ),
+
+    link: new FormControl<string>('', {
+      nonNullable: true,
+    }),
+
+    note: new FormControl<string>('', {
+      nonNullable: true,
+    }),
   });
 
   // Store signals
@@ -163,6 +173,18 @@ export class GameCreationWidgetComponent implements OnInit {
       .subscribe(status => {
         this.newGameStore.updateStatus(status);
       });
+
+    this.formGroup.controls.link.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(link => {
+        this.newGameStore.updateGameFields({ link });
+      });
+
+    this.formGroup.controls.note.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(note => {
+        this.newGameStore.updateGameFields({ note });
+      });
   }
 
   save() {
@@ -191,7 +213,7 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   private fillControls() {
-    const { number, season, status } = this.newGameStore.game();
+    const { number, season, status, link, note } = this.newGameStore.game();
 
     if (number) {
       this.formGroup.controls.number.setValue(Number(number));
@@ -205,6 +227,14 @@ export class GameCreationWidgetComponent implements OnInit {
     if (status) {
       this.formGroup.controls.status.setValue(status);
       this.formGroup.controls.status.enable();
+    }
+
+    if (link) {
+      this.formGroup.controls.link.setValue(link);
+    }
+
+    if (note) {
+      this.formGroup.controls.note.setValue(note);
     }
   }
 }

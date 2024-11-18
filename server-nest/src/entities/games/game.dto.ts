@@ -22,6 +22,8 @@ export const SaveGameDTO = v.transform(
     playedAt: v.string([v.isoTimestamp()]),
     status: v.enum_(EnumGameStatus),
     teams: v.array(v.any()),
+    link: v.string([v.toTrimmed()]),
+    note: v.string([v.toTrimmed()]),
     statistics: v.array(SavePlayerStatisticDTO),
   }),
   (input) => ({
@@ -37,6 +39,8 @@ export const UpdateGameDTO = v.transform(
     playedAt: v.string([v.isoTimestamp()]),
     status: v.enum_(EnumGameStatus),
     teams: v.array(v.any()),
+    link: v.string([v.toTrimmed()]),
+    note: v.string([v.toTrimmed()]),
     statistics: v.array(SavePlayerStatisticDTO),
   }),
   (input) => ({

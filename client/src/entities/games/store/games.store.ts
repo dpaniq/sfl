@@ -120,6 +120,8 @@ export const GamesStore = signalStore(
                   playedAt: numberSaturdayDate,
                   status: EnumGameStatus.Furture,
                   statistics: [],
+                  link: '',
+                  note: '',
                 });
               }
 
