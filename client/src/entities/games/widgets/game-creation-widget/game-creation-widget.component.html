@@ -103,14 +103,14 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
-@if (teams().length) {
+@if (teams(); as teams) {
   <div
     cdkDropList
     cdkDropListOrientation="horizontal"
     class="drag-wrapper row"
     (cdkDropListDropped)="drop($event)"
   >
-    @for (team of teams(); let idx = $index; track team.id) {
+    @for (team of teams; let idx = $index; track team.id) {
       <div
         class="drag-box"
         cdkDrag

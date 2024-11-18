@@ -201,8 +201,6 @@ function isNewGameChanged({
     }
   }
 
-  console.log('here');
-
   return false;
 }
 

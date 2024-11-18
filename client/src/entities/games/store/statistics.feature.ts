@@ -210,7 +210,7 @@ export function withPlayerStatisticsFeature<_>() {
         }
 
         // Update current and add new one
-        const teams = store.teams() as [TTeamFinal, TTeamFinal];
+        const teams = store.teamsEntities() as [TTeamFinal, TTeamFinal];
         const oppositeTeamId = getOppositeTeamId(teamId, teams);
         const oppositeId = generatePlayerStatisticID({
           teamId: oppositeTeamId,
@@ -261,7 +261,7 @@ export function withPlayerStatisticsFeature<_>() {
         );
       },
       addStatisticPlayer(statistic: TPlayerStatisticFinal): void {
-        const teams = store.teams() as [TTeamFinal, TTeamFinal];
+        const teams = store.teamsEntities() as [TTeamFinal, TTeamFinal];
         const oppositeTeamId = getOppositeTeamId(statistic.teamId, teams);
         const id = generatePlayerStatisticID({
           teamId: oppositeTeamId,
