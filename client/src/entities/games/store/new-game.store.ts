@@ -78,6 +78,8 @@ export const INITIAL_GAME_STATE: TGameFinal = {
   updatedAt: undefined,
   statistics: [],
   status: EnumGameStatus.New,
+  link: '',
+  note: '',
 };
 
 const INITIAL_NEW_GAME_STATE: NewGameState = {
@@ -127,6 +129,16 @@ function isNewGameChanged({
   }
 
   if (!isEqual(initialGame.status, actualGame.status)) {
+    return true;
+  }
+
+  console.log({ initialLink: initialGame.link, actualLink: actualGame.link });
+  if (!isEqual(initialGame.link?.trim() ?? '', actualGame.link?.trim())) {
+    return true;
+  }
+
+  console.log({ initialNote: initialGame.note, actualNote: actualGame.note });
+  if (!isEqual(initialGame.note?.trim() ?? '', actualGame.note?.trim())) {
     return true;
   }
 
@@ -253,7 +265,12 @@ function initGameCreation(
 
 function initGameEdition(game?: TGameFinal): Observable<TGameFinal> {
   if (game) {
-    return of({ ...game, playedAt: new Date(game.playedAt) });
+    return of({
+      ...game,
+      link: game.link ?? '',
+      note: game.note ?? '',
+      playedAt: new Date(game.playedAt),
+    });
   }
 
   return of(cloneDeep(INITIAL_GAME_STATE));
@@ -410,8 +427,13 @@ export const NewGameStore = signalStore(
           game: { ...state.game, status },
         }));
       },
+      updateGameFields(game: Partial<TGameFinal>): void {
+        patchState(store, state => ({
+          game: { ...state.game, ...game },
+        }));
+      },
       saveGame() {
-        const { id, status, number, season, playedAt } =
+        const { id, status, number, season, playedAt, link, note } =
           store.game() as IGameDTO;
 
         const gameDTO = <IGameDTO>{
@@ -420,6 +442,8 @@ export const NewGameStore = signalStore(
           number,
           season,
           playedAt,
+          link,
+          note,
           teams: store.teamsEntities(),
           statistics: store.getStatististicsDTOs(),
         };
@@ -437,7 +461,7 @@ export const NewGameStore = signalStore(
       },
 
       updateGame() {
-        const { id, status, number, season, playedAt } =
+        const { id, status, number, season, playedAt, link, note } =
           store.game() as IGameDTO;
 
         const gameDTO = <IGameDTO>{
@@ -446,6 +470,8 @@ export const NewGameStore = signalStore(
           number,
           season,
           playedAt,
+          link,
+          note,
           teams: store.teamsEntities(),
           statistics: store.getStatististicsDTOs(),
         };
