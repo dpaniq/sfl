@@ -4,7 +4,7 @@ import {
   Optional,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FlattenMaps, Model, Types } from 'mongoose';
+import mongoose, { FlattenMaps, Model, Types } from 'mongoose';
 import { FileLoggerService } from 'src/shared/services/logger.service';
 import { Game, IGame } from '../games/game.schema';
 import { UsersService } from '../users/users.service';
@@ -70,13 +70,13 @@ export class PlayersService {
 
   async create(player: {
     nickname: string;
-    userId: Types.UUID;
+    userId: string | Types.UUID;
     number: number;
   }): Promise<any> {
     try {
       const { id } = await this.playerModel.create({
         nickname: player.nickname,
-        user: player.userId,
+        user: new mongoose.Types.UUID(player.userId),
         number: player.number,
       });
 
