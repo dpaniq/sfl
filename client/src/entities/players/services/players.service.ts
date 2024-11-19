@@ -21,9 +21,13 @@ export class PlayersService {
     return this.#httpService.get<TPlayerFinal>(`players/${id}`);
   }
 
-  find(ids?: string): Observable<TPlayerFinal[]> {
-    return this.#httpService.get<TPlayerFinal[], { ids?: string }>('players', {
+  find(ids?: string, includeMetadata = false): Observable<TPlayerFinal[]> {
+    return this.#httpService.get<
+      TPlayerFinal[],
+      { ids?: string; includeMetadata: boolean }
+    >('players', {
       ...(ids ? { ids } : {}),
+      includeMetadata,
     });
   }
 

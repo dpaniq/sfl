@@ -132,12 +132,10 @@ function isNewGameChanged({
     return true;
   }
 
-  console.log({ initialLink: initialGame.link, actualLink: actualGame.link });
   if (!isEqual(initialGame.link?.trim() ?? '', actualGame.link?.trim())) {
     return true;
   }
 
-  console.log({ initialNote: initialGame.note, actualNote: actualGame.note });
   if (!isEqual(initialGame.note?.trim() ?? '', actualGame.note?.trim())) {
     return true;
   }

@@ -37,11 +37,17 @@ export class PlayersService {
     ).toJSON();
   }
 
-  async find({ ids }: { ids?: Types.ObjectId[] }): Promise<ServerPlayer[]> {
+  async find(
+    { ids }: { ids?: Types.ObjectId[] },
+    includeMetadata = false,
+  ): Promise<ServerPlayer[]> {
+    const excludeFields = [includeMetadata ? '' : '-metadata'];
+
     return await this.playerModel
       .find({
         ...(ids ? { _id: { $in: ids } } : {}),
       })
+      .select(excludeFields.join(' '))
       .populate('user')
       .exec();
   }

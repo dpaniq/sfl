@@ -183,7 +183,7 @@ export function withPlayerStatisticsFeature<_>() {
                 updateEntity(
                   {
                     id: statistic.id,
-                    changes: { isTransfer },
+                    changes: { isTransfer: false },
                   },
                   STATISTIC_ENTITY_CONFIG,
                 ),
@@ -222,7 +222,7 @@ export function withPlayerStatisticsFeature<_>() {
           updateEntity(
             {
               id,
-              changes: { isTransfer },
+              changes: { isTransfer: true },
             },
             STATISTIC_ENTITY_CONFIG,
           ),
@@ -232,6 +232,7 @@ export function withPlayerStatisticsFeature<_>() {
               id: oppositeId,
               teamId: oppositeTeamId,
               isCaptain: false,
+              isTransfer: true,
             },
             STATISTIC_ENTITY_CONFIG,
           ),
@@ -261,19 +262,12 @@ export function withPlayerStatisticsFeature<_>() {
         );
       },
       addStatisticPlayer(statistic: TPlayerStatisticFinal): void {
-        const teams = store.teamsEntities() as [TTeamFinal, TTeamFinal];
-        const oppositeTeamId = getOppositeTeamId(statistic.teamId, teams);
-        const id = generatePlayerStatisticID({
-          teamId: oppositeTeamId,
-          playerId: statistic.playerId,
-        });
-
         patchState(
           store,
           addEntity(
             {
               ...statistic,
-              id,
+              id: generatePlayerStatisticID(statistic),
               isTransfer: false,
             },
             STATISTIC_ENTITY_CONFIG,

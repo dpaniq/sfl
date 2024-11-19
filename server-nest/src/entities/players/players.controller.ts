@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Param,
+  ParseBoolPipe,
   ParseIntPipe,
   Patch,
   Post,
@@ -80,19 +81,34 @@ export class PlayersController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'includeMetadata',
+    type: Boolean,
+    required: false,
+  })
   @ApiQuery({ name: 'ids', required: false, type: String, isArray: true })
   @ApiOkResponse({ status: 200, type: () => [Player] })
-  async find(@Res() res, @Query('ids') ids?: string) {
+  async find(
+    @Res() res,
+    @Query('ids') ids?: string,
+    @Query('includeMetadata', ParseBoolPipe) includeMetadata?: boolean,
+  ) {
+    this.logger.info('Find players', { ids, includeMetadata });
     // If `ids` is provided as a comma-separated string, split it into an array
     const idsArray = Array.isArray(ids)
       ? ids
       : ids?.split(',').map((id) => new Types.ObjectId(id.trim()));
 
+    console.log('idsArray', { idsArray, includeMetadata });
+
     return res.json(
       Array.from(
-        await this.playersService.find({
-          ids: idsArray,
-        }),
+        await this.playersService.find(
+          {
+            ids: idsArray,
+          },
+          includeMetadata,
+        ),
       ),
     );
   }

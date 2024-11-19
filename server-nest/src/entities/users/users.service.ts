@@ -32,28 +32,41 @@ export class UsersService {
   }
 
   getsUsers() {
-    return this.userModel.find();
+    return this.userModel.find().exec();
   }
 
-  getUserById(id: string) {
-    console.log(id, this.userModel.findById(id).exec());
-    return this.userModel.findById(id).populate(['roles']).exec();
+  getUserById(id: string | mongoose.Types.UUID) {
+    return this.userModel
+      .findById(new mongoose.Types.UUID(id))
+      .populate(['roles'])
+      .exec();
   }
 
-  updateUser(id: string, updateUserDto: any) {
-    return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+  updateUser(id: string | mongoose.Types.UUID, updateUserDto: any) {
+    return this.userModel
+      .findByIdAndUpdate(new mongoose.Types.UUID(id), updateUserDto, {
+        new: true,
+      })
+      .exec();
   }
 
-  async patch(id: string, body: Partial<IUser>): Promise<IUser | null> {
+  async patch(
+    id: string | mongoose.Types.UUID,
+    body: Partial<IUser>,
+  ): Promise<IUser | null> {
     try {
-      await this.userModel.updateOne({ _id: id }, { $set: { ...body } }).exec();
-      return await this.userModel.findById(id).exec();
+      await this.userModel
+        .findOneAndUpdate(
+          { _id: new mongoose.Types.UUID(id) },
+          { $set: { ...body } },
+        )
+        .exec();
     } catch (error) {
       return null;
     }
   }
 
   deleteUserById(id: string | mongoose.Types.UUID) {
-    return this.userModel.findByIdAndDelete(new mongoose.Types.UUID(id));
+    return this.userModel.findByIdAndDelete(new mongoose.Types.UUID(id)).exec();
   }
 }
