@@ -380,6 +380,7 @@ export const NewGameStore = signalStore(
       errors,
     }) => {
       return {
+        gameId: computed(() => game().id),
         storeLoaded: computed(
           () =>
             !loading() &&
@@ -482,12 +483,6 @@ export const NewGameStore = signalStore(
 
           patchState(store, { initialValue: game });
           this.initGame();
-        });
-      },
-      deleteGame() {
-        const { id } = store.game() as IGameDTO;
-        gameService.delete(id).subscribe(() => {
-          router.navigate(['games']);
         });
       },
       initGame: rxMethod<void>(

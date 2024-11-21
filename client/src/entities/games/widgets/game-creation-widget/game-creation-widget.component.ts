@@ -24,6 +24,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,6 +38,7 @@ import {
   GameTeamCreateComponent,
   NewGameStore,
 } from '@entities/games';
+import { GameDeleteDialogComponent } from '@entities/games/components/game-delete-dialog/game-delete-dialog.component';
 import { EnumGameMode, EnumGameStatus } from '@entities/games/constants';
 import { TTeamFinal } from '@entities/games/types';
 import { PlayersService } from '@entities/players/services/players.service';
@@ -78,7 +80,7 @@ import { distinctUntilChanged, filter, map } from 'rxjs';
   templateUrl: './game-creation-widget.component.html',
   styleUrl: './game-creation-widget.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NewGameStore, GameService, PlayersService],
+  providers: [NewGameStore, GameService, PlayersService, MatDialog],
 })
 export class GameCreationWidgetComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
@@ -89,6 +91,7 @@ export class GameCreationWidgetComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly injector = inject(Injector);
+  private readonly dialog = inject(MatDialog);
 
   protected readonly isAdminSignal = this.authService.isAdmin;
   readonly enumGameStatus = EnumGameStatus;
@@ -102,7 +105,7 @@ export class GameCreationWidgetComponent implements OnInit {
   public readonly teams = this.newGameStore.teamsEntities;
 
   public readonly state = this.newGameStore;
-  protected readonly gameId = this.newGameStore.game()?.id;
+  protected readonly gameId = this.newGameStore.gameId;
   protected readonly errors = this.newGameStore.errors;
   protected readonly playedAt = this.newGameStore.game.playedAt;
 
@@ -197,7 +200,14 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   delete() {
-    this.newGameStore.deleteGame();
+    this.dialog
+      .open(GameDeleteDialogComponent, {
+        data: { game: this.newGameStore.game() },
+      })
+      .afterClosed()
+      .subscribe(confirmed => {
+        confirmed && this.router.navigate(['games']);
+      });
   }
 
   drop(event: CdkDragDrop<[TTeamFinal, TTeamFinal]>) {

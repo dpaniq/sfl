@@ -99,8 +99,6 @@ export class PlayersController {
       ? ids
       : ids?.split(',').map((id) => new Types.ObjectId(id.trim()));
 
-    console.log('idsArray', { idsArray, includeMetadata });
-
     return res.json(
       Array.from(
         await this.playersService.find(
