@@ -38,10 +38,21 @@
       mat-raised-button
       color="warn"
       (click)="delete()"
+      [disabled]="isFormChangedSignal()"
     >
       Delete
     </button>
   }
+
+  <button
+    mat-raised-button
+    color="warn"
+    (click)="swapStatistics()"
+    [disabled]="!!errors().size"
+  >
+    Swap
+    <mat-icon fontIcon="swap_horiz"></mat-icon>
+  </button>
 </div>
 
 <form [formGroup]="formGroup">

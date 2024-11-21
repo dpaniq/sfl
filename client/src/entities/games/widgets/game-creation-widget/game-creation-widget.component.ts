@@ -210,6 +210,10 @@ export class GameCreationWidgetComponent implements OnInit {
       });
   }
 
+  swapStatistics() {
+    this.newGameStore.swapStatistics();
+  }
+
   drop(event: CdkDragDrop<[TTeamFinal, TTeamFinal]>) {
     const array = this.newGameStore.teamsEntities();
 

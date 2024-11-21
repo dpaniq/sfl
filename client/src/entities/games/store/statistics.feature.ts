@@ -10,6 +10,7 @@ import {
 import {
   addEntity,
   entityConfig,
+  removeAllEntities,
   removeEntity,
   setAllEntities,
   updateEntities,
@@ -285,6 +286,35 @@ export function withPlayerStatisticsFeature<_>() {
           store,
           setAllEntities(
             statistics.map(mapStatisticDTOtoFinal),
+            STATISTIC_ENTITY_CONFIG,
+          ),
+        );
+      },
+      swapStatistics(): void {
+        const teams = store.teamsEntities() as [TTeamFinal, TTeamFinal];
+
+        const bmwId = teams.find(
+          ({ name }) => name.toLowerCase() === 'bmw',
+        )!.id;
+
+        const hondaId = teams.find(
+          ({ name }) => name.toLowerCase() === 'honda',
+        )!.id;
+
+        const bmwToHonda = store
+          .statisticsBMW()
+          .map(stat => ({ ...stat, teamId: hondaId }))
+          .map(stat => ({ ...stat, id: generatePlayerStatisticID(stat) }));
+        const hondaToBmw = store
+          .statisticsHONDA()
+          .map(stat => ({ ...stat, teamId: bmwId }))
+          .map(stat => ({ ...stat, id: generatePlayerStatisticID(stat) }));
+
+        patchState(
+          store,
+          removeAllEntities(STATISTIC_ENTITY_CONFIG),
+          setAllEntities(
+            [...bmwToHonda, ...hondaToBmw],
             STATISTIC_ENTITY_CONFIG,
           ),
         );
