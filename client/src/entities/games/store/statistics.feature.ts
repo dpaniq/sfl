@@ -319,6 +319,25 @@ export function withPlayerStatisticsFeature<_>() {
           ),
         );
       },
+      updateAllStatisticsByTeam({
+        teamId,
+        statistics,
+      }: {
+        teamId: string;
+        statistics: TPlayerStatisticFinal[];
+      }): void {
+        const filteredStatistics = store
+          .statisticsEntities()
+          .filter(stat => stat.teamId !== teamId);
+
+        patchState(
+          store,
+          setAllEntities(
+            [...filteredStatistics, ...statistics],
+            STATISTIC_ENTITY_CONFIG,
+          ),
+        );
+      },
     })),
     withHooks({
       onInit() {

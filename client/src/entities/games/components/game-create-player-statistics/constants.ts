@@ -10,6 +10,11 @@ export type StatisticColumn = {
 
 export const GAME_PLAYER_STATISTICS_COLUMNS: StatisticColumn[] = [
   {
+    columnDef: 'order',
+    header: 'order',
+    cell: () => `#`,
+  },
+  {
     columnDef: 'isCaptain',
     header: 'C',
     cell: (element: GamePlayerStatistic) => `${element.isCaptain}`,

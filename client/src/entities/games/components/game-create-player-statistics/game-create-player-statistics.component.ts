@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -34,6 +35,7 @@ export type GamePlayerStatistic = TPlayerStatisticFinal & {
     MatTooltipModule,
     MatTableModule,
     MatSlideToggleModule,
+    DragDropModule,
   ],
   templateUrl: './game-create-player-statistics.component.html',
   styleUrl: './game-create-player-statistics.component.css',
@@ -106,5 +108,20 @@ export class GameCreatePlayerStatisticsComponent {
     const number = action === 'decrement' ? -1 : 1;
 
     this.newGameStore.patchNumberKeysStatistics({ statistic, key, number });
+  }
+
+  protected drop(event: CdkDragDrop<any>) {
+    const statistics = this.statistics();
+
+    const index = statistics.findIndex(stat => stat.id === event.item.data.id);
+
+    const movedRow = statistics[index];
+    statistics.splice(index, 1);
+    statistics.splice(event.currentIndex, 0, movedRow);
+
+    this.newGameStore.updateAllStatisticsByTeam({
+      statistics,
+      teamId: this.teamId(),
+    });
   }
 }

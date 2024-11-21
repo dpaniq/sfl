@@ -1,10 +1,32 @@
 <mat-table
+  cdkDropList
   [dataSource]="dataSource()"
+  (cdkDropListDropped)="drop($event)"
   class="mat-elevation-z1"
 >
   @for (column of columns; track column) {
-    <!-- None increment/decrement logic -->
-    @if (['nickname'].includes(column.columnDef)) {
+    @if (['order'].includes(column.columnDef)) {
+      <ng-container
+        [matColumnDef]="column.columnDef"
+        sticky
+      >
+        <mat-header-cell *matHeaderCellDef>
+          <mat-icon
+            class="reorder"
+            fontIcon="reorder"
+          ></mat-icon>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let element">
+          <mat-icon
+            class="reorder"
+            fontIcon="reorder"
+          ></mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <!-- None increment/decrement logic -->
+    } @else if (['nickname'].includes(column.columnDef)) {
       <ng-container [matColumnDef]="column.columnDef">
         <mat-header-cell *matHeaderCellDef>
           {{ column.header }}
@@ -92,5 +114,10 @@
   }
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  <mat-row
+    class="draggable-row"
+    *matRowDef="let row; columns: displayedColumns"
+    cdkDrag
+    [cdkDragData]="row"
+  ></mat-row>
 </mat-table>
