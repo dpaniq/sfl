@@ -16,7 +16,8 @@ export interface IGameDTO {
   status: EnumGameStatus;
   statistics: IPlayerStatisticDTO[];
   link: string;
-  note: string;
+  description: string;
+  notes: [string, string];
   metadata?: any;
 }
 

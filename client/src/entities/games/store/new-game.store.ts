@@ -58,7 +58,6 @@ export interface NewGameState {
   statistics: TPlayerStatisticFinal[];
 
   // Needed to keep all players with specific state
-  players: TPlayerFinal[]; // TODO Cut
 
   // For internal process
   loading: boolean;
@@ -79,12 +78,13 @@ export const INITIAL_GAME_STATE: TGameFinal = {
   statistics: [],
   status: EnumGameStatus.New,
   link: '',
-  note: '',
+  description: '',
+  notes: ['', ''],
 };
 
 const INITIAL_NEW_GAME_STATE: NewGameState = {
   game: INITIAL_GAME_STATE,
-  players: [],
+  // players: [],
 
   // One level game fields
   teams: [],
@@ -136,7 +136,16 @@ function isNewGameChanged({
     return true;
   }
 
-  if (!isEqual(initialGame.note?.trim() ?? '', actualGame.note?.trim())) {
+  if (
+    !isEqual(
+      initialGame.description?.trim() ?? '',
+      actualGame.description?.trim(),
+    )
+  ) {
+    return true;
+  }
+
+  if (!isEqual(initialGame.notes ?? [], actualGame.notes)) {
     return true;
   }
 
@@ -172,6 +181,20 @@ function isNewGameChanged({
     };
 
     if (!initial) {
+      return true;
+    }
+
+    const actualIndex = actualStatisticsDto.findIndex(
+      stats =>
+        stats.playerId === actual.playerId && stats.teamId === actual.teamId,
+    );
+    const initialIndex = initialStatistics.findIndex(
+      stats =>
+        stats.playerId === actual.playerId && stats.teamId === actual.teamId,
+    );
+
+    if (initialIndex !== actualIndex) {
+      compareLog('index');
       return true;
     }
 
@@ -266,7 +289,8 @@ function initGameEdition(game?: TGameFinal): Observable<TGameFinal> {
     return of({
       ...game,
       link: game.link ?? '',
-      note: game.note ?? '',
+      description: game.description ?? '',
+      notes: game.notes ?? ['', ''],
       playedAt: new Date(game.playedAt),
     });
   }
@@ -369,7 +393,7 @@ export const NewGameStore = signalStore(
   withPlayerStatisticsFeature(),
   withComputed(
     ({
-      players,
+      // players,
       initialValue,
       game,
       loading,
@@ -387,12 +411,6 @@ export const NewGameStore = signalStore(
             !initLoading() &&
             [EnumGameMode.Create, EnumGameMode.Edit].includes(mode()),
         ),
-        captains: computed(() =>
-          players().filter(({ isCaptain }) => Boolean(isCaptain)),
-        ),
-        playersNew: computed(() => {
-          return players();
-        }),
         isFormChanged: computed(() => {
           if (!initialValue() || initLoading() || errors().size) {
             return false;
@@ -432,8 +450,16 @@ export const NewGameStore = signalStore(
         }));
       },
       saveGame() {
-        const { id, status, number, season, playedAt, link, note } =
-          store.game() as IGameDTO;
+        const {
+          id,
+          status,
+          number,
+          season,
+          playedAt,
+          link,
+          description,
+          notes,
+        } = store.game() as IGameDTO;
 
         const gameDTO = <IGameDTO>{
           id,
@@ -442,7 +468,8 @@ export const NewGameStore = signalStore(
           season,
           playedAt,
           link,
-          note,
+          description,
+          notes,
           teams: store.teamsEntities(),
           statistics: store.getStatististicsDTOs(),
         };
@@ -460,8 +487,16 @@ export const NewGameStore = signalStore(
       },
 
       updateGame() {
-        const { id, status, number, season, playedAt, link, note } =
-          store.game() as IGameDTO;
+        const {
+          id,
+          status,
+          number,
+          season,
+          playedAt,
+          link,
+          description,
+          notes,
+        } = store.game() as IGameDTO;
 
         const gameDTO = <IGameDTO>{
           id,
@@ -470,7 +505,8 @@ export const NewGameStore = signalStore(
           season,
           playedAt,
           link,
-          note,
+          description,
+          notes,
           teams: store.teamsEntities(),
           statistics: store.getStatististicsDTOs(),
         };
@@ -540,7 +576,7 @@ export const NewGameStore = signalStore(
                 patchState(store, () => ({
                   mode,
                   game,
-                  players: cloneDeep(players),
+                  // players: cloneDeep(players),
                   initialValue: cloneDeep(game),
                   loading: false,
                   initLoading: true,

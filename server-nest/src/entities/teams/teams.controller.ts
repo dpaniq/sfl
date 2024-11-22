@@ -10,13 +10,12 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TeamsService } from './teams.service';
-import { ITeam, Team, UpdateTeam } from './team.schema';
-import { SaveGameDTO } from '../games/game.dto';
+import { Response } from 'express';
 import { ValibotValidationPipe } from 'src/shared/pipes/custom-pipe/valibot-validation.pipe';
 import { UpdateGame } from '../games/game.schema';
-import { SaveTeamDTO } from './team.dto';
-import { Response } from 'express';
+import { TeamSaveDTO } from './team.dto';
+import { ITeam, Team, UpdateTeam } from './team.schema';
+import { TeamsService } from './teams.service';
 
 @ApiTags('teams')
 @Controller('teams')
@@ -38,10 +37,8 @@ export class TeamsController {
     status: HttpStatus.CREATED,
     description: 'The record has been successfully created.',
   })
-  @UsePipes(new ValibotValidationPipe(SaveTeamDTO))
+  @UsePipes(new ValibotValidationPipe(TeamSaveDTO))
   async save(@Body() team: ITeam) {
-    console.log(team);
-
     await this.teamsService.save(team);
 
     return { success: 'OK' };

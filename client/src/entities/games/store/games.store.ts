@@ -121,7 +121,8 @@ export const GamesStore = signalStore(
                   status: EnumGameStatus.Furture,
                   statistics: [],
                   link: '',
-                  note: '',
+                  description: '',
+                  notes: ['', ''],
                 });
               }
 

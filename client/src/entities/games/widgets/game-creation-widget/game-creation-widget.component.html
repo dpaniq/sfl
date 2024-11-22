@@ -88,7 +88,7 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Additional data</mat-panel-title>
-        <mat-panel-description>Type link and note</mat-panel-description>
+        <mat-panel-description>Type link and description</mat-panel-description>
       </mat-expansion-panel-header>
 
       <mat-form-field>
@@ -101,11 +101,11 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Note</mat-label>
+        <mat-label>Description</mat-label>
         <textarea
           matInput
           type="text"
-          formControlName="note"
+          formControlName="description"
         ></textarea>
       </mat-form-field>
     </mat-expansion-panel>
@@ -154,6 +154,7 @@
 
         @if (modeSignal() === 'create' || modeSignal() === 'edit') {
           <sfl-game-team-create
+            [idx]="idx"
             [team]="team"
             [mode]="modeSignal()"
           ></sfl-game-team-create>
@@ -176,107 +177,4 @@
       }
     </mat-list>
   </div>
-}
-
-@if (isAdminSignal()) {
-  <hr />
-  <h1>DEBUG COMPARE</h1>
-  <table style="border: 1px solid black; border-collapse: collapse">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Initial</th>
-        <th>Current</th>
-        <th>On first level</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th>id</th>
-        <td>{{ newGameStore.initialValue()?.id | json }}</td>
-        <td>{{ newGameStore.game.id?.() | json }}</td>
-      </tr>
-      <tr>
-        <th>status</th>
-        <td>{{ newGameStore.initialValue()?.status | json }}</td>
-        <td>{{ newGameStore.game.status() | json }}</td>
-      </tr>
-      <tr>
-        <th>number</th>
-        <td>{{ newGameStore.initialValue()?.number | json }}</td>
-        <td>{{ newGameStore.game.number() | json }}</td>
-      </tr>
-      <tr>
-        <th>season</th>
-        <td>{{ newGameStore.initialValue()?.season | json }}</td>
-        <td>{{ newGameStore.game.season() | json }}</td>
-      </tr>
-      <tr>
-        <th>playedAt</th>
-        <td>{{ newGameStore.initialValue()?.playedAt | json }}</td>
-        <td>{{ newGameStore.game.playedAt() | json }}</td>
-      </tr>
-      <tr>
-        <th>createdAt</th>
-        <td>{{ newGameStore.initialValue()?.createdAt | json }}</td>
-        <td>{{ newGameStore.game.createdAt?.() | json }}</td>
-      </tr>
-      <tr>
-        <th>updatedAt</th>
-        <td>{{ newGameStore.initialValue()?.updatedAt | json }}</td>
-        <td>{{ newGameStore.game.updatedAt?.() | json }}</td>
-      </tr>
-      <tr>
-        <th>teams</th>
-        <td>
-          <details>
-            <summary>
-              Teams:
-              <span class="icon">👇</span>
-            </summary>
-            <pre>{{ newGameStore.initialValue()?.teams | json }}</pre>
-          </details>
-        </td>
-        <td>
-          <details>
-            <summary>
-              Teams:
-              <span class="icon">👇</span>
-            </summary>
-            <pre>{{ newGameStore.teamsEntities() | json }}</pre>
-          </details>
-        </td>
-      </tr>
-      <tr>
-        <th>Statistics</th>
-        <td>
-          <details>
-            <summary>
-              Statistics:
-              <span class="icon">👇</span>
-            </summary>
-            <pre>{{ newGameStore.initialValue()?.statistics | json }}</pre>
-          </details>
-        </td>
-        <td>
-          <details>
-            <summary>
-              Statistics:
-              <span class="icon">👇</span>
-            </summary>
-            <pre>{{ newGameStore.game.statistics() | json }}</pre>
-          </details>
-        </td>
-        <td>
-          <details>
-            <summary>
-              Statistics:
-              <span class="icon">👇</span>
-            </summary>
-            <pre>{{ newGameStore.statisticsEntities() | json }}</pre>
-          </details>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 }

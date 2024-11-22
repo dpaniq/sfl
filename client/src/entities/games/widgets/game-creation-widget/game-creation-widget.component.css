@@ -1,6 +1,6 @@
 :host ::ng-deep .additional-data .mat-expansion-panel-body {
   display: grid;
-  padding: 0;
+  padding: 0 10px;
   margin: 0;
   gap: 0;
 }

@@ -36,7 +36,7 @@ const transform = (doc, ret, options) => {
 })
 export class User implements IUser {
   @Prop({
-    default: new Types.UUID(),
+    default: () => new Types.UUID(),
     type: Types.UUID,
     required: true,
   })

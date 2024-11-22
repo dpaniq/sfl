@@ -168,7 +168,7 @@ export class GamesService {
   }
 
   private async calculateGameMetadata(game: IGame): Promise<IGameMetadata> {
-    this.logger.info('Calculate game metadata', { _id: game.id });
+    this.logger.info('Calculate game metadata', { _id: game.id, game });
 
     // Helpers
     const teamFirstIdHelper = game.teams.at(0).id.toString();

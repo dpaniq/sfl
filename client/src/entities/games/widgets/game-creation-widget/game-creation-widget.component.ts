@@ -141,7 +141,7 @@ export class GameCreationWidgetComponent implements OnInit {
       nonNullable: true,
     }),
 
-    note: new FormControl<string>('', {
+    description: new FormControl<string>('', {
       nonNullable: true,
     }),
   });
@@ -183,10 +183,10 @@ export class GameCreationWidgetComponent implements OnInit {
         this.newGameStore.updateGameFields({ link });
       });
 
-    this.formGroup.controls.note.valueChanges
+    this.formGroup.controls.description.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(note => {
-        this.newGameStore.updateGameFields({ note });
+      .subscribe(description => {
+        this.newGameStore.updateGameFields({ description });
       });
   }
 
@@ -227,7 +227,8 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   private fillControls() {
-    const { number, season, status, link, note } = this.newGameStore.game();
+    const { number, season, status, link, description, notes } =
+      this.newGameStore.game();
 
     if (number) {
       this.formGroup.controls.number.setValue(Number(number));
@@ -247,8 +248,8 @@ export class GameCreationWidgetComponent implements OnInit {
       this.formGroup.controls.link.setValue(link);
     }
 
-    if (note) {
-      this.formGroup.controls.note.setValue(note);
+    if (description) {
+      this.formGroup.controls.description.setValue(description);
     }
   }
 }

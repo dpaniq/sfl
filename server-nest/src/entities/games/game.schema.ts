@@ -115,8 +115,8 @@ export interface IGame {
   status: EnumGameStatus;
   teams: [ITeam, ITeam];
   statistics: PlayerStatistic[];
-  link?: string;
-  note?: string;
+  link: string;
+  notes: [string, string];
   metadata: IGameMetadata;
 }
 
@@ -238,16 +238,25 @@ export class Game implements IGame {
   @Prop({
     type: String,
   })
-  link?: string;
+  link: string;
 
   @ApiProperty({ type: String })
   @Prop({
     type: String,
   })
-  note?: string;
+  description: string;
+
+  @ApiProperty({ type: Array, isArray: true })
+  @Prop({
+    type: Array,
+    schemas: [{ type: String }, { type: String }],
+  })
+  notes: [string, string];
 
   @Prop({ type: Object, required: false, default: {} })
   metadata: IGameMetadata;
+
+  [key: string]: any;
 }
 
 // If you want to create a DTO for updating the game, you can use PartialType

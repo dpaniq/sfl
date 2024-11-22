@@ -60,7 +60,7 @@ export class GameCreatePlayerStatisticsComponent {
   > = computed(() => {
     // TODO: make it litgher
 
-    const players = this.newGameStore.players();
+    const players = this.newGameStore.playersEntities();
 
     if (!players.length) {
       return [];
@@ -72,7 +72,7 @@ export class GameCreatePlayerStatisticsComponent {
       })!;
 
       // TODO START HERE
-
+      // TODO use playerData of statistics instead
       return {
         ...stat,
         nickname: found.nickname,

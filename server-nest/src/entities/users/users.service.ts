@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import mongoose, { Model } from 'mongoose';
+import { FileLoggerService } from 'src/shared/services/logger.service';
 import { IUser, User } from './users.schema';
 
 @Injectable()
@@ -9,6 +10,8 @@ export class UsersService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<IUser>,
+
+    private readonly logger: FileLoggerService,
   ) {}
 
   async createUser(user: {
@@ -26,8 +29,10 @@ export class UsersService {
 
       return await this.userModel.findOne({ email: user.email }).exec();
     } catch (error) {
-      console.log('errro?', error);
-      return null;
+      this.logger.error('Failed to create user', { user, error });
+      throw new InternalServerErrorException(
+        'Unexpected error occurred while creating user',
+      );
     }
   }
 

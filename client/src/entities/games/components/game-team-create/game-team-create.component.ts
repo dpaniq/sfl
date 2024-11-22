@@ -6,32 +6,21 @@ import {
   DestroyRef,
   inject,
   input,
-  OnDestroy,
   OnInit,
-  signal,
 } from '@angular/core';
 
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
-import { MatSelectModule } from '@angular/material/select';
 
+import { MatExpansionModule } from '@angular/material/expansion';
 import { EnumGameMode } from '@entities/games/constants';
-import { GameTeam, NewGameStore } from '@entities/games/store/new-game.store';
+import { NewGameStore } from '@entities/games/store/new-game.store';
 import { TTeamFinal } from '@entities/games/types';
 import { PlayersAutocompleteComponent } from '@entities/players/components/players-autocomplete/players-autocomplete.component';
-import { distinctUntilChanged, startWith } from 'rxjs';
 import { GameCreatePlayerStatisticsComponent } from '../game-create-player-statistics/game-create-player-statistics.component';
 
 @Component({
@@ -39,20 +28,14 @@ import { GameCreatePlayerStatisticsComponent } from '../game-create-player-stati
   standalone: true,
   imports: [
     CommonModule,
-    // Material
-    // TODO REMOVE EXTRA MATERIALS
-    MatListModule,
-    MatIconModule,
+
     MatDividerModule,
     MatFormFieldModule,
-    MatSelectModule,
     MatInputModule,
     MatButtonModule,
-    FormsModule,
-    MatAutocompleteModule,
     ReactiveFormsModule,
+    MatExpansionModule,
     // Custom
-    // TODO FIX
     GameCreatePlayerStatisticsComponent,
     PlayersAutocompleteComponent,
   ],
@@ -60,26 +43,14 @@ import { GameCreatePlayerStatisticsComponent } from '../game-create-player-stati
   styleUrl: './game-team-create.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameTeamCreateComponent implements OnInit, OnDestroy {
-  #destroyRef = inject(DestroyRef);
-  readonly newGameStore = inject(NewGameStore);
+export class GameTeamCreateComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly newGameStore = inject(NewGameStore);
 
-  public team = input.required<TTeamFinal>();
-  public mode = input.required<EnumGameMode>();
+  public readonly idx = input.required<number>();
+  public readonly team = input.required<TTeamFinal>();
+  public readonly mode = input.required<EnumGameMode>();
   public readonly teamId = computed(() => this.team().id);
-
-  public readonly getState = computed(() => [
-    this.newGameStore.statistics(),
-    this.newGameStore.statisticsEntities(),
-  ]);
-
-  get captainFC() {
-    return this.formGroup.controls.captain;
-  }
-
-  get playersFC() {
-    return this.formGroup.controls.players;
-  }
 
   /**
    * https://stackblitz.com/edit/angular-sx79hu?embed=1&file=app/multiselect-autocomplete-example.html
@@ -87,50 +58,23 @@ export class GameTeamCreateComponent implements OnInit, OnDestroy {
    * https://stackblitz.com/run?file=src%2Fexample%2Fchips-autocomplete-example.html
    * https://material.angular.io/components/chips/examples
    */
-  public value = signal<string>('');
 
-  readonly formGroup = new FormGroup({
-    // team: new FormControl<GameTeam | null>(this.team),
-    captain: new FormControl<any | null>({
-      value: null,
-      disabled: false,
-    }),
-    players: new FormControl<any[]>(
-      { value: [], disabled: true },
-      { nonNullable: true },
-    ),
+  protected readonly noteFC = new FormControl<string>('', {
+    nonNullable: true,
   });
-
-  captainsSignal = computed(() => {
-    this.newGameStore.captains();
-  });
-
-  ngOnDestroy() {}
-
-  readonly storeLoaded$ = toObservable(this.newGameStore.storeLoaded);
 
   ngOnInit(): void {
-    this.storeLoaded$
-      .pipe(distinctUntilChanged(), takeUntilDestroyed(this.#destroyRef))
-      .subscribe(storeLoaded => {});
+    const { notes } = this.newGameStore.game();
+    this.noteFC.setValue(notes[this.idx()]);
 
-    this.playersFC.valueChanges
-      .pipe(
-        startWith(this.playersFC.value),
-        takeUntilDestroyed(this.#destroyRef),
-      )
-      .subscribe(players => {});
-  }
-
-  teamCompareFn(option: GameTeam | null, value: GameTeam | null) {
-    return option?.id === value?.id;
-  }
-
-  captainCompareFn(option: any | null, value: any | null) {
-    return option?.id === value?.id;
-  }
-
-  playersCompareFn(option: any | null, value: any) {
-    return option?.id === value?.id;
+    this.noteFC.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(note => {
+        const { notes } = this.newGameStore.game();
+        notes[this.idx()] = note;
+        this.newGameStore.updateGameFields({
+          notes,
+        });
+      });
   }
 }

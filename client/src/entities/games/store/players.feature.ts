@@ -34,18 +34,14 @@ export function withPlayersFeature<_>() {
     withEntities(PLAYERS_ENTITY_CONFIG),
     withMethods(store => ({
       addPlayer(player: IPlayerDTO): void {
-        patchState(store, addEntity(player, PLAYERS_ENTITY_CONFIG));
-      },
-      initEntityPlayers(players: TPlayerFinal[]): void {
         patchState(
           store,
-          setAllEntities(
-            players.map(player => ({
-              ...player,
-            })),
-            PLAYERS_ENTITY_CONFIG,
-          ),
+          // state => ({ players: [...state.players, ] }),
+          addEntity(player, PLAYERS_ENTITY_CONFIG),
         );
+      },
+      initEntityPlayers(players: TPlayerFinal[]): void {
+        patchState(store, setAllEntities(players, PLAYERS_ENTITY_CONFIG));
       },
     })),
     withHooks({
