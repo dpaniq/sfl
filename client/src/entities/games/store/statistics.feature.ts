@@ -133,6 +133,18 @@ export function withPlayerStatisticsFeature<_>() {
           .statisticsEntities()
           .filter(stat => stat.teamId === store.teamsEntities().at(1)?.id);
       }),
+      swapEnabled: computed(() => {
+        return (
+          store
+            .statisticsEntities()
+            .filter(stat => stat.teamId === store.teamsEntities().at(0)?.id)
+            .length < 1 &&
+          store
+            .statisticsEntities()
+            .filter(stat => stat.teamId === store.teamsEntities().at(1)?.id)
+            .length < 1
+        );
+      }),
     })),
     withMethods(store => ({
       toggleIsMVP({ id, teamId }: TPlayerStatisticFinal): void {
@@ -293,21 +305,29 @@ export function withPlayerStatisticsFeature<_>() {
       swapStatistics(): void {
         const teams = store.teamsEntities() as [TTeamFinal, TTeamFinal];
 
-        const bmwId = teams.find(
-          ({ name }) => name.toLowerCase() === 'bmw',
-        )!.id;
+        if (
+          store.statisticsBMW().length < 1 ||
+          store.statisticsHONDA().length < 1
+        ) {
+          return;
+        }
 
-        const hondaId = teams.find(
-          ({ name }) => name.toLowerCase() === 'honda',
-        )!.id;
+        const bmwIdOpposite = getOppositeTeamId(
+          store.statisticsBMW().at(0)!.teamId,
+          teams,
+        );
+        const hondaIdOpposite = getOppositeTeamId(
+          store.statisticsHONDA().at(0)!.teamId!,
+          teams,
+        );
 
         const bmwToHonda = store
           .statisticsBMW()
-          .map(stat => ({ ...stat, teamId: hondaId }))
+          .map(stat => ({ ...stat, teamId: bmwIdOpposite }))
           .map(stat => ({ ...stat, id: generatePlayerStatisticID(stat) }));
         const hondaToBmw = store
           .statisticsHONDA()
-          .map(stat => ({ ...stat, teamId: bmwId }))
+          .map(stat => ({ ...stat, teamId: hondaIdOpposite }))
           .map(stat => ({ ...stat, id: generatePlayerStatisticID(stat) }));
 
         patchState(

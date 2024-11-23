@@ -108,6 +108,7 @@ export class GameCreationWidgetComponent implements OnInit {
   protected readonly gameId = this.newGameStore.gameId;
   protected readonly errors = this.newGameStore.errors;
   protected readonly playedAt = this.newGameStore.game.playedAt;
+  protected readonly swapEnabled = this.newGameStore.swapEnabled;
 
   formGroup = new FormGroup({
     number: new FormControl<number>(
@@ -227,7 +228,7 @@ export class GameCreationWidgetComponent implements OnInit {
   }
 
   private fillControls() {
-    const { number, season, status, link, description, notes } =
+    const { number, season, status, link, description } =
       this.newGameStore.game();
 
     if (number) {

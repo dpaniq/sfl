@@ -55,6 +55,8 @@ export class GameCreatePlayerStatisticsComponent {
       : this.newGameStore.statisticsHONDA();
   });
 
+  protected readonly swapEnabled = this.newGameStore.swapEnabled;
+
   protected readonly dataSource: Signal<
     (Pick<PlayerClient, 'nickname'> & TPlayerStatisticFinal)[]
   > = computed(() => {
