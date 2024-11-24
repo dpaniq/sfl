@@ -33,6 +33,7 @@
   - Brute Force
   - Clickjacking
   - OWASP + Top Ten
+  - 404 page
 
 ### Tech
 

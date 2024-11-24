@@ -14,6 +14,7 @@ import { JwtService } from '@shared/services/jwt.service';
 import { LocalStorageService } from '@shared/services/local-storage.service';
 import packageJSON from 'package.json';
 import { AuthService } from '../shared/services/auth.service';
+import { NavigationComponent } from '../shared/ui/core/navigation/navigation.component';
 
 @Component({
   selector: 'sfl-root',
@@ -29,6 +30,7 @@ import { AuthService } from '../shared/services/auth.service';
     MatToolbarModule,
     MatSidenavModule,
     RouterModule,
+    NavigationComponent,
   ],
   providers: [
     HttpService,

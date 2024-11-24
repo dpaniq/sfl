@@ -11,7 +11,7 @@ import { PlayerCreateButtonComponent } from '@entities/players/components/player
 import { PlayersTableComponent } from '@entities/players/components/players-table/players-table.component';
 import { PlayersService } from '@entities/players/services/players.service';
 import { AuthService } from '@shared/services/auth.service';
-import { PlayersAdminWidgetComponent } from '@widgets';
+import { PageComponent } from '@shared/ui/core/page/page.component';
 
 @Component({
   standalone: true,
@@ -26,8 +26,7 @@ import { PlayersAdminWidgetComponent } from '@widgets';
     PlayersTableComponent,
     PlayerCreateButtonComponent,
 
-    // Widgets
-    PlayersAdminWidgetComponent,
+    PageComponent,
   ],
   styles: `
     :host {
@@ -46,49 +45,19 @@ import { PlayersAdminWidgetComponent } from '@widgets';
     }
   `,
   template: `
-    <h1>Players</h1>
-    <mat-divider></mat-divider>
-    <br />
-
-    <div class="tab-container">
-      <div class="tab-header">
-        @if (isAdminSignal()) {
-          <sfl-player-create-button />
-        }
-      </div>
-
-      <div class="tab-content">
-        <sfl-players-table></sfl-players-table>
-      </div>
-    </div>
-
-    <!-- <mat-tab-group>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon fontIcon="list"></mat-icon>
-          List of players
-        </ng-template>
-
-        <div class="tab-container">
-          <div class="tab-header">
+    <sfl-page title="players">
+      <div class="tab-container">
+        <div class="tab-header">
+          @if (isAdminSignal()) {
             <sfl-player-create-button />
-          </div>
-
-          <div class="tab-content">
-            <sfl-players-table></sfl-players-table>
-          </div>
+          }
         </div>
-      </mat-tab>
 
-      <mat-tab *ngIf="user.isAdmin">
-        <ng-template mat-tab-label>
-          <mat-icon fontIcon="manage_accounts"></mat-icon>
-          Admin panel
-        </ng-template>
-
-        <sfl-players-admin-widget></sfl-players-admin-widget>
-      </mat-tab>
-    </mat-tab-group> -->
+        <div class="tab-content">
+          <sfl-players-table></sfl-players-table>
+        </div>
+      </div>
+    </sfl-page>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

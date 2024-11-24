@@ -14,19 +14,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import {
   ChartsService,
-  TTop10AncientRatingSystemBySeason,
+  TTopAncientRatingSystem,
 } from '@entities/charts/charts.service';
 
 import { HighchartsChartModule } from 'highcharts-angular';
 import Highcharts from 'highcharts/es-modules/masters/highcharts.src';
 import { switchMap, take } from 'rxjs';
 
+const LIMIT = 30;
+
 const CHART_OPTIONS_DEFAULT = {
   chart: {
     type: 'bar',
   },
   title: {
-    text: 'Top 10 players by season',
+    text: undefined, // 'Top plus / minus & last result players',
     align: 'left',
   },
   subtitle: {
@@ -37,7 +39,7 @@ const CHART_OPTIONS_DEFAULT = {
     title: {
       text: null,
     },
-    gridLineWidth: 5,
+    gridLineWidth: 1,
     lineWidth: 0,
   },
   yAxis: {
@@ -59,15 +61,17 @@ const CHART_OPTIONS_DEFAULT = {
       dataLabels: {
         enabled: true,
       },
-      groupPadding: 0.1,
+      // groupPadding: 0.1,
+      groupPadding: 0.1, // Increased the space between groups of bars
+      pointPadding: 0, // Increased the space between individual bars in a group
     },
   },
   legend: {
     layout: 'horizontal',
     align: 'center',
-    verticalAlign: 'top',
+    verticalAlign: 'bottom',
     x: 0,
-    y: 12,
+    y: 20,
     floating: true,
     borderWidth: 0,
     shadow: false,
@@ -75,15 +79,11 @@ const CHART_OPTIONS_DEFAULT = {
   credits: {
     enabled: true,
   },
-  series: [
-    { type: 'bar' },
-    { type: 'bar' },
-    { type: 'bar' },
-  ] as Highcharts.SeriesOptionsType[],
-};
+  series: [{ type: 'bar' }, { type: 'bar' }] as Highcharts.SeriesOptionsType[],
+} as Highcharts.Options;
 
 @Component({
-  selector: 'sfl-top-10-ancient-rating-system-by-season',
+  selector: 'sfl-top-ancient-rating-system-players',
   standalone: true,
   imports: [
     CommonModule,
@@ -93,12 +93,12 @@ const CHART_OPTIONS_DEFAULT = {
     MatFormFieldModule,
     MatSelectModule,
   ],
-  templateUrl: './top-10-ancient-rating-system-by-season.component.html',
-  styleUrl: './top-10-ancient-rating-system-by-season.component.css',
+  templateUrl: './top-ancient-rating-system-players.component.html',
+  styleUrl: './top-ancient-rating-system-players.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ChartsService],
 })
-export class Top10AncientRatingSystemBySeasonComponent implements OnInit {
+export class TopAncientRatingSystemPlayersComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private chartsService = inject(ChartsService);
 
@@ -111,7 +111,7 @@ export class Top10AncientRatingSystemBySeasonComponent implements OnInit {
   protected readonly chartOptions$ = toObservable(this.season).pipe(
     switchMap(season => {
       return this.chartsService
-        .getPlayersAncientRatingSystemBySeason(season)
+        .getTopAncientRatingSystemPlayers({ season, limit: LIMIT })
         .pipe(take(1));
     }),
     takeUntilDestroyed(this.destroyRef),
@@ -149,7 +149,7 @@ export class Top10AncientRatingSystemBySeasonComponent implements OnInit {
   }
 
   public mapDataToSeries(
-    players: TTop10AncientRatingSystemBySeason[],
+    players: TTopAncientRatingSystem[],
   ): Highcharts.SeriesOptionsType[] {
     // Extracting the data for each series
     const plusMinusData = players.map(
@@ -157,9 +157,6 @@ export class Top10AncientRatingSystemBySeasonComponent implements OnInit {
     );
     const lastResultData = players.map(
       player => player.ancientRatingSystem.lastResult,
-    );
-    const totalPointsData = players.map(
-      player => player.ancientRatingSystem.totalPoints,
     );
 
     // Mapping each data series into Highcharts format
@@ -175,14 +172,8 @@ export class Top10AncientRatingSystemBySeasonComponent implements OnInit {
         visible: true,
         name: 'Last result (lr)',
         data: lastResultData,
-        description: 'Last result (lr) 123123123123',
+        description: 'Last result (lr)',
         labels: {},
-      },
-      {
-        type: 'bar',
-        visible: true,
-        name: 'Total points',
-        data: totalPointsData,
       },
     ] as Highcharts.SeriesOptionsType[];
   }

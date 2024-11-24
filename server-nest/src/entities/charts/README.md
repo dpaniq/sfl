@@ -1,8 +1,8 @@
 Based on the criteria and interfaces you provided, several types of charts can be created to visualize player performance metrics in a sports context. Here are some chart ideas along with descriptions of what each chart could represent:
 
-1. Bar Charts
+1. Bar Charts [common] [topTotalPointsPlayers]
 
-   - [ ] Total Points by Player: A bar chart displaying the totalPoints for each player. This can help compare overall performance across players.
+   - [x] Total Points by Player: A bar chart displaying the totalPoints for each player. This can help compare overall performance across players.
 
    - [ ] Goals Scored by Type: A stacked bar chart showing totalGoalsByLeg, totalGoalsByHead, totalGoalsByPenalty, and totalGoalsByAuto for each player, which provides insights into scoring methods.
 
@@ -28,7 +28,7 @@ Based on the criteria and interfaces you provided, several types of charts can b
    Game Participation: A heat map displaying the number of games played in various capacities (e.g., as captain, first draft, second draft) can help visualize player participation patterns.
    Performance by Game Outcome: A heat map illustrating the performance of players based on game outcomes (win/loss) across multiple games.
 
-6. Radar Charts
+6. Radar Charts [individual]
 
    Player Skills Comparison: A radar chart for each player representing multiple metrics like totalGoalsByLeg, totalGoalsByHead, totalPasses, plusMinus, and their performance in various rating systems. This helps to visualize strengths and weaknesses.
 

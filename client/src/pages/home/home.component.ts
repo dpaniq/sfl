@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
-import { Top10AncientRatingSystemBySeasonComponent } from '@entities/players/components/charts/top-10-ancient-rating-system-by-season/top-10-ancient-rating-system-by-season.component';
+import { TopAncientRatingSystemPlayersComponent } from '@entities/charts/components/top-ancient-rating-system-players/top-ancient-rating-system-players.component';
+import { TopTotalPointsPlayersComponent } from '@entities/charts/components/top-total-points-players/top-total-points-players.component';
 import { AuthService } from '../../shared/services/auth.service';
+import { PageComponent } from '@shared/ui/core/page/page.component';
 
 @Component({
   selector: 'sfl-home',
@@ -10,7 +12,9 @@ import { AuthService } from '../../shared/services/auth.service';
   imports: [
     CommonModule,
     MatDividerModule,
-    Top10AncientRatingSystemBySeasonComponent,
+    TopTotalPointsPlayersComponent,
+    TopAncientRatingSystemPlayersComponent,
+    PageComponent,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],

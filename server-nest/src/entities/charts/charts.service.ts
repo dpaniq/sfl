@@ -14,7 +14,13 @@ export class ChartsService {
     private gameModel: Model<IGame>,
   ) {}
 
-  async top10AncientRatingSystemBySeason(season: number): Promise<
+  async topTotalPointsPlayers({
+    season,
+    limit = 20,
+  }: {
+    season: number;
+    limit: number;
+  }): Promise<
     {
       id: string;
       nickname: string;
@@ -38,6 +44,74 @@ export class ChartsService {
               [`metadata.bySeason.${season}.ancientRatingSystem.totalPoints`]: {
                 $exists: 1,
                 $ne: null,
+                $gt: 0,
+              },
+            },
+          },
+          {
+            $project: {
+              _id: '$_id',
+              id: '$_id',
+              user: '$user',
+              nickname: '$nickname',
+              totalPoints: `$metadata.bySeason.${season}.ancientRatingSystem.totalPoints`,
+            },
+          },
+          {
+            $sort: {
+              totalPoints: -1,
+            },
+          },
+          { $limit: limit },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'user',
+              foreignField: '_id',
+              as: 'user',
+            },
+          },
+          { $unwind: '$user' },
+          {
+            $unset: ['_id', 'user.password', 'user.roles'],
+          },
+        ],
+        { maxTimeMS: 60000, allowDiskUse: true },
+      )
+      .exec();
+  }
+
+  async topAncientRatingSystemPlayers({
+    season,
+    limit = 20,
+  }: {
+    season: number;
+    limit: number;
+  }): Promise<
+    {
+      id: string;
+      nickname: string;
+      user: {
+        name?: string;
+        surname?: string;
+        email?: string;
+      };
+      ancientRatingSystem: {
+        plusMinus: number;
+        lastResult: number;
+        totalPoints: number;
+      };
+    }[]
+  > {
+    return await this.playerModel
+      .aggregate(
+        [
+          {
+            $match: {
+              [`metadata.bySeason.${season}.ancientRatingSystem.totalPoints`]: {
+                $exists: 1,
+                $ne: null,
+                $gt: 0,
               },
             },
           },
@@ -53,9 +127,11 @@ export class ChartsService {
           {
             $sort: {
               'ancientRatingSystem.totalPoints': -1,
+              'ancientRatingSystem.plusMinus': -1,
+              'ancientRatingSystem.lastResult': -1,
             },
           },
-          { $limit: 10 },
+          { $limit: limit },
           {
             $lookup: {
               from: 'users',

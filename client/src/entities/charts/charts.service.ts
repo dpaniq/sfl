@@ -2,7 +2,18 @@ import { inject, Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { map, Observable } from 'rxjs';
 
-export type TTop10AncientRatingSystemBySeason = {
+export type TTopTotalPoints = {
+  id: string;
+  nickname: string;
+  user: {
+    name?: string;
+    surname?: string;
+    email?: string;
+  };
+  totalPoints: number;
+};
+
+export type TTopAncientRatingSystem = {
   id: string;
   nickname: string;
   user: {
@@ -21,13 +32,25 @@ export type TTop10AncientRatingSystemBySeason = {
 export class ChartsService {
   private readonly httpService = inject(HttpService);
 
-  public getPlayersAncientRatingSystemBySeason(
-    season: number,
-  ): Observable<TTop10AncientRatingSystemBySeason[]> {
+  public getTopTotalPointsPlayers(filter: {
+    season: number;
+    limit?: number;
+  }): Observable<TTopTotalPoints[]> {
     return this.httpService
       .get<
-        TResponse<TTop10AncientRatingSystemBySeason[]>
-      >(`charts/top-10-ancient-rating-system-by-season/${season}`)
+        TResponse<TTopTotalPoints[]>
+      >(`charts/top-total-points-players`, filter)
+      .pipe(map(({ data }) => data));
+  }
+
+  public getTopAncientRatingSystemPlayers(filter: {
+    season: number;
+    limit?: number;
+  }): Observable<TTopAncientRatingSystem[]> {
+    return this.httpService
+      .get<
+        TResponse<TTopAncientRatingSystem[]>
+      >(`charts/top-ancient-rating-system-players`, filter)
       .pipe(map(({ data }) => data));
   }
 }

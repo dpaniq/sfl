@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { GameService } from '@entities/games';
 import { GamesListComponent } from '@entities/games/components/games-list/games-list.component';
 import { GamesStore } from '@entities/games/store/games.store';
+import { PageComponent } from '@shared/ui/core/page/page.component';
 
 @Component({
   selector: 'sfl-games-page',
@@ -28,6 +29,7 @@ import { GamesStore } from '@entities/games/store/games.store';
     MatSelectModule,
 
     // Component
+    PageComponent,
     GamesListComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,26 +42,24 @@ import { GamesStore } from '@entities/games/store/games.store';
     }
   `,
   template: `
-    <h1>Games</h1>
-    <mat-divider></mat-divider>
-    <br />
+    <sfl-page title="games">
+      <div class="actions">
+        <mat-form-field appearance="outline">
+          <mat-label>Season</mat-label>
+          <mat-select [(ngModel)]="season">
+            <mat-option [value]="2023">2023</mat-option>
+            <mat-option [value]="2024">2024</mat-option>
+            <mat-option [value]="2025">2025</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-    <div class="actions">
-      <mat-form-field appearance="outline">
-        <mat-label>Season</mat-label>
-        <mat-select [(ngModel)]="season">
-          <mat-option [value]="2023">2023</mat-option>
-          <mat-option [value]="2024">2024</mat-option>
-          <mat-option [value]="2025">2025</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+      @if (loading()) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      }
 
-    @if (loading()) {
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    }
-
-    <sfl-games-list />
+      <sfl-games-list />
+    </sfl-page>
   `,
   providers: [GameService, GamesStore],
 })

@@ -18,6 +18,8 @@
       </a>
     </div>
 
+    <sfl-navigation />
+
     <div class="header-side-block">
       @if (userSignal()) {
         <div>
@@ -53,15 +55,12 @@
 </header>
 
 <!-- Main container -->
-<mat-sidenav-container
-  class="container"
-  autosize
->
+<mat-sidenav-container class="container">
   <mat-sidenav
     #sidenav
     mode="side"
-    [opened]="true"
-    class="aside"
+    [opened]="false"
+    class="mat-sidenav"
   >
     <sfl-aside></sfl-aside>
   </mat-sidenav>
