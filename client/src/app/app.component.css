@@ -41,23 +41,23 @@ header {
   }
 }
 
-mat-sidenav-container {
+:host ::ng-deep mat-sidenav-container {
   z-index: 9;
-}
-mat-sidenav {
-  position: fixed;
+  mat-sidenav {
+    position: fixed;
 
-  > .mat-drawer-inner-container {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
+    > .mat-drawer-inner-container {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+    }
   }
 }
 
 main {
   grid-area: main;
-  min-height: calc(100% - 60px);
+  min-height: 100%;
   padding: 20px 10px;
   background-color: whitesmoke;
 }
