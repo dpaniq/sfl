@@ -138,11 +138,11 @@ export function withPlayerStatisticsFeature<_>() {
           store
             .statisticsEntities()
             .filter(stat => stat.teamId === store.teamsEntities().at(0)?.id)
-            .length < 1 &&
+            .length > 0 &&
           store
             .statisticsEntities()
             .filter(stat => stat.teamId === store.teamsEntities().at(1)?.id)
-            .length < 1
+            .length > 0
         );
       }),
     })),
