@@ -137,15 +137,14 @@
           <button
             mat-icon-button
             (click)="swapStatistics()"
-            [disabled]="!!errors().size"
+            [disabled]="!swapEnabled() || !!errors().size"
           >
             <mat-icon fontIcon="swap_horiz"></mat-icon>
           </button>
 
           <button
             mat-icon-button
-            [disabled]="!swapEnabled() || !!errors().size"
-            (click)="swapStatistics()"
+            [disabled]="!!errors().size"
             cdkDragHandle
           >
             <mat-icon fontIcon="drag_handle"></mat-icon>
