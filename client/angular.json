@@ -42,13 +42,19 @@
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/assets/styles/main.scss"
+              "src/assets/styles/main.scss",
+              "@angular/material/prebuilt-themes/deeppurple-amber.css"
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                "styles": false,
+                "fonts": true
+              },
+              "sourceMap": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -111,8 +117,8 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/assets/styles/main.scss"
+              "src/assets/styles/main.scss",
+              "@angular/material/prebuilt-themes/deeppurple-amber.css"
             ],
             "scripts": []
           }
