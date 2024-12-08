@@ -14,11 +14,7 @@ export const GAME_PLAYER_STATISTICS_COLUMNS: StatisticColumn[] = [
     header: 'order',
     cell: () => `#`,
   },
-  {
-    columnDef: 'isCaptain',
-    header: 'C',
-    cell: (element: GamePlayerStatistic) => `${element.isCaptain}`,
-  },
+
   {
     columnDef: 'nickname',
     header: 'Nickname',
@@ -53,6 +49,16 @@ export const GAME_PLAYER_STATISTICS_COLUMNS: StatisticColumn[] = [
     key: 'goalsByPenalty',
     header: 'Penalty',
     cell: (element: GamePlayerStatistic) => `${element.goalsByPenalty}`,
+  },
+  {
+    columnDef: 'position',
+    header: 'Position',
+    cell: (element: GamePlayerStatistic) => `${element.position}`,
+  },
+  {
+    columnDef: 'isCaptain',
+    header: 'C',
+    cell: (element: GamePlayerStatistic) => `${element.isCaptain}`,
   },
   {
     columnDef: 'isMVP',

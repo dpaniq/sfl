@@ -18,13 +18,10 @@ export interface IPlayerStatistic {
   isTransfer: boolean;
   isCaptain: boolean;
 
-  // TODO! update optionals to required
-  // Optional
-  position?: EnumPlayerPosition;
+  position: EnumPlayerPosition | null;
 
   // More details
   // distance?: number;
-  // position?: IPlayerPosition;
   // injure?: boolean;
   // pulse?: number;
 }
@@ -42,7 +39,7 @@ export interface IPlayerGameResultMetadata {
   hasWon: boolean;
   hasDraw: boolean;
   hasLose: boolean;
-  hasPosition?: EnumPlayerPosition;
+  hasPosition: EnumPlayerPosition | null;
 
   totalGoalsByLeg: number;
   totalGoalsByHead: number;
@@ -173,6 +170,14 @@ export class PlayerStatistic implements IPlayerStatistic {
   @ApiProperty({ type: Boolean, default: false })
   @Prop({ type: Boolean })
   isCaptain: boolean;
+
+  @ApiProperty({
+    type: String,
+    default: null,
+    enum: EnumPlayerPosition,
+  })
+  @Prop({ type: String, default: null, isEnum: true })
+  position: EnumPlayerPosition | null;
 }
 
 export const PlayerStatisticSchema =

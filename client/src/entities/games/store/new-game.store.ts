@@ -213,6 +213,11 @@ function isNewGameChanged({
       return true;
     }
 
+    if (initial.position !== actual.position) {
+      compareLog('position');
+      return true;
+    }
+
     if (initial.passes !== actual.passes) {
       compareLog('passes');
       return true;

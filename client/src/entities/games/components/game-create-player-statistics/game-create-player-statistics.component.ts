@@ -15,6 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NewGameStore } from '@entities/games/store/new-game.store';
 import {
+  EnumPlayerPosition,
   TPlayerStatisticFinal,
   TPlayerStatisticFinalNumberKeys,
 } from '@entities/games/types';
@@ -46,6 +47,7 @@ export class GameCreatePlayerStatisticsComponent {
 
   public teamId = input.required<string>();
 
+  protected readonly enumPlayerPosition = EnumPlayerPosition;
   protected readonly columns = GAME_PLAYER_STATISTICS_COLUMNS;
   protected readonly displayedColumns = this.columns.map(c => c.columnDef);
 
@@ -100,6 +102,13 @@ export class GameCreatePlayerStatisticsComponent {
       ...playerStatistic,
       isTransfer,
     });
+  }
+
+  protected changePosition(
+    statistic: GamePlayerStatistic,
+    position: EnumPlayerPosition,
+  ) {
+    this.newGameStore.changePosition(statistic, position);
   }
 
   public patchStatistic(

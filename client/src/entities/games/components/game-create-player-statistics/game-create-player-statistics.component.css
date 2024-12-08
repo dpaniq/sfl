@@ -8,18 +8,43 @@ button {
 }
 table {
   width: 100%;
+  text-align: center;
 }
 
 .mat-mdc-table {
   background-color: unset;
 }
 
+.mat-header-cell,
+.mat-cell {
+  text-align: center; /* Center-align text horizontally */
+  justify-content: center; /* For flex-based alignment */
+  padding: 0px 4px; /* Adjust padding as needed */
+}
+
 .reorder {
   color: #ccc;
 }
 
-.mat-column-order {
-  max-width: min-content;
+.mat-mdc-header-cell,
+.mat-mdc-cell {
+  padding: 0;
+  justify-content: center;
+}
+
+.mat-column-passes,
+.mat-column-goalsByLeg,
+.mat-column-goalsByHead,
+.mat-column-goalsByPenalty {
+  width: 70px;
+}
+
+.mat-column-order,
+.mat-column-isMVP,
+.mat-column-isCaptain,
+.mat-column-isTransfer {
+  padding: 0;
+  max-width: 40px;
 }
 
 .draggable-row {
