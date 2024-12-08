@@ -64,8 +64,6 @@ export function accumulatePlayerSeasonMetadata(
     input.totalGoalsByHead +
     getPointsByPosition(input);
 
-  console.log({ positionalTotalPoints });
-
   return {
     totalPasses: sum(original.totalPasses, input.totalPasses),
     totalGoalsByLeg: sum(original.totalGoalsByLeg, input.totalGoalsByLeg),
