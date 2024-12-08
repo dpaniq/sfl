@@ -1,4 +1,5 @@
 import * as v from 'valibot';
+import { EnumPlayerPosition } from '../players/constants/player-career-metadata';
 import { TeamUpdateDTO } from '../teams/team.dto';
 import { EnumGameStatus, IGame } from './game.schema';
 
@@ -13,6 +14,7 @@ export const SavePlayerStatisticDTO = v.object({
   isMVP: v.boolean(),
   isTransfer: v.boolean(),
   isCaptain: v.boolean(),
+  position: v.union([v.enum_(EnumPlayerPosition), v.null_()]),
 });
 
 const GameBaseDTO = {
@@ -37,6 +39,10 @@ export const SaveGameDTO = v.transform(
   (input): Omit<IGame, 'id'> => ({
     ...input,
     playedAt: new Date(input.playedAt),
+    statistics: input.statistics.map((s) => ({
+      ...s,
+      position: s.position ?? null,
+    })),
   }),
 );
 

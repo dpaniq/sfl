@@ -450,6 +450,7 @@ export class GamesService {
               isMVP: acc.isMVP || next.isMVP,
               isCaptain: acc.isCaptain || next.isCaptain,
               isTransfer: acc.isTransfer || next.isTransfer,
+              position: acc.position || next.position,
             };
           },
           {
@@ -465,6 +466,7 @@ export class GamesService {
             isMVP: false,
             isCaptain: false,
             isTransfer: false,
+            position: null,
           } as PlayerStatistic,
         );
 
@@ -499,7 +501,7 @@ export class GamesService {
         asFirstDraft,
         asSecondDraft,
         asTransfer: statistic.isTransfer,
-
+        hasPosition: statistic.position,
         hasWon: isPlayerInBothTeams
           ? false
           : asFirstDraft && isTeamFromFirstDraftWon,

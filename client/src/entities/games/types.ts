@@ -56,6 +56,13 @@ export interface IPlayerDTO {
 export type TPlayerFinal = IPlayerDTO & IPlayerSettings;
 
 // Statistic
+export enum EnumPlayerPosition {
+  Goalkeeper = 'GK',
+  Defender = 'DEF',
+  Midfielder = 'MID',
+  ForwardStriker = 'FRWD',
+}
+
 export interface IPlayerStatisticSettings {
   id: string;
   playerData: TPlayerFinal;
@@ -74,9 +81,10 @@ export interface IPlayerStatisticDTO {
   isMVP: boolean;
   isCaptain: boolean;
   isTransfer: boolean;
+
+  position: EnumPlayerPosition;
   // More details
   // distance?: number;
-  // position?: IPlayerPosition;
   // injure?: boolean;
   // pulse?: number;
 }

@@ -36,6 +36,48 @@
           {{ column.cell(row) }}
         </mat-cell>
       </ng-container>
+    } @else if (column.columnDef === 'position') {
+      <ng-container [matColumnDef]="column.columnDef">
+        <mat-header-cell *matHeaderCellDef>
+          {{ column.header }}
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let row">
+          <select (change)="changePosition(row, $any($event.target).value)">
+            <option
+              [value]="null"
+              [selected]="row.position === null"
+              disabled
+            >
+              -
+            </option>
+            <option
+              [value]="enumPlayerPosition.Goalkeeper"
+              [selected]="row.position === enumPlayerPosition.Goalkeeper"
+            >
+              GP
+            </option>
+            <option
+              [value]="enumPlayerPosition.Defender"
+              [selected]="row.position === enumPlayerPosition.Defender"
+            >
+              DEF
+            </option>
+            <option
+              [value]="enumPlayerPosition.Midfielder"
+              [selected]="row.position === enumPlayerPosition.Midfielder"
+            >
+              MID
+            </option>
+            <option
+              [value]="enumPlayerPosition.ForwardStriker"
+              [selected]="row.position === enumPlayerPosition.ForwardStriker"
+            >
+              FRWD
+            </option>
+          </select>
+        </mat-cell>
+      </ng-container>
     } @else if (column.columnDef === 'isMVP') {
       <ng-container [matColumnDef]="column.columnDef">
         <mat-header-cell *matHeaderCellDef>

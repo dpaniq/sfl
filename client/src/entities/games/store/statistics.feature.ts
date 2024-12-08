@@ -20,6 +20,7 @@ import {
 import { omit } from 'lodash-es';
 import { GamePlayerStatistic } from '../components/game-create-player-statistics/game-create-player-statistics.component';
 import {
+  EnumPlayerPosition,
   IPlayerStatisticDTO,
   IPlayerStatisticSettings,
   TPlayerStatisticFinal,
@@ -68,8 +69,9 @@ export const DEFAULT_STATISTIC_VALUES: Required<
   Pick<
     TPlayerStatisticFinal,
     TPlayerStatisticFinalNumberKeys | TPlayerStatisticFinalBooleanKeys
-  >
+  > & { position: EnumPlayerPosition | null }
 > = {
+  position: null,
   ...DEFAULT_STATISTIC_IDS_VALUES,
   ...DEFAULT_STATISTIC_BOOLEAN_VALUES,
   ...DEFAULT_STATISTIC_NUMBER_VALUES,
@@ -147,6 +149,15 @@ export function withPlayerStatisticsFeature<_>() {
       }),
     })),
     withMethods(store => ({
+      changePosition(
+        { id }: TPlayerStatisticFinal,
+        position: EnumPlayerPosition,
+      ): void {
+        patchState(
+          store,
+          updateEntity({ id, changes: { position } }, STATISTIC_ENTITY_CONFIG),
+        );
+      },
       toggleIsMVP({ id, teamId }: TPlayerStatisticFinal): void {
         patchState(
           store,

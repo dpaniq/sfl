@@ -72,8 +72,7 @@ export interface IPositionalRatingSystem extends IRatingSystem {
    * -1 if game is lost
    *
    * +1 points for pass
-   * +1 points for regular goal or penalty
-   * +2 points for goal by head
+   * +1 points any kind of goal
    */
   totalPoints: number;
 }
@@ -91,7 +90,7 @@ export interface IPlayerMetadataByGame {
   hasWon: boolean;
   hasDraw: boolean;
   hasLose: boolean;
-  hasPosition?: EnumPlayerPosition;
+  hasPosition: null | EnumPlayerPosition;
 }
 
 export interface IPlayerCommonTotalsMetadata {
@@ -153,23 +152,19 @@ export interface IPlayerMetadata
 }
 
 export type TPlayerMetadata = {
-  byCareer: IPlayerMetadata;
-  bySeason: Record<number, IPlayerMetadata>;
   byGame: Record<
     `${number}:${number}`,
     IPlayerMetadataByGame & IPlayerCommonTotalsMetadata
   >;
+  bySeason: Record<number, IPlayerMetadata>;
+  byCareer: IPlayerMetadata;
 };
 
 export enum EnumPlayerPosition {
   Goalkeeper = 'GK',
-  DefenderCenter = 'DEF-C',
-  DefenderLeft = 'DEF-L',
-  DefenderRight = 'DEF-R',
-  MidfielderCenter = 'MID-C',
-  MidfielderWingerLeft = 'MID-W-L',
-  MidfielderWingerRight = 'MID-W-R',
-  ForwardStriker = 'FOR-ST',
+  Defender = 'DEF',
+  Midfielder = 'MID',
+  ForwardStriker = 'FRWD',
 }
 
 export const RATING_SYSTEM_DEFAULT:

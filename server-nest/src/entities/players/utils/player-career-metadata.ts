@@ -17,9 +17,9 @@ export function calculateCareerPositionalRatingSystem(
   input: IPlayerMetadata['positionalRatingSystem'],
 ): IPlayerMetadata['positionalRatingSystem'] {
   return {
-    plusMinus: 0,
-    lastResult: 0,
-    totalPoints: 0,
+    plusMinus: sum(original.plusMinus, input.plusMinus),
+    lastResult: sum(original.lastResult, input.lastResult),
+    totalPoints: sum(original.totalPoints, input.totalPoints),
   };
 }
 
