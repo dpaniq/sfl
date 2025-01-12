@@ -207,7 +207,7 @@ export class Game implements IGame {
   id: string;
 
   @ApiProperty({ default: 1 })
-  @Prop({ type: Number, reuqired: true, index: true, unique: true })
+  @Prop({ type: Number, reuqired: true, index: true })
   number: number;
 
   @ApiProperty({ default: 2010 })
@@ -268,3 +268,5 @@ export class Game implements IGame {
 export class UpdateGame extends PartialType(Game) {}
 
 export const GameSchema = SchemaFactory.createForClass(Game);
+
+GameSchema.index({ number: 1, season: 1 }, { unique: true });
