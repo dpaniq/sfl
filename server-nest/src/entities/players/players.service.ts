@@ -177,7 +177,7 @@ export class PlayersService {
         { _id: playerId },
         {
           $set: {
-            position: lastActivePosition,
+            position: lastActivePosition ?? null,
             [`metadata.bySeason.${season}`]: seasonMetadata,
           },
         },
