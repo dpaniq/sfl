@@ -169,9 +169,18 @@ export class PlayersService {
           return accumulatePlayerSeasonMetadata(curr, playerMetadata, game);
         }, METADATA_DEFAULT);
 
+      const lastActivePosition = seasonData
+        .at(-1)
+        ?.statistics.find((stat) => stat.playerId === playerId)?.position;
+
       await this.playerModel.updateOne(
         { _id: playerId },
-        { $set: { [`metadata.bySeason.${season}`]: seasonMetadata } },
+        {
+          $set: {
+            position: lastActivePosition,
+            [`metadata.bySeason.${season}`]: seasonMetadata,
+          },
+        },
       );
 
       await this.recalculateCareerMetadata(playerId);
